@@ -16,7 +16,7 @@ go get github.com/converge-ai-labs/agent-foundation/sdk/go@latest
 import foundationsdk "github.com/converge-ai-labs/agent-foundation/sdk/go"
 ```
 
-Go module releases use canonical module tags in the form `sdk/go/vX.Y.Z`, created by the `release/sdk/go/X.Y.Z` release workflow.
+Go module releases use canonical module tags in the form `sdk/go/v<version>`, created by the `release/sdk/go/<version>` release workflow. `<version>` is stable `X.Y.Z` or RC `X.Y.Z-rc.N`.
 
 ## Development
 
