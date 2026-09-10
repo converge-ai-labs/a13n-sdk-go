@@ -37,7 +37,13 @@ func (ReplaceConnectorProviderCredentialsRequest) GoString() string {
 }
 func (ReplaceMCPCredentialsRequest) String() string   { return "ReplaceMCPCredentialsRequest { .. }" }
 func (ReplaceMCPCredentialsRequest) GoString() string { return "ReplaceMCPCredentialsRequest { .. }" }
-func (UpdateModelProviderRequest) String() string     { return "UpdateModelProviderRequest { .. }" }
-func (UpdateModelProviderRequest) GoString() string   { return "UpdateModelProviderRequest { .. }" }
-func (UpdateSearchProviderRequest) String() string    { return "UpdateSearchProviderRequest { .. }" }
-func (UpdateSearchProviderRequest) GoString() string  { return "UpdateSearchProviderRequest { .. }" }
+func (UpdateConnectorProviderRequest) String() string { return "UpdateConnectorProviderRequest { .. }" }
+func (UpdateConnectorProviderRequest) GoString() string {
+	return "UpdateConnectorProviderRequest { .. }"
+}
+func (UpdateModelProviderRequest) String() string    { return "UpdateModelProviderRequest { .. }" }
+func (UpdateModelProviderRequest) GoString() string  { return "UpdateModelProviderRequest { .. }" }
+func (UpdateProviderRequest) String() string         { return "UpdateProviderRequest { .. }" }
+func (UpdateProviderRequest) GoString() string       { return "UpdateProviderRequest { .. }" }
+func (UpdateSearchProviderRequest) String() string   { return "UpdateSearchProviderRequest { .. }" }
+func (UpdateSearchProviderRequest) GoString() string { return "UpdateSearchProviderRequest { .. }" }

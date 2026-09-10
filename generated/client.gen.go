@@ -1736,6 +1736,24 @@ func (e SetRoleRequestRole) Valid() bool {
 	}
 }
 
+// Defines values for SkillListItemSourceKind.
+const (
+	SkillListItemSourceKindGithub SkillListItemSourceKind = "github"
+	SkillListItemSourceKindZip    SkillListItemSourceKind = "zip"
+)
+
+// Valid indicates whether the value is a known member of the SkillListItemSourceKind enum.
+func (e SkillListItemSourceKind) Valid() bool {
+	switch e {
+	case SkillListItemSourceKindGithub:
+		return true
+	case SkillListItemSourceKindZip:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SkillPackageManifestHarnessSkillContract.
 const (
 	SkillPackageManifestHarnessSkillContractN1 SkillPackageManifestHarnessSkillContract = "1"
@@ -2209,13 +2227,13 @@ func (e WorkspaceSecretCredentialSource) Valid() bool {
 
 // Defines values for ZipSkillImportProvenanceKind.
 const (
-	Zip ZipSkillImportProvenanceKind = "zip"
+	ZipSkillImportProvenanceKindZip ZipSkillImportProvenanceKind = "zip"
 )
 
 // Valid indicates whether the value is a known member of the ZipSkillImportProvenanceKind enum.
 func (e ZipSkillImportProvenanceKind) Valid() bool {
 	switch e {
-	case Zip:
+	case ZipSkillImportProvenanceKindZip:
 		return true
 	default:
 		return false
@@ -2327,6 +2345,24 @@ func (e PostWorkspacesWorkspaceAgentsAgentActionParamsAction) Valid() bool {
 	case PostWorkspacesWorkspaceAgentsAgentActionParamsActionEnable:
 		return true
 	case PostWorkspacesWorkspaceAgentsAgentActionParamsActionUnarchive:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetWorkspacesWorkspaceSkillsParamsSourceKind.
+const (
+	GetWorkspacesWorkspaceSkillsParamsSourceKindGithub GetWorkspacesWorkspaceSkillsParamsSourceKind = "github"
+	GetWorkspacesWorkspaceSkillsParamsSourceKindZip    GetWorkspacesWorkspaceSkillsParamsSourceKind = "zip"
+)
+
+// Valid indicates whether the value is a known member of the GetWorkspacesWorkspaceSkillsParamsSourceKind enum.
+func (e GetWorkspacesWorkspaceSkillsParamsSourceKind) Valid() bool {
+	switch e {
+	case GetWorkspacesWorkspaceSkillsParamsSourceKindGithub:
+		return true
+	case GetWorkspacesWorkspaceSkillsParamsSourceKindZip:
 		return true
 	default:
 		return false
@@ -2801,6 +2837,12 @@ type ClientToolPolicy struct {
 	Required *bool  `json:"required,omitempty"`
 }
 
+// CollectionEnvironmentProviderDefinition defines model for Collection_EnvironmentProviderDefinition_.
+type CollectionEnvironmentProviderDefinition struct {
+	Items      []EnvironmentProviderDefinition `json:"items"`
+	NextCursor nullable.Nullable[string]       `json:"next_cursor,omitempty"`
+}
+
 // CollectionEnvironmentProvider defines model for Collection_EnvironmentProvider_.
 type CollectionEnvironmentProvider struct {
 	Items      []EnvironmentProvider     `json:"items"`
@@ -2822,12 +2864,6 @@ type CollectionEnvironmentTemplate struct {
 // CollectionEnvironment defines model for Collection_Environment_.
 type CollectionEnvironment struct {
 	Items      []Environment             `json:"items"`
-	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
-}
-
-// CollectionDict defines model for Collection_dict_.
-type CollectionDict struct {
-	Items      []map[string]interface{}  `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
 }
 
@@ -3372,6 +3408,19 @@ type EnvironmentProvider struct {
 	Type                 string                    `json:"type"`
 	UpdatedAt            time.Time                 `json:"updated_at"`
 	WorkspaceId          nullable.Nullable[string] `json:"workspace_id"`
+}
+
+// EnvironmentProviderDefinition defines model for EnvironmentProviderDefinition.
+type EnvironmentProviderDefinition struct {
+	ConfigurationSchema   map[string]JsonValue                    `json:"configuration_schema"`
+	ConfigurationVersions []string                                `json:"configuration_versions"`
+	CredentialSchema      nullable.Nullable[map[string]JsonValue] `json:"credential_schema"`
+	DisplayName           string                                  `json:"display_name"`
+	RequiresKeepalive     bool                                    `json:"requires_keepalive"`
+	SupportsDestroy       bool                                    `json:"supports_destroy"`
+	SupportsManaged       bool                                    `json:"supports_managed"`
+	SupportsStop          bool                                    `json:"supports_stop"`
+	Type                  string                                  `json:"type"`
 }
 
 // EnvironmentSelection defines model for EnvironmentSelection.
@@ -4734,10 +4783,13 @@ type SessionCollection struct {
 
 // SessionPreview defines model for SessionPreview.
 type SessionPreview struct {
-	InputText  nullable.Nullable[string] `json:"input_text"`
-	OutputText nullable.Nullable[string] `json:"output_text"`
-	RunId      string                    `json:"run_id"`
-	ThreadId   string                    `json:"thread_id"`
+	AgentName   nullable.Nullable[string] `json:"agent_name"`
+	InputText   nullable.Nullable[string] `json:"input_text"`
+	OutputText  nullable.Nullable[string] `json:"output_text"`
+	RunId       string                    `json:"run_id"`
+	RunStatus   RunStatus                 `json:"run_status"`
+	ThreadId    string                    `json:"thread_id"`
+	TriggerType string                    `json:"trigger_type"`
 }
 
 // SessionResource defines model for SessionResource.
@@ -4745,6 +4797,7 @@ type SessionResource struct {
 	CreatedAt   time.Time                         `json:"created_at"`
 	Id          string                            `json:"id"`
 	Preview     nullable.Nullable[SessionPreview] `json:"preview"`
+	RunCount    nullable.Nullable[int]            `json:"run_count"`
 	UpdatedAt   time.Time                         `json:"updated_at"`
 	WorkspaceId string                            `json:"workspace_id"`
 }
@@ -4790,9 +4843,29 @@ type SkillAgentReferenceCollection struct {
 
 // SkillCollection defines model for SkillCollection.
 type SkillCollection struct {
-	Items      []Skill                   `json:"items"`
+	Items      []SkillListItem           `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
+
+// SkillListItem defines model for SkillListItem.
+type SkillListItem struct {
+	CreatedAt         time.Time                    `json:"created_at"`
+	CreatedBy         PrincipalRef                 `json:"created_by"`
+	CurrentRevisionId string                       `json:"current_revision_id"`
+	DeletedAt         nullable.Nullable[time.Time] `json:"deleted_at"`
+	Id                string                       `json:"id"`
+	Key               string                       `json:"key"`
+	Name              string                       `json:"name"`
+	OrganizationId    string                       `json:"organization_id"`
+	SourceKind        SkillListItemSourceKind      `json:"source_kind"`
+	UpdatedAt         time.Time                    `json:"updated_at"`
+	UpdatedBy         PrincipalRef                 `json:"updated_by"`
+	Version           int                          `json:"version"`
+	WorkspaceId       string                       `json:"workspace_id"`
+}
+
+// SkillListItemSourceKind defines model for SkillListItem.SourceKind.
+type SkillListItemSourceKind string
 
 // SkillPackageFile defines model for SkillPackageFile.
 type SkillPackageFile struct {
@@ -5242,8 +5315,10 @@ type UpdateConnectorConnectionRequest struct {
 
 // UpdateConnectorProviderRequest defines model for UpdateConnectorProviderRequest.
 type UpdateConnectorProviderRequest struct {
-	ExpectedVersion int                       `json:"expected_version"`
-	Name            nullable.Nullable[string] `json:"name,omitempty"`
+	Credentials     nullable.Nullable[map[string]string]       `json:"credentials,omitempty"`
+	ExpectedVersion int                                        `json:"expected_version"`
+	Name            nullable.Nullable[string]                  `json:"name,omitempty"`
+	Status          nullable.Nullable[ConnectorProviderStatus] `json:"status,omitempty"`
 }
 
 // UpdateHookSubscriptionRequest defines model for UpdateHookSubscriptionRequest.
@@ -5291,8 +5366,9 @@ type UpdateProfileRequest struct {
 
 // UpdateProviderRequest defines model for UpdateProviderRequest.
 type UpdateProviderRequest struct {
-	Enabled nullable.Nullable[bool]   `json:"enabled,omitempty"`
-	Name    nullable.Nullable[string] `json:"name,omitempty"`
+	Credential nullable.Nullable[map[string]JsonValue] `json:"credential,omitempty"`
+	Enabled    nullable.Nullable[bool]                 `json:"enabled,omitempty"`
+	Name       nullable.Nullable[string]               `json:"name,omitempty"`
 }
 
 // UpdateQueuedSubmissionRequest defines model for UpdateQueuedSubmissionRequest.
@@ -6307,8 +6383,14 @@ type GetWorkspacesWorkspaceServiceAccountsParams struct {
 
 // GetWorkspacesWorkspaceSessionsParams defines parameters for GetWorkspacesWorkspaceSessions.
 type GetWorkspacesWorkspaceSessionsParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Q             *string      `form:"q,omitempty" json:"q,omitempty"`
+	AgentId       *string      `form:"agent_id,omitempty" json:"agent_id,omitempty"`
+	Status        *[]RunStatus `form:"status,omitempty" json:"status,omitempty"`
+	TriggerType   *[]string    `form:"trigger_type,omitempty" json:"trigger_type,omitempty"`
+	UpdatedAfter  *time.Time   `form:"updated_after,omitempty" json:"updated_after,omitempty"`
+	UpdatedBefore *time.Time   `form:"updated_before,omitempty" json:"updated_before,omitempty"`
+	Limit         *int         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor        *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
 // PostWorkspacesWorkspaceSkillUploadsParams defines parameters for PostWorkspacesWorkspaceSkillUploads.
@@ -6318,9 +6400,14 @@ type PostWorkspacesWorkspaceSkillUploadsParams struct {
 
 // GetWorkspacesWorkspaceSkillsParams defines parameters for GetWorkspacesWorkspaceSkills.
 type GetWorkspacesWorkspaceSkillsParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit      *int                                          `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor     *string                                       `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Q          *string                                       `form:"q,omitempty" json:"q,omitempty"`
+	SourceKind *GetWorkspacesWorkspaceSkillsParamsSourceKind `form:"source_kind,omitempty" json:"source_kind,omitempty"`
 }
+
+// GetWorkspacesWorkspaceSkillsParamsSourceKind defines parameters for GetWorkspacesWorkspaceSkills.
+type GetWorkspacesWorkspaceSkillsParamsSourceKind string
 
 // PostWorkspacesWorkspaceSkillsParams defines parameters for PostWorkspacesWorkspaceSkills.
 type PostWorkspacesWorkspaceSkillsParams struct {
@@ -13342,6 +13429,11 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/workspaces/{workspace}/skills (the `PostWorkspacesWorkspaceSkills` operationId).
 	PostWorkspacesWorkspaceSkills(ctx context.Context, workspace string, params *PostWorkspacesWorkspaceSkillsParams, body PostWorkspacesWorkspaceSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetWorkspacesWorkspaceSkillsSkillKey Get Skill By Key
+	//
+	// Corresponds with GET /api/v1/workspaces/{workspace}/skills/{skill_key} (the `GetWorkspacesWorkspaceSkillsSkillKey` operationId).
+	GetWorkspacesWorkspaceSkillsSkillKey(ctx context.Context, workspace string, skillKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PostWorkspacesWorkspaceThreadsWithBody Create Thread
 	//
 	// Takes any type of body and a specified content type.
@@ -18880,6 +18972,21 @@ func (c *Client) PostWorkspacesWorkspaceSkillsWithBody(ctx context.Context, work
 // Corresponds with POST /api/v1/workspaces/{workspace}/skills (the `PostWorkspacesWorkspaceSkills` operationId).
 func (c *Client) PostWorkspacesWorkspaceSkills(ctx context.Context, workspace string, params *PostWorkspacesWorkspaceSkillsParams, body PostWorkspacesWorkspaceSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostWorkspacesWorkspaceSkillsRequest(c.Server, workspace, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetWorkspacesWorkspaceSkillsSkillKey Get Skill By Key
+//
+// Corresponds with GET /api/v1/workspaces/{workspace}/skills/{skill_key} (the `GetWorkspacesWorkspaceSkillsSkillKey` operationId).
+func (c *Client) GetWorkspacesWorkspaceSkillsSkillKey(ctx context.Context, workspace string, skillKey string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetWorkspacesWorkspaceSkillsSkillKeyRequest(c.Server, workspace, skillKey)
 	if err != nil {
 		return nil, err
 	}
@@ -31912,6 +32019,78 @@ func NewGetWorkspacesWorkspaceSessionsRequest(server string, workspace string, p
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
 
+		if params.Q != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "q", *params.Q, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AgentId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", *params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TriggerType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "trigger_type", *params.TriggerType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.UpdatedAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "updated_after", *params.UpdatedAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.UpdatedBefore != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "updated_before", *params.UpdatedBefore, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
@@ -32058,6 +32237,30 @@ func NewGetWorkspacesWorkspaceSkillsRequest(server string, workspace string, par
 
 		}
 
+		if params.Q != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "q", *params.Q, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SourceKind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "source_kind", *params.SourceKind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -32127,6 +32330,47 @@ func NewPostWorkspacesWorkspaceSkillsRequestWithBody(server string, workspace st
 
 		req.Header.Set("Idempotency-Key", headerParam0)
 
+	}
+
+	return req, nil
+}
+
+// NewGetWorkspacesWorkspaceSkillsSkillKeyRequest constructs an http.Request for the GetWorkspacesWorkspaceSkillsSkillKey method
+func NewGetWorkspacesWorkspaceSkillsSkillKeyRequest(server string, workspace string, skillKey string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "workspace", workspace, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "skill_key", skillKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/workspaces/%s/skills/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
 	}
 
 	return req, nil
@@ -34847,6 +35091,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/workspaces/{workspace}/skills (the `PostWorkspacesWorkspaceSkills` operationId).
 	PostWorkspacesWorkspaceSkillsWithResponse(ctx context.Context, workspace string, params *PostWorkspacesWorkspaceSkillsParams, body PostWorkspacesWorkspaceSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostWorkspacesWorkspaceSkillsResponse, error)
+
+	// GetWorkspacesWorkspaceSkillsSkillKeyWithResponse Get Skill By Key
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/workspaces/{workspace}/skills/{skill_key} (the `GetWorkspacesWorkspaceSkillsSkillKey` operationId).
+	GetWorkspacesWorkspaceSkillsSkillKeyWithResponse(ctx context.Context, workspace string, skillKey string, reqEditors ...RequestEditorFn) (*GetWorkspacesWorkspaceSkillsSkillKeyResponse, error)
 
 	// PostWorkspacesWorkspaceThreadsWithBodyWithResponse Create Thread
 	//
@@ -37861,7 +38112,7 @@ type GetEnvironmentProviderTypesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *CollectionDict
+	JSON200 *CollectionEnvironmentProviderDefinition
 	// JSONDefault the response for an HTTP default `application/json` response
 	JSONDefault *ErrorResponse
 	// Headers200 the parsed response headers for an HTTP 200 response
@@ -37871,7 +38122,7 @@ type GetEnvironmentProviderTypesResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetEnvironmentProviderTypesResponse) GetJSON200() *CollectionDict {
+func (r GetEnvironmentProviderTypesResponse) GetJSON200() *CollectionEnvironmentProviderDefinition {
 	return r.JSON200
 }
 
@@ -37929,7 +38180,7 @@ type GetEnvironmentProviderTypesProviderTypeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *map[string]interface{}
+	JSON200 *EnvironmentProviderDefinition
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *ErrorResponse
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -37943,7 +38194,7 @@ type GetEnvironmentProviderTypesProviderTypeResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetEnvironmentProviderTypesProviderTypeResponse) GetJSON200() *map[string]interface{} {
+func (r GetEnvironmentProviderTypesProviderTypeResponse) GetJSON200() *EnvironmentProviderDefinition {
 	return r.JSON200
 }
 
@@ -53224,6 +53475,83 @@ func (r PostWorkspacesWorkspaceSkillsResponse) ContentType() string {
 	return ""
 }
 
+// GetWorkspacesWorkspaceSkillsSkillKeyResponse200Headers the declared response headers of an HTTP 200 response for GetWorkspacesWorkspaceSkillsSkillKey
+type GetWorkspacesWorkspaceSkillsSkillKeyResponse200Headers struct {
+	XRequestID *string
+}
+
+// GetWorkspacesWorkspaceSkillsSkillKeyResponse400Headers the declared response headers of an HTTP 400 response for GetWorkspacesWorkspaceSkillsSkillKey
+type GetWorkspacesWorkspaceSkillsSkillKeyResponse400Headers struct {
+	XRequestID *string
+}
+
+// GetWorkspacesWorkspaceSkillsSkillKeyResponseDefaultHeaders the declared response headers of an HTTP default response for GetWorkspacesWorkspaceSkillsSkillKey
+type GetWorkspacesWorkspaceSkillsSkillKeyResponseDefaultHeaders struct {
+	RetryAfter *string
+	XRequestID *string
+}
+
+type GetWorkspacesWorkspaceSkillsSkillKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Skill
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *ErrorResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *GetWorkspacesWorkspaceSkillsSkillKeyResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetWorkspacesWorkspaceSkillsSkillKeyResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetWorkspacesWorkspaceSkillsSkillKeyResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetWorkspacesWorkspaceSkillsSkillKeyResponse) GetJSON200() *Skill {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetWorkspacesWorkspaceSkillsSkillKeyResponse) GetJSON400() *ErrorResponse {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetWorkspacesWorkspaceSkillsSkillKeyResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetWorkspacesWorkspaceSkillsSkillKeyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetWorkspacesWorkspaceSkillsSkillKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetWorkspacesWorkspaceSkillsSkillKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetWorkspacesWorkspaceSkillsSkillKeyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // PostWorkspacesWorkspaceThreadsResponse201Headers the declared response headers of an HTTP 201 response for PostWorkspacesWorkspaceThreads
 type PostWorkspacesWorkspaceThreadsResponse201Headers struct {
 	XRequestID *string
@@ -57888,6 +58216,19 @@ func (c *ClientWithResponses) PostWorkspacesWorkspaceSkillsWithResponse(ctx cont
 	return ParsePostWorkspacesWorkspaceSkillsResponse(rsp)
 }
 
+// GetWorkspacesWorkspaceSkillsSkillKeyWithResponse Get Skill By Key
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/workspaces/{workspace}/skills/{skill_key} (the `GetWorkspacesWorkspaceSkillsSkillKey` operationId).
+func (c *ClientWithResponses) GetWorkspacesWorkspaceSkillsSkillKeyWithResponse(ctx context.Context, workspace string, skillKey string, reqEditors ...RequestEditorFn) (*GetWorkspacesWorkspaceSkillsSkillKeyResponse, error) {
+	rsp, err := c.GetWorkspacesWorkspaceSkillsSkillKey(ctx, workspace, skillKey, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetWorkspacesWorkspaceSkillsSkillKeyResponse(rsp)
+}
+
 // PostWorkspacesWorkspaceThreadsWithBodyWithResponse Create Thread
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -61050,7 +61391,7 @@ func ParseGetEnvironmentProviderTypesResponse(rsp *http.Response) (*GetEnvironme
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CollectionDict
+		var dest CollectionEnvironmentProviderDefinition
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -61113,7 +61454,7 @@ func ParseGetEnvironmentProviderTypesProviderTypeResponse(rsp *http.Response) (*
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest map[string]interface{}
+		var dest EnvironmentProviderDefinition
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -77047,6 +77388,86 @@ func ParsePostWorkspacesWorkspaceSkillsResponse(rsp *http.Response) (*PostWorksp
 		response.Headers400 = &headers
 	case true:
 		var headers PostWorkspacesWorkspaceSkillsResponseDefaultHeaders
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetWorkspacesWorkspaceSkillsSkillKeyResponse parses an HTTP response from a GetWorkspacesWorkspaceSkillsSkillKeyWithResponse call
+func ParseGetWorkspacesWorkspaceSkillsSkillKeyResponse(rsp *http.Response) (*GetWorkspacesWorkspaceSkillsSkillKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetWorkspacesWorkspaceSkillsSkillKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Skill
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers GetWorkspacesWorkspaceSkillsSkillKeyResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers GetWorkspacesWorkspaceSkillsSkillKeyResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetWorkspacesWorkspaceSkillsSkillKeyResponseDefaultHeaders
 		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
