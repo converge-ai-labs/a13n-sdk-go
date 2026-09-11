@@ -2897,6 +2897,13 @@ type CompleteEmailChangeRequest struct {
 	Token *string `json:"token,omitempty"`
 }
 
+// CompleteMCPOAuthRequest defines model for CompleteMCPOAuthRequest.
+type CompleteMCPOAuthRequest struct {
+	Code   string `json:"code"`
+	Issuer string `json:"issuer"`
+	State  string `json:"state"`
+}
+
 // CompletePasswordResetRequest defines model for CompletePasswordResetRequest.
 type CompletePasswordResetRequest struct {
 	Password *string `json:"password,omitempty"`
@@ -2932,14 +2939,17 @@ type Connector struct {
 	ConnectorProviderId   string                    `json:"connector_provider_id"`
 	Description           nullable.Nullable[string] `json:"description,omitempty"`
 	Key                   string                    `json:"key"`
+	LogoUrl               nullable.Nullable[string] `json:"logo_url,omitempty"`
 	Name                  string                    `json:"name"`
 	SetupSchema           map[string]JsonValue      `json:"setup_schema"`
+	UnavailableReason     nullable.Nullable[string] `json:"unavailable_reason,omitempty"`
 }
 
 // ConnectorCollection defines model for ConnectorCollection.
 type ConnectorCollection struct {
-	Items      []Connector            `json:"items"`
-	NextCursor nullable.Nullable[any] `json:"next_cursor,omitempty"`
+	Items       []Connector                  `json:"items"`
+	NextCursor  nullable.Nullable[string]    `json:"next_cursor,omitempty"`
+	RefreshedAt nullable.Nullable[time.Time] `json:"refreshed_at,omitempty"`
 }
 
 // ConnectorConnection defines model for ConnectorConnection.
@@ -5725,6 +5735,14 @@ type PostConnectorProvidersConnectorProviderIdCredentialsParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
 }
 
+// PostConnectorProvidersConnectorProviderIdDiscoverConnectorsParams defines parameters for PostConnectorProvidersConnectorProviderIdDiscoverConnectors.
+type PostConnectorProvidersConnectorProviderIdDiscoverConnectorsParams struct {
+	Query   *string `form:"query,omitempty" json:"query,omitempty"`
+	Cursor  *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit   *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Refresh *bool   `form:"refresh,omitempty" json:"refresh,omitempty"`
+}
+
 // PostConnectorProvidersConnectorProviderIdTestParams defines parameters for PostConnectorProvidersConnectorProviderIdTest.
 type PostConnectorProvidersConnectorProviderIdTestParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
@@ -5812,13 +5830,6 @@ type PostMcpConnectionsConnectionIdActionParams struct {
 
 // PostMcpConnectionsConnectionIdActionParamsAction defines parameters for PostMcpConnectionsConnectionIdAction.
 type PostMcpConnectionsConnectionIdActionParamsAction string
-
-// GetOauthMcpCallbackParams defines parameters for GetOauthMcpCallback.
-type GetOauthMcpCallbackParams struct {
-	Code  string `form:"code" json:"code"`
-	State string `form:"state" json:"state"`
-	Iss   string `form:"iss" json:"iss"`
-}
 
 // PatchOrganizationsOrganizationParams defines parameters for PatchOrganizationsOrganization.
 type PatchOrganizationsOrganizationParams struct {
@@ -6560,6 +6571,9 @@ type PostMcpConnectionsConnectionIdReconnectJSONRequestBody = MCPConnectionComma
 
 // PostMcpConnectionsConnectionIdActionJSONRequestBody defines body for PostMcpConnectionsConnectionIdAction for application/json ContentType.
 type PostMcpConnectionsConnectionIdActionJSONRequestBody = MCPConnectionCommandRequest
+
+// PostOauthMcpCompleteJSONRequestBody defines body for PostOauthMcpComplete for application/json ContentType.
+type PostOauthMcpCompleteJSONRequestBody = CompleteMCPOAuthRequest
 
 // PatchOrganizationsOrganizationJSONRequestBody defines body for PatchOrganizationsOrganization for application/json ContentType.
 type PatchOrganizationsOrganizationJSONRequestBody = UpdateResourceProfileRequest
@@ -11632,6 +11646,11 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/connector-providers/{connector_provider_id} (the `PatchConnectorProvidersConnectorProviderId` operationId).
 	PatchConnectorProvidersConnectorProviderId(ctx context.Context, connectorProviderId string, body PatchConnectorProvidersConnectorProviderIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey Get Connector
+	//
+	// Corresponds with GET /api/v1/connector-providers/{connector_provider_id}/connectors/{connector_key} (the `GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey` operationId).
+	GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey(ctx context.Context, connectorProviderId string, connectorKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyTools Preview Connector Tools
 	//
 	// Corresponds with GET /api/v1/connector-providers/{connector_provider_id}/connectors/{connector_key}/tools (the `GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyTools` operationId).
@@ -11654,7 +11673,7 @@ type ClientInterface interface {
 	// PostConnectorProvidersConnectorProviderIdDiscoverConnectors Discover Connectors
 	//
 	// Corresponds with POST /api/v1/connector-providers/{connector_provider_id}/discover-connectors (the `PostConnectorProvidersConnectorProviderIdDiscoverConnectors` operationId).
-	PostConnectorProvidersConnectorProviderIdDiscoverConnectors(ctx context.Context, connectorProviderId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	PostConnectorProvidersConnectorProviderIdDiscoverConnectors(ctx context.Context, connectorProviderId string, params *PostConnectorProvidersConnectorProviderIdDiscoverConnectorsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostConnectorProvidersConnectorProviderIdTestWithBody Test Connector Provider
 	//
@@ -11988,15 +12007,24 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/model-provider-types (the `GetModelProviderTypes` operationId).
 	GetModelProviderTypes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetOauthMcpCallback Mcp Oauth Callback
-	//
-	// Corresponds with GET /api/v1/oauth/mcp/callback (the `GetOauthMcpCallback` operationId).
-	GetOauthMcpCallback(ctx context.Context, params *GetOauthMcpCallbackParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetOauthMcpClientMetadataJson Mcp Client Metadata
 	//
 	// Corresponds with GET /api/v1/oauth/mcp/client-metadata.json (the `GetOauthMcpClientMetadataJson` operationId).
 	GetOauthMcpClientMetadataJson(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostOauthMcpCompleteWithBody Complete Mcp Oauth
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+	PostOauthMcpCompleteWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostOauthMcpComplete Complete Mcp Oauth
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+	PostOauthMcpComplete(ctx context.Context, body PostOauthMcpCompleteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetOrganizations Organizations
 	//
@@ -14245,6 +14273,21 @@ func (c *Client) PatchConnectorProvidersConnectorProviderId(ctx context.Context,
 	return c.Client.Do(req)
 }
 
+// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey Get Connector
+//
+// Corresponds with GET /api/v1/connector-providers/{connector_provider_id}/connectors/{connector_key} (the `GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey` operationId).
+func (c *Client) GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey(ctx context.Context, connectorProviderId string, connectorKey string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyRequest(c.Server, connectorProviderId, connectorKey)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyTools Preview Connector Tools
 //
 // Corresponds with GET /api/v1/connector-providers/{connector_provider_id}/connectors/{connector_key}/tools (the `GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyTools` operationId).
@@ -14297,8 +14340,8 @@ func (c *Client) PostConnectorProvidersConnectorProviderIdCredentials(ctx contex
 // PostConnectorProvidersConnectorProviderIdDiscoverConnectors Discover Connectors
 //
 // Corresponds with POST /api/v1/connector-providers/{connector_provider_id}/discover-connectors (the `PostConnectorProvidersConnectorProviderIdDiscoverConnectors` operationId).
-func (c *Client) PostConnectorProvidersConnectorProviderIdDiscoverConnectors(ctx context.Context, connectorProviderId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostConnectorProvidersConnectorProviderIdDiscoverConnectorsRequest(c.Server, connectorProviderId)
+func (c *Client) PostConnectorProvidersConnectorProviderIdDiscoverConnectors(ctx context.Context, connectorProviderId string, params *PostConnectorProvidersConnectorProviderIdDiscoverConnectorsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostConnectorProvidersConnectorProviderIdDiscoverConnectorsRequest(c.Server, connectorProviderId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -15161,11 +15204,11 @@ func (c *Client) GetModelProviderTypes(ctx context.Context, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
-// GetOauthMcpCallback Mcp Oauth Callback
+// GetOauthMcpClientMetadataJson Mcp Client Metadata
 //
-// Corresponds with GET /api/v1/oauth/mcp/callback (the `GetOauthMcpCallback` operationId).
-func (c *Client) GetOauthMcpCallback(ctx context.Context, params *GetOauthMcpCallbackParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetOauthMcpCallbackRequest(c.Server, params)
+// Corresponds with GET /api/v1/oauth/mcp/client-metadata.json (the `GetOauthMcpClientMetadataJson` operationId).
+func (c *Client) GetOauthMcpClientMetadataJson(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOauthMcpClientMetadataJsonRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -15176,11 +15219,30 @@ func (c *Client) GetOauthMcpCallback(ctx context.Context, params *GetOauthMcpCal
 	return c.Client.Do(req)
 }
 
-// GetOauthMcpClientMetadataJson Mcp Client Metadata
+// PostOauthMcpCompleteWithBody Complete Mcp Oauth
 //
-// Corresponds with GET /api/v1/oauth/mcp/client-metadata.json (the `GetOauthMcpClientMetadataJson` operationId).
-func (c *Client) GetOauthMcpClientMetadataJson(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetOauthMcpClientMetadataJsonRequest(c.Server)
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+func (c *Client) PostOauthMcpCompleteWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostOauthMcpCompleteRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostOauthMcpComplete Complete Mcp Oauth
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+func (c *Client) PostOauthMcpComplete(ctx context.Context, body PostOauthMcpCompleteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostOauthMcpCompleteRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -20581,6 +20643,47 @@ func NewPatchConnectorProvidersConnectorProviderIdRequestWithBody(server string,
 	return req, nil
 }
 
+// NewGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyRequest constructs an http.Request for the GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey method
+func NewGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyRequest(server string, connectorProviderId string, connectorKey string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "connector_provider_id", connectorProviderId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "connector_key", connectorKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s/connectors/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsRequest constructs an http.Request for the GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyTools method
 func NewGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsRequest(server string, connectorProviderId string, connectorKey string) (*http.Request, error) {
 	var err error
@@ -20683,7 +20786,7 @@ func NewPostConnectorProvidersConnectorProviderIdCredentialsRequestWithBody(serv
 }
 
 // NewPostConnectorProvidersConnectorProviderIdDiscoverConnectorsRequest constructs an http.Request for the PostConnectorProvidersConnectorProviderIdDiscoverConnectors method
-func NewPostConnectorProvidersConnectorProviderIdDiscoverConnectorsRequest(server string, connectorProviderId string) (*http.Request, error) {
+func NewPostConnectorProvidersConnectorProviderIdDiscoverConnectorsRequest(server string, connectorProviderId string, params *PostConnectorProvidersConnectorProviderIdDiscoverConnectorsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -20706,6 +20809,69 @@ func NewPostConnectorProvidersConnectorProviderIdDiscoverConnectorsRequest(serve
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Refresh != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "refresh", *params.Refresh, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
@@ -22363,72 +22529,6 @@ func NewGetModelProviderTypesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetOauthMcpCallbackRequest constructs an http.Request for the GetOauthMcpCallback method
-func NewGetOauthMcpCallbackRequest(server string, params *GetOauthMcpCallbackParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/oauth/mcp/callback")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		// queryValues collects non-styled parameters (passthrough, JSON)
-		// that are safe to round-trip through url.Values.Encode().
-		queryValues := queryURL.Query()
-		// rawQueryFragments collects pre-encoded query fragments from
-		// styled parameters, preserving literal commas as delimiters
-		// per the OpenAPI spec (e.g. "color=blue,black,brown").
-		var rawQueryFragments []string
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "code", params.Code, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "state", params.State, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "iss", params.Iss, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if encoded := queryValues.Encode(); encoded != "" {
-			rawQueryFragments = append(rawQueryFragments, encoded)
-		}
-		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewGetOauthMcpClientMetadataJsonRequest constructs an http.Request for the GetOauthMcpClientMetadataJson method
 func NewGetOauthMcpClientMetadataJsonRequest(server string) (*http.Request, error) {
 	var err error
@@ -22452,6 +22552,46 @@ func NewGetOauthMcpClientMetadataJsonRequest(server string) (*http.Request, erro
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewPostOauthMcpCompleteRequest calls the generic PostOauthMcpComplete builder with application/json body
+func NewPostOauthMcpCompleteRequest(server string, body PostOauthMcpCompleteJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostOauthMcpCompleteRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostOauthMcpCompleteRequestWithBody constructs an http.Request for the PostOauthMcpComplete method, with any body, and a specified content type
+func NewPostOauthMcpCompleteRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/oauth/mcp/complete")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -33071,6 +33211,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/connector-providers/{connector_provider_id} (the `PatchConnectorProvidersConnectorProviderId` operationId).
 	PatchConnectorProvidersConnectorProviderIdWithResponse(ctx context.Context, connectorProviderId string, body PatchConnectorProvidersConnectorProviderIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchConnectorProvidersConnectorProviderIdResponse, error)
 
+	// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyWithResponse Get Connector
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-providers/{connector_provider_id}/connectors/{connector_key} (the `GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey` operationId).
+	GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyWithResponse(ctx context.Context, connectorProviderId string, connectorKey string, reqEditors ...RequestEditorFn) (*GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse, error)
+
 	// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsWithResponse Preview Connector Tools
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -33097,7 +33244,7 @@ type ClientWithResponsesInterface interface {
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/connector-providers/{connector_provider_id}/discover-connectors (the `PostConnectorProvidersConnectorProviderIdDiscoverConnectors` operationId).
-	PostConnectorProvidersConnectorProviderIdDiscoverConnectorsWithResponse(ctx context.Context, connectorProviderId string, reqEditors ...RequestEditorFn) (*PostConnectorProvidersConnectorProviderIdDiscoverConnectorsResponse, error)
+	PostConnectorProvidersConnectorProviderIdDiscoverConnectorsWithResponse(ctx context.Context, connectorProviderId string, params *PostConnectorProvidersConnectorProviderIdDiscoverConnectorsParams, reqEditors ...RequestEditorFn) (*PostConnectorProvidersConnectorProviderIdDiscoverConnectorsResponse, error)
 
 	// PostConnectorProvidersConnectorProviderIdTestWithBodyWithResponse Test Connector Provider
 	//
@@ -33463,19 +33610,26 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/model-provider-types (the `GetModelProviderTypes` operationId).
 	GetModelProviderTypesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelProviderTypesResponse, error)
 
-	// GetOauthMcpCallbackWithResponse Mcp Oauth Callback
-	//
-	// Returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with GET /api/v1/oauth/mcp/callback (the `GetOauthMcpCallback` operationId).
-	GetOauthMcpCallbackWithResponse(ctx context.Context, params *GetOauthMcpCallbackParams, reqEditors ...RequestEditorFn) (*GetOauthMcpCallbackResponse, error)
-
 	// GetOauthMcpClientMetadataJsonWithResponse Mcp Client Metadata
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/oauth/mcp/client-metadata.json (the `GetOauthMcpClientMetadataJson` operationId).
 	GetOauthMcpClientMetadataJsonWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOauthMcpClientMetadataJsonResponse, error)
+
+	// PostOauthMcpCompleteWithBodyWithResponse Complete Mcp Oauth
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+	PostOauthMcpCompleteWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostOauthMcpCompleteResponse, error)
+
+	// PostOauthMcpCompleteWithResponse Complete Mcp Oauth
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+	PostOauthMcpCompleteWithResponse(ctx context.Context, body PostOauthMcpCompleteJSONRequestBody, reqEditors ...RequestEditorFn) (*PostOauthMcpCompleteResponse, error)
 
 	// GetOrganizationsWithResponse Organizations
 	//
@@ -37595,6 +37749,83 @@ func (r PatchConnectorProvidersConnectorProviderIdResponse) ContentType() string
 	return ""
 }
 
+// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse200Headers the declared response headers of an HTTP 200 response for GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey
+type GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse200Headers struct {
+	XRequestID *string
+}
+
+// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse400Headers the declared response headers of an HTTP 400 response for GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey
+type GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse400Headers struct {
+	XRequestID *string
+}
+
+// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponseDefaultHeaders the declared response headers of an HTTP default response for GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey
+type GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponseDefaultHeaders struct {
+	RetryAfter *string
+	XRequestID *string
+}
+
+type GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Connector
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *ErrorResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse) GetJSON200() *Connector {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse) GetJSON400() *ErrorResponse {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsResponse200Headers the declared response headers of an HTTP 200 response for GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyTools
 type GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsResponse200Headers struct {
 	XRequestID *string
@@ -40402,83 +40633,6 @@ func (r GetModelProviderTypesResponse) ContentType() string {
 	return ""
 }
 
-// GetOauthMcpCallbackResponse200Headers the declared response headers of an HTTP 200 response for GetOauthMcpCallback
-type GetOauthMcpCallbackResponse200Headers struct {
-	XRequestID *string
-}
-
-// GetOauthMcpCallbackResponse400Headers the declared response headers of an HTTP 400 response for GetOauthMcpCallback
-type GetOauthMcpCallbackResponse400Headers struct {
-	XRequestID *string
-}
-
-// GetOauthMcpCallbackResponseDefaultHeaders the declared response headers of an HTTP default response for GetOauthMcpCallback
-type GetOauthMcpCallbackResponseDefaultHeaders struct {
-	RetryAfter *string
-	XRequestID *string
-}
-
-type GetOauthMcpCallbackResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *MCPConnection
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *ErrorResponse
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *ErrorResponse
-	// Headers200 the parsed response headers for an HTTP 200 response
-	Headers200 *GetOauthMcpCallbackResponse200Headers
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *GetOauthMcpCallbackResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *GetOauthMcpCallbackResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetOauthMcpCallbackResponse) GetJSON200() *MCPConnection {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r GetOauthMcpCallbackResponse) GetJSON400() *ErrorResponse {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r GetOauthMcpCallbackResponse) GetJSONDefault() *ErrorResponse {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r GetOauthMcpCallbackResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetOauthMcpCallbackResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetOauthMcpCallbackResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetOauthMcpCallbackResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
 // GetOauthMcpClientMetadataJsonResponse200Headers the declared response headers of an HTTP 200 response for GetOauthMcpClientMetadataJson
 type GetOauthMcpClientMetadataJsonResponse200Headers struct {
 	XRequestID *string
@@ -40536,6 +40690,83 @@ func (r GetOauthMcpClientMetadataJsonResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetOauthMcpClientMetadataJsonResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PostOauthMcpCompleteResponse200Headers the declared response headers of an HTTP 200 response for PostOauthMcpComplete
+type PostOauthMcpCompleteResponse200Headers struct {
+	XRequestID *string
+}
+
+// PostOauthMcpCompleteResponse400Headers the declared response headers of an HTTP 400 response for PostOauthMcpComplete
+type PostOauthMcpCompleteResponse400Headers struct {
+	XRequestID *string
+}
+
+// PostOauthMcpCompleteResponseDefaultHeaders the declared response headers of an HTTP default response for PostOauthMcpComplete
+type PostOauthMcpCompleteResponseDefaultHeaders struct {
+	RetryAfter *string
+	XRequestID *string
+}
+
+type PostOauthMcpCompleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MCPConnection
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *ErrorResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *PostOauthMcpCompleteResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PostOauthMcpCompleteResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PostOauthMcpCompleteResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostOauthMcpCompleteResponse) GetJSON200() *MCPConnection {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PostOauthMcpCompleteResponse) GetJSON400() *ErrorResponse {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PostOauthMcpCompleteResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PostOauthMcpCompleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostOauthMcpCompleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostOauthMcpCompleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostOauthMcpCompleteResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -54431,6 +54662,19 @@ func (c *ClientWithResponses) PatchConnectorProvidersConnectorProviderIdWithResp
 	return ParsePatchConnectorProvidersConnectorProviderIdResponse(rsp)
 }
 
+// GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyWithResponse Get Connector
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-providers/{connector_provider_id}/connectors/{connector_key} (the `GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey` operationId).
+func (c *ClientWithResponses) GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyWithResponse(ctx context.Context, connectorProviderId string, connectorKey string, reqEditors ...RequestEditorFn) (*GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse, error) {
+	rsp, err := c.GetConnectorProvidersConnectorProviderIdConnectorsConnectorKey(ctx, connectorProviderId, connectorKey, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse(rsp)
+}
+
 // GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsWithResponse Preview Connector Tools
 //
 // Returns a wrapper object for the known response body format(s).
@@ -54475,8 +54719,8 @@ func (c *ClientWithResponses) PostConnectorProvidersConnectorProviderIdCredentia
 // Returns a wrapper object for the known response body format(s).
 //
 // Corresponds with POST /api/v1/connector-providers/{connector_provider_id}/discover-connectors (the `PostConnectorProvidersConnectorProviderIdDiscoverConnectors` operationId).
-func (c *ClientWithResponses) PostConnectorProvidersConnectorProviderIdDiscoverConnectorsWithResponse(ctx context.Context, connectorProviderId string, reqEditors ...RequestEditorFn) (*PostConnectorProvidersConnectorProviderIdDiscoverConnectorsResponse, error) {
-	rsp, err := c.PostConnectorProvidersConnectorProviderIdDiscoverConnectors(ctx, connectorProviderId, reqEditors...)
+func (c *ClientWithResponses) PostConnectorProvidersConnectorProviderIdDiscoverConnectorsWithResponse(ctx context.Context, connectorProviderId string, params *PostConnectorProvidersConnectorProviderIdDiscoverConnectorsParams, reqEditors ...RequestEditorFn) (*PostConnectorProvidersConnectorProviderIdDiscoverConnectorsResponse, error) {
+	rsp, err := c.PostConnectorProvidersConnectorProviderIdDiscoverConnectors(ctx, connectorProviderId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -55159,19 +55403,6 @@ func (c *ClientWithResponses) GetModelProviderTypesWithResponse(ctx context.Cont
 	return ParseGetModelProviderTypesResponse(rsp)
 }
 
-// GetOauthMcpCallbackWithResponse Mcp Oauth Callback
-//
-// Returns a wrapper object for the known response body format(s).
-//
-// Corresponds with GET /api/v1/oauth/mcp/callback (the `GetOauthMcpCallback` operationId).
-func (c *ClientWithResponses) GetOauthMcpCallbackWithResponse(ctx context.Context, params *GetOauthMcpCallbackParams, reqEditors ...RequestEditorFn) (*GetOauthMcpCallbackResponse, error) {
-	rsp, err := c.GetOauthMcpCallback(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetOauthMcpCallbackResponse(rsp)
-}
-
 // GetOauthMcpClientMetadataJsonWithResponse Mcp Client Metadata
 //
 // Returns a wrapper object for the known response body format(s).
@@ -55183,6 +55414,32 @@ func (c *ClientWithResponses) GetOauthMcpClientMetadataJsonWithResponse(ctx cont
 		return nil, err
 	}
 	return ParseGetOauthMcpClientMetadataJsonResponse(rsp)
+}
+
+// PostOauthMcpCompleteWithBodyWithResponse Complete Mcp Oauth
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+func (c *ClientWithResponses) PostOauthMcpCompleteWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostOauthMcpCompleteResponse, error) {
+	rsp, err := c.PostOauthMcpCompleteWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostOauthMcpCompleteResponse(rsp)
+}
+
+// PostOauthMcpCompleteWithResponse Complete Mcp Oauth
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/oauth/mcp/complete (the `PostOauthMcpComplete` operationId).
+func (c *ClientWithResponses) PostOauthMcpCompleteWithResponse(ctx context.Context, body PostOauthMcpCompleteJSONRequestBody, reqEditors ...RequestEditorFn) (*PostOauthMcpCompleteResponse, error) {
+	rsp, err := c.PostOauthMcpComplete(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostOauthMcpCompleteResponse(rsp)
 }
 
 // GetOrganizationsWithResponse Organizations
@@ -60853,6 +61110,86 @@ func ParsePatchConnectorProvidersConnectorProviderIdResponse(rsp *http.Response)
 	return response, nil
 }
 
+// ParseGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse parses an HTTP response from a GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyWithResponse call
+func ParseGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse(rsp *http.Response) (*GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Connector
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyResponseDefaultHeaders
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsResponse parses an HTTP response from a GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsWithResponse call
 func ParseGetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsResponse(rsp *http.Response) (*GetConnectorProvidersConnectorProviderIdConnectorsConnectorKeyToolsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -63771,86 +64108,6 @@ func ParseGetModelProviderTypesResponse(rsp *http.Response) (*GetModelProviderTy
 	return response, nil
 }
 
-// ParseGetOauthMcpCallbackResponse parses an HTTP response from a GetOauthMcpCallbackWithResponse call
-func ParseGetOauthMcpCallbackResponse(rsp *http.Response) (*GetOauthMcpCallbackResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetOauthMcpCallbackResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest MCPConnection
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 200:
-		var headers GetOauthMcpCallbackResponse200Headers
-		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestID = &value
-		}
-		response.Headers200 = &headers
-	case rsp.StatusCode == 400:
-		var headers GetOauthMcpCallbackResponse400Headers
-		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestID = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers GetOauthMcpCallbackResponseDefaultHeaders
-		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.RetryAfter = &value
-		}
-		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestID = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
 // ParseGetOauthMcpClientMetadataJsonResponse parses an HTTP response from a GetOauthMcpClientMetadataJsonWithResponse call
 func ParseGetOauthMcpClientMetadataJsonResponse(rsp *http.Response) (*GetOauthMcpClientMetadataJsonResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -63894,6 +64151,86 @@ func ParseGetOauthMcpClientMetadataJsonResponse(rsp *http.Response) (*GetOauthMc
 		response.Headers200 = &headers
 	case true:
 		var headers GetOauthMcpClientMetadataJsonResponseDefaultHeaders
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePostOauthMcpCompleteResponse parses an HTTP response from a PostOauthMcpCompleteWithResponse call
+func ParsePostOauthMcpCompleteResponse(rsp *http.Response) (*PostOauthMcpCompleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostOauthMcpCompleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MCPConnection
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers PostOauthMcpCompleteResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers PostOauthMcpCompleteResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PostOauthMcpCompleteResponseDefaultHeaders
 		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
