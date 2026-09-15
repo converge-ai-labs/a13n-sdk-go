@@ -15,6 +15,26 @@ func (Secret) String() string               { return "[REDACTED]" }
 func (Secret) GoString() string             { return "a13n.Secret([REDACTED])" }
 func (Secret) MarshalJSON() ([]byte, error) { return json.Marshal("[REDACTED]") }
 
+// WebProviderCredential retains one arbitrary JSON credential object as write-only input.
+type WebProviderCredential struct{ value json.RawMessage }
+
+func NewWebProviderCredential(value map[string]any) (WebProviderCredential, error) {
+	if value == nil {
+		return WebProviderCredential{}, errors.New("Web Provider credential must be a JSON object")
+	}
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		return WebProviderCredential{}, errors.New("Web Provider credential must contain JSON values")
+	}
+	return WebProviderCredential{value: encoded}, nil
+}
+func (WebProviderCredential) String() string               { return "[REDACTED]" }
+func (WebProviderCredential) GoString() string             { return "a13n.WebProviderCredential([REDACTED])" }
+func (WebProviderCredential) MarshalJSON() ([]byte, error) { return json.Marshal("[REDACTED]") }
+func (value WebProviderCredential) reveal() json.RawMessage {
+	return append(json.RawMessage(nil), value.value...)
+}
+
 // Optional preserves omission, explicit null, and replacement. Its zero value means omission.
 type Optional[T any] struct {
 	Value *T
@@ -30,32 +50,72 @@ func (value *Optional[T]) UnmarshalJSON(raw []byte) error {
 	return json.Unmarshal(raw, &value.Value)
 }
 
-type SearchSelection struct {
-	ProviderID     string   `json:"provider_id"`
-	MaxResults     int      `json:"max_results,omitempty"`
-	IncludeDomains []string `json:"include_domains,omitempty"`
+type SearchToolConfiguration struct {
+	ProviderID   *string  `json:"provider_id,omitempty"`
+	MaxResults   int      `json:"max_results,omitempty"`
+	AllowDomains []string `json:"allow_domains,omitempty"`
+	DenyDomains  []string `json:"deny_domains,omitempty"`
 }
 
-// AgentConfig types search and retains other Service-owned fields without interpreting them.
-// Only the search surface currently has SDK-provided types and validation.
+type ScrapeToolConfiguration struct {
+	ProviderID      *string  `json:"provider_id,omitempty"`
+	MaxContentBytes int      `json:"max_content_bytes,omitempty"`
+	AllowDomains    []string `json:"allow_domains,omitempty"`
+	DenyDomains     []string `json:"deny_domains,omitempty"`
+}
+
+type FetchToolConfiguration struct {
+	MaxContentBytes int      `json:"max_content_bytes,omitempty"`
+	AllowDomains    []string `json:"allow_domains,omitempty"`
+	DenyDomains     []string `json:"deny_domains,omitempty"`
+}
+
+type DownloadToolConfiguration struct {
+	AllowDomains []string `json:"allow_domains,omitempty"`
+	DenyDomains  []string `json:"deny_domains,omitempty"`
+}
+
+type ToolPermission string
+
+const (
+	ToolPermissionInherit ToolPermission = "inherit"
+	ToolPermissionAllow   ToolPermission = "allow"
+	ToolPermissionAsk     ToolPermission = "ask"
+	ToolPermissionDeny    ToolPermission = "deny"
+	ToolPermissionReview  ToolPermission = "review"
+)
+
+type ToolSelection struct {
+	Enabled    *bool                      `json:"enabled,omitempty"`
+	Permission *ToolPermission            `json:"permission,omitempty"`
+	Config     map[string]json.RawMessage `json:"config,omitempty"`
+}
+
+type ToolsetSelection struct {
+	Enabled *bool                      `json:"enabled,omitempty"`
+	Config  map[string]json.RawMessage `json:"config,omitempty"`
+	Tools   map[string]ToolSelection   `json:"tools,omitempty"`
+}
+
+// AgentConfig types built-in Toolsets and retains other Service-owned fields without interpreting them.
 type AgentConfig struct {
-	Search Optional[SearchSelection]
-	Fields map[string]json.RawMessage
+	Toolsets Optional[map[string]ToolsetSelection]
+	Fields   map[string]json.RawMessage
 }
 
 func (value AgentConfig) MarshalJSON() ([]byte, error) {
 	fields := make(map[string]json.RawMessage, len(value.Fields)+1)
 	for key, raw := range value.Fields {
-		if key != "search" {
+		if key != "toolsets" {
 			fields[key] = raw
 		}
 	}
-	if value.Search.Set {
-		raw, err := json.Marshal(value.Search.Value)
+	if value.Toolsets.Set {
+		raw, err := json.Marshal(value.Toolsets.Value)
 		if err != nil {
 			return nil, err
 		}
-		fields["search"] = raw
+		fields["toolsets"] = raw
 	}
 	return json.Marshal(fields)
 }
@@ -64,12 +124,12 @@ func (value *AgentConfig) UnmarshalJSON(raw []byte) error {
 	if err := json.Unmarshal(raw, &fields); err != nil {
 		return err
 	}
-	value.Search = Optional[SearchSelection]{}
-	if search, ok := fields["search"]; ok {
-		if err := json.Unmarshal(search, &value.Search); err != nil {
+	value.Toolsets = Optional[map[string]ToolsetSelection]{}
+	if toolsets, ok := fields["toolsets"]; ok {
+		if err := json.Unmarshal(toolsets, &value.Toolsets); err != nil {
 			return err
 		}
-		delete(fields, "search")
+		delete(fields, "toolsets")
 	}
 	value.Fields = fields
 	return nil
@@ -81,7 +141,7 @@ type PrincipalRef struct {
 	PrincipalType string `json:"principal_type"`
 	PrincipalID   string `json:"principal_id"`
 }
-type SearchProvider struct {
+type WebProvider struct {
 	ID                   string                     `json:"id"`
 	OrganizationID       string                     `json:"organization_id"`
 	WorkspaceID          *string                    `json:"workspace_id"`
@@ -95,21 +155,23 @@ type SearchProvider struct {
 	CreatedBy            PrincipalRef               `json:"created_by"`
 	UpdatedBy            PrincipalRef               `json:"updated_by"`
 }
-type SearchProviderDefinition struct {
-	Type                string                     `json:"type"`
-	DisplayName         string                     `json:"display_name"`
-	ConfigurationSchema map[string]json.RawMessage `json:"configuration_schema"`
-	CredentialSchema    map[string]json.RawMessage `json:"credential_schema"`
-	CredentialRequired  bool                       `json:"credential_required"`
-	SetupURL            string                     `json:"setup_url"`
+type WebProviderDefinition struct {
+	Type                     string                     `json:"type"`
+	DisplayName              string                     `json:"display_name"`
+	ConfigurationSchema      map[string]json.RawMessage `json:"configuration_schema"`
+	CredentialSchema         map[string]json.RawMessage `json:"credential_schema"`
+	CredentialRequired       bool                       `json:"credential_required"`
+	SetupURL                 string                     `json:"setup_url"`
+	Operations               []string                   `json:"operations"`
+	SupportsRestrictedScrape bool                       `json:"supports_restricted_scrape"`
 }
-type SearchProviderReference struct {
+type WebProviderReference struct {
 	AgentID         string `json:"agent_id"`
 	AgentRevisionID string `json:"agent_revision_id"`
 	Version         int    `json:"version"`
 	IsCurrent       bool   `json:"is_current"`
 }
-type SearchProviderTestResult struct {
+type WebProviderTestResult struct {
 	Success   bool    `json:"success"`
 	Code      *string `json:"code"`
 	CheckedAt string  `json:"checked_at"`
@@ -123,33 +185,33 @@ type Representation[T any] struct {
 	ETag      string
 	RequestID string
 }
-type CreateSearchProviderRequest struct {
+type CreateWebProviderRequest struct {
 	Type          string                     `json:"type"`
 	Name          string                     `json:"name"`
-	Credential    Secret                     `json:"-"`
+	Credential    WebProviderCredential      `json:"-"`
 	Configuration map[string]json.RawMessage `json:"configuration,omitempty"`
 	Enabled       *bool                      `json:"enabled,omitempty"`
 }
-type UpdateSearchProviderRequest struct {
+type UpdateWebProviderRequest struct {
 	Name          *string                    `json:"name,omitempty"`
-	Credential    *Secret                    `json:"-"`
+	Credential    *WebProviderCredential     `json:"-"`
 	Configuration map[string]json.RawMessage `json:"configuration,omitempty"`
 	Enabled       *bool                      `json:"enabled,omitempty"`
 }
-type SearchScope struct {
+type WebProviderScope struct {
 	Kind string
 	ID   string
 }
 
-func (scope SearchScope) path() (string, error) {
+func (scope WebProviderScope) path() (string, error) {
 	if scope.Kind != "workspace" && scope.Kind != "organization" {
-		return "", errors.New("invalid search scope")
+		return "", errors.New("invalid Web Provider scope")
 	}
 	id, err := segment(scope.ID)
 	if err != nil {
 		return "", err
 	}
-	return "/" + scope.Kind + "s/" + id + "/search-providers", nil
+	return "/" + scope.Kind + "s/" + id + "/web-providers", nil
 }
 func segment(value string) (string, error) {
 	if value == "" || value == "." || value == ".." {
@@ -157,7 +219,7 @@ func segment(value string) (string, error) {
 	}
 	return url.PathEscape(value), nil
 }
-func searchPath(scope SearchScope, providerID string, suffix string) (string, error) {
+func webProviderPath(scope WebProviderScope, providerID string, suffix string) (string, error) {
 	base, err := scope.path()
 	if err != nil {
 		return "", err
@@ -169,15 +231,15 @@ func searchPath(scope SearchScope, providerID string, suffix string) (string, er
 	return base + "/" + id + suffix, nil
 }
 
-// SearchListOptions are exact filters and the server-owned cursor.
-type SearchListOptions struct {
+// WebProviderListOptions are exact filters and the server-owned cursor.
+type WebProviderListOptions struct {
 	Cursor  string
 	Limit   int
 	Type    string
 	Enabled *bool
 }
 
-func (options SearchListOptions) query() url.Values {
+func (options WebProviderListOptions) query() url.Values {
 	query := url.Values{}
 	if options.Cursor != "" {
 		query.Set("cursor", options.Cursor)
