@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/converge-ai-labs/agent-foundation/sdk/go/generated"
+	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
 // API exposes the generated Native operations on this client's HTTP pool and

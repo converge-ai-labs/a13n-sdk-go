@@ -14,13 +14,13 @@ import (
 	"strings"
 	"testing"
 
-	a13n "github.com/converge-ai-labs/agent-foundation/sdk/go"
-	"github.com/converge-ai-labs/agent-foundation/sdk/go/generated"
+	a13n "github.com/converge-ai-labs/a13n-sdk-go"
+	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
 func wireFixtures(t *testing.T) map[string]json.RawMessage {
 	t.Helper()
-	data, err := os.ReadFile("../fixtures/wire.json")
+	data, err := os.ReadFile("contract/fixtures/wire.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -147,7 +147,7 @@ func TestGeneratedHTTPAndStreamShareTransport(t *testing.T) {
 func TestGeneratedRejectsWrongFieldTypes(t *testing.T) {
 	source := filepath.Join(t.TempDir(), "invalid.go")
 	code := `package invalid
-import "github.com/converge-ai-labs/agent-foundation/sdk/go/generated"
+import "github.com/converge-ai-labs/a13n-sdk-go/generated"
 var _ = generated.UpdateAgentRequest{Name: 42}
 var _ = generated.UserMessage{Content: 42}
 `
