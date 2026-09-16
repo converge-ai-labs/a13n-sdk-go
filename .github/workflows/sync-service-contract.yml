@@ -69,6 +69,15 @@ jobs:
           SOURCE_SHA: ${{ steps.source.outputs.sha }}
         run: bash scripts/sync-contract.sh ../service-source "$SOURCE_SHA"
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - uses: astral-sh/setup-uv@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: sdk/go.mod
+          cache-dependency-path: sdk/go.sum
+
       - name: SDK-scoped PR installation token
         uses: actions/create-github-app-token@v3
         id: pr-token
