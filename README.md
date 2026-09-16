@@ -11,14 +11,14 @@ The generated low-level API covers every ordinary Native `/api/v1` HTTP operatio
 ## Installation
 
 ```bash
-go get github.com/converge-ai-labs/agent-foundation/sdk/go@latest
+go get github.com/converge-ai-labs/a13n-sdk-go@latest
 ```
 
 ```go
-import "github.com/converge-ai-labs/agent-foundation/sdk/go"
+import "github.com/converge-ai-labs/a13n-sdk-go"
 ```
 
-Go module releases use canonical module tags in the form `sdk/go/v<version>`, created by the `release/a13n/go/<version>` release workflow. `<version>` is stable `X.Y.Z` or RC `X.Y.Z-rc.N`.
+Go module releases use canonical module tags in the form `v<version>`, created by the `release/a13n/go/<version>` release workflow. `<version>` is stable `X.Y.Z` or RC `X.Y.Z-rc.N`.
 
 ## Web Provider accounts
 
@@ -32,17 +32,24 @@ Create a `WebProviderCredential` with `NewWebProviderCredential(map[string]any{"
 
 Call `api, err := client.API()` once, check the error, then use `api.GetAuthContextWithResponse(ctx)` or any other generated operation. The generated view shares the parent HTTP pool, authentication, context cancellation, and `Close`; it does not create a second transport.
 
-Import full request/resource types from `github.com/converge-ai-labs/agent-foundation/sdk/go/generated`. Nullable fields use `nullable.Nullable[T]`, preserving omitted/null/value. Union helpers expose typed `As...` and `From...` branches. `WithResponse` methods expose typed status-specific bodies and HTTP headers; callers handle those results rather than the Web facade's `ApiError` mapping. These low-level methods do not impose the Web facade's 1 MiB response bound.
+Import full request/resource types from `github.com/converge-ai-labs/a13n-sdk-go/generated`. Nullable fields use `nullable.Nullable[T]`, preserving omitted/null/value. Union helpers expose typed `As...` and `From...` branches. `WithResponse` methods expose typed status-specific bodies and HTTP headers; callers handle those results rather than the Web facade's `ApiError` mapping. These low-level methods do not impose the Web facade's 1 MiB response bound.
 
 For binary transfer, use generated raw methods (without `WithResponse`) with `io.Reader` request bodies and the returned `*http.Response`; always close the response body. `WithResponse` helpers buffer the response. Go 1.25 or newer is required.
 
 ## Development
 
-Run the Go SDK checks from the repository root:
+This repository is independently buildable with Go 1.25+. Generator development also needs Python 3.13, uv and Make, not Service or another SDK checkout.
 
 ```bash
-make sdk-go-check
+make install
+make generate         # local pinned input only
+make generated-check  # non-mutating drift check
+make check-all        # generation, tooling, vet, race tests and build
 ```
+
+The module now lives at this repository's root; consumers must update old `agent-foundation/sdk/go` imports. `contract/source.json` records the upstream full commit SHA, original paths and input hashes. See [contract provenance](contract/README.md), [SDK contract](spec/README.md) and [Contributing](CONTRIBUTING.md).
+
+`codegen/generate.py` invokes oapi-codegen 2.8.0 with the local configuration. Nullable presence and typed unions remain generated; a narrow diagnostic adapter redacts write-only request fields without changing wire serialization. Commit updated inputs and generated output together.
 
 ## License
 

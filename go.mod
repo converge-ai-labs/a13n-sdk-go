@@ -1,4 +1,4 @@
-module github.com/converge-ai-labs/agent-foundation/sdk/go
+module github.com/converge-ai-labs/a13n-sdk-go
 
 go 1.25.0
 

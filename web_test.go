@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	a13n "github.com/converge-ai-labs/agent-foundation/sdk/go"
+	a13n "github.com/converge-ai-labs/a13n-sdk-go"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
