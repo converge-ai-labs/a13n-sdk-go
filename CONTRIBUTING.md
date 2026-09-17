@@ -8,6 +8,19 @@ Use Conventional Commit PR titles. Draft PRs run the full CI gate; mark ready af
 
 Use Go 1.25+, Python 3.13, uv and Make. Python is generator/test tooling, not a runtime dependency of the Go module. `make install` installs locked tooling and Go dependencies. `make format` formats handwritten tooling and Go sources; `make check` verifies formatting, types and vet; `make check-all` also checks generated drift, runs race-enabled tests and builds the module. No Service checkout, database or sibling SDK is required.
 
+### Quality gates
+
+Run `make hooks-install` once after `make install` to install pre-commit in this checkout. Commit hooks run file hygiene, Markdown/Ruff formatting, and gofmt on changed Go files. Vet, race tests, generation, and builds remain explicit Make/CI checks.
+
+- `make format` applies Go, Python, and owned Markdown formatting.
+- `make lint` checks formatting, `go vet`, module integrity, and Python style without rewriting files.
+- `make typecheck` runs Pyright `standard` on Python tooling; Go compilation/type checking is already covered by vet, tests, and build.
+- `make check` combines the fast static gates.
+- `make hooks-check` runs all hooks. Formatter changes fail the run for review and restaging; do not bypass hooks.
+- `make check-all` runs hooks plus provenance/generated drift, static checks, race-enabled tests, and builds. CI uses the same entry point without installing hooks.
+
+Vendored contract evidence is excluded from hooks and Markdown formatting, except the locally owned `contract/README.md`. The generated client has a narrow large-file exception; gofmt, vet, compilation, and tests still cover generated Go. Change the generator if output drifts. Existing vet/Ruff/Pyright checks provide a moderate baseline without introducing another aggregate linter.
+
 Keep the design direct, preserve typed unions and omitted/null/value distinctions, and never patch generated files manually. Change the local generator/configuration instead. Tests cover transport ownership, cancellation, redacted diagnostics, typed requests and pinned wire evidence. Reuse still-valid checks and report exact results, including limitations.
 
 ## Releases
