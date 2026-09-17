@@ -1631,6 +1631,24 @@ func (e ImageInputContentType) Valid() bool {
 	}
 }
 
+// Defines values for ImageTestResponseImageSource.
+const (
+	Local  ImageTestResponseImageSource = "local"
+	Pulled ImageTestResponseImageSource = "pulled"
+)
+
+// Valid indicates whether the value is a known member of the ImageTestResponseImageSource enum.
+func (e ImageTestResponseImageSource) Valid() bool {
+	switch e {
+	case Local:
+		return true
+	case Pulled:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for InputContentDataSourceType.
 const (
 	Data InputContentDataSourceType = "data"
@@ -2354,6 +2372,27 @@ const (
 func (e ProtocolConfigSchemaVersion) Valid() bool {
 	switch e {
 	case ProtocolConfigSchemaVersionN1:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProviderConnectivityStatus.
+const (
+	ProviderConnectivityStatusConnected   ProviderConnectivityStatus = "connected"
+	ProviderConnectivityStatusUnavailable ProviderConnectivityStatus = "unavailable"
+	ProviderConnectivityStatusUnknown     ProviderConnectivityStatus = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the ProviderConnectivityStatus enum.
+func (e ProviderConnectivityStatus) Valid() bool {
+	switch e {
+	case ProviderConnectivityStatusConnected:
+		return true
+	case ProviderConnectivityStatusUnavailable:
+		return true
+	case ProviderConnectivityStatusUnknown:
 		return true
 	default:
 		return false
@@ -4461,6 +4500,11 @@ type BotThreadCollection struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// CancelDockerImageRequest defines model for CancelDockerImageRequest.
+type CancelDockerImageRequest struct {
+	WorkspaceId nullable.Nullable[string] `json:"workspace_id"`
+}
+
 // CatalogModel defines model for CatalogModel.
 type CatalogModel struct {
 	// Declarations Harness-facing facts and authoring choices declared for one saved Model.
@@ -5752,6 +5796,18 @@ type ImageInputContent_Source struct {
 // ImageInputContentType defines model for ImageInputContent.Type.
 type ImageInputContentType string
 
+// ImageTestResponse defines model for ImageTestResponse.
+type ImageTestResponse struct {
+	Checks            *[]string                                       `json:"checks,omitempty"`
+	ConfigurationHash nullable.Nullable[string]                       `json:"configuration_hash,omitempty"`
+	Error             nullable.Nullable[string]                       `json:"error,omitempty"`
+	ImageId           nullable.Nullable[string]                       `json:"image_id,omitempty"`
+	ImageSource       nullable.Nullable[ImageTestResponseImageSource] `json:"image_source,omitempty"`
+}
+
+// ImageTestResponseImageSource defines model for ImageTestResponse.ImageSource.
+type ImageTestResponseImageSource string
+
 // InlineHookSubscriptionInput defines model for InlineHookSubscriptionInput.
 type InlineHookSubscriptionInput struct {
 	HookNames []string                 `json:"hook_names"`
@@ -6608,6 +6664,15 @@ type ProtocolLimits struct {
 	MaxOutputBytes *int `json:"max_output_bytes,omitempty"`
 }
 
+// ProviderConnectivity defines model for ProviderConnectivity.
+type ProviderConnectivity struct {
+	Error  nullable.Nullable[string]  `json:"error,omitempty"`
+	Status ProviderConnectivityStatus `json:"status"`
+}
+
+// ProviderConnectivityStatus defines model for ProviderConnectivity.Status.
+type ProviderConnectivityStatus string
+
 // QueuedSubmission defines model for QueuedSubmission.
 type QueuedSubmission struct {
 	AuthorityPrincipal     PrincipalRef                               `json:"authority_principal"`
@@ -7462,6 +7527,13 @@ type TargetConfig struct {
 
 // TargetConfigTargetKind defines model for TargetConfig.TargetKind.
 type TargetConfigTargetKind string
+
+// TestDockerImageRequest defines model for TestDockerImageRequest.
+type TestDockerImageRequest struct {
+	Configuration map[string]JsonValue      `json:"configuration"`
+	RequestId     string                    `json:"request_id"`
+	WorkspaceId   nullable.Nullable[string] `json:"workspace_id"`
+}
 
 // TextContent defines model for TextContent.
 type TextContent struct {
@@ -9515,6 +9587,12 @@ type PatchEnvironmentProvidersProviderIdJSONRequestBody = UpdateProviderRequest
 
 // PutEnvironmentProvidersProviderIdCredentialJSONRequestBody defines body for PutEnvironmentProvidersProviderIdCredential for application/json ContentType.
 type PutEnvironmentProvidersProviderIdCredentialJSONRequestBody = ReplaceCredentialRequest
+
+// PostEnvironmentProvidersProviderIdTestImageJSONRequestBody defines body for PostEnvironmentProvidersProviderIdTestImage for application/json ContentType.
+type PostEnvironmentProvidersProviderIdTestImageJSONRequestBody = TestDockerImageRequest
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelJSONRequestBody defines body for PostEnvironmentProvidersProviderIdTestImageRequestIdCancel for application/json ContentType.
+type PostEnvironmentProvidersProviderIdTestImageRequestIdCancelJSONRequestBody = CancelDockerImageRequest
 
 // PatchEnvironmentTemplatesTemplateIdJSONRequestBody defines body for PatchEnvironmentTemplatesTemplateId for application/json ContentType.
 type PatchEnvironmentTemplatesTemplateIdJSONRequestBody = UpdateTemplateRequest
@@ -15956,6 +16034,11 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `PatchEnvironmentProvidersProviderId` operationId).
 	PatchEnvironmentProvidersProviderId(ctx context.Context, providerId string, params *PatchEnvironmentProvidersProviderIdParams, body PatchEnvironmentProvidersProviderIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetEnvironmentProvidersProviderIdConnectivity Provider Connectivity
+	//
+	// Corresponds with GET /api/v1/environment-providers/{provider_id}/connectivity (the `GetEnvironmentProvidersProviderIdConnectivity` operationId).
+	GetEnvironmentProvidersProviderIdConnectivity(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PutEnvironmentProvidersProviderIdCredentialWithBody Replace Credential
 	//
 	// Takes any type of body and a specified content type.
@@ -15969,6 +16052,34 @@ type ClientInterface interface {
 	//
 	// Corresponds with PUT /api/v1/environment-providers/{provider_id}/credential (the `PutEnvironmentProvidersProviderIdCredential` operationId).
 	PutEnvironmentProvidersProviderIdCredential(ctx context.Context, providerId string, params *PutEnvironmentProvidersProviderIdCredentialParams, body PutEnvironmentProvidersProviderIdCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostEnvironmentProvidersProviderIdTestImageWithBody Test Image
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+	PostEnvironmentProvidersProviderIdTestImageWithBody(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostEnvironmentProvidersProviderIdTestImage Test Image
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+	PostEnvironmentProvidersProviderIdTestImage(ctx context.Context, providerId string, body PostEnvironmentProvidersProviderIdTestImageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBody Cancel Image Test
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+	PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBody(ctx context.Context, providerId string, requestId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostEnvironmentProvidersProviderIdTestImageRequestIdCancel Cancel Image Test
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+	PostEnvironmentProvidersProviderIdTestImageRequestIdCancel(ctx context.Context, providerId string, requestId string, body PostEnvironmentProvidersProviderIdTestImageRequestIdCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetEnvironmentProvidersResourceId Get Provider
 	//
@@ -20027,6 +20138,21 @@ func (c *Client) PatchEnvironmentProvidersProviderId(ctx context.Context, provid
 	return c.Client.Do(req)
 }
 
+// GetEnvironmentProvidersProviderIdConnectivity Provider Connectivity
+//
+// Corresponds with GET /api/v1/environment-providers/{provider_id}/connectivity (the `GetEnvironmentProvidersProviderIdConnectivity` operationId).
+func (c *Client) GetEnvironmentProvidersProviderIdConnectivity(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentProvidersProviderIdConnectivityRequest(c.Server, providerId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // PutEnvironmentProvidersProviderIdCredentialWithBody Replace Credential
 //
 // Takes any type of body and a specified content type.
@@ -20051,6 +20177,74 @@ func (c *Client) PutEnvironmentProvidersProviderIdCredentialWithBody(ctx context
 // Corresponds with PUT /api/v1/environment-providers/{provider_id}/credential (the `PutEnvironmentProvidersProviderIdCredential` operationId).
 func (c *Client) PutEnvironmentProvidersProviderIdCredential(ctx context.Context, providerId string, params *PutEnvironmentProvidersProviderIdCredentialParams, body PutEnvironmentProvidersProviderIdCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPutEnvironmentProvidersProviderIdCredentialRequest(c.Server, providerId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostEnvironmentProvidersProviderIdTestImageWithBody Test Image
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+func (c *Client) PostEnvironmentProvidersProviderIdTestImageWithBody(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostEnvironmentProvidersProviderIdTestImageRequestWithBody(c.Server, providerId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostEnvironmentProvidersProviderIdTestImage Test Image
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+func (c *Client) PostEnvironmentProvidersProviderIdTestImage(ctx context.Context, providerId string, body PostEnvironmentProvidersProviderIdTestImageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostEnvironmentProvidersProviderIdTestImageRequest(c.Server, providerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBody Cancel Image Test
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+func (c *Client) PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBody(ctx context.Context, providerId string, requestId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostEnvironmentProvidersProviderIdTestImageRequestIdCancelRequestWithBody(c.Server, providerId, requestId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancel Cancel Image Test
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+func (c *Client) PostEnvironmentProvidersProviderIdTestImageRequestIdCancel(ctx context.Context, providerId string, requestId string, body PostEnvironmentProvidersProviderIdTestImageRequestIdCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostEnvironmentProvidersProviderIdTestImageRequestIdCancelRequest(c.Server, providerId, requestId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -29796,6 +29990,40 @@ func NewPatchEnvironmentProvidersProviderIdRequestWithBody(server string, provid
 	return req, nil
 }
 
+// NewGetEnvironmentProvidersProviderIdConnectivityRequest constructs an http.Request for the GetEnvironmentProvidersProviderIdConnectivity method
+func NewGetEnvironmentProvidersProviderIdConnectivityRequest(server string, providerId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-providers/%s/connectivity", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewPutEnvironmentProvidersProviderIdCredentialRequest calls the generic PutEnvironmentProvidersProviderIdCredential builder with application/json body
 func NewPutEnvironmentProvidersProviderIdCredentialRequest(server string, providerId string, params *PutEnvironmentProvidersProviderIdCredentialParams, body PutEnvironmentProvidersProviderIdCredentialJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -29852,6 +30080,107 @@ func NewPutEnvironmentProvidersProviderIdCredentialRequestWithBody(server string
 		req.Header.Set("If-Match", headerParam0)
 
 	}
+
+	return req, nil
+}
+
+// NewPostEnvironmentProvidersProviderIdTestImageRequest calls the generic PostEnvironmentProvidersProviderIdTestImage builder with application/json body
+func NewPostEnvironmentProvidersProviderIdTestImageRequest(server string, providerId string, body PostEnvironmentProvidersProviderIdTestImageJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostEnvironmentProvidersProviderIdTestImageRequestWithBody(server, providerId, "application/json", bodyReader)
+}
+
+// NewPostEnvironmentProvidersProviderIdTestImageRequestWithBody constructs an http.Request for the PostEnvironmentProvidersProviderIdTestImage method, with any body, and a specified content type
+func NewPostEnvironmentProvidersProviderIdTestImageRequestWithBody(server string, providerId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-providers/%s/test-image", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostEnvironmentProvidersProviderIdTestImageRequestIdCancelRequest calls the generic PostEnvironmentProvidersProviderIdTestImageRequestIdCancel builder with application/json body
+func NewPostEnvironmentProvidersProviderIdTestImageRequestIdCancelRequest(server string, providerId string, requestId string, body PostEnvironmentProvidersProviderIdTestImageRequestIdCancelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostEnvironmentProvidersProviderIdTestImageRequestIdCancelRequestWithBody(server, providerId, requestId, "application/json", bodyReader)
+}
+
+// NewPostEnvironmentProvidersProviderIdTestImageRequestIdCancelRequestWithBody constructs an http.Request for the PostEnvironmentProvidersProviderIdTestImageRequestIdCancel method, with any body, and a specified content type
+func NewPostEnvironmentProvidersProviderIdTestImageRequestIdCancelRequestWithBody(server string, providerId string, requestId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "request_id", requestId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-providers/%s/test-image/%s/cancel", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -44539,6 +44868,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `PatchEnvironmentProvidersProviderId` operationId).
 	PatchEnvironmentProvidersProviderIdWithResponse(ctx context.Context, providerId string, params *PatchEnvironmentProvidersProviderIdParams, body PatchEnvironmentProvidersProviderIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchEnvironmentProvidersProviderIdResponse, error)
 
+	// GetEnvironmentProvidersProviderIdConnectivityWithResponse Provider Connectivity
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environment-providers/{provider_id}/connectivity (the `GetEnvironmentProvidersProviderIdConnectivity` operationId).
+	GetEnvironmentProvidersProviderIdConnectivityWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*GetEnvironmentProvidersProviderIdConnectivityResponse, error)
+
 	// PutEnvironmentProvidersProviderIdCredentialWithBodyWithResponse Replace Credential
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -44552,6 +44888,34 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PUT /api/v1/environment-providers/{provider_id}/credential (the `PutEnvironmentProvidersProviderIdCredential` operationId).
 	PutEnvironmentProvidersProviderIdCredentialWithResponse(ctx context.Context, providerId string, params *PutEnvironmentProvidersProviderIdCredentialParams, body PutEnvironmentProvidersProviderIdCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*PutEnvironmentProvidersProviderIdCredentialResponse, error)
+
+	// PostEnvironmentProvidersProviderIdTestImageWithBodyWithResponse Test Image
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+	PostEnvironmentProvidersProviderIdTestImageWithBodyWithResponse(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageResponse, error)
+
+	// PostEnvironmentProvidersProviderIdTestImageWithResponse Test Image
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+	PostEnvironmentProvidersProviderIdTestImageWithResponse(ctx context.Context, providerId string, body PostEnvironmentProvidersProviderIdTestImageJSONRequestBody, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageResponse, error)
+
+	// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBodyWithResponse Cancel Image Test
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+	PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBodyWithResponse(ctx context.Context, providerId string, requestId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse, error)
+
+	// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithResponse Cancel Image Test
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+	PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithResponse(ctx context.Context, providerId string, requestId string, body PostEnvironmentProvidersProviderIdTestImageRequestIdCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse, error)
 
 	// GetEnvironmentProvidersResourceIdWithResponse Get Provider
 	//
@@ -53599,6 +53963,83 @@ func (r PatchEnvironmentProvidersProviderIdResponse) ContentType() string {
 	return ""
 }
 
+// GetEnvironmentProvidersProviderIdConnectivityResponse200Headers the declared response headers of an HTTP 200 response for GetEnvironmentProvidersProviderIdConnectivity
+type GetEnvironmentProvidersProviderIdConnectivityResponse200Headers struct {
+	XRequestID *string
+}
+
+// GetEnvironmentProvidersProviderIdConnectivityResponse400Headers the declared response headers of an HTTP 400 response for GetEnvironmentProvidersProviderIdConnectivity
+type GetEnvironmentProvidersProviderIdConnectivityResponse400Headers struct {
+	XRequestID *string
+}
+
+// GetEnvironmentProvidersProviderIdConnectivityResponseDefaultHeaders the declared response headers of an HTTP default response for GetEnvironmentProvidersProviderIdConnectivity
+type GetEnvironmentProvidersProviderIdConnectivityResponseDefaultHeaders struct {
+	RetryAfter *string
+	XRequestID *string
+}
+
+type GetEnvironmentProvidersProviderIdConnectivityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProviderConnectivity
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *ErrorResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *GetEnvironmentProvidersProviderIdConnectivityResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetEnvironmentProvidersProviderIdConnectivityResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetEnvironmentProvidersProviderIdConnectivityResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetEnvironmentProvidersProviderIdConnectivityResponse) GetJSON200() *ProviderConnectivity {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetEnvironmentProvidersProviderIdConnectivityResponse) GetJSON400() *ErrorResponse {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetEnvironmentProvidersProviderIdConnectivityResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetEnvironmentProvidersProviderIdConnectivityResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetEnvironmentProvidersProviderIdConnectivityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetEnvironmentProvidersProviderIdConnectivityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetEnvironmentProvidersProviderIdConnectivityResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // PutEnvironmentProvidersProviderIdCredentialResponse200Headers the declared response headers of an HTTP 200 response for PutEnvironmentProvidersProviderIdCredential
 type PutEnvironmentProvidersProviderIdCredentialResponse200Headers struct {
 	XRequestID *string
@@ -53670,6 +54111,153 @@ func (r PutEnvironmentProvidersProviderIdCredentialResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r PutEnvironmentProvidersProviderIdCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PostEnvironmentProvidersProviderIdTestImageResponse200Headers the declared response headers of an HTTP 200 response for PostEnvironmentProvidersProviderIdTestImage
+type PostEnvironmentProvidersProviderIdTestImageResponse200Headers struct {
+	XRequestID *string
+}
+
+// PostEnvironmentProvidersProviderIdTestImageResponse400Headers the declared response headers of an HTTP 400 response for PostEnvironmentProvidersProviderIdTestImage
+type PostEnvironmentProvidersProviderIdTestImageResponse400Headers struct {
+	XRequestID *string
+}
+
+// PostEnvironmentProvidersProviderIdTestImageResponseDefaultHeaders the declared response headers of an HTTP default response for PostEnvironmentProvidersProviderIdTestImage
+type PostEnvironmentProvidersProviderIdTestImageResponseDefaultHeaders struct {
+	RetryAfter *string
+	XRequestID *string
+}
+
+type PostEnvironmentProvidersProviderIdTestImageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ImageTestResponse
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *ErrorResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *PostEnvironmentProvidersProviderIdTestImageResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PostEnvironmentProvidersProviderIdTestImageResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PostEnvironmentProvidersProviderIdTestImageResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostEnvironmentProvidersProviderIdTestImageResponse) GetJSON200() *ImageTestResponse {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PostEnvironmentProvidersProviderIdTestImageResponse) GetJSON400() *ErrorResponse {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PostEnvironmentProvidersProviderIdTestImageResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PostEnvironmentProvidersProviderIdTestImageResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostEnvironmentProvidersProviderIdTestImageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostEnvironmentProvidersProviderIdTestImageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostEnvironmentProvidersProviderIdTestImageResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse204Headers the declared response headers of an HTTP 204 response for PostEnvironmentProvidersProviderIdTestImageRequestIdCancel
+type PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse204Headers struct {
+	XRequestID *string
+}
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse400Headers the declared response headers of an HTTP 400 response for PostEnvironmentProvidersProviderIdTestImageRequestIdCancel
+type PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse400Headers struct {
+	XRequestID *string
+}
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponseDefaultHeaders the declared response headers of an HTTP default response for PostEnvironmentProvidersProviderIdTestImageRequestIdCancel
+type PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponseDefaultHeaders struct {
+	RetryAfter *string
+	XRequestID *string
+}
+
+type PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *ErrorResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse204Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse) GetJSON400() *ErrorResponse {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -73201,6 +73789,19 @@ func (c *ClientWithResponses) PatchEnvironmentProvidersProviderIdWithResponse(ct
 	return ParsePatchEnvironmentProvidersProviderIdResponse(rsp)
 }
 
+// GetEnvironmentProvidersProviderIdConnectivityWithResponse Provider Connectivity
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environment-providers/{provider_id}/connectivity (the `GetEnvironmentProvidersProviderIdConnectivity` operationId).
+func (c *ClientWithResponses) GetEnvironmentProvidersProviderIdConnectivityWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*GetEnvironmentProvidersProviderIdConnectivityResponse, error) {
+	rsp, err := c.GetEnvironmentProvidersProviderIdConnectivity(ctx, providerId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetEnvironmentProvidersProviderIdConnectivityResponse(rsp)
+}
+
 // PutEnvironmentProvidersProviderIdCredentialWithBodyWithResponse Replace Credential
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -73225,6 +73826,58 @@ func (c *ClientWithResponses) PutEnvironmentProvidersProviderIdCredentialWithRes
 		return nil, err
 	}
 	return ParsePutEnvironmentProvidersProviderIdCredentialResponse(rsp)
+}
+
+// PostEnvironmentProvidersProviderIdTestImageWithBodyWithResponse Test Image
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+func (c *ClientWithResponses) PostEnvironmentProvidersProviderIdTestImageWithBodyWithResponse(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageResponse, error) {
+	rsp, err := c.PostEnvironmentProvidersProviderIdTestImageWithBody(ctx, providerId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostEnvironmentProvidersProviderIdTestImageResponse(rsp)
+}
+
+// PostEnvironmentProvidersProviderIdTestImageWithResponse Test Image
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image (the `PostEnvironmentProvidersProviderIdTestImage` operationId).
+func (c *ClientWithResponses) PostEnvironmentProvidersProviderIdTestImageWithResponse(ctx context.Context, providerId string, body PostEnvironmentProvidersProviderIdTestImageJSONRequestBody, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageResponse, error) {
+	rsp, err := c.PostEnvironmentProvidersProviderIdTestImage(ctx, providerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostEnvironmentProvidersProviderIdTestImageResponse(rsp)
+}
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBodyWithResponse Cancel Image Test
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+func (c *ClientWithResponses) PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBodyWithResponse(ctx context.Context, providerId string, requestId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse, error) {
+	rsp, err := c.PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithBody(ctx, providerId, requestId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse(rsp)
+}
+
+// PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithResponse Cancel Image Test
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-providers/{provider_id}/test-image/{request_id}/cancel (the `PostEnvironmentProvidersProviderIdTestImageRequestIdCancel` operationId).
+func (c *ClientWithResponses) PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithResponse(ctx context.Context, providerId string, requestId string, body PostEnvironmentProvidersProviderIdTestImageRequestIdCancelJSONRequestBody, reqEditors ...RequestEditorFn) (*PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse, error) {
+	rsp, err := c.PostEnvironmentProvidersProviderIdTestImageRequestIdCancel(ctx, providerId, requestId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse(rsp)
 }
 
 // GetEnvironmentProvidersResourceIdWithResponse Get Provider
@@ -84474,6 +85127,86 @@ func ParsePatchEnvironmentProvidersProviderIdResponse(rsp *http.Response) (*Patc
 	return response, nil
 }
 
+// ParseGetEnvironmentProvidersProviderIdConnectivityResponse parses an HTTP response from a GetEnvironmentProvidersProviderIdConnectivityWithResponse call
+func ParseGetEnvironmentProvidersProviderIdConnectivityResponse(rsp *http.Response) (*GetEnvironmentProvidersProviderIdConnectivityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetEnvironmentProvidersProviderIdConnectivityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProviderConnectivity
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers GetEnvironmentProvidersProviderIdConnectivityResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers GetEnvironmentProvidersProviderIdConnectivityResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetEnvironmentProvidersProviderIdConnectivityResponseDefaultHeaders
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParsePutEnvironmentProvidersProviderIdCredentialResponse parses an HTTP response from a PutEnvironmentProvidersProviderIdCredentialWithResponse call
 func ParsePutEnvironmentProvidersProviderIdCredentialResponse(rsp *http.Response) (*PutEnvironmentProvidersProviderIdCredentialResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -84534,6 +85267,162 @@ func ParsePutEnvironmentProvidersProviderIdCredentialResponse(rsp *http.Response
 		response.Headers400 = &headers
 	case true:
 		var headers PutEnvironmentProvidersProviderIdCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePostEnvironmentProvidersProviderIdTestImageResponse parses an HTTP response from a PostEnvironmentProvidersProviderIdTestImageWithResponse call
+func ParsePostEnvironmentProvidersProviderIdTestImageResponse(rsp *http.Response) (*PostEnvironmentProvidersProviderIdTestImageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostEnvironmentProvidersProviderIdTestImageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ImageTestResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers PostEnvironmentProvidersProviderIdTestImageResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers PostEnvironmentProvidersProviderIdTestImageResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PostEnvironmentProvidersProviderIdTestImageResponseDefaultHeaders
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse parses an HTTP response from a PostEnvironmentProvidersProviderIdTestImageRequestIdCancelWithResponse call
+func ParsePostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse(rsp *http.Response) (*PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 400:
+		var headers PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PostEnvironmentProvidersProviderIdTestImageRequestIdCancelResponseDefaultHeaders
 		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
