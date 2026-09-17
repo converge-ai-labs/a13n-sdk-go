@@ -3659,6 +3659,24 @@ func (e PostConnectorProvidersConnectorProviderIdActionParamsAction) Valid() boo
 	}
 }
 
+// Defines values for GetRunsRunIdItemsParamsOrder.
+const (
+	Asc  GetRunsRunIdItemsParamsOrder = "asc"
+	Desc GetRunsRunIdItemsParamsOrder = "desc"
+)
+
+// Valid indicates whether the value is a known member of the GetRunsRunIdItemsParamsOrder enum.
+func (e GetRunsRunIdItemsParamsOrder) Valid() bool {
+	switch e {
+	case Asc:
+		return true
+	case Desc:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PostWorkspacesWorkspaceAgentsAgentActionParamsAction.
 const (
 	PostWorkspacesWorkspaceAgentsAgentActionParamsActionArchive   PostWorkspacesWorkspaceAgentsAgentActionParamsAction = "archive"
@@ -5865,8 +5883,13 @@ type InvokingUserSecretCredentialSource string
 
 // ItemCollection defines model for ItemCollection.
 type ItemCollection struct {
-	Items      []ItemResource            `json:"items"`
-	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+	Complete         bool                      `json:"complete"`
+	Finalized        bool                      `json:"finalized"`
+	IncompleteReason nullable.Nullable[string] `json:"incomplete_reason"`
+	Items            []ItemResource            `json:"items"`
+	NextCursor       nullable.Nullable[string] `json:"next_cursor"`
+	ProjectionCursor nullable.Nullable[string] `json:"projection_cursor"`
+	SnapshotVersion  int                       `json:"snapshot_version"`
 }
 
 // ItemResource defines model for ItemResource.
@@ -8778,9 +8801,13 @@ type PostRunsRunIdInterruptParams struct {
 
 // GetRunsRunIdItemsParams defines parameters for GetRunsRunIdItems.
 type GetRunsRunIdItemsParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int                          `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string                       `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Order  *GetRunsRunIdItemsParamsOrder `form:"order,omitempty" json:"order,omitempty"`
 }
+
+// GetRunsRunIdItemsParamsOrder defines parameters for GetRunsRunIdItems.
+type GetRunsRunIdItemsParamsOrder string
 
 // PutRunsRunIdLabelsParams defines parameters for PutRunsRunIdLabels.
 type PutRunsRunIdLabelsParams struct {
@@ -34450,6 +34477,18 @@ func NewGetRunsRunIdItemsRequest(server string, runId string, params *GetRunsRun
 		if params.Cursor != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Order != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "order", *params.Order, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
