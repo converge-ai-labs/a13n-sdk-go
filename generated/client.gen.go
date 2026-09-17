@@ -5244,11 +5244,11 @@ type CreateThreadRequest struct {
 
 // CreateWebProviderRequest defines model for CreateWebProviderRequest.
 type CreateWebProviderRequest struct {
-	Configuration *map[string]interface{} `json:"configuration,omitempty"`
-	Credential    *map[string]interface{} `json:"credential,omitempty"`
-	Enabled       *bool                   `json:"enabled,omitempty"`
-	Name          string                  `json:"name"`
-	Type          string                  `json:"type"`
+	Configuration *map[string]interface{}                   `json:"configuration,omitempty"`
+	Credential    nullable.Nullable[map[string]interface{}] `json:"credential,omitempty"`
+	Enabled       *bool                                     `json:"enabled,omitempty"`
+	Name          string                                    `json:"name"`
+	Type          string                                    `json:"type"`
 }
 
 // CreateWorkspaceRequest defines model for CreateWorkspaceRequest.
