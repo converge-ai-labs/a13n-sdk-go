@@ -43,11 +43,10 @@ This repository is independently buildable with Go 1.25+. Generator development 
 ```bash
 make install
 make generate         # local pinned input only
-make generated-check  # non-mutating drift check
-make check-all        # generation, tooling, vet, race tests and build
+make check-all        # tooling, vet, race tests and build
 ```
 
-The module now lives at this repository's root; consumers must update old `agent-foundation/sdk/go` imports. `contract/source.json` records the upstream full commit SHA, original paths and input hashes. See [contract provenance](contract/README.md), [SDK contract](spec/README.md) and [Contributing](CONTRIBUTING.md).
+The module now lives at this repository's root; consumers must update old `agent-foundation/sdk/go` imports. `contract/source.json` records the upstream full commit SHA, and original paths. See [contract provenance](contract/README.md), [SDK contract](spec/README.md) and [Contributing](CONTRIBUTING.md).
 
 `codegen/generate.py` invokes oapi-codegen 2.8.0 with the local configuration. Nullable presence and typed unions remain generated; a narrow diagnostic adapter redacts write-only request fields without changing wire serialization. Commit updated inputs and generated output together.
 

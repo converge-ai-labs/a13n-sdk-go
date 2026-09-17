@@ -21,7 +21,7 @@ Mutations are never automatically replayed after an uncertain outcome. Context c
 ## Verifiable invariants
 
 - Every pinned Native HTTP operation has a generated binding.
-- Regeneration consumes pinned tools and local files only; drift checks preserve committed files, including when output is stale or missing.
-- Vendored hashes match source metadata; wire tests preserve union and nullable semantics.
+- Generation consumes pinned tools and local files; generated bindings compile and pass behavior tests.
+- Wire tests preserve union and nullable semantics.
 - Transport tests exercise shared headers, cancellation and response-body lifetime.
 - Compile-time negative tests reject incorrectly typed requests; race-enabled tests validate concurrent lifetime behavior.
