@@ -29,10 +29,12 @@ func (DiscoverFeishuInstallationRequest) String() string {
 func (DiscoverFeishuInstallationRequest) GoString() string {
 	return "DiscoverFeishuInstallationRequest { .. }"
 }
-func (EmailChangeRequest) String() string   { return "EmailChangeRequest { .. }" }
-func (EmailChangeRequest) GoString() string { return "EmailChangeRequest { .. }" }
-func (LoginRequest) String() string         { return "LoginRequest { .. }" }
-func (LoginRequest) GoString() string       { return "LoginRequest { .. }" }
+func (DiscoverGitHubUserRequest) String() string   { return "DiscoverGitHubUserRequest { .. }" }
+func (DiscoverGitHubUserRequest) GoString() string { return "DiscoverGitHubUserRequest { .. }" }
+func (EmailChangeRequest) String() string          { return "EmailChangeRequest { .. }" }
+func (EmailChangeRequest) GoString() string        { return "EmailChangeRequest { .. }" }
+func (LoginRequest) String() string                { return "LoginRequest { .. }" }
+func (LoginRequest) GoString() string              { return "LoginRequest { .. }" }
 func (ReplaceAccountCredentialsRequest) String() string {
 	return "ReplaceAccountCredentialsRequest { .. }"
 }

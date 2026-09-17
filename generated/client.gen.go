@@ -457,13 +457,16 @@ func (e BinaryInputContentType) Valid() bool {
 
 // Defines values for BotReplyObservationProviderKey.
 const (
-	BotReplyObservationProviderKeyLark  BotReplyObservationProviderKey = "lark"
-	BotReplyObservationProviderKeySlack BotReplyObservationProviderKey = "slack"
+	BotReplyObservationProviderKeyGithub BotReplyObservationProviderKey = "github"
+	BotReplyObservationProviderKeyLark   BotReplyObservationProviderKey = "lark"
+	BotReplyObservationProviderKeySlack  BotReplyObservationProviderKey = "slack"
 )
 
 // Valid indicates whether the value is a known member of the BotReplyObservationProviderKey enum.
 func (e BotReplyObservationProviderKey) Valid() bool {
 	switch e {
+	case BotReplyObservationProviderKeyGithub:
+		return true
 	case BotReplyObservationProviderKeyLark:
 		return true
 	case BotReplyObservationProviderKeySlack:
@@ -491,6 +494,24 @@ func (e BotReplyObservationStatus) Valid() bool {
 	case BotReplyObservationStatusRejected:
 		return true
 	case BotReplyObservationStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BotSetupReceptionMode.
+const (
+	Polling BotSetupReceptionMode = "polling"
+	Webhook BotSetupReceptionMode = "webhook"
+)
+
+// Valid indicates whether the value is a known member of the BotSetupReceptionMode enum.
+func (e BotSetupReceptionMode) Valid() bool {
+	switch e {
+	case Polling:
+		return true
+	case Webhook:
 		return true
 	default:
 		return false
@@ -3664,13 +3685,16 @@ func (e PostWorkspacesWorkspaceAgentsAgentActionParamsAction) Valid() bool {
 
 // Defines values for GetWorkspacesWorkspaceBotsParamsPlatform.
 const (
-	GetWorkspacesWorkspaceBotsParamsPlatformLark  GetWorkspacesWorkspaceBotsParamsPlatform = "lark"
-	GetWorkspacesWorkspaceBotsParamsPlatformSlack GetWorkspacesWorkspaceBotsParamsPlatform = "slack"
+	GetWorkspacesWorkspaceBotsParamsPlatformGithub GetWorkspacesWorkspaceBotsParamsPlatform = "github"
+	GetWorkspacesWorkspaceBotsParamsPlatformLark   GetWorkspacesWorkspaceBotsParamsPlatform = "lark"
+	GetWorkspacesWorkspaceBotsParamsPlatformSlack  GetWorkspacesWorkspaceBotsParamsPlatform = "slack"
 )
 
 // Valid indicates whether the value is a known member of the GetWorkspacesWorkspaceBotsParamsPlatform enum.
 func (e GetWorkspacesWorkspaceBotsParamsPlatform) Valid() bool {
 	switch e {
+	case GetWorkspacesWorkspaceBotsParamsPlatformGithub:
+		return true
 	case GetWorkspacesWorkspaceBotsParamsPlatformLark:
 		return true
 	case GetWorkspacesWorkspaceBotsParamsPlatformSlack:
@@ -3844,13 +3868,18 @@ type AccountTargetTargetKind string
 
 // ActivateBotRequest defines model for ActivateBotRequest.
 type ActivateBotRequest struct {
-	AgentId                   string          `json:"agent_id"`
-	ConversationId            string          `json:"conversation_id"`
-	ExecutionServiceAccountId string          `json:"execution_service_account_id"`
-	ExpectedVersion           int             `json:"expected_version"`
-	Policy                    MessagingPolicy `json:"policy"`
-	TargetId                  string          `json:"target_id"`
-	TargetVersion             int             `json:"target_version"`
+	AgentId                   string                    `json:"agent_id"`
+	ConversationId            string                    `json:"conversation_id"`
+	ExecutionServiceAccountId string                    `json:"execution_service_account_id"`
+	ExpectedVersion           int                       `json:"expected_version"`
+	Policy                    ActivateBotRequest_Policy `json:"policy"`
+	TargetId                  string                    `json:"target_id"`
+	TargetVersion             int                       `json:"target_version"`
+}
+
+// ActivateBotRequest_Policy defines model for ActivateBotRequest.Policy.
+type ActivateBotRequest_Policy struct {
+	union json.RawMessage
 }
 
 // ActivityMessage An activity progress message emitted between chat messages.
@@ -4339,10 +4368,16 @@ type BotReplyObservationStatus string
 
 // BotSetup defines model for BotSetup.
 type BotSetup struct {
-	AccountId string                    `json:"account_id"`
-	EventPath string                    `json:"event_path"`
-	EventUrl  nullable.Nullable[string] `json:"event_url"`
+	AccountId     string                       `json:"account_id"`
+	EventPath     nullable.Nullable[string]    `json:"event_path"`
+	EventUrl      nullable.Nullable[string]    `json:"event_url"`
+	PollCheckedAt nullable.Nullable[time.Time] `json:"poll_checked_at,omitempty"`
+	PollErrorCode nullable.Nullable[string]    `json:"poll_error_code,omitempty"`
+	ReceptionMode *BotSetupReceptionMode       `json:"reception_mode,omitempty"`
 }
+
+// BotSetupReceptionMode defines model for BotSetup.ReceptionMode.
+type BotSetupReceptionMode string
 
 // BotSummary defines model for BotSummary.
 type BotSummary struct {
@@ -5277,6 +5312,11 @@ type DiscoverFeishuInstallationRequest struct {
 	AppSecret *string `json:"app_secret,omitempty"`
 }
 
+// DiscoverGitHubUserRequest defines model for DiscoverGitHubUserRequest.
+type DiscoverGitHubUserRequest struct {
+	PersonalAccessToken *string `json:"personal_access_token,omitempty"`
+}
+
 // Document defines model for Document.
 type Document struct {
 	AccessReasons       *[]DocumentAccessReason      `json:"access_reasons,omitempty"`
@@ -5562,6 +5602,20 @@ type FunctionCall struct {
 	Arguments            string                 `json:"arguments"`
 	Name                 string                 `json:"name"`
 	AdditionalProperties map[string]interface{} `json:"-"`
+}
+
+// GitHubCommentReceipt defines model for GitHubCommentReceipt.
+type GitHubCommentReceipt struct {
+	CommentId int    `json:"comment_id"`
+	HtmlUrl   string `json:"html_url"`
+	NodeId    string `json:"node_id"`
+	RequestId string `json:"request_id"`
+}
+
+// GitHubReceptionPolicy defines model for GitHubReceptionPolicy.
+type GitHubReceptionPolicy struct {
+	AllowedSenders *[]string `json:"allowed_senders,omitempty"`
+	EventActions   *[]string `json:"event_actions,omitempty"`
 }
 
 // GitHubRevisionSource defines model for GitHubRevisionSource.
@@ -9612,6 +9666,9 @@ type PostWorkspacesWorkspaceApplicationAccountsJSONRequestBody = CreateAccountRe
 // PostWorkspacesWorkspaceBotsFeishuInstallationJSONRequestBody defines body for PostWorkspacesWorkspaceBotsFeishuInstallation for application/json ContentType.
 type PostWorkspacesWorkspaceBotsFeishuInstallationJSONRequestBody = DiscoverFeishuInstallationRequest
 
+// PostWorkspacesWorkspaceBotsGithubUserJSONRequestBody defines body for PostWorkspacesWorkspaceBotsGithubUser for application/json ContentType.
+type PostWorkspacesWorkspaceBotsGithubUserJSONRequestBody = DiscoverGitHubUserRequest
+
 // PostWorkspacesWorkspaceConfigurationSessionsJSONRequestBody defines body for PostWorkspacesWorkspaceConfigurationSessions for application/json ContentType.
 type PostWorkspacesWorkspaceConfigurationSessionsJSONRequestBody = CreateSessionRequest
 
@@ -11980,6 +12037,68 @@ func (a VideoInputContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(object)
 }
 
+// AsMessagingPolicy returns the union data inside the ActivateBotRequest_Policy as a MessagingPolicy
+func (t ActivateBotRequest_Policy) AsMessagingPolicy() (MessagingPolicy, error) {
+	var body MessagingPolicy
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromMessagingPolicy overwrites any union data inside the ActivateBotRequest_Policy as the provided MessagingPolicy
+func (t *ActivateBotRequest_Policy) FromMessagingPolicy(v MessagingPolicy) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeMessagingPolicy performs a merge with any union data inside the ActivateBotRequest_Policy, using the provided MessagingPolicy
+func (t *ActivateBotRequest_Policy) MergeMessagingPolicy(v MessagingPolicy) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGitHubReceptionPolicy returns the union data inside the ActivateBotRequest_Policy as a GitHubReceptionPolicy
+func (t ActivateBotRequest_Policy) AsGitHubReceptionPolicy() (GitHubReceptionPolicy, error) {
+	var body GitHubReceptionPolicy
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGitHubReceptionPolicy overwrites any union data inside the ActivateBotRequest_Policy as the provided GitHubReceptionPolicy
+func (t *ActivateBotRequest_Policy) FromGitHubReceptionPolicy(v GitHubReceptionPolicy) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGitHubReceptionPolicy performs a merge with any union data inside the ActivateBotRequest_Policy, using the provided GitHubReceptionPolicy
+func (t *ActivateBotRequest_Policy) MergeGitHubReceptionPolicy(v GitHubReceptionPolicy) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ActivateBotRequest_Policy) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ActivateBotRequest_Policy) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsPrincipalRef returns the union data inside the ActorRef as a PrincipalRef
 func (t ActorRef) AsPrincipalRef() (PrincipalRef, error) {
 	var body PrincipalRef
@@ -12625,6 +12744,32 @@ func (t *BotReplyObservation_Receipt) FromLarkReplyReceipt(v LarkReplyReceipt) e
 
 // MergeLarkReplyReceipt performs a merge with any union data inside the BotReplyObservation_Receipt, using the provided LarkReplyReceipt
 func (t *BotReplyObservation_Receipt) MergeLarkReplyReceipt(v LarkReplyReceipt) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGitHubCommentReceipt returns the union data inside the BotReplyObservation_Receipt as a GitHubCommentReceipt
+func (t BotReplyObservation_Receipt) AsGitHubCommentReceipt() (GitHubCommentReceipt, error) {
+	var body GitHubCommentReceipt
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGitHubCommentReceipt overwrites any union data inside the BotReplyObservation_Receipt as the provided GitHubCommentReceipt
+func (t *BotReplyObservation_Receipt) FromGitHubCommentReceipt(v GitHubCommentReceipt) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGitHubCommentReceipt performs a merge with any union data inside the BotReplyObservation_Receipt, using the provided GitHubCommentReceipt
+func (t *BotReplyObservation_Receipt) MergeGitHubCommentReceipt(v GitHubCommentReceipt) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -17136,6 +17281,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/workspaces/{workspace}/bots/feishu/installation (the `PostWorkspacesWorkspaceBotsFeishuInstallation` operationId).
 	PostWorkspacesWorkspaceBotsFeishuInstallation(ctx context.Context, workspace string, body PostWorkspacesWorkspaceBotsFeishuInstallationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostWorkspacesWorkspaceBotsGithubUserWithBody Discover Github User
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+	PostWorkspacesWorkspaceBotsGithubUserWithBody(ctx context.Context, workspace string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostWorkspacesWorkspaceBotsGithubUser Discover Github User
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+	PostWorkspacesWorkspaceBotsGithubUser(ctx context.Context, workspace string, body PostWorkspacesWorkspaceBotsGithubUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetWorkspacesWorkspaceConfigurationAssistantReadiness Readiness
 	//
@@ -23394,6 +23553,40 @@ func (c *Client) PostWorkspacesWorkspaceBotsFeishuInstallationWithBody(ctx conte
 // Corresponds with POST /api/v1/workspaces/{workspace}/bots/feishu/installation (the `PostWorkspacesWorkspaceBotsFeishuInstallation` operationId).
 func (c *Client) PostWorkspacesWorkspaceBotsFeishuInstallation(ctx context.Context, workspace string, body PostWorkspacesWorkspaceBotsFeishuInstallationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostWorkspacesWorkspaceBotsFeishuInstallationRequest(c.Server, workspace, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostWorkspacesWorkspaceBotsGithubUserWithBody Discover Github User
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+func (c *Client) PostWorkspacesWorkspaceBotsGithubUserWithBody(ctx context.Context, workspace string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostWorkspacesWorkspaceBotsGithubUserRequestWithBody(c.Server, workspace, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostWorkspacesWorkspaceBotsGithubUser Discover Github User
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+func (c *Client) PostWorkspacesWorkspaceBotsGithubUser(ctx context.Context, workspace string, body PostWorkspacesWorkspaceBotsGithubUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostWorkspacesWorkspaceBotsGithubUserRequest(c.Server, workspace, body)
 	if err != nil {
 		return nil, err
 	}
@@ -38374,6 +38567,53 @@ func NewPostWorkspacesWorkspaceBotsFeishuInstallationRequestWithBody(server stri
 	return req, nil
 }
 
+// NewPostWorkspacesWorkspaceBotsGithubUserRequest calls the generic PostWorkspacesWorkspaceBotsGithubUser builder with application/json body
+func NewPostWorkspacesWorkspaceBotsGithubUserRequest(server string, workspace string, body PostWorkspacesWorkspaceBotsGithubUserJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostWorkspacesWorkspaceBotsGithubUserRequestWithBody(server, workspace, "application/json", bodyReader)
+}
+
+// NewPostWorkspacesWorkspaceBotsGithubUserRequestWithBody constructs an http.Request for the PostWorkspacesWorkspaceBotsGithubUser method, with any body, and a specified content type
+func NewPostWorkspacesWorkspaceBotsGithubUserRequestWithBody(server string, workspace string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "workspace", workspace, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/workspaces/%s/bots/github/user", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetWorkspacesWorkspaceConfigurationAssistantReadinessRequest constructs an http.Request for the GetWorkspacesWorkspaceConfigurationAssistantReadiness method
 func NewGetWorkspacesWorkspaceConfigurationAssistantReadinessRequest(server string, workspace string, params *GetWorkspacesWorkspaceConfigurationAssistantReadinessParams) (*http.Request, error) {
 	var err error
@@ -45806,6 +46046,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/workspaces/{workspace}/bots/feishu/installation (the `PostWorkspacesWorkspaceBotsFeishuInstallation` operationId).
 	PostWorkspacesWorkspaceBotsFeishuInstallationWithResponse(ctx context.Context, workspace string, body PostWorkspacesWorkspaceBotsFeishuInstallationJSONRequestBody, reqEditors ...RequestEditorFn) (*PostWorkspacesWorkspaceBotsFeishuInstallationResponse, error)
+
+	// PostWorkspacesWorkspaceBotsGithubUserWithBodyWithResponse Discover Github User
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+	PostWorkspacesWorkspaceBotsGithubUserWithBodyWithResponse(ctx context.Context, workspace string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostWorkspacesWorkspaceBotsGithubUserResponse, error)
+
+	// PostWorkspacesWorkspaceBotsGithubUserWithResponse Discover Github User
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+	PostWorkspacesWorkspaceBotsGithubUserWithResponse(ctx context.Context, workspace string, body PostWorkspacesWorkspaceBotsGithubUserJSONRequestBody, reqEditors ...RequestEditorFn) (*PostWorkspacesWorkspaceBotsGithubUserResponse, error)
 
 	// GetWorkspacesWorkspaceConfigurationAssistantReadinessWithResponse Readiness
 	//
@@ -65541,6 +65795,83 @@ func (r PostWorkspacesWorkspaceBotsFeishuInstallationResponse) ContentType() str
 	return ""
 }
 
+// PostWorkspacesWorkspaceBotsGithubUserResponse200Headers the declared response headers of an HTTP 200 response for PostWorkspacesWorkspaceBotsGithubUser
+type PostWorkspacesWorkspaceBotsGithubUserResponse200Headers struct {
+	XRequestID *string
+}
+
+// PostWorkspacesWorkspaceBotsGithubUserResponse400Headers the declared response headers of an HTTP 400 response for PostWorkspacesWorkspaceBotsGithubUser
+type PostWorkspacesWorkspaceBotsGithubUserResponse400Headers struct {
+	XRequestID *string
+}
+
+// PostWorkspacesWorkspaceBotsGithubUserResponseDefaultHeaders the declared response headers of an HTTP default response for PostWorkspacesWorkspaceBotsGithubUser
+type PostWorkspacesWorkspaceBotsGithubUserResponseDefaultHeaders struct {
+	RetryAfter *string
+	XRequestID *string
+}
+
+type PostWorkspacesWorkspaceBotsGithubUserResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *InstallationInfo
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *ErrorResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *PostWorkspacesWorkspaceBotsGithubUserResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PostWorkspacesWorkspaceBotsGithubUserResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PostWorkspacesWorkspaceBotsGithubUserResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostWorkspacesWorkspaceBotsGithubUserResponse) GetJSON200() *InstallationInfo {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PostWorkspacesWorkspaceBotsGithubUserResponse) GetJSON400() *ErrorResponse {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PostWorkspacesWorkspaceBotsGithubUserResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PostWorkspacesWorkspaceBotsGithubUserResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostWorkspacesWorkspaceBotsGithubUserResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostWorkspacesWorkspaceBotsGithubUserResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostWorkspacesWorkspaceBotsGithubUserResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetWorkspacesWorkspaceConfigurationAssistantReadinessResponse200Headers the declared response headers of an HTTP 200 response for GetWorkspacesWorkspaceConfigurationAssistantReadiness
 type GetWorkspacesWorkspaceConfigurationAssistantReadinessResponse200Headers struct {
 	XRequestID *string
@@ -75702,6 +76033,32 @@ func (c *ClientWithResponses) PostWorkspacesWorkspaceBotsFeishuInstallationWithR
 		return nil, err
 	}
 	return ParsePostWorkspacesWorkspaceBotsFeishuInstallationResponse(rsp)
+}
+
+// PostWorkspacesWorkspaceBotsGithubUserWithBodyWithResponse Discover Github User
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+func (c *ClientWithResponses) PostWorkspacesWorkspaceBotsGithubUserWithBodyWithResponse(ctx context.Context, workspace string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostWorkspacesWorkspaceBotsGithubUserResponse, error) {
+	rsp, err := c.PostWorkspacesWorkspaceBotsGithubUserWithBody(ctx, workspace, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostWorkspacesWorkspaceBotsGithubUserResponse(rsp)
+}
+
+// PostWorkspacesWorkspaceBotsGithubUserWithResponse Discover Github User
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/workspaces/{workspace}/bots/github/user (the `PostWorkspacesWorkspaceBotsGithubUser` operationId).
+func (c *ClientWithResponses) PostWorkspacesWorkspaceBotsGithubUserWithResponse(ctx context.Context, workspace string, body PostWorkspacesWorkspaceBotsGithubUserJSONRequestBody, reqEditors ...RequestEditorFn) (*PostWorkspacesWorkspaceBotsGithubUserResponse, error) {
+	rsp, err := c.PostWorkspacesWorkspaceBotsGithubUser(ctx, workspace, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostWorkspacesWorkspaceBotsGithubUserResponse(rsp)
 }
 
 // GetWorkspacesWorkspaceConfigurationAssistantReadinessWithResponse Readiness
@@ -96830,6 +97187,86 @@ func ParsePostWorkspacesWorkspaceBotsFeishuInstallationResponse(rsp *http.Respon
 		response.Headers400 = &headers
 	case true:
 		var headers PostWorkspacesWorkspaceBotsFeishuInstallationResponseDefaultHeaders
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePostWorkspacesWorkspaceBotsGithubUserResponse parses an HTTP response from a PostWorkspacesWorkspaceBotsGithubUserWithResponse call
+func ParsePostWorkspacesWorkspaceBotsGithubUserResponse(rsp *http.Response) (*PostWorkspacesWorkspaceBotsGithubUserResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostWorkspacesWorkspaceBotsGithubUserResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest InstallationInfo
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers PostWorkspacesWorkspaceBotsGithubUserResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers PostWorkspacesWorkspaceBotsGithubUserResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PostWorkspacesWorkspaceBotsGithubUserResponseDefaultHeaders
 		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
