@@ -2,6 +2,7 @@
 
 import json
 import re
+import textwrap
 from pathlib import Path
 
 VERBS = {"get": "Get", "post": "Create", "put": "Replace", "patch": "Update", "delete": "Delete"}
@@ -14,6 +15,15 @@ CORE = {
     "workspaces/{workspace_id}/runs/{run_id}": "RunResource",
 }
 OPTIONAL_MATCH = "/api/v1/workspaces/{workspace_id}/memories/{memory_id}/revisions/{seq}/restore"
+PARAMETER_NAMES = {
+    ("/api/v1/provider-types/{kind}", "kind"): "ProviderKind",
+    ("/api/v1/organizations/{organization_id}/members", "kind"): "MemberKind",
+    ("/api/v1/workspaces/{workspace_id}/skills", "source"): "SkillSource",
+}
+
+
+def comment(text: str) -> str:
+    return "\n".join("// " + line for line in textwrap.wrap(" ".join(text.split()), width=100)) + "\n"
 
 
 def pascal(value: str) -> str:
@@ -82,6 +92,38 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
     names = [node["name"] for node in nodes.values()]
     assert len(set(names)) == len(names), "resource name collision"
     declarations = []
+    aliases = {}
+    for op in operations:
+        for param in op["parameters"]:
+            alias = PARAMETER_NAMES.get((op["path"], param["name"]))
+            if not alias:
+                continue
+            original = op["name"] + "Params" + pascal(param["name"])
+            assert re.search(r"type " + original + r" string\b", bindings), original
+            schema = param["schema"]
+            values = next((s["enum"] for s in schema.get("anyOf", []) if "enum" in s), schema.get("enum"))
+            assert values and alias not in names and alias not in aliases.values(), alias
+            aliases[original] = alias
+            declarations.append(
+                comment(f"{alias} selects {param['name']} for {op['path']}. It aliases the protocol type.")
+                + f"type {alias} = generated.{original}"
+            )
+            declarations.append(
+                "const (\n"
+                + "\n".join(
+                    comment(f"{alias}{pascal(value)} selects {value}.")
+                    + f"{alias}{pascal(value)} {alias} = {json.dumps(value)}"
+                    for value in values
+                )
+                + "\n)"
+            )
+
+    def public_type(value: str) -> str:
+        result = qualify(value)
+        for original, alias in aliases.items():
+            result = result.replace("generated." + original, alias)
+        return result
+
     methods = []
     coverage = []
     tests = []
@@ -89,7 +131,10 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
         if node["flatten"]:
             continue
         name = node["name"]
-        declarations.append(f"type {name} struct {{ binding }}")
+        declarations.append(
+            comment(f"{name} is a local resource reference sharing its client's transport and lifetime.")
+            + f"type {name} struct {{ binding }}"
+        )
         for segment, child_key in node["children"].items():
             child = nodes[child_key]
             if child["flatten"]:
@@ -102,13 +147,19 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
                 path_parameters = [p for p in sample["parameters"] if p["in"] == "path"]
                 index = next(i for i, p in enumerate(path_parameters) if p["name"] == parameter)
                 signature = sample["signature"].split(", ")[index + 1]
-                value_type = qualify(signature.split(" ", 1)[1])
+                value_type = public_type(signature.split(" ", 1)[1])
                 methods.append(
-                    f"func (r {name}) Ref(id {value_type}) {child['name']} {{ return {child['name']}{{r.selectID(fmt.Sprint(id))}} }}"
+                    comment(
+                        f"Ref binds {parameter} locally without checking existence or changing credential authority."
+                    )
+                    + f"func (r {name}) Ref(id {value_type}) {child['name']} {{ return {child['name']}{{r.selectID(fmt.Sprint(id))}} }}"
                 )
             else:
                 methods.append(
-                    f"func (r {name}) {pascal(segment)}() {child['name']} {{ return {child['name']}{{r.binding}} }}"
+                    comment(
+                        f"{pascal(segment)} returns a local reference sharing the client's lifetime; it performs no I/O."
+                    )
+                    + f"func (r {name}) {pascal(segment)}() {child['name']} {{ return {child['name']}{{r.binding}} }}"
                 )
         own_ops = [(op, VERBS[op["verb"]]) for op in node["ops"]]
         own_ops += [
@@ -167,8 +218,20 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
             param_assignments = []
             for field, typ, wire in fields:
                 required_match = wire == "If-Match" and op["path"] != OPTIONAL_MATCH
-                option_type = "string" if required_match else qualify(typ.strip())
-                option_fields.append(f"{field} {option_type}")
+                option_type = "string" if required_match else public_type(typ.strip())
+                parameter = next(p for p in op["parameters"] if p["name"] == wire)
+                detail = parameter.get("description", parameter.get("schema", {}).get("description", ""))
+                if wire == "If-Match":
+                    detail += " Supply the current resource ETag; stale values fail without an automatic retry."
+                    detail += " Required and nonempty." if required_match else " Nil permits an absent restore target."
+                elif wire == "Idempotency-Key":
+                    detail += " Required, caller-chosen request key. Reconcile uncertain outcomes before retrying."
+                elif option_type.startswith("*"):
+                    detail += " Nil omits this parameter."
+                option_fields.append(
+                    comment(f"{field} supplies the {wire} {parameter['in']} parameter. {detail}")
+                    + f"{field} {option_type}"
+                )
                 if required_match or (wire == "Idempotency-Key"):
                     checks.append(f'if options.{field} == "" {{ return zero, fmt.Errorf("{wire} is required") }}')
                 value = f"&options.{field}" if required_match and typ.strip() == "*string" else f"options.{field}"
@@ -187,7 +250,10 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
                 call_args.append("body")
             elif binary:
                 args.append("body io.Reader")
-                option_fields.append("ContentType string")
+                option_fields.append(
+                    comment("ContentType is the explicit image MIME type allowed by this operation.")
+                    + "ContentType string"
+                )
                 media_values = ", ".join(json.dumps(m) for m in media)
                 checks.append(
                     f'if !slices.Contains([]string{{{media_values}}}, options.ContentType) {{ return zero, fmt.Errorf("unsupported image content type") }}'
@@ -201,7 +267,12 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
                 call_name += "WithBody"
                 call_args += ["contentType", "body"]
             if option_fields:
-                declarations.append(f"type {option_name} struct {{ {'; '.join(option_fields)} }}")
+                declarations.append(
+                    comment(f"{option_name} supplies query and header inputs for {name}.{method}.")
+                    + f"type {option_name} struct {{\n"
+                    + "\n".join(option_fields)
+                    + "\n}"
+                )
                 args.append(f"options {option_name}")
             stream = not response_types and any(
                 r.get("content") for code, r in op["responses"].items() if code.startswith("2")
@@ -209,7 +280,25 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
             submitted = result_type == "generated.Submitted"
             public_result = "*BinaryResult" if stream else "*Submitted" if submitted else f"Result[{result_type}]"
             call = f"r.client.api.{call_name}({', '.join(call_args)})"
+            description = f"{method} calls {op['verb'].upper()} {op['path']}. " + op.get(
+                "description", op.get("summary", "")
+            )
+            if submitted:
+                description += " Returns acceptance, not completion, with canonical Thread/Entry references and an optional Run. A queued entry has no Run."
+            if name == "RunResource" and method == "Resume":
+                description += " Returns the successor Run. Bind workspace.Runs().Ref(result.Value.Id) before waiting; Wait on the original reference never follows successors."
+            if stream:
+                description += " The caller must close the returned BinaryResult or its Body."
+            if name == "ThreadStreamResource":
+                description += (
+                    " This is raw SSE; use ThreadResource.Events for typed frames and applied-cursor recovery."
+                )
+            if multipart:
+                description += " The upload reader remains caller-owned."
+            if option_fields:
+                description += f" See {option_name} for explicit parameters and preconditions."
             code = [
+                comment(description).rstrip(),
                 f"func (r {name}) {method}({', '.join(args)}) ({public_result}, error) {{",
                 f"var zero {public_result}",
                 "if err := r.validate(); err != nil { return zero, err }",
@@ -310,13 +399,18 @@ def generate_resources(document: dict, bindings: str, target: Path) -> None:
                             f"slices.Clone(*options.{field})" if typ.strip().startswith("*[]") else f"*options.{field}"
                         )
                         snapshots.append(f"if options.{field} != nil {{ value := {value}; options.{field} = &value }}")
-                methods.append(f"""func (r {name}) Pages(ctx context.Context, options {option_name}) iter.Seq2[Result[{result_type}], error] {{
+                methods.append(
+                    comment(
+                        "Pages lazily yields one response page at a time, including its metadata. Options are snapshotted; breaking iteration stops requests. Context bounds each request; repeated cursors fail."
+                    )
+                    + f"""func (r {name}) Pages(ctx context.Context, options {option_name}) iter.Seq2[Result[{result_type}], error] {{
                     {"; ".join(snapshots)}
                     return paginate(ctx, options, func(o {option_name}) (*string) {{ return o.Cursor }},
                         func(o *{option_name}, cursor string) {{ o.Cursor = &cursor }},
                         func(ctx context.Context, o {option_name}) (Result[{result_type}], error) {{ return r.List(ctx, o) }},
                         func(value {result_type}) string {{ return value.NextCursor.GetOrEmpty() }})
-                }}""")
+                }}"""
+                )
     header = "// Code generated by codegen/resources.py; DO NOT EDIT.\npackage a13n\n"
     imports = 'import ("context"; "fmt"; "io"; "iter"; "slices"; "time"; "github.com/converge-ai-labs/a13n-sdk-go/generated")\n'
     # time is needed by generated time-range options when present.

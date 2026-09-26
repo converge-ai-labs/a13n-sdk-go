@@ -95,6 +95,12 @@ func (b *cutBody) Read(p []byte) (int, error) {
 
 func offline() {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/healthz" {
+			w.Header().Set("X-Request-ID", "consumer-request")
+			w.Header().Set("Content-Type", "text/html")
+			_, _ = io.WriteString(w, "not a Service JSON response")
+			return
+		}
 		check(r.URL.Path == "/api/v1/workspaces/example/threads", "consumer route")
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("ETag", "\"1\"")
@@ -113,7 +119,14 @@ func offline() {
 	check(part.FromTextPart(generated.TextPart{Type: "text", Text: "typed"}) == nil, "consumer union")
 	body := must(json.Marshal(generated.AgentUpdate{Description: nullable.NewNullNullable[string]()}))
 	check(string(body) == `{"description":null}`, "consumer nullable omission")
-	fmt.Println("Installed module: typed resources, pagination, metadata, union and nullable passed")
+	_, err := client.Resources().Healthz().Get(context.Background())
+	var protocol *a13n.ProtocolError
+	check(errors.Is(err, a13n.ErrProtocol) && errors.As(err, &protocol) && protocol.Kind == "content_type" && protocol.RequestID == "consumer-request", "consumer diagnostic evidence")
+	member, source := a13n.MemberKindServiceAccount, a13n.SkillSourceGithub
+	_ = a13n.OrganizationMembersListOptions{Kind: &member}
+	_ = a13n.SkillsListOptions{Source: &source}
+	_ = client.Resources().ProviderTypes().Ref(a13n.ProviderKindMemory)
+	fmt.Println("Installed module: typed resources, pagination, metadata, union, nullable, domain enums and diagnostics passed")
 }
 
 func wait(ctx context.Context, run *a13n.RunResource, expected generated.RunStatus) a13n.Result[generated.RunView] {

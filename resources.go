@@ -63,7 +63,7 @@ func readJSON(response *http.Response, limit int64) ([]byte, error) {
 		return nil, err
 	}
 	if int64(len(data)) > limit {
-		return nil, ErrProtocol
+		return nil, protocolError(response, "size_limit")
 	}
 	return data, nil
 }
@@ -80,8 +80,11 @@ func apiFailure(response *http.Response, limit int64) error {
 			RequestID string                     `json:"request_id"`
 		} `json:"error"`
 	}
-	if json.Unmarshal(data, &envelope) != nil || envelope.Error.Code == "" {
-		return ErrProtocol
+	if json.Unmarshal(data, &envelope) != nil {
+		return protocolError(response, "invalid_json")
+	}
+	if envelope.Error.Code == "" {
+		return protocolError(response, "error_envelope")
 	}
 	requestID := envelope.Error.RequestID
 	if requestID == "" {
@@ -107,8 +110,17 @@ func jsonResult[T any](client *Client, response *http.Response, err error, succe
 		return result, nil
 	}
 	contentType, _, _ := mime.ParseMediaType(response.Header.Get("Content-Type"))
-	if contentType != "application/json" || len(bytes.TrimSpace(data)) == 0 || bytes.Equal(bytes.TrimSpace(data), []byte("null")) || json.Unmarshal(data, &result.Value) != nil {
-		return result, ErrProtocol
+	if contentType != "application/json" {
+		return result, protocolError(response, "content_type")
+	}
+	if len(bytes.TrimSpace(data)) == 0 {
+		return result, protocolError(response, "empty_body")
+	}
+	if bytes.Equal(bytes.TrimSpace(data), []byte("null")) {
+		return result, protocolError(response, "null_body")
+	}
+	if json.Unmarshal(data, &result.Value) != nil {
+		return result, protocolError(response, "invalid_json")
 	}
 	return result, nil
 }

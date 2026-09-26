@@ -33,7 +33,9 @@ if submitted.Run != nil {
 // A queued receipt has no Run. Observe submitted.Entry explicitly instead.
 ```
 
-Binding a reference is local. The server authorizes requests and resolves IDs or keys. Full generated request models, including rich payloads, mounts and run options, are accepted directly. Submission references use the canonical workspace ID returned by Service. The receipt preserves status, headers and the nullable Run.
+Binding a reference is local. The server authorizes requests and resolves IDs or keys. Full generated request models, including rich payloads, mounts and run options, are accepted directly. Submission references use the canonical workspace ID returned by Service. The receipt preserves status, headers and the nullable Run. `Run.Resume` instead returns the successor Run: bind `workspace.Runs().Ref(resumed.Value.Id)` before waiting. Waiting on the original reference never follows that successor.
+
+[Compiled external-package examples](example_test.go) cover submission/readback, queued entries, resume, CAS/null updates, typed events and binary ownership. They are type-checked by `go test`; Service examples require your own explicit resources to execute.
 
 ## Read, update and page
 
@@ -41,7 +43,11 @@ Binding a reference is local. The server authorizes requests and resolves IDs or
 agent := workspace.Agents().Ref("agent_example")
 current, err := agent.Get(ctx)
 if err != nil { return err }
-updated, err := agent.Update(ctx, generated.AgentUpdate{}, a13n.AgentUpdateOptions{
+// import "github.com/oapi-codegen/nullable"
+updated, err := agent.Update(ctx, generated.AgentUpdate{
+    Name: nullable.NewNullableWithValue("Support"),
+    Description: nullable.NewNullNullable[string](), // explicit null clears it
+}, a13n.AgentUpdateOptions{
     IfMatch: current.ETag(),
 })
 if err != nil { return err }
@@ -55,7 +61,7 @@ for page, err := range workspace.Threads().Pages(ctx, a13n.ThreadsListOptions{})
 
 `List` makes one request; `Pages` is lazy and retains each response's metadata. Breaking iteration stops further requests. Only cursor-bearing collections have `Pages`. Run Items uses `run.Items().Get(ctx)`.
 
-Models live in `generated`. Nullable fields use `nullable.Nullable[T]` from `github.com/oapi-codegen/nullable`: the zero value omits a field, `NewNullNullable[T]()` clears it, and `NewNullableWithValue(value)` supplies it. Union helpers expose typed `As...` and `From...` branches. These are wire models, not a promise of complete local JSON Schema validation.
+Ordinary selectors and filters use `a13n.ProviderKind`, `a13n.MemberKind` and `a13n.SkillSource` with readable constants such as `ProviderKindMemory` and `MemberKindServiceAccount`. These are generated aliases, not additional wire types. Other models live in `generated`. Nullable fields use `nullable.Nullable[T]` from `github.com/oapi-codegen/nullable`: the zero value omits a field, `NewNullNullable[T]()` clears it, and `NewNullableWithValue(value)` supplies it. Union helpers expose typed `As...` and `From...` branches. These are wire models, not a promise of complete local JSON Schema validation.
 
 ## Observe a Thread
 
@@ -81,7 +87,7 @@ for {
 }
 ```
 
-Readback results must be applied by the application. `Next` acknowledges the previously returned data frame, not the one it is about to return. Persist application checkpoints explicitly. Reconnection uses only the applied cursor; closing does not acknowledge pending data or stop a server Run. The context passed to `Events` bounds the whole stream; `Close` can cancel a pending read from another goroutine.
+`thread.Stream().Get(...)` returns raw SSE bytes; prefer `thread.Events(...)` for typed frames and cursor recovery. Readback results must be applied by the application. `Next` acknowledges the previously returned data frame, not the one it is about to return. Persist application checkpoints explicitly. Reconnection uses only the applied cursor; closing does not acknowledge pending data or stop a server Run. The context passed to `Events` bounds the whole stream; `Close` can cancel a pending read from another goroutine.
 
 ## Authentication and transfer
 
@@ -90,6 +96,8 @@ Use a bearer API key for its authorized workspace scope. Public endpoints work w
 Uploads use `UploadFile{Name, ContentType, Reader}`. Image `Replace` takes an `io.Reader` and an explicit allowed content type in its options. Input readers stay caller-owned. Download `BinaryResult` bodies are unbuffered: always close the result. Resource JSON is bounded to 16 MiB by default (`WithResponseLimit` changes it); binary success bodies have no such buffering limit.
 
 `Result[T]` exposes `Value`, `StatusCode`, `Header`, `ETag()` and `RequestID()`. Use `errors.As` to inspect `*a13n.ApiError`; use `errors.Is` for context deadlines/cancellation, `ErrClosed`, `ErrTransport` and `ErrProtocol`. An uncertain mutation is not automatically retried, even when it carries an idempotency key.
+
+`errors.As` also exposes `*a13n.TransportError` (request/body stage and DNS/TLS/timeout/network category) and `*a13n.ProtocolError` (JSON/content-type/size reason, HTTP status and request ID). `errors.Is` still matches the respective sentinel. Raw transport causes are not retained because they can contain URLs or credentials. Protocol diagnostic strings omit bodies and request IDs; inspect `RequestID` explicitly when reconciling with Service. Neither category nor cancellation proves rollback.
 
 ## Advanced protocol access
 
