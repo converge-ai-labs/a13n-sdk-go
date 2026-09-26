@@ -1,6 +1,4 @@
-// Package a13n is the Go SDK package for a13n Service.
-//
-// The package currently reserves a stable module path while the service API is
-// being designed. Client APIs will be added after the service contract is
-// stable enough to support compatibility guarantees.
+// Package a13n provides complete generated Service resource bindings and thin
+// interaction helpers. Service owns durable execution; the client owns local
+// transport lifetime. Cancellation and Close never interrupt server Runs.
 package a13n
