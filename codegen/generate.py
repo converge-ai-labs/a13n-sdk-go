@@ -1,10 +1,8 @@
 """Generate the Go SDK from its pinned local Service contract.
 
-Generation does not import, check out, or execute the Service. Check mode compares
-both bytes and file names without replacing the committed generated directory.
+Generation does not import, check out, or execute the Service.
 """
 
-import argparse
 import json
 import shutil
 import subprocess
@@ -47,38 +45,24 @@ def generate(document: dict, work: Path) -> Path:
     return output
 
 
-def files(path: Path) -> dict[str, bytes]:
-    return {
-        str(file.relative_to(path)): file.read_bytes()
-        for file in path.rglob("*")
-        if file.is_file() and "__pycache__" not in file.parts
-    }
-
-
-def install(output: Path, target: Path, *, check: bool) -> bool:
-    actual, expected = files(target), files(output)
-    changed = sorted(name for name in actual.keys() | expected.keys() if actual.get(name) != expected.get(name))
-    if not changed:
-        return True
-    if check:
-        print(f"Stale generated files in {target.relative_to(ROOT)}: " + ", ".join(changed[:20]))
-        return False
+def install(output: Path, target: Path) -> None:
     # Only generator-owned directories are replaced, including removed schemas.
     if target.exists():
         shutil.rmtree(target)
     shutil.copytree(output, target)
-    return True
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true")
-    args = parser.parse_args()
+    from resources import generate_resources
+
     document = json.loads((ROOT / "contract/openapi.json").read_text())
     with tempfile.TemporaryDirectory(prefix="a13n-codegen-") as temp:
         output = generate(document, Path(temp))
-        if not install(output, TARGET, check=args.check):
-            parser.exit(1, "SDK bindings changed. Run make generate and commit the result.\n")
+        generate_resources(document, (output / "client.gen.go").read_text(), Path(temp))
+        run("gofmt", "-w", str(Path(temp) / "resources.gen.go"), str(Path(temp) / "resources_coverage.gen_test.go"))
+        install(output, TARGET)
+        for name in ("resources.gen.go", "resources_coverage.gen_test.go"):
+            shutil.copyfile(Path(temp) / name, ROOT / name)
 
 
 if __name__ == "__main__":

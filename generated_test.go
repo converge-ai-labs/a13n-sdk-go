@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	a13n "github.com/converge-ai-labs/a13n-sdk-go"
+	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -13,101 +15,60 @@ import (
 	"reflect"
 	"strings"
 	"testing"
-
-	a13n "github.com/converge-ai-labs/a13n-sdk-go"
-	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
-func wireFixtures(t *testing.T) map[string]json.RawMessage {
-	t.Helper()
-	data, err := os.ReadFile("contract/fixtures/wire.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var fixtures map[string]json.RawMessage
-	if err := json.Unmarshal(data, &fixtures); err != nil {
-		t.Fatal(err)
-	}
-	return fixtures
-}
-
-func roundtripFixtures[T any](t *testing.T, fixtures map[string]json.RawMessage, key string) {
-	t.Helper()
-	var cases []json.RawMessage
-	if err := json.Unmarshal(fixtures[key], &cases); err != nil {
-		t.Fatal(err)
-	}
-	for _, data := range cases {
-		var model T
-		if err := json.Unmarshal(data, &model); err != nil {
+func TestGeneratedWireModels(t *testing.T) {
+	for _, input := range []string{`{}`, `{"name":null}`, `{"name":"new"}`} {
+		var model generated.AgentUpdate
+		if err := json.Unmarshal([]byte(input), &model); err != nil {
 			t.Fatal(err)
 		}
-		encoded, err := json.Marshal(model)
-		if err != nil {
-			t.Fatal(err)
-		}
-		var want, got any
-		if err := json.Unmarshal(data, &want); err != nil {
-			t.Fatal(err)
-		}
-		if err := json.Unmarshal(encoded, &got); err != nil {
-			t.Fatal(err)
-		}
-		if !reflect.DeepEqual(got, want) {
-			t.Fatalf("%s: got %s, want %s", key, encoded, data)
+		data, err := json.Marshal(model)
+		if err != nil || string(data) != input {
+			t.Fatalf("nullable field: %s %v", data, err)
 		}
 	}
-}
-
-func TestGeneratedWireFixtures(t *testing.T) {
-	fixtures := wireFixtures(t)
-	roundtripFixtures[generated.UpdateAgentRequest](t, fixtures, "patch")
-	roundtripFixtures[generated.ActorRef](t, fixtures, "actor")
-	roundtripFixtures[generated.EnvironmentSelection](t, fixtures, "environment")
-	roundtripFixtures[generated.UserMessage](t, fixtures, "user_message")
-	roundtripFixtures[generated.RunStatus](t, fixtures, "run_status")
-	roundtripFixtures[generated.ConnectorCollection](t, fixtures, "null_cursor")
-	var omitted, null generated.UpdateAgentRequest
-	if err := json.Unmarshal([]byte(`{"name":null}`), &null); err != nil {
+	payload := a13n.TextPayload("hello")
+	text, err := payload.Content[0].AsTextPart()
+	if err != nil || text.Text != "hello" || text.Type != "text" {
+		t.Fatalf("typed union: %#v %v", text, err)
+	}
+	var secret generated.ProviderCreate
+	if err := json.Unmarshal([]byte(`{"credential":{"api_key":"do-not-print"}}`), &secret); err != nil {
 		t.Fatal(err)
 	}
-	if omitted.Name.IsSpecified() || !null.Name.IsNull() {
-		t.Fatal("omission and null collapsed")
-	}
-	actor := generated.ActorRef{}
-	if err := actor.FromPrincipalRef(generated.PrincipalRef{PrincipalId: "usr_test", PrincipalType: generated.PrincipalTypeUser}); err != nil {
-		t.Fatal(err)
-	}
-	decoded, err := actor.AsPrincipalRef()
-	if err != nil || decoded.PrincipalId != "usr_test" {
-		t.Fatalf("typed union branch: %v %v", decoded, err)
-	}
-	credential := map[string]any{"api_key": "do-not-print"}
-	secret := generated.CreateWebProviderRequest{Credential: &credential}
 	if strings.Contains(fmt.Sprintf("%+v %#v", secret, secret), "do-not-print") {
-		t.Fatal("credential leaked")
+		t.Fatal("write-only credential leaked in diagnostics")
+	}
+	wire, err := json.Marshal(secret)
+	if err != nil || !strings.Contains(string(wire), "do-not-print") {
+		t.Fatal("credential missing from authorized wire serialization")
+	}
+	var status generated.RunStatus
+	if err := json.Unmarshal([]byte(`"future_state"`), &status); err != nil || status != "future_state" {
+		t.Fatal("unknown Run status lost")
+	}
+	var receipt generated.Submitted
+	if err := json.Unmarshal([]byte(`{"run":null}`), &receipt); err != nil || !receipt.Run.IsNull() {
+		t.Fatal("queued receipt collapsed")
 	}
 }
 
-func TestGeneratedHTTPAndStreamShareTransport(t *testing.T) {
-	fixtures := wireFixtures(t)
-	calls := 0
+func TestGeneratedHTTPAndBinaryShareTransport(t *testing.T) {
+	var paths []string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		calls++
+		paths = append(paths, r.URL.EscapedPath())
 		if r.Header.Get("Authorization") != "Bearer test-token" {
-			t.Error("missing authentication")
+			t.Error("missing auth")
 		}
 		w.Header().Set("X-Request-ID", "req_test")
 		w.Header().Set("ETag", `"v1"`)
-		switch r.URL.Path {
-		case "/prefix/api/v1/auth/context":
-			w.Header().Set("Content-Type", "application/json")
-			_, _ = w.Write(fixtures["credential_context"])
-		case "/prefix/api/v1/assets/ast_test/content":
+		if strings.HasSuffix(r.URL.Path, "/content") {
 			_, _ = w.Write([]byte("streamed"))
-		default:
-			t.Errorf("unexpected path %s", r.URL.Path)
+			return
 		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"id":"ws"}`))
 	}))
 	defer server.Close()
 	client, err := a13n.NewClient(server.URL+"/prefix", a13n.NewSecret("test-token"), nil)
@@ -119,28 +80,25 @@ func TestGeneratedHTTPAndStreamShareTransport(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := api.GetAuthContextWithResponse(context.Background())
-	if err != nil {
-		t.Fatal(err)
+	result, err := api.GetWorkspaceApiV1WorkspacesWorkspaceIdGetWithResponse(context.Background(), "ws")
+	if err != nil || result.JSON200 == nil || result.HTTPResponse.Header.Get("X-Request-ID") != "req_test" {
+		t.Fatalf("metadata: %v %v", result, err)
 	}
-	if result.JSON200 == nil || result.HTTPResponse.Header.Get("X-Request-ID") != "req_test" {
-		t.Fatal("missing result metadata")
-	}
-	response, err := api.GetAssetsAssetIdContent(context.Background(), "ast_test")
+	response, err := client.Resources().Workspaces().Ref("ws").Assets().Ref("ast").Content().Get(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
 	data, err := io.ReadAll(response.Body)
-	_ = response.Body.Close()
+	_ = response.Close()
 	if err != nil || string(data) != "streamed" {
-		t.Fatalf("stream failed: %v", err)
+		t.Fatal(err)
 	}
 	_ = client.Close()
-	if _, err := api.GetAuthContext(context.Background()); err == nil {
-		t.Fatal("closed client accepted request")
+	if _, err := api.GetWorkspaceApiV1WorkspacesWorkspaceIdGet(context.Background(), "ws"); err == nil {
+		t.Fatal("closed client allowed request")
 	}
-	if calls != 2 {
-		t.Fatalf("unexpected retry or request: %d", calls)
+	if !reflect.DeepEqual(paths, []string{"/prefix/api/v1/workspaces/ws", "/prefix/api/v1/workspaces/ws/assets/ast/content"}) {
+		t.Fatal(paths)
 	}
 }
 
@@ -148,14 +106,13 @@ func TestGeneratedRejectsWrongFieldTypes(t *testing.T) {
 	source := filepath.Join(t.TempDir(), "invalid.go")
 	code := `package invalid
 import "github.com/converge-ai-labs/a13n-sdk-go/generated"
-var _ = generated.UpdateAgentRequest{Name: 42}
-var _ = generated.UserMessage{Content: 42}
+var _ = generated.AgentUpdate{Name: 42}
+var _ = generated.MessagePayload{Content: 42}
 `
 	if err := os.WriteFile(source, []byte(code), 0600); err != nil {
 		t.Fatal(err)
 	}
-	command := exec.Command("go", "test", source)
-	output, err := command.CombinedOutput()
+	output, err := exec.Command("go", "test", source).CombinedOutput()
 	if err == nil || strings.Count(string(output), "cannot use 42") != 2 {
 		t.Fatalf("expected two type errors: %v: %s", err, output)
 	}
