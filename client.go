@@ -20,8 +20,13 @@ func (Secret) String() string               { return "[REDACTED]" }
 func (Secret) GoString() string             { return "a13n.Secret([REDACTED])" }
 func (Secret) MarshalJSON() ([]byte, error) { return json.Marshal("[REDACTED]") }
 
-var ErrTransport = errors.New("service transport failed; mutation outcome may be unknown")
+// ErrTransport identifies local transport failures. Mutation outcomes may be unknown.
+var ErrTransport = errors.New("service transport failed")
+
+// ErrProtocol identifies invalid Service responses, including framing and JSON.
 var ErrProtocol = errors.New("invalid or oversized Service response")
+
+// ErrClosed identifies operations stopped by the owning client's Close.
 var ErrClosed = errors.New("client is closed")
 
 // ApiError retains reconciliation evidence without including response bodies in diagnostics.

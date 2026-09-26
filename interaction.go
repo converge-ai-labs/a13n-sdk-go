@@ -44,6 +44,8 @@ func TextPayload(text string) generated.MessagePayload {
 
 // Wait observes exactly this Run until completed, waiting, failed or cancelled.
 // The context bounds requests, body delivery and sleeps; it never stops the Run.
+// Resume returns a successor: bind its returned ID before waiting. This method
+// neither follows successors nor interprets waiting/failed/cancelled as success.
 func (r RunResource) Wait(ctx context.Context, interval time.Duration) (Result[generated.RunView], error) {
 	return waitFor(ctx, r.client, interval, r.Get, func(run generated.RunView) bool {
 		switch run.Status {

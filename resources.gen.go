@@ -11,493 +11,1655 @@ import (
 	"time"
 )
 
+// MemberKind selects kind for /api/v1/organizations/{organization_id}/members. It aliases the protocol
+// type.
+type MemberKind = generated.ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind
+
+const (
+	// MemberKindUser selects user.
+	MemberKindUser MemberKind = "user"
+	// MemberKindServiceAccount selects service_account.
+	MemberKindServiceAccount MemberKind = "service_account"
+)
+
+// ProviderKind selects kind for /api/v1/provider-types/{kind}. It aliases the protocol type.
+type ProviderKind = generated.ListProviderTypesApiV1ProviderTypesKindGetParamsKind
+
+const (
+	// ProviderKindModel selects model.
+	ProviderKindModel ProviderKind = "model"
+	// ProviderKindEnvironment selects environment.
+	ProviderKindEnvironment ProviderKind = "environment"
+	// ProviderKindConnector selects connector.
+	ProviderKindConnector ProviderKind = "connector"
+	// ProviderKindWeb selects web.
+	ProviderKindWeb ProviderKind = "web"
+	// ProviderKindMemory selects memory.
+	ProviderKindMemory ProviderKind = "memory"
+)
+
+// SkillSource selects source for /api/v1/workspaces/{workspace_id}/skills. It aliases the protocol
+// type.
+type SkillSource = generated.ListSkillsApiV1WorkspacesWorkspaceIdSkillsGetParamsSource
+
+const (
+	// SkillSourceUpload selects upload.
+	SkillSourceUpload SkillSource = "upload"
+	// SkillSourceGithub selects github.
+	SkillSourceGithub SkillSource = "github"
+)
+
+// ServiceResources is a local resource reference sharing its client's transport and lifetime.
 type ServiceResources struct{ binding }
+
+// AuthResource is a local resource reference sharing its client's transport and lifetime.
 type AuthResource struct{ binding }
+
+// AuthConfigurationResource is a local resource reference sharing its client's transport and lifetime.
 type AuthConfigurationResource struct{ binding }
+
+// AuthEmailChangeResource is a local resource reference sharing its client's transport and lifetime.
 type AuthEmailChangeResource struct{ binding }
+
+// AuthPasswordResetResource is a local resource reference sharing its client's transport and lifetime.
 type AuthPasswordResetResource struct{ binding }
+
+// AuthSessionResource is a local resource reference sharing its client's transport and lifetime.
 type AuthSessionResource struct{ binding }
+
+// ConnectionsResource is a local resource reference sharing its client's transport and lifetime.
 type ConnectionsResource struct{ binding }
+
+// ConnectionsCallbackResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ConnectionsCallbackResource struct{ binding }
+
+// ConnectionsCallbackGetOptions supplies query and header inputs for ConnectionsCallbackResource.Get.
 type ConnectionsCallbackGetOptions struct {
-	State      string
-	Code       *string
-	Error      *string
-	Iss        *string
+	// State supplies the state query parameter.
+	State string
+	// Code supplies the code query parameter. Nil omits this parameter.
+	Code *string
+	// Error supplies the error query parameter. Nil omits this parameter.
+	Error *string
+	// Iss supplies the iss query parameter. Nil omits this parameter.
+	Iss *string
+	// SessionUri supplies the session_uri query parameter. Nil omits this parameter.
 	SessionUri *string
 }
+
+// ConnectionsRedirectUriResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ConnectionsRedirectUriResource struct{ binding }
+
+// InvitationsResource is a local resource reference sharing its client's transport and lifetime.
 type InvitationsResource struct{ binding }
+
+// InvitationResource is a local resource reference sharing its client's transport and lifetime.
 type InvitationResource struct{ binding }
+
+// McpServersResource is a local resource reference sharing its client's transport and lifetime.
 type McpServersResource struct{ binding }
+
+// McpServersListOptions supplies query and header inputs for McpServersResource.List.
 type McpServersListOptions struct {
-	Query  *string
-	Limit  *int
+	// Query supplies the query query parameter. Nil omits this parameter.
+	Query *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// ModelCatalogResource is a local resource reference sharing its client's transport and lifetime.
 type ModelCatalogResource struct{ binding }
+
+// OrganizationsResource is a local resource reference sharing its client's transport and lifetime.
 type OrganizationsResource struct{ binding }
+
+// OrganizationsListOptions supplies query and header inputs for OrganizationsResource.List.
 type OrganizationsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// OrganizationResource is a local resource reference sharing its client's transport and lifetime.
 type OrganizationResource struct{ binding }
-type OrganizationUpdateOptions struct{ IfMatch string }
+
+// OrganizationUpdateOptions supplies query and header inputs for OrganizationResource.Update.
+type OrganizationUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationAuditEventsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationAuditEventsResource struct{ binding }
+
+// OrganizationAuditEventsListOptions supplies query and header inputs for
+// OrganizationAuditEventsResource.List.
 type OrganizationAuditEventsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// OrganizationConnectorProvidersResource is a local resource reference sharing its client's transport
+// and lifetime.
 type OrganizationConnectorProvidersResource struct{ binding }
+
+// OrganizationConnectorProvidersListOptions supplies query and header inputs for
+// OrganizationConnectorProvidersResource.List.
 type OrganizationConnectorProvidersListOptions struct {
+	// WorkspaceId supplies the workspace_id query parameter. Nil omits this parameter.
 	WorkspaceId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// OrganizationConnectorProviderResource is a local resource reference sharing its client's transport
+// and lifetime.
 type OrganizationConnectorProviderResource struct{ binding }
-type OrganizationConnectorProviderUpdateOptions struct{ IfMatch string }
+
+// OrganizationConnectorProviderUpdateOptions supplies query and header inputs for
+// OrganizationConnectorProviderResource.Update.
+type OrganizationConnectorProviderUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationEnvironmentProvidersResource is a local resource reference sharing its client's
+// transport and lifetime.
 type OrganizationEnvironmentProvidersResource struct{ binding }
+
+// OrganizationEnvironmentProvidersListOptions supplies query and header inputs for
+// OrganizationEnvironmentProvidersResource.List.
 type OrganizationEnvironmentProvidersListOptions struct {
+	// WorkspaceId supplies the workspace_id query parameter. Nil omits this parameter.
 	WorkspaceId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// OrganizationEnvironmentProviderResource is a local resource reference sharing its client's transport
+// and lifetime.
 type OrganizationEnvironmentProviderResource struct{ binding }
-type OrganizationEnvironmentProviderUpdateOptions struct{ IfMatch string }
+
+// OrganizationEnvironmentProviderUpdateOptions supplies query and header inputs for
+// OrganizationEnvironmentProviderResource.Update.
+type OrganizationEnvironmentProviderUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationGrantsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationGrantsResource struct{ binding }
+
+// OrganizationGrantsListOptions supplies query and header inputs for OrganizationGrantsResource.List.
 type OrganizationGrantsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// OrganizationGrantResource is a local resource reference sharing its client's transport and lifetime.
 type OrganizationGrantResource struct{ binding }
+
+// OrganizationIconResource is a local resource reference sharing its client's transport and lifetime.
 type OrganizationIconResource struct{ binding }
-type OrganizationIconDeleteOptions struct{ IfMatch string }
+
+// OrganizationIconDeleteOptions supplies query and header inputs for OrganizationIconResource.Delete.
+type OrganizationIconDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationIconReplaceOptions supplies query and header inputs for
+// OrganizationIconResource.Replace.
 type OrganizationIconReplaceOptions struct {
-	IfMatch     string
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+	// ContentType is the explicit image MIME type allowed by this operation.
 	ContentType string
 }
+
+// OrganizationInvitationsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationInvitationsResource struct{ binding }
+
+// OrganizationInvitationsListOptions supplies query and header inputs for
+// OrganizationInvitationsResource.List.
 type OrganizationInvitationsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// OrganizationInvitationResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationInvitationResource struct{ binding }
-type OrganizationInvitationResendOptions struct{ IfMatch string }
-type OrganizationInvitationRevokeOptions struct{ IfMatch string }
+
+// OrganizationInvitationResendOptions supplies query and header inputs for
+// OrganizationInvitationResource.Resend.
+type OrganizationInvitationResendOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationInvitationRevokeOptions supplies query and header inputs for
+// OrganizationInvitationResource.Revoke.
+type OrganizationInvitationRevokeOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationMembersResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationMembersResource struct{ binding }
+
+// OrganizationMembersListOptions supplies query and header inputs for
+// OrganizationMembersResource.List.
 type OrganizationMembersListOptions struct {
-	Kind   *generated.ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind
-	Limit  *int
+	// Kind supplies the kind query parameter. Nil omits this parameter.
+	Kind *MemberKind
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// OrganizationMemoryProvidersResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationMemoryProvidersResource struct{ binding }
+
+// OrganizationMemoryProvidersListOptions supplies query and header inputs for
+// OrganizationMemoryProvidersResource.List.
 type OrganizationMemoryProvidersListOptions struct {
+	// WorkspaceId supplies the workspace_id query parameter. Nil omits this parameter.
 	WorkspaceId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// OrganizationMemoryProviderResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationMemoryProviderResource struct{ binding }
-type OrganizationMemoryProviderUpdateOptions struct{ IfMatch string }
+
+// OrganizationMemoryProviderUpdateOptions supplies query and header inputs for
+// OrganizationMemoryProviderResource.Update.
+type OrganizationMemoryProviderUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationModelProvidersResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationModelProvidersResource struct{ binding }
+
+// OrganizationModelProvidersListOptions supplies query and header inputs for
+// OrganizationModelProvidersResource.List.
 type OrganizationModelProvidersListOptions struct {
+	// WorkspaceId supplies the workspace_id query parameter. Nil omits this parameter.
 	WorkspaceId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// OrganizationModelProviderResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationModelProviderResource struct{ binding }
-type OrganizationModelProviderUpdateOptions struct{ IfMatch string }
+
+// OrganizationModelProviderUpdateOptions supplies query and header inputs for
+// OrganizationModelProviderResource.Update.
+type OrganizationModelProviderUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationModelsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationModelsResource struct{ binding }
+
+// OrganizationModelsListOptions supplies query and header inputs for OrganizationModelsResource.List.
 type OrganizationModelsListOptions struct {
+	// WorkspaceId supplies the workspace_id query parameter. Nil omits this parameter.
 	WorkspaceId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// OrganizationModelResource is a local resource reference sharing its client's transport and lifetime.
 type OrganizationModelResource struct{ binding }
-type OrganizationModelUpdateOptions struct{ IfMatch string }
+
+// OrganizationModelUpdateOptions supplies query and header inputs for
+// OrganizationModelResource.Update.
+type OrganizationModelUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationWebProvidersResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationWebProvidersResource struct{ binding }
+
+// OrganizationWebProvidersListOptions supplies query and header inputs for
+// OrganizationWebProvidersResource.List.
 type OrganizationWebProvidersListOptions struct {
+	// WorkspaceId supplies the workspace_id query parameter. Nil omits this parameter.
 	WorkspaceId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// OrganizationWebProviderResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationWebProviderResource struct{ binding }
-type OrganizationWebProviderUpdateOptions struct{ IfMatch string }
+
+// OrganizationWebProviderUpdateOptions supplies query and header inputs for
+// OrganizationWebProviderResource.Update.
+type OrganizationWebProviderUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// OrganizationWorkspacesResource is a local resource reference sharing its client's transport and
+// lifetime.
 type OrganizationWorkspacesResource struct{ binding }
+
+// OrganizationWorkspacesListOptions supplies query and header inputs for
+// OrganizationWorkspacesResource.List.
 type OrganizationWorkspacesListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// ProviderTypesResource is a local resource reference sharing its client's transport and lifetime.
 type ProviderTypesResource struct{ binding }
+
+// ProviderTypeResource is a local resource reference sharing its client's transport and lifetime.
 type ProviderTypeResource struct{ binding }
+
+// UsersResource is a local resource reference sharing its client's transport and lifetime.
 type UsersResource struct{ binding }
+
+// UsersMeResource is a local resource reference sharing its client's transport and lifetime.
 type UsersMeResource struct{ binding }
-type UsersMeUpdateOptions struct{ IfMatch string }
+
+// UsersMeUpdateOptions supplies query and header inputs for UsersMeResource.Update.
+type UsersMeUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// UsersMeAuditEventsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type UsersMeAuditEventsResource struct{ binding }
+
+// UsersMeAuditEventsListOptions supplies query and header inputs for UsersMeAuditEventsResource.List.
 type UsersMeAuditEventsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// UsersMeAvatarResource is a local resource reference sharing its client's transport and lifetime.
 type UsersMeAvatarResource struct{ binding }
-type UsersMeAvatarDeleteOptions struct{ IfMatch string }
+
+// UsersMeAvatarDeleteOptions supplies query and header inputs for UsersMeAvatarResource.Delete.
+type UsersMeAvatarDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// UsersMeAvatarReplaceOptions supplies query and header inputs for UsersMeAvatarResource.Replace.
 type UsersMeAvatarReplaceOptions struct {
-	IfMatch     string
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+	// ContentType is the explicit image MIME type allowed by this operation.
 	ContentType string
 }
+
+// UsersMeKeysResource is a local resource reference sharing its client's transport and lifetime.
 type UsersMeKeysResource struct{ binding }
+
+// UsersMeKeysListOptions supplies query and header inputs for UsersMeKeysResource.List.
 type UsersMeKeysListOptions struct {
+	// WorkspaceId supplies the workspace_id query parameter. Nil omits this parameter.
 	WorkspaceId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// UsersMeKeyResource is a local resource reference sharing its client's transport and lifetime.
 type UsersMeKeyResource struct{ binding }
-type UsersMeKeyDeleteOptions struct{ IfMatch string }
+
+// UsersMeKeyDeleteOptions supplies query and header inputs for UsersMeKeyResource.Delete.
+type UsersMeKeyDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// UsersMeLoginSessionsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type UsersMeLoginSessionsResource struct{ binding }
+
+// UsersMeLoginSessionsListOptions supplies query and header inputs for
+// UsersMeLoginSessionsResource.List.
 type UsersMeLoginSessionsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// UsersMeLoginSessionResource is a local resource reference sharing its client's transport and
+// lifetime.
 type UsersMeLoginSessionResource struct{ binding }
+
+// UserResource is a local resource reference sharing its client's transport and lifetime.
 type UserResource struct{ binding }
+
+// UserAvatarResource is a local resource reference sharing its client's transport and lifetime.
 type UserAvatarResource struct{ binding }
+
+// WorkspacesResource is a local resource reference sharing its client's transport and lifetime.
 type WorkspacesResource struct{ binding }
+
+// WorkspacesListOptions supplies query and header inputs for WorkspacesResource.List.
 type WorkspacesListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// WorkspaceResource is a local resource reference sharing its client's transport and lifetime.
 type WorkspaceResource struct{ binding }
-type WorkspaceUpdateOptions struct{ IfMatch string }
-type WorkspaceArchiveOptions struct{ IfMatch string }
-type AgentsResource struct{ binding }
-type AgentsListOptions struct {
-	Label           *[]string
-	Q               *string
-	Archived        *bool
-	SkillId         *string
-	SkillRevisionId *string
-	Limit           *int
-	Cursor          *string
+
+// WorkspaceUpdateOptions supplies query and header inputs for WorkspaceResource.Update.
+type WorkspaceUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
 }
+
+// WorkspaceArchiveOptions supplies query and header inputs for WorkspaceResource.Archive.
+type WorkspaceArchiveOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AgentsResource is a local resource reference sharing its client's transport and lifetime.
+type AgentsResource struct{ binding }
+
+// AgentsListOptions supplies query and header inputs for AgentsResource.List.
+type AgentsListOptions struct {
+	// Label supplies the label query parameter. Nil omits this parameter.
+	Label *[]string
+	// Q supplies the q query parameter. Nil omits this parameter.
+	Q *string
+	// Archived supplies the archived query parameter. Nil omits this parameter.
+	Archived *bool
+	// SkillId supplies the skill_id query parameter. Nil omits this parameter.
+	SkillId *string
+	// SkillRevisionId supplies the skill_revision_id query parameter. Nil omits this parameter.
+	SkillRevisionId *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
+}
+
+// AgentResource is a local resource reference sharing its client's transport and lifetime.
 type AgentResource struct{ binding }
-type AgentUpdateOptions struct{ IfMatch string }
-type AgentArchiveOptions struct{ IfMatch string }
-type AgentUnarchiveOptions struct{ IfMatch string }
+
+// AgentUpdateOptions supplies query and header inputs for AgentResource.Update.
+type AgentUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AgentArchiveOptions supplies query and header inputs for AgentResource.Archive.
+type AgentArchiveOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AgentUnarchiveOptions supplies query and header inputs for AgentResource.Unarchive.
+type AgentUnarchiveOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AgentAvatarResource is a local resource reference sharing its client's transport and lifetime.
 type AgentAvatarResource struct{ binding }
-type AgentAvatarDeleteOptions struct{ IfMatch string }
+
+// AgentAvatarDeleteOptions supplies query and header inputs for AgentAvatarResource.Delete.
+type AgentAvatarDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AgentAvatarReplaceOptions supplies query and header inputs for AgentAvatarResource.Replace.
 type AgentAvatarReplaceOptions struct {
-	IfMatch     string
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+	// ContentType is the explicit image MIME type allowed by this operation.
 	ContentType string
 }
+
+// AgentRevisionsResource is a local resource reference sharing its client's transport and lifetime.
 type AgentRevisionsResource struct{ binding }
+
+// AgentRevisionsListOptions supplies query and header inputs for AgentRevisionsResource.List.
 type AgentRevisionsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
-type AgentRevisionsCreateOptions struct{ IfMatch string }
+
+// AgentRevisionsCreateOptions supplies query and header inputs for AgentRevisionsResource.Create.
+type AgentRevisionsCreateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AgentRevisionResource is a local resource reference sharing its client's transport and lifetime.
 type AgentRevisionResource struct{ binding }
-type AgentRevisionSetDefaultOptions struct{ IfMatch string }
+
+// AgentRevisionSetDefaultOptions supplies query and header inputs for
+// AgentRevisionResource.SetDefault.
+type AgentRevisionSetDefaultOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AssetsResource is a local resource reference sharing its client's transport and lifetime.
 type AssetsResource struct{ binding }
+
+// AssetsListOptions supplies query and header inputs for AssetsResource.List.
 type AssetsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// AssetResource is a local resource reference sharing its client's transport and lifetime.
 type AssetResource struct{ binding }
-type AssetDeleteOptions struct{ IfMatch string }
+
+// AssetDeleteOptions supplies query and header inputs for AssetResource.Delete.
+type AssetDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// AssetContentResource is a local resource reference sharing its client's transport and lifetime.
 type AssetContentResource struct{ binding }
+
+// AuditEventsResource is a local resource reference sharing its client's transport and lifetime.
 type AuditEventsResource struct{ binding }
+
+// AuditEventsListOptions supplies query and header inputs for AuditEventsResource.List.
 type AuditEventsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// WorkspaceConnectionsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type WorkspaceConnectionsResource struct{ binding }
+
+// WorkspaceConnectionsListOptions supplies query and header inputs for
+// WorkspaceConnectionsResource.List.
 type WorkspaceConnectionsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// WorkspaceConnectionResource is a local resource reference sharing its client's transport and
+// lifetime.
 type WorkspaceConnectionResource struct{ binding }
-type WorkspaceConnectionUpdateOptions struct{ IfMatch string }
-type WorkspaceConnectionAuthorizeOptions struct{ IfMatch string }
-type WorkspaceConnectionRevokeOptions struct{ IfMatch string }
+
+// WorkspaceConnectionUpdateOptions supplies query and header inputs for
+// WorkspaceConnectionResource.Update.
+type WorkspaceConnectionUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// WorkspaceConnectionAuthorizeOptions supplies query and header inputs for
+// WorkspaceConnectionResource.Authorize.
+type WorkspaceConnectionAuthorizeOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// WorkspaceConnectionRevokeOptions supplies query and header inputs for
+// WorkspaceConnectionResource.Revoke.
+type WorkspaceConnectionRevokeOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// WorkspaceConnectionToolsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type WorkspaceConnectionToolsResource struct{ binding }
+
+// ConnectorProvidersResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ConnectorProvidersResource struct{ binding }
+
+// ConnectorProviderResource is a local resource reference sharing its client's transport and lifetime.
 type ConnectorProviderResource struct{ binding }
+
+// ConnectorProviderAppsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ConnectorProviderAppsResource struct{ binding }
+
+// ConnectorProviderAppsListOptions supplies query and header inputs for
+// ConnectorProviderAppsResource.List.
 type ConnectorProviderAppsListOptions struct {
-	Query   *string
-	Limit   *int
-	Cursor  *string
+	// Query supplies the query query parameter. Nil omits this parameter.
+	Query *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
+	// Refresh supplies the refresh query parameter. Nil omits this parameter.
 	Refresh *bool
 }
+
+// ConnectorProviderAppResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ConnectorProviderAppResource struct{ binding }
+
+// ConnectorProviderAppActionsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ConnectorProviderAppActionsResource struct{ binding }
+
+// EnvironmentTemplatesResource is a local resource reference sharing its client's transport and
+// lifetime.
 type EnvironmentTemplatesResource struct{ binding }
+
+// EnvironmentTemplatesListOptions supplies query and header inputs for
+// EnvironmentTemplatesResource.List.
 type EnvironmentTemplatesListOptions struct {
-	Label  *[]string
-	Limit  *int
+	// Label supplies the label query parameter. Nil omits this parameter.
+	Label *[]string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// EnvironmentTemplateResource is a local resource reference sharing its client's transport and
+// lifetime.
 type EnvironmentTemplateResource struct{ binding }
-type EnvironmentTemplateUpdateOptions struct{ IfMatch string }
+
+// EnvironmentTemplateUpdateOptions supplies query and header inputs for
+// EnvironmentTemplateResource.Update.
+type EnvironmentTemplateUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// EnvironmentsResource is a local resource reference sharing its client's transport and lifetime.
 type EnvironmentsResource struct{ binding }
+
+// EnvironmentsListOptions supplies query and header inputs for EnvironmentsResource.List.
 type EnvironmentsListOptions struct {
+	// Status supplies the status query parameter. Nil omits this parameter.
 	Status *string
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// EnvironmentResource is a local resource reference sharing its client's transport and lifetime.
 type EnvironmentResource struct{ binding }
-type EnvironmentDeleteOptions struct{ IfMatch string }
-type EnvironmentUpdateOptions struct{ IfMatch string }
-type EnvironmentStopOptions struct{ IfMatch string }
+
+// EnvironmentDeleteOptions supplies query and header inputs for EnvironmentResource.Delete.
+type EnvironmentDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// EnvironmentUpdateOptions supplies query and header inputs for EnvironmentResource.Update.
+type EnvironmentUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// EnvironmentStopOptions supplies query and header inputs for EnvironmentResource.Stop.
+type EnvironmentStopOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// GrantsResource is a local resource reference sharing its client's transport and lifetime.
 type GrantsResource struct{ binding }
+
+// GrantsListOptions supplies query and header inputs for GrantsResource.List.
 type GrantsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// GrantResource is a local resource reference sharing its client's transport and lifetime.
 type GrantResource struct{ binding }
+
+// IconResource is a local resource reference sharing its client's transport and lifetime.
 type IconResource struct{ binding }
-type IconDeleteOptions struct{ IfMatch string }
+
+// IconDeleteOptions supplies query and header inputs for IconResource.Delete.
+type IconDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// IconReplaceOptions supplies query and header inputs for IconResource.Replace.
 type IconReplaceOptions struct {
-	IfMatch     string
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+	// ContentType is the explicit image MIME type allowed by this operation.
 	ContentType string
 }
+
+// WorkspaceInvitationsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type WorkspaceInvitationsResource struct{ binding }
+
+// WorkspaceInvitationsListOptions supplies query and header inputs for
+// WorkspaceInvitationsResource.List.
 type WorkspaceInvitationsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// WorkspaceInvitationResource is a local resource reference sharing its client's transport and
+// lifetime.
 type WorkspaceInvitationResource struct{ binding }
-type WorkspaceInvitationResendOptions struct{ IfMatch string }
-type WorkspaceInvitationRevokeOptions struct{ IfMatch string }
+
+// WorkspaceInvitationResendOptions supplies query and header inputs for
+// WorkspaceInvitationResource.Resend.
+type WorkspaceInvitationResendOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// WorkspaceInvitationRevokeOptions supplies query and header inputs for
+// WorkspaceInvitationResource.Revoke.
+type WorkspaceInvitationRevokeOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// KeysResource is a local resource reference sharing its client's transport and lifetime.
 type KeysResource struct{ binding }
+
+// KeysListOptions supplies query and header inputs for KeysResource.List.
 type KeysListOptions struct {
+	// PrincipalId supplies the principal_id query parameter. Nil omits this parameter.
 	PrincipalId *string
-	Limit       *int
-	Cursor      *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// KeyResource is a local resource reference sharing its client's transport and lifetime.
 type KeyResource struct{ binding }
-type KeyDeleteOptions struct{ IfMatch string }
+
+// KeyDeleteOptions supplies query and header inputs for KeyResource.Delete.
+type KeyDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// MediaUnderstandingDefaultsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type MediaUnderstandingDefaultsResource struct{ binding }
-type MediaUnderstandingDefaultsReplaceOptions struct{ IfMatch string }
+
+// MediaUnderstandingDefaultsReplaceOptions supplies query and header inputs for
+// MediaUnderstandingDefaultsResource.Replace.
+type MediaUnderstandingDefaultsReplaceOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// MemoriesResource is a local resource reference sharing its client's transport and lifetime.
 type MemoriesResource struct{ binding }
+
+// MemoriesListOptions supplies query and header inputs for MemoriesResource.List.
 type MemoriesListOptions struct {
-	Label  *[]string
-	Kind   *generated.MemoryKind
-	Type   *string
-	Limit  *int
+	// Label supplies the label query parameter. Nil omits this parameter.
+	Label *[]string
+	// Kind supplies the kind query parameter. Nil omits this parameter.
+	Kind *generated.MemoryKind
+	// Type supplies the type query parameter. Nil omits this parameter.
+	Type *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// MemoryResource is a local resource reference sharing its client's transport and lifetime.
 type MemoryResource struct{ binding }
-type MemoryDeleteOptions struct{ IfMatch string }
-type MemoryUpdateOptions struct{ IfMatch string }
+
+// MemoryDeleteOptions supplies query and header inputs for MemoryResource.Delete.
+type MemoryDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// MemoryUpdateOptions supplies query and header inputs for MemoryResource.Update.
+type MemoryUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// MemoryFilesResource is a local resource reference sharing its client's transport and lifetime.
 type MemoryFilesResource struct{ binding }
+
+// MemoryFilesListOptions supplies query and header inputs for MemoryFilesResource.List.
 type MemoryFilesListOptions struct {
+	// Prefix supplies the prefix query parameter. A directory ending in "/"; "" lists every file Nil omits
+	// this parameter.
 	Prefix *string
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
-type MemoryFilesMoveOptions struct{ IfMatch string }
+
+// MemoryFilesMoveOptions supplies query and header inputs for MemoryFilesResource.Move.
+type MemoryFilesMoveOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// MemoryFileResource is a local resource reference sharing its client's transport and lifetime.
 type MemoryFileResource struct{ binding }
-type MemoryFileDeleteOptions struct{ IfMatch string }
-type MemoryFileReplaceOptions struct{ IfMatch string }
+
+// MemoryFileDeleteOptions supplies query and header inputs for MemoryFileResource.Delete.
+type MemoryFileDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// MemoryFileReplaceOptions supplies query and header inputs for MemoryFileResource.Replace.
+type MemoryFileReplaceOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// MemoryRecordsResource is a local resource reference sharing its client's transport and lifetime.
 type MemoryRecordsResource struct{ binding }
+
+// MemoryRecordsListOptions supplies query and header inputs for MemoryRecordsResource.List.
 type MemoryRecordsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. The provider's own cursor Nil omits this parameter.
 	Cursor *string
 }
+
+// MemoryRecordResource is a local resource reference sharing its client's transport and lifetime.
 type MemoryRecordResource struct{ binding }
+
+// MemoryRevisionsResource is a local resource reference sharing its client's transport and lifetime.
 type MemoryRevisionsResource struct{ binding }
-type MemoryRevisionsDeleteOptions struct{ Path string }
+
+// MemoryRevisionsDeleteOptions supplies query and header inputs for MemoryRevisionsResource.Delete.
+type MemoryRevisionsDeleteOptions struct {
+	// Path supplies the path query parameter.
+	Path string
+}
+
+// MemoryRevisionsListOptions supplies query and header inputs for MemoryRevisionsResource.List.
 type MemoryRevisionsListOptions struct {
-	Path   *string
-	RunId  *string
-	Limit  *int
+	// Path supplies the path query parameter. Nil omits this parameter.
+	Path *string
+	// RunId supplies the run_id query parameter. Nil omits this parameter.
+	RunId *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// MemoryRevisionResource is a local resource reference sharing its client's transport and lifetime.
 type MemoryRevisionResource struct{ binding }
-type MemoryRevisionRestoreOptions struct{ IfMatch *string }
+
+// MemoryRevisionRestoreOptions supplies query and header inputs for MemoryRevisionResource.Restore.
+type MemoryRevisionRestoreOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry. Nil
+	// permits an absent restore target.
+	IfMatch *string
+}
+
+// RunsResource is a local resource reference sharing its client's transport and lifetime.
 type RunsResource struct{ binding }
+
+// RunResource is a local resource reference sharing its client's transport and lifetime.
 type RunResource struct{ binding }
-type RunUpdateOptions struct{ IfMatch string }
-type RunForkOptions struct{ IdempotencyKey string }
-type RunResumeOptions struct{ IdempotencyKey string }
+
+// RunUpdateOptions supplies query and header inputs for RunResource.Update.
+type RunUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// RunForkOptions supplies query and header inputs for RunResource.Fork.
+type RunForkOptions struct {
+	// IdempotencyKey supplies the Idempotency-Key header parameter. Required, caller-chosen request key.
+	// Reconcile uncertain outcomes before retrying.
+	IdempotencyKey string
+}
+
+// RunResumeOptions supplies query and header inputs for RunResource.Resume.
+type RunResumeOptions struct {
+	// IdempotencyKey supplies the Idempotency-Key header parameter. Required, caller-chosen request key.
+	// Reconcile uncertain outcomes before retrying.
+	IdempotencyKey string
+}
+
+// RunAttemptsResource is a local resource reference sharing its client's transport and lifetime.
 type RunAttemptsResource struct{ binding }
+
+// RunAttemptResource is a local resource reference sharing its client's transport and lifetime.
 type RunAttemptResource struct{ binding }
+
+// RunAttemptTraceResource is a local resource reference sharing its client's transport and lifetime.
 type RunAttemptTraceResource struct{ binding }
+
+// RunAttemptTraceListOptions supplies query and header inputs for RunAttemptTraceResource.List.
 type RunAttemptTraceListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// RunItemsResource is a local resource reference sharing its client's transport and lifetime.
 type RunItemsResource struct{ binding }
+
+// RunLineageResource is a local resource reference sharing its client's transport and lifetime.
 type RunLineageResource struct{ binding }
-type RunLineageListOptions struct{ Cursor *string }
+
+// RunLineageListOptions supplies query and header inputs for RunLineageResource.List.
+type RunLineageListOptions struct {
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
+}
+
+// SecretsResource is a local resource reference sharing its client's transport and lifetime.
 type SecretsResource struct{ binding }
+
+// SecretsListOptions supplies query and header inputs for SecretsResource.List.
 type SecretsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// SecretResource is a local resource reference sharing its client's transport and lifetime.
 type SecretResource struct{ binding }
-type SecretDeleteOptions struct{ IfMatch string }
-type SecretReplaceOptions struct{ IfMatch string }
+
+// SecretDeleteOptions supplies query and header inputs for SecretResource.Delete.
+type SecretDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SecretReplaceOptions supplies query and header inputs for SecretResource.Replace.
+type SecretReplaceOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ServiceAccountsResource is a local resource reference sharing its client's transport and lifetime.
 type ServiceAccountsResource struct{ binding }
+
+// ServiceAccountsListOptions supplies query and header inputs for ServiceAccountsResource.List.
 type ServiceAccountsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// ServiceAccountResource is a local resource reference sharing its client's transport and lifetime.
 type ServiceAccountResource struct{ binding }
-type ServiceAccountDeleteOptions struct{ IfMatch string }
-type ServiceAccountUpdateOptions struct{ IfMatch string }
+
+// ServiceAccountDeleteOptions supplies query and header inputs for ServiceAccountResource.Delete.
+type ServiceAccountDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ServiceAccountUpdateOptions supplies query and header inputs for ServiceAccountResource.Update.
+type ServiceAccountUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ServiceAccountKeysResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ServiceAccountKeysResource struct{ binding }
+
+// ServiceAccountKeysListOptions supplies query and header inputs for ServiceAccountKeysResource.List.
 type ServiceAccountKeysListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// SessionsResource is a local resource reference sharing its client's transport and lifetime.
 type SessionsResource struct{ binding }
+
+// SessionsListOptions supplies query and header inputs for SessionsResource.List.
 type SessionsListOptions struct {
-	Q             *string
-	AgentId       *string
-	Status        *[]generated.RunStatus
-	Trigger       *[]generated.Trigger
-	UpdatedAfter  *time.Time
+	// Q supplies the q query parameter. A session or thread ID Nil omits this parameter.
+	Q *string
+	// AgentId supplies the agent_id query parameter. Nil omits this parameter.
+	AgentId *string
+	// Status supplies the status query parameter. Nil omits this parameter.
+	Status *[]generated.RunStatus
+	// Trigger supplies the trigger query parameter. Nil omits this parameter.
+	Trigger *[]generated.Trigger
+	// UpdatedAfter supplies the updated_after query parameter. Nil omits this parameter.
+	UpdatedAfter *time.Time
+	// UpdatedBefore supplies the updated_before query parameter. Nil omits this parameter.
 	UpdatedBefore *time.Time
-	Label         *[]string
-	Limit         *int
-	Cursor        *string
+	// Label supplies the label query parameter. Nil omits this parameter.
+	Label *[]string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// SessionResource is a local resource reference sharing its client's transport and lifetime.
 type SessionResource struct{ binding }
-type SessionUpdateOptions struct{ IfMatch string }
+
+// SessionUpdateOptions supplies query and header inputs for SessionResource.Update.
+type SessionUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SkillsResource is a local resource reference sharing its client's transport and lifetime.
 type SkillsResource struct{ binding }
+
+// SkillsListOptions supplies query and header inputs for SkillsResource.List.
 type SkillsListOptions struct {
-	Label    *[]string
-	Q        *string
-	Source   *generated.ListSkillsApiV1WorkspacesWorkspaceIdSkillsGetParamsSource
+	// Label supplies the label query parameter. Nil omits this parameter.
+	Label *[]string
+	// Q supplies the q query parameter. Nil omits this parameter.
+	Q *string
+	// Source supplies the source query parameter. Nil omits this parameter.
+	Source *SkillSource
+	// Archived supplies the archived query parameter. Nil omits this parameter.
 	Archived *bool
-	Limit    *int
-	Cursor   *string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
+
+// SkillResource is a local resource reference sharing its client's transport and lifetime.
 type SkillResource struct{ binding }
-type SkillUpdateOptions struct{ IfMatch string }
-type SkillArchiveOptions struct{ IfMatch string }
-type SkillUnarchiveOptions struct{ IfMatch string }
+
+// SkillUpdateOptions supplies query and header inputs for SkillResource.Update.
+type SkillUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SkillArchiveOptions supplies query and header inputs for SkillResource.Archive.
+type SkillArchiveOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SkillUnarchiveOptions supplies query and header inputs for SkillResource.Unarchive.
+type SkillUnarchiveOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SkillRevisionsResource is a local resource reference sharing its client's transport and lifetime.
 type SkillRevisionsResource struct{ binding }
+
+// SkillRevisionsListOptions supplies query and header inputs for SkillRevisionsResource.List.
 type SkillRevisionsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
-type SkillRevisionsCreateOptions struct{ IfMatch string }
+
+// SkillRevisionsCreateOptions supplies query and header inputs for SkillRevisionsResource.Create.
+type SkillRevisionsCreateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SkillRevisionResource is a local resource reference sharing its client's transport and lifetime.
 type SkillRevisionResource struct{ binding }
-type SkillRevisionSetDefaultOptions struct{ IfMatch string }
+
+// SkillRevisionSetDefaultOptions supplies query and header inputs for
+// SkillRevisionResource.SetDefault.
+type SkillRevisionSetDefaultOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SkillRevisionContentResource is a local resource reference sharing its client's transport and
+// lifetime.
 type SkillRevisionContentResource struct{ binding }
+
+// SkillRevisionFilesResource is a local resource reference sharing its client's transport and
+// lifetime.
 type SkillRevisionFilesResource struct{ binding }
+
+// SkillRevisionFileResource is a local resource reference sharing its client's transport and lifetime.
 type SkillRevisionFileResource struct{ binding }
+
+// SubscriptionsResource is a local resource reference sharing its client's transport and lifetime.
 type SubscriptionsResource struct{ binding }
+
+// SubscriptionsListOptions supplies query and header inputs for SubscriptionsResource.List.
 type SubscriptionsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// SubscriptionResource is a local resource reference sharing its client's transport and lifetime.
 type SubscriptionResource struct{ binding }
-type SubscriptionDeleteOptions struct{ IfMatch string }
-type SubscriptionUpdateOptions struct{ IfMatch string }
+
+// SubscriptionDeleteOptions supplies query and header inputs for SubscriptionResource.Delete.
+type SubscriptionDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SubscriptionUpdateOptions supplies query and header inputs for SubscriptionResource.Update.
+type SubscriptionUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// SubscriptionDeliveriesResource is a local resource reference sharing its client's transport and
+// lifetime.
 type SubscriptionDeliveriesResource struct{ binding }
+
+// SubscriptionDeliveriesListOptions supplies query and header inputs for
+// SubscriptionDeliveriesResource.List.
 type SubscriptionDeliveriesListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// SubscriptionDeliveryResource is a local resource reference sharing its client's transport and
+// lifetime.
 type SubscriptionDeliveryResource struct{ binding }
+
+// ThreadsResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadsResource struct{ binding }
+
+// ThreadsListOptions supplies query and header inputs for ThreadsResource.List.
 type ThreadsListOptions struct {
+	// SessionId supplies the session_id query parameter. Nil omits this parameter.
 	SessionId *string
-	Label     *[]string
-	Limit     *int
-	Cursor    *string
+	// Label supplies the label query parameter. Nil omits this parameter.
+	Label *[]string
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
 }
-type ThreadsCreateOptions struct{ IdempotencyKey string }
+
+// ThreadsCreateOptions supplies query and header inputs for ThreadsResource.Create.
+type ThreadsCreateOptions struct {
+	// IdempotencyKey supplies the Idempotency-Key header parameter. Required, caller-chosen request key.
+	// Reconcile uncertain outcomes before retrying.
+	IdempotencyKey string
+}
+
+// ThreadResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadResource struct{ binding }
-type ThreadUpdateOptions struct{ IfMatch string }
-type ThreadArchiveOptions struct{ IfMatch string }
+
+// ThreadUpdateOptions supplies query and header inputs for ThreadResource.Update.
+type ThreadUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ThreadArchiveOptions supplies query and header inputs for ThreadResource.Archive.
+type ThreadArchiveOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ThreadEnvironmentsResource is a local resource reference sharing its client's transport and
+// lifetime.
 type ThreadEnvironmentsResource struct{ binding }
-type ThreadEnvironmentsCreateOptions struct{ IfMatch string }
+
+// ThreadEnvironmentsCreateOptions supplies query and header inputs for
+// ThreadEnvironmentsResource.Create.
+type ThreadEnvironmentsCreateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ThreadEnvironmentResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadEnvironmentResource struct{ binding }
-type ThreadEnvironmentDeleteOptions struct{ IfMatch string }
+
+// ThreadEnvironmentDeleteOptions supplies query and header inputs for
+// ThreadEnvironmentResource.Delete.
+type ThreadEnvironmentDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// InboxResource is a local resource reference sharing its client's transport and lifetime.
 type InboxResource struct{ binding }
+
+// InboxListOptions supplies query and header inputs for InboxResource.List.
 type InboxListOptions struct {
+	// Status supplies the status query parameter. Nil omits this parameter.
 	Status *[]generated.EntryStatus
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
-type InboxCreateOptions struct{ IdempotencyKey string }
+
+// InboxCreateOptions supplies query and header inputs for InboxResource.Create.
+type InboxCreateOptions struct {
+	// IdempotencyKey supplies the Idempotency-Key header parameter. Required, caller-chosen request key.
+	// Reconcile uncertain outcomes before retrying.
+	IdempotencyKey string
+}
+
+// ThreadInboxOrderResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadInboxOrderResource struct{ binding }
-type ThreadInboxOrderReplaceOptions struct{ IfMatch string }
+
+// ThreadInboxOrderReplaceOptions supplies query and header inputs for
+// ThreadInboxOrderResource.Replace.
+type ThreadInboxOrderReplaceOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// EntryResource is a local resource reference sharing its client's transport and lifetime.
 type EntryResource struct{ binding }
-type EntryDeleteOptions struct{ IfMatch string }
-type EntryUpdateOptions struct{ IfMatch string }
+
+// EntryDeleteOptions supplies query and header inputs for EntryResource.Delete.
+type EntryDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// EntryUpdateOptions supplies query and header inputs for EntryResource.Update.
+type EntryUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ThreadMemoriesResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadMemoriesResource struct{ binding }
-type ThreadMemoriesCreateOptions struct{ IfMatch string }
+
+// ThreadMemoriesCreateOptions supplies query and header inputs for ThreadMemoriesResource.Create.
+type ThreadMemoriesCreateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ThreadMemoryResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadMemoryResource struct{ binding }
-type ThreadMemoryDeleteOptions struct{ IfMatch string }
-type ThreadMemoryUpdateOptions struct{ IfMatch string }
+
+// ThreadMemoryDeleteOptions supplies query and header inputs for ThreadMemoryResource.Delete.
+type ThreadMemoryDeleteOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ThreadMemoryUpdateOptions supplies query and header inputs for ThreadMemoryResource.Update.
+type ThreadMemoryUpdateOptions struct {
+	// IfMatch supplies the If-Match header parameter. The resource's ETag: `"{id}:{version}"` of its
+	// current view Supply the current resource ETag; stale values fail without an automatic retry.
+	// Required and nonempty.
+	IfMatch string
+}
+
+// ThreadRunsResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadRunsResource struct{ binding }
+
+// ThreadRunsListOptions supplies query and header inputs for ThreadRunsResource.List.
 type ThreadRunsListOptions struct {
-	Limit  *int
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// ThreadStreamResource is a local resource reference sharing its client's transport and lifetime.
 type ThreadStreamResource struct{ binding }
-type ThreadStreamGetOptions struct{ LastEventID *string }
-type ToolsetsResource struct{ binding }
-type TraceBackendResource struct{ binding }
-type TracesResource struct{ binding }
-type TracesListOptions struct {
-	SessionId     *string
-	ThreadId      *string
-	RunId         *string
-	Attribute     *[]string
-	StartedAfter  *time.Time
-	StartedBefore *time.Time
-	Limit         *int
-	Cursor        *string
+
+// ThreadStreamGetOptions supplies query and header inputs for ThreadStreamResource.Get.
+type ThreadStreamGetOptions struct {
+	// LastEventID supplies the Last-Event-ID header parameter. Nil omits this parameter.
+	LastEventID *string
 }
-type TraceResource struct{ binding }
-type TraceSpansResource struct{ binding }
-type TraceSpansListOptions struct {
-	Limit  *int
+
+// ToolsetsResource is a local resource reference sharing its client's transport and lifetime.
+type ToolsetsResource struct{ binding }
+
+// TraceBackendResource is a local resource reference sharing its client's transport and lifetime.
+type TraceBackendResource struct{ binding }
+
+// TracesResource is a local resource reference sharing its client's transport and lifetime.
+type TracesResource struct{ binding }
+
+// TracesListOptions supplies query and header inputs for TracesResource.List.
+type TracesListOptions struct {
+	// SessionId supplies the session_id query parameter. Nil omits this parameter.
+	SessionId *string
+	// ThreadId supplies the thread_id query parameter. Nil omits this parameter.
+	ThreadId *string
+	// RunId supplies the run_id query parameter. Nil omits this parameter.
+	RunId *string
+	// Attribute supplies the attribute query parameter. key:value, an exact root span attribute Nil omits
+	// this parameter.
+	Attribute *[]string
+	// StartedAfter supplies the started_after query parameter. Nil omits this parameter.
+	StartedAfter *time.Time
+	// StartedBefore supplies the started_before query parameter. Nil omits this parameter.
+	StartedBefore *time.Time
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
 	Cursor *string
 }
+
+// TraceResource is a local resource reference sharing its client's transport and lifetime.
+type TraceResource struct{ binding }
+
+// TraceSpansResource is a local resource reference sharing its client's transport and lifetime.
+type TraceSpansResource struct{ binding }
+
+// TraceSpansListOptions supplies query and header inputs for TraceSpansResource.List.
+type TraceSpansListOptions struct {
+	// Limit supplies the limit query parameter. Nil omits this parameter.
+	Limit *int
+	// Cursor supplies the cursor query parameter. Nil omits this parameter.
+	Cursor *string
+}
+
+// UploadsResource is a local resource reference sharing its client's transport and lifetime.
 type UploadsResource struct{ binding }
-type UploadsCreateOptions struct{ IdempotencyKey string }
+
+// UploadsCreateOptions supplies query and header inputs for UploadsResource.Create.
+type UploadsCreateOptions struct {
+	// IdempotencyKey supplies the Idempotency-Key header parameter. Required, caller-chosen request key.
+	// Reconcile uncertain outcomes before retrying.
+	IdempotencyKey string
+}
+
+// UsageResource is a local resource reference sharing its client's transport and lifetime.
 type UsageResource struct{ binding }
+
+// UsageGetOptions supplies query and header inputs for UsageResource.Get.
 type UsageGetOptions struct {
-	RunId          *string
-	ThreadId       *string
-	SessionId      *string
-	IngestedAfter  *time.Time
+	// RunId supplies the run_id query parameter. Nil omits this parameter.
+	RunId *string
+	// ThreadId supplies the thread_id query parameter. Nil omits this parameter.
+	ThreadId *string
+	// SessionId supplies the session_id query parameter. Nil omits this parameter.
+	SessionId *string
+	// IngestedAfter supplies the ingested_after query parameter. Nil omits this parameter.
+	IngestedAfter *time.Time
+	// IngestedBefore supplies the ingested_before query parameter. Nil omits this parameter.
 	IngestedBefore *time.Time
 }
+
+// HealthzResource is a local resource reference sharing its client's transport and lifetime.
 type HealthzResource struct{ binding }
+
+// ReadyzResource is a local resource reference sharing its client's transport and lifetime.
 type ReadyzResource struct{ binding }
 
-func (r ServiceResources) Auth() AuthResource                 { return AuthResource{r.binding} }
-func (r ServiceResources) Connections() ConnectionsResource   { return ConnectionsResource{r.binding} }
-func (r ServiceResources) Invitations() InvitationsResource   { return InvitationsResource{r.binding} }
-func (r ServiceResources) McpServers() McpServersResource     { return McpServersResource{r.binding} }
+// Auth returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ServiceResources) Auth() AuthResource { return AuthResource{r.binding} }
+
+// Connections returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ServiceResources) Connections() ConnectionsResource { return ConnectionsResource{r.binding} }
+
+// Invitations returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ServiceResources) Invitations() InvitationsResource { return InvitationsResource{r.binding} }
+
+// McpServers returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ServiceResources) McpServers() McpServersResource { return McpServersResource{r.binding} }
+
+// ModelCatalog returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ServiceResources) ModelCatalog() ModelCatalogResource { return ModelCatalogResource{r.binding} }
+
+// Organizations returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ServiceResources) Organizations() OrganizationsResource {
 	return OrganizationsResource{r.binding}
 }
+
+// ProviderTypes returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ServiceResources) ProviderTypes() ProviderTypesResource {
 	return ProviderTypesResource{r.binding}
 }
-func (r ServiceResources) Users() UsersResource           { return UsersResource{r.binding} }
+
+// Users returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ServiceResources) Users() UsersResource { return UsersResource{r.binding} }
+
+// Workspaces returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ServiceResources) Workspaces() WorkspacesResource { return WorkspacesResource{r.binding} }
-func (r ServiceResources) Healthz() HealthzResource       { return HealthzResource{r.binding} }
-func (r ServiceResources) Readyz() ReadyzResource         { return ReadyzResource{r.binding} }
+
+// Healthz returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ServiceResources) Healthz() HealthzResource { return HealthzResource{r.binding} }
+
+// Readyz returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ServiceResources) Readyz() ReadyzResource { return ReadyzResource{r.binding} }
+
+// Configuration returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r AuthResource) Configuration() AuthConfigurationResource {
 	return AuthConfigurationResource{r.binding}
 }
+
+// EmailChange returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r AuthResource) EmailChange() AuthEmailChangeResource {
 	return AuthEmailChangeResource{r.binding}
 }
+
+// PasswordReset returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r AuthResource) PasswordReset() AuthPasswordResetResource {
 	return AuthPasswordResetResource{r.binding}
 }
+
+// Session returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r AuthResource) Session() AuthSessionResource { return AuthSessionResource{r.binding} }
+
+// Bootstrap calls POST /api/v1/auth/bootstrap. Public only until initialized: creates the first
+// administrator, as the `bootstrap` command does, signed in.
 func (r AuthResource) Bootstrap(ctx context.Context, body generated.BootstrapInput) (Result[generated.LoginOutput], error) {
 	var zero Result[generated.LoginOutput]
 	if err := r.validate(); err != nil {
@@ -506,6 +1668,8 @@ func (r AuthResource) Bootstrap(ctx context.Context, body generated.BootstrapInp
 	response, err := r.client.api.BootstrapAdministratorApiV1AuthBootstrapPost(ctx, body)
 	return jsonResult[generated.LoginOutput](r.client, response, err, 200)
 }
+
+// Login calls POST /api/v1/auth/login. Password Login
 func (r AuthResource) Login(ctx context.Context, body generated.LoginInput) (Result[generated.LoginOutput], error) {
 	var zero Result[generated.LoginOutput]
 	if err := r.validate(); err != nil {
@@ -514,6 +1678,8 @@ func (r AuthResource) Login(ctx context.Context, body generated.LoginInput) (Res
 	response, err := r.client.api.PasswordLoginApiV1AuthLoginPost(ctx, body)
 	return jsonResult[generated.LoginOutput](r.client, response, err, 200)
 }
+
+// Logout calls POST /api/v1/auth/logout. Logout
 func (r AuthResource) Logout(ctx context.Context) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -522,6 +1688,8 @@ func (r AuthResource) Logout(ctx context.Context) (Result[struct{}], error) {
 	response, err := r.client.api.LogoutApiV1AuthLogoutPost(ctx)
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Get calls GET /api/v1/auth/configuration. Auth Configuration
 func (r AuthConfigurationResource) Get(ctx context.Context) (Result[generated.AuthConfiguration], error) {
 	var zero Result[generated.AuthConfiguration]
 	if err := r.validate(); err != nil {
@@ -530,6 +1698,8 @@ func (r AuthConfigurationResource) Get(ctx context.Context) (Result[generated.Au
 	response, err := r.client.api.AuthConfigurationApiV1AuthConfigurationGet(ctx)
 	return jsonResult[generated.AuthConfiguration](r.client, response, err, 200)
 }
+
+// Confirm calls POST /api/v1/auth/email-change/confirm. Confirm Email Change
 func (r AuthEmailChangeResource) Confirm(ctx context.Context, body generated.EmailChangeConfirm) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -538,6 +1708,8 @@ func (r AuthEmailChangeResource) Confirm(ctx context.Context, body generated.Ema
 	response, err := r.client.api.ConfirmEmailChangeApiV1AuthEmailChangeConfirmPost(ctx, body)
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Create calls POST /api/v1/auth/password-reset. Request Password Reset
 func (r AuthPasswordResetResource) Create(ctx context.Context, body generated.PasswordReset) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -546,6 +1718,8 @@ func (r AuthPasswordResetResource) Create(ctx context.Context, body generated.Pa
 	response, err := r.client.api.RequestPasswordResetApiV1AuthPasswordResetPost(ctx, body)
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Confirm calls POST /api/v1/auth/password-reset/confirm. Confirm Password Reset
 func (r AuthPasswordResetResource) Confirm(ctx context.Context, body generated.PasswordResetConfirm) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -554,6 +1728,9 @@ func (r AuthPasswordResetResource) Confirm(ctx context.Context, body generated.P
 	response, err := r.client.api.ConfirmPasswordResetApiV1AuthPasswordResetConfirmPost(ctx, body)
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Get calls GET /api/v1/auth/session. Restores a browser session; the CSRF token is stable for the
+// session's lifetime.
 func (r AuthSessionResource) Get(ctx context.Context) (Result[generated.SessionProfile], error) {
 	var zero Result[generated.SessionProfile]
 	if err := r.validate(); err != nil {
@@ -562,12 +1739,21 @@ func (r AuthSessionResource) Get(ctx context.Context) (Result[generated.SessionP
 	response, err := r.client.api.SessionProfileApiV1AuthSessionGet(ctx)
 	return jsonResult[generated.SessionProfile](r.client, response, err, 200)
 }
+
+// Callback returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ConnectionsResource) Callback() ConnectionsCallbackResource {
 	return ConnectionsCallbackResource{r.binding}
 }
+
+// RedirectUri returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ConnectionsResource) RedirectUri() ConnectionsRedirectUriResource {
 	return ConnectionsRedirectUriResource{r.binding}
 }
+
+// Get calls GET /api/v1/connections/callback. Public: the one-use state authenticates the browser that
+// the authorization server sends back, and the flow cookie the browser that started the flow. Attempts
+// per client address share the login flows' bound. See ConnectionsCallbackGetOptions for explicit
+// parameters and preconditions.
 func (r ConnectionsCallbackResource) Get(ctx context.Context, options ConnectionsCallbackGetOptions) (Result[generated.CallbackOutcome], error) {
 	var zero Result[generated.CallbackOutcome]
 	if err := r.validate(); err != nil {
@@ -576,6 +1762,9 @@ func (r ConnectionsCallbackResource) Get(ctx context.Context, options Connection
 	response, err := r.client.api.CompleteAuthorizationApiV1ConnectionsCallbackGet(ctx, &generated.CompleteAuthorizationApiV1ConnectionsCallbackGetParams{State: options.State, Code: options.Code, Error: options.Error, Iss: options.Iss, SessionUri: options.SessionUri})
 	return jsonResult[generated.CallbackOutcome](r.client, response, err, 200, 303)
 }
+
+// Get calls GET /api/v1/connections/redirect-uri. The deployment's callback, for registering an OAuth
+// client in advance; the same for every connection.
 func (r ConnectionsRedirectUriResource) Get(ctx context.Context) (Result[generated.OAuthRedirect], error) {
 	var zero Result[generated.OAuthRedirect]
 	if err := r.validate(); err != nil {
@@ -584,9 +1773,14 @@ func (r ConnectionsRedirectUriResource) Get(ctx context.Context) (Result[generat
 	response, err := r.client.api.GetRedirectUriApiV1ConnectionsRedirectUriGet(ctx)
 	return jsonResult[generated.OAuthRedirect](r.client, response, err, 200)
 }
+
+// Ref binds invitation_id locally without checking existence or changing credential authority.
 func (r InvitationsResource) Ref(id string) InvitationResource {
 	return InvitationResource{r.selectID(fmt.Sprint(id))}
 }
+
+// Accept calls POST /api/v1/invitations/{invitation_id}/accept. Public by token: creates or joins the
+// invited account and starts a login session.
 func (r InvitationResource) Accept(ctx context.Context, body generated.InvitationAccept) (Result[generated.LoginOutput], error) {
 	var zero Result[generated.LoginOutput]
 	if err := r.validate(); err != nil {
@@ -595,6 +1789,10 @@ func (r InvitationResource) Accept(ctx context.Context, body generated.Invitatio
 	response, err := r.client.api.AcceptApiV1InvitationsInvitationIdAcceptPost(ctx, r.ids[0], body)
 	return jsonResult[generated.LoginOutput](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/mcp-servers. Suggested Remote MCP servers, packaged and from the deployment;
+// readable by every signed-in principal. See McpServersListOptions for explicit parameters and
+// preconditions.
 func (r McpServersResource) List(ctx context.Context, options McpServersListOptions) (Result[generated.McpServerPage], error) {
 	var zero Result[generated.McpServerPage]
 	if err := r.validate(); err != nil {
@@ -603,6 +1801,9 @@ func (r McpServersResource) List(ctx context.Context, options McpServersListOpti
 	response, err := r.client.api.ListMcpServersApiV1McpServersGet(ctx, &generated.ListMcpServersApiV1McpServersGetParams{Query: options.Query, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.McpServerPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r McpServersResource) Pages(ctx context.Context, options McpServersListOptions) iter.Seq2[Result[generated.McpServerPage], error] {
 	if options.Query != nil {
 		value := *options.Query
@@ -623,6 +1824,9 @@ func (r McpServersResource) Pages(ctx context.Context, options McpServersListOpt
 		},
 		func(value generated.McpServerPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// List calls GET /api/v1/model-catalog. The models.dev models the registered model provider types
+// serve, for any signed-in principal.
 func (r ModelCatalogResource) List(ctx context.Context) (Result[generated.ModelCatalog], error) {
 	var zero Result[generated.ModelCatalog]
 	if err := r.validate(); err != nil {
@@ -631,9 +1835,14 @@ func (r ModelCatalogResource) List(ctx context.Context) (Result[generated.ModelC
 	response, err := r.client.api.GetModelCatalogApiV1ModelCatalogGet(ctx)
 	return jsonResult[generated.ModelCatalog](r.client, response, err, 200)
 }
+
+// Ref binds organization_id locally without checking existence or changing credential authority.
 func (r OrganizationsResource) Ref(id string) OrganizationResource {
 	return OrganizationResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations. List Organizations See OrganizationsListOptions for explicit
+// parameters and preconditions.
 func (r OrganizationsResource) List(ctx context.Context, options OrganizationsListOptions) (Result[generated.OrganizationPage], error) {
 	var zero Result[generated.OrganizationPage]
 	if err := r.validate(); err != nil {
@@ -642,6 +1851,9 @@ func (r OrganizationsResource) List(ctx context.Context, options OrganizationsLi
 	response, err := r.client.api.ListOrganizationsApiV1OrganizationsGet(ctx, &generated.ListOrganizationsApiV1OrganizationsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.OrganizationPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationsResource) Pages(ctx context.Context, options OrganizationsListOptions) iter.Seq2[Result[generated.OrganizationPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -658,42 +1870,68 @@ func (r OrganizationsResource) Pages(ctx context.Context, options OrganizationsL
 		},
 		func(value generated.OrganizationPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// AuditEvents returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) AuditEvents() OrganizationAuditEventsResource {
 	return OrganizationAuditEventsResource{r.binding}
 }
+
+// ConnectorProviders returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) ConnectorProviders() OrganizationConnectorProvidersResource {
 	return OrganizationConnectorProvidersResource{r.binding}
 }
+
+// EnvironmentProviders returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) EnvironmentProviders() OrganizationEnvironmentProvidersResource {
 	return OrganizationEnvironmentProvidersResource{r.binding}
 }
+
+// Grants returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) Grants() OrganizationGrantsResource {
 	return OrganizationGrantsResource{r.binding}
 }
+
+// Icon returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) Icon() OrganizationIconResource {
 	return OrganizationIconResource{r.binding}
 }
+
+// Invitations returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) Invitations() OrganizationInvitationsResource {
 	return OrganizationInvitationsResource{r.binding}
 }
+
+// Members returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) Members() OrganizationMembersResource {
 	return OrganizationMembersResource{r.binding}
 }
+
+// MemoryProviders returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) MemoryProviders() OrganizationMemoryProvidersResource {
 	return OrganizationMemoryProvidersResource{r.binding}
 }
+
+// ModelProviders returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) ModelProviders() OrganizationModelProvidersResource {
 	return OrganizationModelProvidersResource{r.binding}
 }
+
+// Models returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) Models() OrganizationModelsResource {
 	return OrganizationModelsResource{r.binding}
 }
+
+// WebProviders returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) WebProviders() OrganizationWebProvidersResource {
 	return OrganizationWebProvidersResource{r.binding}
 }
+
+// Workspaces returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r OrganizationResource) Workspaces() OrganizationWorkspacesResource {
 	return OrganizationWorkspacesResource{r.binding}
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}. Get Organization
 func (r OrganizationResource) Get(ctx context.Context) (Result[generated.Organization], error) {
 	var zero Result[generated.Organization]
 	if err := r.validate(); err != nil {
@@ -702,6 +1940,9 @@ func (r OrganizationResource) Get(ctx context.Context) (Result[generated.Organiz
 	response, err := r.client.api.GetOrganizationApiV1OrganizationsOrganizationIdGet(ctx, r.ids[0])
 	return jsonResult[generated.Organization](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}. Update Organization See
+// OrganizationUpdateOptions for explicit parameters and preconditions.
 func (r OrganizationResource) Update(ctx context.Context, body generated.OrganizationUpdate, options OrganizationUpdateOptions) (Result[generated.Organization], error) {
 	var zero Result[generated.Organization]
 	if err := r.validate(); err != nil {
@@ -713,6 +1954,9 @@ func (r OrganizationResource) Update(ctx context.Context, body generated.Organiz
 	response, err := r.client.api.UpdateOrganizationApiV1OrganizationsOrganizationIdPatch(ctx, r.ids[0], &generated.UpdateOrganizationApiV1OrganizationsOrganizationIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Organization](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/audit-events. List Organization Audit Events
+// See OrganizationAuditEventsListOptions for explicit parameters and preconditions.
 func (r OrganizationAuditEventsResource) List(ctx context.Context, options OrganizationAuditEventsListOptions) (Result[generated.AuditPage], error) {
 	var zero Result[generated.AuditPage]
 	if err := r.validate(); err != nil {
@@ -721,6 +1965,9 @@ func (r OrganizationAuditEventsResource) List(ctx context.Context, options Organ
 	response, err := r.client.api.ListOrganizationAuditEventsApiV1OrganizationsOrganizationIdAuditEventsGet(ctx, r.ids[0], &generated.ListOrganizationAuditEventsApiV1OrganizationsOrganizationIdAuditEventsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.AuditPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationAuditEventsResource) Pages(ctx context.Context, options OrganizationAuditEventsListOptions) iter.Seq2[Result[generated.AuditPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -737,9 +1984,14 @@ func (r OrganizationAuditEventsResource) Pages(ctx context.Context, options Orga
 		},
 		func(value generated.AuditPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Ref binds provider_id locally without checking existence or changing credential authority.
 func (r OrganizationConnectorProvidersResource) Ref(id string) OrganizationConnectorProviderResource {
 	return OrganizationConnectorProviderResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/connector-providers. List Providers See
+// OrganizationConnectorProvidersListOptions for explicit parameters and preconditions.
 func (r OrganizationConnectorProvidersResource) List(ctx context.Context, options OrganizationConnectorProvidersListOptions) (Result[generated.ProviderPage], error) {
 	var zero Result[generated.ProviderPage]
 	if err := r.validate(); err != nil {
@@ -748,6 +2000,9 @@ func (r OrganizationConnectorProvidersResource) List(ctx context.Context, option
 	response, err := r.client.api.ListProvidersApiV1OrganizationsOrganizationIdConnectorProvidersGet(ctx, r.ids[0], &generated.ListProvidersApiV1OrganizationsOrganizationIdConnectorProvidersGetParams{WorkspaceId: options.WorkspaceId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ProviderPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationConnectorProvidersResource) Pages(ctx context.Context, options OrganizationConnectorProvidersListOptions) iter.Seq2[Result[generated.ProviderPage], error] {
 	if options.WorkspaceId != nil {
 		value := *options.WorkspaceId
@@ -768,6 +2023,8 @@ func (r OrganizationConnectorProvidersResource) Pages(ctx context.Context, optio
 		},
 		func(value generated.ProviderPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/connector-providers. Create Provider
 func (r OrganizationConnectorProvidersResource) Create(ctx context.Context, body generated.ProviderCreate) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -776,6 +2033,9 @@ func (r OrganizationConnectorProvidersResource) Create(ctx context.Context, body
 	response, err := r.client.api.CreateProviderApiV1OrganizationsOrganizationIdConnectorProvidersPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Provider](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}/connector-providers/{provider_id}. Get
+// Provider
 func (r OrganizationConnectorProviderResource) Get(ctx context.Context) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -784,6 +2044,10 @@ func (r OrganizationConnectorProviderResource) Get(ctx context.Context) (Result[
 	response, err := r.client.api.GetProviderApiV1OrganizationsOrganizationIdConnectorProvidersProviderIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}/connector-providers/{provider_id}. A
+// `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// See OrganizationConnectorProviderUpdateOptions for explicit parameters and preconditions.
 func (r OrganizationConnectorProviderResource) Update(ctx context.Context, body generated.ProviderUpdate, options OrganizationConnectorProviderUpdateOptions) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -795,6 +2059,9 @@ func (r OrganizationConnectorProviderResource) Update(ctx context.Context, body 
 	response, err := r.client.api.UpdateProviderApiV1OrganizationsOrganizationIdConnectorProvidersProviderIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateProviderApiV1OrganizationsOrganizationIdConnectorProvidersProviderIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Test calls POST /api/v1/organizations/{organization_id}/connector-providers/{provider_id}/test. Test
+// Provider
 func (r OrganizationConnectorProviderResource) Test(ctx context.Context) (Result[generated.ProviderTest], error) {
 	var zero Result[generated.ProviderTest]
 	if err := r.validate(); err != nil {
@@ -803,9 +2070,14 @@ func (r OrganizationConnectorProviderResource) Test(ctx context.Context) (Result
 	response, err := r.client.api.TestProviderApiV1OrganizationsOrganizationIdConnectorProvidersProviderIdTestPost(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ProviderTest](r.client, response, err, 200)
 }
+
+// Ref binds provider_id locally without checking existence or changing credential authority.
 func (r OrganizationEnvironmentProvidersResource) Ref(id string) OrganizationEnvironmentProviderResource {
 	return OrganizationEnvironmentProviderResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/environment-providers. List Providers See
+// OrganizationEnvironmentProvidersListOptions for explicit parameters and preconditions.
 func (r OrganizationEnvironmentProvidersResource) List(ctx context.Context, options OrganizationEnvironmentProvidersListOptions) (Result[generated.ProviderPage], error) {
 	var zero Result[generated.ProviderPage]
 	if err := r.validate(); err != nil {
@@ -814,6 +2086,9 @@ func (r OrganizationEnvironmentProvidersResource) List(ctx context.Context, opti
 	response, err := r.client.api.ListProvidersApiV1OrganizationsOrganizationIdEnvironmentProvidersGet(ctx, r.ids[0], &generated.ListProvidersApiV1OrganizationsOrganizationIdEnvironmentProvidersGetParams{WorkspaceId: options.WorkspaceId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ProviderPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationEnvironmentProvidersResource) Pages(ctx context.Context, options OrganizationEnvironmentProvidersListOptions) iter.Seq2[Result[generated.ProviderPage], error] {
 	if options.WorkspaceId != nil {
 		value := *options.WorkspaceId
@@ -834,6 +2109,8 @@ func (r OrganizationEnvironmentProvidersResource) Pages(ctx context.Context, opt
 		},
 		func(value generated.ProviderPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/environment-providers. Create Provider
 func (r OrganizationEnvironmentProvidersResource) Create(ctx context.Context, body generated.ProviderCreate) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -842,6 +2119,9 @@ func (r OrganizationEnvironmentProvidersResource) Create(ctx context.Context, bo
 	response, err := r.client.api.CreateProviderApiV1OrganizationsOrganizationIdEnvironmentProvidersPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Provider](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}/environment-providers/{provider_id}. Get
+// Provider
 func (r OrganizationEnvironmentProviderResource) Get(ctx context.Context) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -850,6 +2130,10 @@ func (r OrganizationEnvironmentProviderResource) Get(ctx context.Context) (Resul
 	response, err := r.client.api.GetProviderApiV1OrganizationsOrganizationIdEnvironmentProvidersProviderIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}/environment-providers/{provider_id}. A
+// `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// See OrganizationEnvironmentProviderUpdateOptions for explicit parameters and preconditions.
 func (r OrganizationEnvironmentProviderResource) Update(ctx context.Context, body generated.ProviderUpdate, options OrganizationEnvironmentProviderUpdateOptions) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -861,6 +2145,9 @@ func (r OrganizationEnvironmentProviderResource) Update(ctx context.Context, bod
 	response, err := r.client.api.UpdateProviderApiV1OrganizationsOrganizationIdEnvironmentProvidersProviderIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateProviderApiV1OrganizationsOrganizationIdEnvironmentProvidersProviderIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Test calls POST /api/v1/organizations/{organization_id}/environment-providers/{provider_id}/test.
+// Test Provider
 func (r OrganizationEnvironmentProviderResource) Test(ctx context.Context) (Result[generated.ProviderTest], error) {
 	var zero Result[generated.ProviderTest]
 	if err := r.validate(); err != nil {
@@ -869,9 +2156,14 @@ func (r OrganizationEnvironmentProviderResource) Test(ctx context.Context) (Resu
 	response, err := r.client.api.TestProviderApiV1OrganizationsOrganizationIdEnvironmentProvidersProviderIdTestPost(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ProviderTest](r.client, response, err, 200)
 }
+
+// Ref binds grant_id locally without checking existence or changing credential authority.
 func (r OrganizationGrantsResource) Ref(id string) OrganizationGrantResource {
 	return OrganizationGrantResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/grants. List Organization Grants See
+// OrganizationGrantsListOptions for explicit parameters and preconditions.
 func (r OrganizationGrantsResource) List(ctx context.Context, options OrganizationGrantsListOptions) (Result[generated.GrantPage], error) {
 	var zero Result[generated.GrantPage]
 	if err := r.validate(); err != nil {
@@ -880,6 +2172,9 @@ func (r OrganizationGrantsResource) List(ctx context.Context, options Organizati
 	response, err := r.client.api.ListOrganizationGrantsApiV1OrganizationsOrganizationIdGrantsGet(ctx, r.ids[0], &generated.ListOrganizationGrantsApiV1OrganizationsOrganizationIdGrantsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.GrantPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationGrantsResource) Pages(ctx context.Context, options OrganizationGrantsListOptions) iter.Seq2[Result[generated.GrantPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -896,6 +2191,8 @@ func (r OrganizationGrantsResource) Pages(ctx context.Context, options Organizat
 		},
 		func(value generated.GrantPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/grants. Create Organization Grant
 func (r OrganizationGrantsResource) Create(ctx context.Context, body generated.GrantCreate) (Result[generated.GrantView], error) {
 	var zero Result[generated.GrantView]
 	if err := r.validate(); err != nil {
@@ -904,6 +2201,9 @@ func (r OrganizationGrantsResource) Create(ctx context.Context, body generated.G
 	response, err := r.client.api.CreateOrganizationGrantApiV1OrganizationsOrganizationIdGrantsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.GrantView](r.client, response, err, 201)
 }
+
+// Delete calls DELETE /api/v1/organizations/{organization_id}/grants/{grant_id}. Delete Organization
+// Grant
 func (r OrganizationGrantResource) Delete(ctx context.Context) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -912,6 +2212,9 @@ func (r OrganizationGrantResource) Delete(ctx context.Context) (Result[struct{}]
 	response, err := r.client.api.DeleteOrganizationGrantApiV1OrganizationsOrganizationIdGrantsGrantIdDelete(ctx, r.ids[0], r.ids[1])
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}/grants/{grant_id}. The grant is replaced:
+// the result carries its new ID.
 func (r OrganizationGrantResource) Update(ctx context.Context, body generated.GrantUpdate) (Result[generated.GrantView], error) {
 	var zero Result[generated.GrantView]
 	if err := r.validate(); err != nil {
@@ -920,6 +2223,9 @@ func (r OrganizationGrantResource) Update(ctx context.Context, body generated.Gr
 	response, err := r.client.api.ChangeOrganizationGrantApiV1OrganizationsOrganizationIdGrantsGrantIdPatch(ctx, r.ids[0], r.ids[1], body)
 	return jsonResult[generated.GrantView](r.client, response, err, 200)
 }
+
+// Delete calls DELETE /api/v1/organizations/{organization_id}/icon. Delete Organization Icon See
+// OrganizationIconDeleteOptions for explicit parameters and preconditions.
 func (r OrganizationIconResource) Delete(ctx context.Context, options OrganizationIconDeleteOptions) (Result[generated.Organization], error) {
 	var zero Result[generated.Organization]
 	if err := r.validate(); err != nil {
@@ -931,6 +2237,9 @@ func (r OrganizationIconResource) Delete(ctx context.Context, options Organizati
 	response, err := r.client.api.DeleteOrganizationIconApiV1OrganizationsOrganizationIdIconDelete(ctx, r.ids[0], &generated.DeleteOrganizationIconApiV1OrganizationsOrganizationIdIconDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Organization](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}/icon. Get Organization Icon The caller must
+// close the returned BinaryResult or its Body.
 func (r OrganizationIconResource) Get(ctx context.Context) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -939,6 +2248,9 @@ func (r OrganizationIconResource) Get(ctx context.Context) (*BinaryResult, error
 	response, err := r.client.api.GetOrganizationIconApiV1OrganizationsOrganizationIdIconGet(ctx, r.ids[0])
 	return binaryResult(r.client, response, err, 200)
 }
+
+// Replace calls PUT /api/v1/organizations/{organization_id}/icon. Put Organization Icon See
+// OrganizationIconReplaceOptions for explicit parameters and preconditions.
 func (r OrganizationIconResource) Replace(ctx context.Context, body io.Reader, options OrganizationIconReplaceOptions) (Result[generated.Organization], error) {
 	var zero Result[generated.Organization]
 	if err := r.validate(); err != nil {
@@ -956,9 +2268,14 @@ func (r OrganizationIconResource) Replace(ctx context.Context, body io.Reader, o
 	response, err := r.client.api.PutOrganizationIconApiV1OrganizationsOrganizationIdIconPutWithBody(ctx, r.ids[0], &generated.PutOrganizationIconApiV1OrganizationsOrganizationIdIconPutParams{IfMatch: &options.IfMatch}, options.ContentType, readerOnly{body})
 	return jsonResult[generated.Organization](r.client, response, err, 200)
 }
+
+// Ref binds invitation_id locally without checking existence or changing credential authority.
 func (r OrganizationInvitationsResource) Ref(id string) OrganizationInvitationResource {
 	return OrganizationInvitationResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/invitations. List Organization Invitations
+// See OrganizationInvitationsListOptions for explicit parameters and preconditions.
 func (r OrganizationInvitationsResource) List(ctx context.Context, options OrganizationInvitationsListOptions) (Result[generated.InvitationPage], error) {
 	var zero Result[generated.InvitationPage]
 	if err := r.validate(); err != nil {
@@ -967,6 +2284,9 @@ func (r OrganizationInvitationsResource) List(ctx context.Context, options Organ
 	response, err := r.client.api.ListOrganizationInvitationsApiV1OrganizationsOrganizationIdInvitationsGet(ctx, r.ids[0], &generated.ListOrganizationInvitationsApiV1OrganizationsOrganizationIdInvitationsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.InvitationPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationInvitationsResource) Pages(ctx context.Context, options OrganizationInvitationsListOptions) iter.Seq2[Result[generated.InvitationPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -983,6 +2303,9 @@ func (r OrganizationInvitationsResource) Pages(ctx context.Context, options Orga
 		},
 		func(value generated.InvitationPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/invitations. Create Organization
+// Invitation
 func (r OrganizationInvitationsResource) Create(ctx context.Context, body generated.InvitationCreate) (Result[generated.InvitationReceipt], error) {
 	var zero Result[generated.InvitationReceipt]
 	if err := r.validate(); err != nil {
@@ -991,6 +2314,10 @@ func (r OrganizationInvitationsResource) Create(ctx context.Context, body genera
 	response, err := r.client.api.CreateOrganizationInvitationApiV1OrganizationsOrganizationIdInvitationsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.InvitationReceipt](r.client, response, err, 201)
 }
+
+// Resend calls POST /api/v1/organizations/{organization_id}/invitations/{invitation_id}/resend. Resend
+// Organization Invitation See OrganizationInvitationResendOptions for explicit parameters and
+// preconditions.
 func (r OrganizationInvitationResource) Resend(ctx context.Context, options OrganizationInvitationResendOptions) (Result[generated.InvitationReceipt], error) {
 	var zero Result[generated.InvitationReceipt]
 	if err := r.validate(); err != nil {
@@ -1002,6 +2329,10 @@ func (r OrganizationInvitationResource) Resend(ctx context.Context, options Orga
 	response, err := r.client.api.ResendOrganizationInvitationApiV1OrganizationsOrganizationIdInvitationsInvitationIdResendPost(ctx, r.ids[0], r.ids[1], &generated.ResendOrganizationInvitationApiV1OrganizationsOrganizationIdInvitationsInvitationIdResendPostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.InvitationReceipt](r.client, response, err, 200)
 }
+
+// Revoke calls POST /api/v1/organizations/{organization_id}/invitations/{invitation_id}/revoke. Revoke
+// Organization Invitation See OrganizationInvitationRevokeOptions for explicit parameters and
+// preconditions.
 func (r OrganizationInvitationResource) Revoke(ctx context.Context, options OrganizationInvitationRevokeOptions) (Result[generated.Invitation], error) {
 	var zero Result[generated.Invitation]
 	if err := r.validate(); err != nil {
@@ -1013,6 +2344,9 @@ func (r OrganizationInvitationResource) Revoke(ctx context.Context, options Orga
 	response, err := r.client.api.RevokeOrganizationInvitationApiV1OrganizationsOrganizationIdInvitationsInvitationIdRevokePost(ctx, r.ids[0], r.ids[1], &generated.RevokeOrganizationInvitationApiV1OrganizationsOrganizationIdInvitationsInvitationIdRevokePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Invitation](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/members. List Members See
+// OrganizationMembersListOptions for explicit parameters and preconditions.
 func (r OrganizationMembersResource) List(ctx context.Context, options OrganizationMembersListOptions) (Result[generated.MemberPage], error) {
 	var zero Result[generated.MemberPage]
 	if err := r.validate(); err != nil {
@@ -1021,6 +2355,9 @@ func (r OrganizationMembersResource) List(ctx context.Context, options Organizat
 	response, err := r.client.api.ListMembersApiV1OrganizationsOrganizationIdMembersGet(ctx, r.ids[0], &generated.ListMembersApiV1OrganizationsOrganizationIdMembersGetParams{Kind: options.Kind, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.MemberPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationMembersResource) Pages(ctx context.Context, options OrganizationMembersListOptions) iter.Seq2[Result[generated.MemberPage], error] {
 	if options.Kind != nil {
 		value := *options.Kind
@@ -1041,9 +2378,14 @@ func (r OrganizationMembersResource) Pages(ctx context.Context, options Organiza
 		},
 		func(value generated.MemberPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Ref binds provider_id locally without checking existence or changing credential authority.
 func (r OrganizationMemoryProvidersResource) Ref(id string) OrganizationMemoryProviderResource {
 	return OrganizationMemoryProviderResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/memory-providers. List Providers See
+// OrganizationMemoryProvidersListOptions for explicit parameters and preconditions.
 func (r OrganizationMemoryProvidersResource) List(ctx context.Context, options OrganizationMemoryProvidersListOptions) (Result[generated.ProviderPage], error) {
 	var zero Result[generated.ProviderPage]
 	if err := r.validate(); err != nil {
@@ -1052,6 +2394,9 @@ func (r OrganizationMemoryProvidersResource) List(ctx context.Context, options O
 	response, err := r.client.api.ListProvidersApiV1OrganizationsOrganizationIdMemoryProvidersGet(ctx, r.ids[0], &generated.ListProvidersApiV1OrganizationsOrganizationIdMemoryProvidersGetParams{WorkspaceId: options.WorkspaceId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ProviderPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationMemoryProvidersResource) Pages(ctx context.Context, options OrganizationMemoryProvidersListOptions) iter.Seq2[Result[generated.ProviderPage], error] {
 	if options.WorkspaceId != nil {
 		value := *options.WorkspaceId
@@ -1072,6 +2417,8 @@ func (r OrganizationMemoryProvidersResource) Pages(ctx context.Context, options 
 		},
 		func(value generated.ProviderPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/memory-providers. Create Provider
 func (r OrganizationMemoryProvidersResource) Create(ctx context.Context, body generated.ProviderCreate) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1080,6 +2427,8 @@ func (r OrganizationMemoryProvidersResource) Create(ctx context.Context, body ge
 	response, err := r.client.api.CreateProviderApiV1OrganizationsOrganizationIdMemoryProvidersPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Provider](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}/memory-providers/{provider_id}. Get Provider
 func (r OrganizationMemoryProviderResource) Get(ctx context.Context) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1088,6 +2437,10 @@ func (r OrganizationMemoryProviderResource) Get(ctx context.Context) (Result[gen
 	response, err := r.client.api.GetProviderApiV1OrganizationsOrganizationIdMemoryProvidersProviderIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}/memory-providers/{provider_id}. A
+// `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// See OrganizationMemoryProviderUpdateOptions for explicit parameters and preconditions.
 func (r OrganizationMemoryProviderResource) Update(ctx context.Context, body generated.ProviderUpdate, options OrganizationMemoryProviderUpdateOptions) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1099,6 +2452,9 @@ func (r OrganizationMemoryProviderResource) Update(ctx context.Context, body gen
 	response, err := r.client.api.UpdateProviderApiV1OrganizationsOrganizationIdMemoryProvidersProviderIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateProviderApiV1OrganizationsOrganizationIdMemoryProvidersProviderIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Test calls POST /api/v1/organizations/{organization_id}/memory-providers/{provider_id}/test. Test
+// Provider
 func (r OrganizationMemoryProviderResource) Test(ctx context.Context) (Result[generated.ProviderTest], error) {
 	var zero Result[generated.ProviderTest]
 	if err := r.validate(); err != nil {
@@ -1107,9 +2463,14 @@ func (r OrganizationMemoryProviderResource) Test(ctx context.Context) (Result[ge
 	response, err := r.client.api.TestProviderApiV1OrganizationsOrganizationIdMemoryProvidersProviderIdTestPost(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ProviderTest](r.client, response, err, 200)
 }
+
+// Ref binds provider_id locally without checking existence or changing credential authority.
 func (r OrganizationModelProvidersResource) Ref(id string) OrganizationModelProviderResource {
 	return OrganizationModelProviderResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/model-providers. List Providers See
+// OrganizationModelProvidersListOptions for explicit parameters and preconditions.
 func (r OrganizationModelProvidersResource) List(ctx context.Context, options OrganizationModelProvidersListOptions) (Result[generated.ProviderPage], error) {
 	var zero Result[generated.ProviderPage]
 	if err := r.validate(); err != nil {
@@ -1118,6 +2479,9 @@ func (r OrganizationModelProvidersResource) List(ctx context.Context, options Or
 	response, err := r.client.api.ListProvidersApiV1OrganizationsOrganizationIdModelProvidersGet(ctx, r.ids[0], &generated.ListProvidersApiV1OrganizationsOrganizationIdModelProvidersGetParams{WorkspaceId: options.WorkspaceId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ProviderPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationModelProvidersResource) Pages(ctx context.Context, options OrganizationModelProvidersListOptions) iter.Seq2[Result[generated.ProviderPage], error] {
 	if options.WorkspaceId != nil {
 		value := *options.WorkspaceId
@@ -1138,6 +2502,8 @@ func (r OrganizationModelProvidersResource) Pages(ctx context.Context, options O
 		},
 		func(value generated.ProviderPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/model-providers. Create Provider
 func (r OrganizationModelProvidersResource) Create(ctx context.Context, body generated.ProviderCreate) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1146,6 +2512,8 @@ func (r OrganizationModelProvidersResource) Create(ctx context.Context, body gen
 	response, err := r.client.api.CreateProviderApiV1OrganizationsOrganizationIdModelProvidersPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Provider](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}/model-providers/{provider_id}. Get Provider
 func (r OrganizationModelProviderResource) Get(ctx context.Context) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1154,6 +2522,10 @@ func (r OrganizationModelProviderResource) Get(ctx context.Context) (Result[gene
 	response, err := r.client.api.GetProviderApiV1OrganizationsOrganizationIdModelProvidersProviderIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}/model-providers/{provider_id}. A `config`
+// change must also replace or remove a stored credential: it never follows a new endpoint. See
+// OrganizationModelProviderUpdateOptions for explicit parameters and preconditions.
 func (r OrganizationModelProviderResource) Update(ctx context.Context, body generated.ProviderUpdate, options OrganizationModelProviderUpdateOptions) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1165,6 +2537,9 @@ func (r OrganizationModelProviderResource) Update(ctx context.Context, body gene
 	response, err := r.client.api.UpdateProviderApiV1OrganizationsOrganizationIdModelProvidersProviderIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateProviderApiV1OrganizationsOrganizationIdModelProvidersProviderIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Test calls POST /api/v1/organizations/{organization_id}/model-providers/{provider_id}/test. Test
+// Provider
 func (r OrganizationModelProviderResource) Test(ctx context.Context) (Result[generated.ProviderTest], error) {
 	var zero Result[generated.ProviderTest]
 	if err := r.validate(); err != nil {
@@ -1173,9 +2548,14 @@ func (r OrganizationModelProviderResource) Test(ctx context.Context) (Result[gen
 	response, err := r.client.api.TestProviderApiV1OrganizationsOrganizationIdModelProvidersProviderIdTestPost(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ProviderTest](r.client, response, err, 200)
 }
+
+// Ref binds model_id locally without checking existence or changing credential authority.
 func (r OrganizationModelsResource) Ref(id string) OrganizationModelResource {
 	return OrganizationModelResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/models. List Models See
+// OrganizationModelsListOptions for explicit parameters and preconditions.
 func (r OrganizationModelsResource) List(ctx context.Context, options OrganizationModelsListOptions) (Result[generated.ModelPage], error) {
 	var zero Result[generated.ModelPage]
 	if err := r.validate(); err != nil {
@@ -1184,6 +2564,9 @@ func (r OrganizationModelsResource) List(ctx context.Context, options Organizati
 	response, err := r.client.api.ListModelsApiV1OrganizationsOrganizationIdModelsGet(ctx, r.ids[0], &generated.ListModelsApiV1OrganizationsOrganizationIdModelsGetParams{WorkspaceId: options.WorkspaceId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ModelPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationModelsResource) Pages(ctx context.Context, options OrganizationModelsListOptions) iter.Seq2[Result[generated.ModelPage], error] {
 	if options.WorkspaceId != nil {
 		value := *options.WorkspaceId
@@ -1204,6 +2587,9 @@ func (r OrganizationModelsResource) Pages(ctx context.Context, options Organizat
 		},
 		func(value generated.ModelPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/models. Needs `write` on the model's scope
+// and on its provider, whose credential the model spends.
 func (r OrganizationModelsResource) Create(ctx context.Context, body generated.ModelCreate) (Result[generated.Model], error) {
 	var zero Result[generated.Model]
 	if err := r.validate(); err != nil {
@@ -1212,6 +2598,8 @@ func (r OrganizationModelsResource) Create(ctx context.Context, body generated.M
 	response, err := r.client.api.CreateModelApiV1OrganizationsOrganizationIdModelsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Model](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}/models/{model_id}. Get Model
 func (r OrganizationModelResource) Get(ctx context.Context) (Result[generated.Model], error) {
 	var zero Result[generated.Model]
 	if err := r.validate(); err != nil {
@@ -1220,6 +2608,10 @@ func (r OrganizationModelResource) Get(ctx context.Context) (Result[generated.Mo
 	response, err := r.client.api.GetModelApiV1OrganizationsOrganizationIdModelsModelIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Model](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}/models/{model_id}. A configuration change
+// also needs `write` on the model's provider. See OrganizationModelUpdateOptions for explicit
+// parameters and preconditions.
 func (r OrganizationModelResource) Update(ctx context.Context, body generated.ModelUpdate, options OrganizationModelUpdateOptions) (Result[generated.Model], error) {
 	var zero Result[generated.Model]
 	if err := r.validate(); err != nil {
@@ -1231,9 +2623,14 @@ func (r OrganizationModelResource) Update(ctx context.Context, body generated.Mo
 	response, err := r.client.api.UpdateModelApiV1OrganizationsOrganizationIdModelsModelIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateModelApiV1OrganizationsOrganizationIdModelsModelIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Model](r.client, response, err, 200)
 }
+
+// Ref binds provider_id locally without checking existence or changing credential authority.
 func (r OrganizationWebProvidersResource) Ref(id string) OrganizationWebProviderResource {
 	return OrganizationWebProviderResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/web-providers. List Providers See
+// OrganizationWebProvidersListOptions for explicit parameters and preconditions.
 func (r OrganizationWebProvidersResource) List(ctx context.Context, options OrganizationWebProvidersListOptions) (Result[generated.ProviderPage], error) {
 	var zero Result[generated.ProviderPage]
 	if err := r.validate(); err != nil {
@@ -1242,6 +2639,9 @@ func (r OrganizationWebProvidersResource) List(ctx context.Context, options Orga
 	response, err := r.client.api.ListProvidersApiV1OrganizationsOrganizationIdWebProvidersGet(ctx, r.ids[0], &generated.ListProvidersApiV1OrganizationsOrganizationIdWebProvidersGetParams{WorkspaceId: options.WorkspaceId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ProviderPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationWebProvidersResource) Pages(ctx context.Context, options OrganizationWebProvidersListOptions) iter.Seq2[Result[generated.ProviderPage], error] {
 	if options.WorkspaceId != nil {
 		value := *options.WorkspaceId
@@ -1262,6 +2662,8 @@ func (r OrganizationWebProvidersResource) Pages(ctx context.Context, options Org
 		},
 		func(value generated.ProviderPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/web-providers. Create Provider
 func (r OrganizationWebProvidersResource) Create(ctx context.Context, body generated.ProviderCreate) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1270,6 +2672,8 @@ func (r OrganizationWebProvidersResource) Create(ctx context.Context, body gener
 	response, err := r.client.api.CreateProviderApiV1OrganizationsOrganizationIdWebProvidersPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Provider](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/organizations/{organization_id}/web-providers/{provider_id}. Get Provider
 func (r OrganizationWebProviderResource) Get(ctx context.Context) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1278,6 +2682,10 @@ func (r OrganizationWebProviderResource) Get(ctx context.Context) (Result[genera
 	response, err := r.client.api.GetProviderApiV1OrganizationsOrganizationIdWebProvidersProviderIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/organizations/{organization_id}/web-providers/{provider_id}. A `config`
+// change must also replace or remove a stored credential: it never follows a new endpoint. See
+// OrganizationWebProviderUpdateOptions for explicit parameters and preconditions.
 func (r OrganizationWebProviderResource) Update(ctx context.Context, body generated.ProviderUpdate, options OrganizationWebProviderUpdateOptions) (Result[generated.Provider], error) {
 	var zero Result[generated.Provider]
 	if err := r.validate(); err != nil {
@@ -1289,6 +2697,9 @@ func (r OrganizationWebProviderResource) Update(ctx context.Context, body genera
 	response, err := r.client.api.UpdateProviderApiV1OrganizationsOrganizationIdWebProvidersProviderIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateProviderApiV1OrganizationsOrganizationIdWebProvidersProviderIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Provider](r.client, response, err, 200)
 }
+
+// Test calls POST /api/v1/organizations/{organization_id}/web-providers/{provider_id}/test. Test
+// Provider
 func (r OrganizationWebProviderResource) Test(ctx context.Context) (Result[generated.ProviderTest], error) {
 	var zero Result[generated.ProviderTest]
 	if err := r.validate(); err != nil {
@@ -1297,6 +2708,9 @@ func (r OrganizationWebProviderResource) Test(ctx context.Context) (Result[gener
 	response, err := r.client.api.TestProviderApiV1OrganizationsOrganizationIdWebProvidersProviderIdTestPost(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ProviderTest](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/organizations/{organization_id}/workspaces. List Organization Workspaces See
+// OrganizationWorkspacesListOptions for explicit parameters and preconditions.
 func (r OrganizationWorkspacesResource) List(ctx context.Context, options OrganizationWorkspacesListOptions) (Result[generated.WorkspacePage], error) {
 	var zero Result[generated.WorkspacePage]
 	if err := r.validate(); err != nil {
@@ -1305,6 +2719,9 @@ func (r OrganizationWorkspacesResource) List(ctx context.Context, options Organi
 	response, err := r.client.api.ListOrganizationWorkspacesApiV1OrganizationsOrganizationIdWorkspacesGet(ctx, r.ids[0], &generated.ListOrganizationWorkspacesApiV1OrganizationsOrganizationIdWorkspacesGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.WorkspacePage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r OrganizationWorkspacesResource) Pages(ctx context.Context, options OrganizationWorkspacesListOptions) iter.Seq2[Result[generated.WorkspacePage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1321,6 +2738,8 @@ func (r OrganizationWorkspacesResource) Pages(ctx context.Context, options Organ
 		},
 		func(value generated.WorkspacePage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/organizations/{organization_id}/workspaces. Create Workspace
 func (r OrganizationWorkspacesResource) Create(ctx context.Context, body generated.WorkspaceCreate) (Result[generated.Workspace], error) {
 	var zero Result[generated.Workspace]
 	if err := r.validate(); err != nil {
@@ -1329,9 +2748,13 @@ func (r OrganizationWorkspacesResource) Create(ctx context.Context, body generat
 	response, err := r.client.api.CreateWorkspaceApiV1OrganizationsOrganizationIdWorkspacesPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Workspace](r.client, response, err, 201)
 }
-func (r ProviderTypesResource) Ref(id generated.ListProviderTypesApiV1ProviderTypesKindGetParamsKind) ProviderTypeResource {
+
+// Ref binds kind locally without checking existence or changing credential authority.
+func (r ProviderTypesResource) Ref(id ProviderKind) ProviderTypeResource {
 	return ProviderTypeResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/provider-types/{kind}. List Provider Types
 func (r ProviderTypeResource) List(ctx context.Context) (Result[generated.ProviderTypePage], error) {
 	var zero Result[generated.ProviderTypePage]
 	if err := r.validate(); err != nil {
@@ -1340,16 +2763,30 @@ func (r ProviderTypeResource) List(ctx context.Context) (Result[generated.Provid
 	response, err := r.client.api.ListProviderTypesApiV1ProviderTypesKindGet(ctx, generated.ListProviderTypesApiV1ProviderTypesKindGetParamsKind(r.ids[0]))
 	return jsonResult[generated.ProviderTypePage](r.client, response, err, 200)
 }
-func (r UsersResource) Me() UsersMeResource        { return UsersMeResource{r.binding} }
+
+// Me returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r UsersResource) Me() UsersMeResource { return UsersMeResource{r.binding} }
+
+// Ref binds user_id locally without checking existence or changing credential authority.
 func (r UsersResource) Ref(id string) UserResource { return UserResource{r.selectID(fmt.Sprint(id))} }
+
+// AuditEvents returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r UsersMeResource) AuditEvents() UsersMeAuditEventsResource {
 	return UsersMeAuditEventsResource{r.binding}
 }
+
+// Avatar returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r UsersMeResource) Avatar() UsersMeAvatarResource { return UsersMeAvatarResource{r.binding} }
-func (r UsersMeResource) Keys() UsersMeKeysResource     { return UsersMeKeysResource{r.binding} }
+
+// Keys returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r UsersMeResource) Keys() UsersMeKeysResource { return UsersMeKeysResource{r.binding} }
+
+// LoginSessions returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r UsersMeResource) LoginSessions() UsersMeLoginSessionsResource {
 	return UsersMeLoginSessionsResource{r.binding}
 }
+
+// Get calls GET /api/v1/users/me. Get Profile
 func (r UsersMeResource) Get(ctx context.Context) (Result[generated.Profile], error) {
 	var zero Result[generated.Profile]
 	if err := r.validate(); err != nil {
@@ -1358,6 +2795,9 @@ func (r UsersMeResource) Get(ctx context.Context) (Result[generated.Profile], er
 	response, err := r.client.api.GetProfileApiV1UsersMeGet(ctx)
 	return jsonResult[generated.Profile](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/users/me. Update Profile See UsersMeUpdateOptions for explicit parameters
+// and preconditions.
 func (r UsersMeResource) Update(ctx context.Context, body generated.ProfileUpdate, options UsersMeUpdateOptions) (Result[generated.Profile], error) {
 	var zero Result[generated.Profile]
 	if err := r.validate(); err != nil {
@@ -1369,6 +2809,9 @@ func (r UsersMeResource) Update(ctx context.Context, body generated.ProfileUpdat
 	response, err := r.client.api.UpdateProfileApiV1UsersMePatch(ctx, &generated.UpdateProfileApiV1UsersMePatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Profile](r.client, response, err, 200)
 }
+
+// Disable calls POST /api/v1/users/me/disable. Disable the caller's own account, proven by the current
+// password; no route enables it again.
 func (r UsersMeResource) Disable(ctx context.Context, body generated.AccountDisable) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -1377,6 +2820,8 @@ func (r UsersMeResource) Disable(ctx context.Context, body generated.AccountDisa
 	response, err := r.client.api.DisableAccountApiV1UsersMeDisablePost(ctx, body)
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Password calls POST /api/v1/users/me/password. Change Password
 func (r UsersMeResource) Password(ctx context.Context, body generated.PasswordChange) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -1385,6 +2830,10 @@ func (r UsersMeResource) Password(ctx context.Context, body generated.PasswordCh
 	response, err := r.client.api.ChangePasswordApiV1UsersMePasswordPost(ctx, body)
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// List calls GET /api/v1/users/me/audit-events. The caller's own trail, account-wide events included;
+// requires a login session. See UsersMeAuditEventsListOptions for explicit parameters and
+// preconditions.
 func (r UsersMeAuditEventsResource) List(ctx context.Context, options UsersMeAuditEventsListOptions) (Result[generated.AuditPage], error) {
 	var zero Result[generated.AuditPage]
 	if err := r.validate(); err != nil {
@@ -1393,6 +2842,9 @@ func (r UsersMeAuditEventsResource) List(ctx context.Context, options UsersMeAud
 	response, err := r.client.api.ListAccountAuditEventsApiV1UsersMeAuditEventsGet(ctx, &generated.ListAccountAuditEventsApiV1UsersMeAuditEventsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.AuditPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r UsersMeAuditEventsResource) Pages(ctx context.Context, options UsersMeAuditEventsListOptions) iter.Seq2[Result[generated.AuditPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1409,6 +2861,9 @@ func (r UsersMeAuditEventsResource) Pages(ctx context.Context, options UsersMeAu
 		},
 		func(value generated.AuditPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Delete calls DELETE /api/v1/users/me/avatar. Delete Avatar See UsersMeAvatarDeleteOptions for
+// explicit parameters and preconditions.
 func (r UsersMeAvatarResource) Delete(ctx context.Context, options UsersMeAvatarDeleteOptions) (Result[generated.Profile], error) {
 	var zero Result[generated.Profile]
 	if err := r.validate(); err != nil {
@@ -1420,6 +2875,9 @@ func (r UsersMeAvatarResource) Delete(ctx context.Context, options UsersMeAvatar
 	response, err := r.client.api.DeleteAvatarApiV1UsersMeAvatarDelete(ctx, &generated.DeleteAvatarApiV1UsersMeAvatarDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Profile](r.client, response, err, 200)
 }
+
+// Replace calls PUT /api/v1/users/me/avatar. Put Avatar See UsersMeAvatarReplaceOptions for explicit
+// parameters and preconditions.
 func (r UsersMeAvatarResource) Replace(ctx context.Context, body io.Reader, options UsersMeAvatarReplaceOptions) (Result[generated.Profile], error) {
 	var zero Result[generated.Profile]
 	if err := r.validate(); err != nil {
@@ -1437,9 +2895,14 @@ func (r UsersMeAvatarResource) Replace(ctx context.Context, body io.Reader, opti
 	response, err := r.client.api.PutAvatarApiV1UsersMeAvatarPutWithBody(ctx, &generated.PutAvatarApiV1UsersMeAvatarPutParams{IfMatch: &options.IfMatch}, options.ContentType, readerOnly{body})
 	return jsonResult[generated.Profile](r.client, response, err, 200)
 }
+
+// Ref binds key_id locally without checking existence or changing credential authority.
 func (r UsersMeKeysResource) Ref(id string) UsersMeKeyResource {
 	return UsersMeKeyResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/users/me/keys. List User Keys See UsersMeKeysListOptions for explicit
+// parameters and preconditions.
 func (r UsersMeKeysResource) List(ctx context.Context, options UsersMeKeysListOptions) (Result[generated.ApiKeyPage], error) {
 	var zero Result[generated.ApiKeyPage]
 	if err := r.validate(); err != nil {
@@ -1448,6 +2911,9 @@ func (r UsersMeKeysResource) List(ctx context.Context, options UsersMeKeysListOp
 	response, err := r.client.api.ListUserKeysApiV1UsersMeKeysGet(ctx, &generated.ListUserKeysApiV1UsersMeKeysGetParams{WorkspaceId: options.WorkspaceId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ApiKeyPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r UsersMeKeysResource) Pages(ctx context.Context, options UsersMeKeysListOptions) iter.Seq2[Result[generated.ApiKeyPage], error] {
 	if options.WorkspaceId != nil {
 		value := *options.WorkspaceId
@@ -1468,6 +2934,9 @@ func (r UsersMeKeysResource) Pages(ctx context.Context, options UsersMeKeysListO
 		},
 		func(value generated.ApiKeyPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/users/me/keys. Needs a login session: an API key never issues keys, so a
+// leaked key cannot outlive its revocation.
 func (r UsersMeKeysResource) Create(ctx context.Context, body generated.UserKeyCreate) (Result[generated.IssuedKey], error) {
 	var zero Result[generated.IssuedKey]
 	if err := r.validate(); err != nil {
@@ -1476,6 +2945,9 @@ func (r UsersMeKeysResource) Create(ctx context.Context, body generated.UserKeyC
 	response, err := r.client.api.CreateUserKeyApiV1UsersMeKeysPost(ctx, body)
 	return jsonResult[generated.IssuedKey](r.client, response, err, 201)
 }
+
+// Delete calls DELETE /api/v1/users/me/keys/{key_id}. Revoke User Key See UsersMeKeyDeleteOptions for
+// explicit parameters and preconditions.
 func (r UsersMeKeyResource) Delete(ctx context.Context, options UsersMeKeyDeleteOptions) (Result[generated.ApiKey], error) {
 	var zero Result[generated.ApiKey]
 	if err := r.validate(); err != nil {
@@ -1487,9 +2959,14 @@ func (r UsersMeKeyResource) Delete(ctx context.Context, options UsersMeKeyDelete
 	response, err := r.client.api.RevokeUserKeyApiV1UsersMeKeysKeyIdDelete(ctx, r.ids[0], &generated.RevokeUserKeyApiV1UsersMeKeysKeyIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.ApiKey](r.client, response, err, 200)
 }
+
+// Ref binds session_id locally without checking existence or changing credential authority.
 func (r UsersMeLoginSessionsResource) Ref(id string) UsersMeLoginSessionResource {
 	return UsersMeLoginSessionResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/users/me/login-sessions. List Login Sessions See
+// UsersMeLoginSessionsListOptions for explicit parameters and preconditions.
 func (r UsersMeLoginSessionsResource) List(ctx context.Context, options UsersMeLoginSessionsListOptions) (Result[generated.LoginSessionPage], error) {
 	var zero Result[generated.LoginSessionPage]
 	if err := r.validate(); err != nil {
@@ -1498,6 +2975,9 @@ func (r UsersMeLoginSessionsResource) List(ctx context.Context, options UsersMeL
 	response, err := r.client.api.ListLoginSessionsApiV1UsersMeLoginSessionsGet(ctx, &generated.ListLoginSessionsApiV1UsersMeLoginSessionsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.LoginSessionPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r UsersMeLoginSessionsResource) Pages(ctx context.Context, options UsersMeLoginSessionsListOptions) iter.Seq2[Result[generated.LoginSessionPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1514,6 +2994,8 @@ func (r UsersMeLoginSessionsResource) Pages(ctx context.Context, options UsersMe
 		},
 		func(value generated.LoginSessionPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Delete calls DELETE /api/v1/users/me/login-sessions/{session_id}. Revoke Login Session
 func (r UsersMeLoginSessionResource) Delete(ctx context.Context) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -1522,7 +3004,12 @@ func (r UsersMeLoginSessionResource) Delete(ctx context.Context) (Result[struct{
 	response, err := r.client.api.RevokeLoginSessionApiV1UsersMeLoginSessionsSessionIdDelete(ctx, r.ids[0])
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Avatar returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r UserResource) Avatar() UserAvatarResource { return UserAvatarResource{r.binding} }
+
+// Get calls GET /api/v1/users/{user_id}/avatar. Get Avatar The caller must close the returned
+// BinaryResult or its Body.
 func (r UserAvatarResource) Get(ctx context.Context) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -1531,9 +3018,14 @@ func (r UserAvatarResource) Get(ctx context.Context) (*BinaryResult, error) {
 	response, err := r.client.api.GetAvatarApiV1UsersUserIdAvatarGet(ctx, r.ids[0])
 	return binaryResult(r.client, response, err, 200)
 }
+
+// Ref binds workspace_id locally without checking existence or changing credential authority.
 func (r WorkspacesResource) Ref(id string) WorkspaceResource {
 	return WorkspaceResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces. List Workspaces See WorkspacesListOptions for explicit parameters
+// and preconditions.
 func (r WorkspacesResource) List(ctx context.Context, options WorkspacesListOptions) (Result[generated.WorkspacePage], error) {
 	var zero Result[generated.WorkspacePage]
 	if err := r.validate(); err != nil {
@@ -1542,6 +3034,9 @@ func (r WorkspacesResource) List(ctx context.Context, options WorkspacesListOpti
 	response, err := r.client.api.ListWorkspacesApiV1WorkspacesGet(ctx, &generated.ListWorkspacesApiV1WorkspacesGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.WorkspacePage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r WorkspacesResource) Pages(ctx context.Context, options WorkspacesListOptions) iter.Seq2[Result[generated.WorkspacePage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1558,49 +3053,102 @@ func (r WorkspacesResource) Pages(ctx context.Context, options WorkspacesListOpt
 		},
 		func(value generated.WorkspacePage) string { return value.NextCursor.GetOrEmpty() })
 }
-func (r WorkspaceResource) Agents() AgentsResource           { return AgentsResource{r.binding} }
-func (r WorkspaceResource) Assets() AssetsResource           { return AssetsResource{r.binding} }
+
+// Agents returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Agents() AgentsResource { return AgentsResource{r.binding} }
+
+// Assets returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Assets() AssetsResource { return AssetsResource{r.binding} }
+
+// AuditEvents returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) AuditEvents() AuditEventsResource { return AuditEventsResource{r.binding} }
+
+// Connections returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Connections() WorkspaceConnectionsResource {
 	return WorkspaceConnectionsResource{r.binding}
 }
+
+// ConnectorProviders returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) ConnectorProviders() ConnectorProvidersResource {
 	return ConnectorProvidersResource{r.binding}
 }
+
+// EnvironmentTemplates returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) EnvironmentTemplates() EnvironmentTemplatesResource {
 	return EnvironmentTemplatesResource{r.binding}
 }
+
+// Environments returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Environments() EnvironmentsResource {
 	return EnvironmentsResource{r.binding}
 }
+
+// Grants returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Grants() GrantsResource { return GrantsResource{r.binding} }
-func (r WorkspaceResource) Icon() IconResource     { return IconResource{r.binding} }
+
+// Icon returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Icon() IconResource { return IconResource{r.binding} }
+
+// Invitations returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Invitations() WorkspaceInvitationsResource {
 	return WorkspaceInvitationsResource{r.binding}
 }
+
+// Keys returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Keys() KeysResource { return KeysResource{r.binding} }
+
+// MediaUnderstandingDefaults returns a local reference sharing the client's lifetime; it performs no
+// I/O.
 func (r WorkspaceResource) MediaUnderstandingDefaults() MediaUnderstandingDefaultsResource {
 	return MediaUnderstandingDefaultsResource{r.binding}
 }
+
+// Memories returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Memories() MemoriesResource { return MemoriesResource{r.binding} }
-func (r WorkspaceResource) Runs() RunsResource         { return RunsResource{r.binding} }
-func (r WorkspaceResource) Secrets() SecretsResource   { return SecretsResource{r.binding} }
+
+// Runs returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Runs() RunsResource { return RunsResource{r.binding} }
+
+// Secrets returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Secrets() SecretsResource { return SecretsResource{r.binding} }
+
+// ServiceAccounts returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) ServiceAccounts() ServiceAccountsResource {
 	return ServiceAccountsResource{r.binding}
 }
+
+// Sessions returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Sessions() SessionsResource { return SessionsResource{r.binding} }
-func (r WorkspaceResource) Skills() SkillsResource     { return SkillsResource{r.binding} }
+
+// Skills returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Skills() SkillsResource { return SkillsResource{r.binding} }
+
+// Subscriptions returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Subscriptions() SubscriptionsResource {
 	return SubscriptionsResource{r.binding}
 }
-func (r WorkspaceResource) Threads() ThreadsResource   { return ThreadsResource{r.binding} }
+
+// Threads returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Threads() ThreadsResource { return ThreadsResource{r.binding} }
+
+// Toolsets returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Toolsets() ToolsetsResource { return ToolsetsResource{r.binding} }
+
+// TraceBackend returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) TraceBackend() TraceBackendResource {
 	return TraceBackendResource{r.binding}
 }
-func (r WorkspaceResource) Traces() TracesResource   { return TracesResource{r.binding} }
+
+// Traces returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Traces() TracesResource { return TracesResource{r.binding} }
+
+// Uploads returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceResource) Uploads() UploadsResource { return UploadsResource{r.binding} }
-func (r WorkspaceResource) Usage() UsageResource     { return UsageResource{r.binding} }
+
+// Usage returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r WorkspaceResource) Usage() UsageResource { return UsageResource{r.binding} }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}. Get Workspace
 func (r WorkspaceResource) Get(ctx context.Context) (Result[generated.Workspace], error) {
 	var zero Result[generated.Workspace]
 	if err := r.validate(); err != nil {
@@ -1609,6 +3157,9 @@ func (r WorkspaceResource) Get(ctx context.Context) (Result[generated.Workspace]
 	response, err := r.client.api.GetWorkspaceApiV1WorkspacesWorkspaceIdGet(ctx, r.ids[0])
 	return jsonResult[generated.Workspace](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}. Update Workspace See WorkspaceUpdateOptions
+// for explicit parameters and preconditions.
 func (r WorkspaceResource) Update(ctx context.Context, body generated.WorkspaceUpdate, options WorkspaceUpdateOptions) (Result[generated.Workspace], error) {
 	var zero Result[generated.Workspace]
 	if err := r.validate(); err != nil {
@@ -1620,6 +3171,9 @@ func (r WorkspaceResource) Update(ctx context.Context, body generated.WorkspaceU
 	response, err := r.client.api.UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatch(ctx, r.ids[0], &generated.UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Workspace](r.client, response, err, 200)
 }
+
+// Archive calls POST /api/v1/workspaces/{workspace_id}/archive. Archive Workspace See
+// WorkspaceArchiveOptions for explicit parameters and preconditions.
 func (r WorkspaceResource) Archive(ctx context.Context, options WorkspaceArchiveOptions) (Result[generated.Workspace], error) {
 	var zero Result[generated.Workspace]
 	if err := r.validate(); err != nil {
@@ -1631,6 +3185,10 @@ func (r WorkspaceResource) Archive(ctx context.Context, options WorkspaceArchive
 	response, err := r.client.api.ArchiveWorkspaceApiV1WorkspacesWorkspaceIdArchivePost(ctx, r.ids[0], &generated.ArchiveWorkspaceApiV1WorkspacesWorkspaceIdArchivePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Workspace](r.client, response, err, 200)
 }
+
+// ConfigurationAssistant calls POST /api/v1/workspaces/{workspace_id}/configuration-assistant. The
+// workspace's configuration assistant, created or brought up to date with the deployment's definition.
+// Refused with `model_required` while the workspace has no model the caller can use.
 func (r WorkspaceResource) ConfigurationAssistant(ctx context.Context) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1639,9 +3197,16 @@ func (r WorkspaceResource) ConfigurationAssistant(ctx context.Context) (Result[g
 	response, err := r.client.api.PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost(ctx, r.ids[0])
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Ref binds agent_id locally without checking existence or changing credential authority.
 func (r AgentsResource) Ref(id string) AgentResource {
 	return AgentResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/agents. Agents of the workspace. `q` matches the
+// key, name or description, ignoring case; `archived` keeps only archived agents, or only open ones;
+// the skill filters keep those with a revision pinning that skill or revision. See AgentsListOptions
+// for explicit parameters and preconditions.
 func (r AgentsResource) List(ctx context.Context, options AgentsListOptions) (Result[generated.AgentPage], error) {
 	var zero Result[generated.AgentPage]
 	if err := r.validate(); err != nil {
@@ -1650,6 +3215,9 @@ func (r AgentsResource) List(ctx context.Context, options AgentsListOptions) (Re
 	response, err := r.client.api.ListAgentsApiV1WorkspacesWorkspaceIdAgentsGet(ctx, r.ids[0], &generated.ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetParams{Label: options.Label, Q: options.Q, Archived: options.Archived, SkillId: options.SkillId, SkillRevisionId: options.SkillRevisionId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.AgentPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r AgentsResource) Pages(ctx context.Context, options AgentsListOptions) iter.Seq2[Result[generated.AgentPage], error] {
 	if options.Label != nil {
 		value := slices.Clone(*options.Label)
@@ -1686,6 +3254,8 @@ func (r AgentsResource) Pages(ctx context.Context, options AgentsListOptions) it
 		},
 		func(value generated.AgentPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/agents. Create Agent
 func (r AgentsResource) Create(ctx context.Context, body generated.AgentCreate) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1694,6 +3264,10 @@ func (r AgentsResource) Create(ctx context.Context, body generated.AgentCreate) 
 	response, err := r.client.api.CreateAgentApiV1WorkspacesWorkspaceIdAgentsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Agent](r.client, response, err, 201)
 }
+
+// Validate calls POST /api/v1/workspaces/{workspace_id}/agents/validate. No content when creating a
+// revision of the configuration would accept it, else the same `invalid_argument` error with the
+// field's path relative to `config`; nothing is stored.
 func (r AgentsResource) Validate(ctx context.Context, body generated.AgentValidate) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -1702,8 +3276,14 @@ func (r AgentsResource) Validate(ctx context.Context, body generated.AgentValida
 	response, err := r.client.api.ValidateRevisionApiV1WorkspacesWorkspaceIdAgentsValidatePost(ctx, r.ids[0], body)
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
-func (r AgentResource) Avatar() AgentAvatarResource       { return AgentAvatarResource{r.binding} }
+
+// Avatar returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r AgentResource) Avatar() AgentAvatarResource { return AgentAvatarResource{r.binding} }
+
+// Revisions returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r AgentResource) Revisions() AgentRevisionsResource { return AgentRevisionsResource{r.binding} }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/agents/{agent_id}. Get Agent
 func (r AgentResource) Get(ctx context.Context) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1712,6 +3292,9 @@ func (r AgentResource) Get(ctx context.Context) (Result[generated.Agent], error)
 	response, err := r.client.api.GetAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/agents/{agent_id}. Update Agent See
+// AgentUpdateOptions for explicit parameters and preconditions.
 func (r AgentResource) Update(ctx context.Context, body generated.AgentUpdate, options AgentUpdateOptions) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1723,6 +3306,9 @@ func (r AgentResource) Update(ctx context.Context, body generated.AgentUpdate, o
 	response, err := r.client.api.UpdateAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Archive calls POST /api/v1/workspaces/{workspace_id}/agents/{agent_id}/archive. Archive Agent See
+// AgentArchiveOptions for explicit parameters and preconditions.
 func (r AgentResource) Archive(ctx context.Context, options AgentArchiveOptions) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1734,6 +3320,8 @@ func (r AgentResource) Archive(ctx context.Context, options AgentArchiveOptions)
 	response, err := r.client.api.ArchiveAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdArchivePost(ctx, r.ids[0], r.ids[1], &generated.ArchiveAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdArchivePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Duplicate calls POST /api/v1/workspaces/{workspace_id}/agents/{agent_id}/duplicate. Duplicate Agent
 func (r AgentResource) Duplicate(ctx context.Context, body generated.AgentDuplicate) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1742,6 +3330,9 @@ func (r AgentResource) Duplicate(ctx context.Context, body generated.AgentDuplic
 	response, err := r.client.api.DuplicateAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdDuplicatePost(ctx, r.ids[0], r.ids[1], body)
 	return jsonResult[generated.Agent](r.client, response, err, 201)
 }
+
+// Unarchive calls POST /api/v1/workspaces/{workspace_id}/agents/{agent_id}/unarchive. Unarchive Agent
+// See AgentUnarchiveOptions for explicit parameters and preconditions.
 func (r AgentResource) Unarchive(ctx context.Context, options AgentUnarchiveOptions) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1753,6 +3344,9 @@ func (r AgentResource) Unarchive(ctx context.Context, options AgentUnarchiveOpti
 	response, err := r.client.api.UnarchiveAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdUnarchivePost(ctx, r.ids[0], r.ids[1], &generated.UnarchiveAgentApiV1WorkspacesWorkspaceIdAgentsAgentIdUnarchivePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/agents/{agent_id}/avatar. Delete Avatar See
+// AgentAvatarDeleteOptions for explicit parameters and preconditions.
 func (r AgentAvatarResource) Delete(ctx context.Context, options AgentAvatarDeleteOptions) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1764,6 +3358,9 @@ func (r AgentAvatarResource) Delete(ctx context.Context, options AgentAvatarDele
 	response, err := r.client.api.DeleteAvatarApiV1WorkspacesWorkspaceIdAgentsAgentIdAvatarDelete(ctx, r.ids[0], r.ids[1], &generated.DeleteAvatarApiV1WorkspacesWorkspaceIdAgentsAgentIdAvatarDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/agents/{agent_id}/avatar. Get Avatar The caller must
+// close the returned BinaryResult or its Body.
 func (r AgentAvatarResource) Get(ctx context.Context) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -1772,6 +3369,9 @@ func (r AgentAvatarResource) Get(ctx context.Context) (*BinaryResult, error) {
 	response, err := r.client.api.GetAvatarApiV1WorkspacesWorkspaceIdAgentsAgentIdAvatarGet(ctx, r.ids[0], r.ids[1])
 	return binaryResult(r.client, response, err, 200)
 }
+
+// Replace calls PUT /api/v1/workspaces/{workspace_id}/agents/{agent_id}/avatar. Put Avatar See
+// AgentAvatarReplaceOptions for explicit parameters and preconditions.
 func (r AgentAvatarResource) Replace(ctx context.Context, body io.Reader, options AgentAvatarReplaceOptions) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1789,9 +3389,14 @@ func (r AgentAvatarResource) Replace(ctx context.Context, body io.Reader, option
 	response, err := r.client.api.PutAvatarApiV1WorkspacesWorkspaceIdAgentsAgentIdAvatarPutWithBody(ctx, r.ids[0], r.ids[1], &generated.PutAvatarApiV1WorkspacesWorkspaceIdAgentsAgentIdAvatarPutParams{IfMatch: &options.IfMatch}, options.ContentType, readerOnly{body})
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Ref binds revision_id locally without checking existence or changing credential authority.
 func (r AgentRevisionsResource) Ref(id string) AgentRevisionResource {
 	return AgentRevisionResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/agents/{agent_id}/revisions. List Revisions See
+// AgentRevisionsListOptions for explicit parameters and preconditions.
 func (r AgentRevisionsResource) List(ctx context.Context, options AgentRevisionsListOptions) (Result[generated.AgentRevisionPage], error) {
 	var zero Result[generated.AgentRevisionPage]
 	if err := r.validate(); err != nil {
@@ -1800,6 +3405,9 @@ func (r AgentRevisionsResource) List(ctx context.Context, options AgentRevisions
 	response, err := r.client.api.ListRevisionsApiV1WorkspacesWorkspaceIdAgentsAgentIdRevisionsGet(ctx, r.ids[0], r.ids[1], &generated.ListRevisionsApiV1WorkspacesWorkspaceIdAgentsAgentIdRevisionsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.AgentRevisionPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r AgentRevisionsResource) Pages(ctx context.Context, options AgentRevisionsListOptions) iter.Seq2[Result[generated.AgentRevisionPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1816,6 +3424,10 @@ func (r AgentRevisionsResource) Pages(ctx context.Context, options AgentRevision
 		},
 		func(value generated.AgentRevisionPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/agents/{agent_id}/revisions. A configuration
+// that validates to the default revision's creates nothing and returns that revision. See
+// AgentRevisionsCreateOptions for explicit parameters and preconditions.
 func (r AgentRevisionsResource) Create(ctx context.Context, body generated.AgentRevisionCreate, options AgentRevisionsCreateOptions) (Result[generated.AgentRevision], error) {
 	var zero Result[generated.AgentRevision]
 	if err := r.validate(); err != nil {
@@ -1827,6 +3439,9 @@ func (r AgentRevisionsResource) Create(ctx context.Context, body generated.Agent
 	response, err := r.client.api.CreateRevisionApiV1WorkspacesWorkspaceIdAgentsAgentIdRevisionsPost(ctx, r.ids[0], r.ids[1], &generated.CreateRevisionApiV1WorkspacesWorkspaceIdAgentsAgentIdRevisionsPostParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.AgentRevision](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/agents/{agent_id}/revisions/{revision_id}. Get
+// Revision
 func (r AgentRevisionResource) Get(ctx context.Context) (Result[generated.AgentRevision], error) {
 	var zero Result[generated.AgentRevision]
 	if err := r.validate(); err != nil {
@@ -1835,6 +3450,10 @@ func (r AgentRevisionResource) Get(ctx context.Context) (Result[generated.AgentR
 	response, err := r.client.api.GetRevisionApiV1WorkspacesWorkspaceIdAgentsAgentIdRevisionsRevisionIdGet(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[generated.AgentRevision](r.client, response, err, 200)
 }
+
+// SetDefault calls POST
+// /api/v1/workspaces/{workspace_id}/agents/{agent_id}/revisions/{revision_id}/set-default. Set Default
+// See AgentRevisionSetDefaultOptions for explicit parameters and preconditions.
 func (r AgentRevisionResource) SetDefault(ctx context.Context, options AgentRevisionSetDefaultOptions) (Result[generated.Agent], error) {
 	var zero Result[generated.Agent]
 	if err := r.validate(); err != nil {
@@ -1846,9 +3465,14 @@ func (r AgentRevisionResource) SetDefault(ctx context.Context, options AgentRevi
 	response, err := r.client.api.SetDefaultApiV1WorkspacesWorkspaceIdAgentsAgentIdRevisionsRevisionIdSetDefaultPost(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.SetDefaultApiV1WorkspacesWorkspaceIdAgentsAgentIdRevisionsRevisionIdSetDefaultPostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
+
+// Ref binds asset_id locally without checking existence or changing credential authority.
 func (r AssetsResource) Ref(id string) AssetResource {
 	return AssetResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/assets. List Assets See AssetsListOptions for
+// explicit parameters and preconditions.
 func (r AssetsResource) List(ctx context.Context, options AssetsListOptions) (Result[generated.AssetPage], error) {
 	var zero Result[generated.AssetPage]
 	if err := r.validate(); err != nil {
@@ -1857,6 +3481,9 @@ func (r AssetsResource) List(ctx context.Context, options AssetsListOptions) (Re
 	response, err := r.client.api.ListAssetsApiV1WorkspacesWorkspaceIdAssetsGet(ctx, r.ids[0], &generated.ListAssetsApiV1WorkspacesWorkspaceIdAssetsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.AssetPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r AssetsResource) Pages(ctx context.Context, options AssetsListOptions) iter.Seq2[Result[generated.AssetPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1873,6 +3500,8 @@ func (r AssetsResource) Pages(ctx context.Context, options AssetsListOptions) it
 		},
 		func(value generated.AssetPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/assets. Create Asset
 func (r AssetsResource) Create(ctx context.Context, body generated.AssetCreate) (Result[generated.Asset], error) {
 	var zero Result[generated.Asset]
 	if err := r.validate(); err != nil {
@@ -1881,7 +3510,12 @@ func (r AssetsResource) Create(ctx context.Context, body generated.AssetCreate) 
 	response, err := r.client.api.CreateAssetApiV1WorkspacesWorkspaceIdAssetsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Asset](r.client, response, err, 200, 201)
 }
+
+// Content returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r AssetResource) Content() AssetContentResource { return AssetContentResource{r.binding} }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/assets/{asset_id}. Retire Asset See
+// AssetDeleteOptions for explicit parameters and preconditions.
 func (r AssetResource) Delete(ctx context.Context, options AssetDeleteOptions) (Result[generated.Asset], error) {
 	var zero Result[generated.Asset]
 	if err := r.validate(); err != nil {
@@ -1893,6 +3527,8 @@ func (r AssetResource) Delete(ctx context.Context, options AssetDeleteOptions) (
 	response, err := r.client.api.RetireAssetApiV1WorkspacesWorkspaceIdAssetsAssetIdDelete(ctx, r.ids[0], r.ids[1], &generated.RetireAssetApiV1WorkspacesWorkspaceIdAssetsAssetIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Asset](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/assets/{asset_id}. Get Asset
 func (r AssetResource) Get(ctx context.Context) (Result[generated.Asset], error) {
 	var zero Result[generated.Asset]
 	if err := r.validate(); err != nil {
@@ -1901,6 +3537,9 @@ func (r AssetResource) Get(ctx context.Context) (Result[generated.Asset], error)
 	response, err := r.client.api.GetAssetApiV1WorkspacesWorkspaceIdAssetsAssetIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Asset](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/assets/{asset_id}/content. Read Asset Content The
+// caller must close the returned BinaryResult or its Body.
 func (r AssetContentResource) Get(ctx context.Context) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -1909,6 +3548,9 @@ func (r AssetContentResource) Get(ctx context.Context) (*BinaryResult, error) {
 	response, err := r.client.api.ReadAssetContentApiV1WorkspacesWorkspaceIdAssetsAssetIdContentGet(ctx, r.ids[0], r.ids[1])
 	return binaryResult(r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/audit-events. List Workspace Audit Events See
+// AuditEventsListOptions for explicit parameters and preconditions.
 func (r AuditEventsResource) List(ctx context.Context, options AuditEventsListOptions) (Result[generated.AuditPage], error) {
 	var zero Result[generated.AuditPage]
 	if err := r.validate(); err != nil {
@@ -1917,6 +3559,9 @@ func (r AuditEventsResource) List(ctx context.Context, options AuditEventsListOp
 	response, err := r.client.api.ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGet(ctx, r.ids[0], &generated.ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.AuditPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r AuditEventsResource) Pages(ctx context.Context, options AuditEventsListOptions) iter.Seq2[Result[generated.AuditPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1933,9 +3578,14 @@ func (r AuditEventsResource) Pages(ctx context.Context, options AuditEventsListO
 		},
 		func(value generated.AuditPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Ref binds connection_id locally without checking existence or changing credential authority.
 func (r WorkspaceConnectionsResource) Ref(id string) WorkspaceConnectionResource {
 	return WorkspaceConnectionResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/connections. List Connections See
+// WorkspaceConnectionsListOptions for explicit parameters and preconditions.
 func (r WorkspaceConnectionsResource) List(ctx context.Context, options WorkspaceConnectionsListOptions) (Result[generated.ConnectionPage], error) {
 	var zero Result[generated.ConnectionPage]
 	if err := r.validate(); err != nil {
@@ -1944,6 +3594,9 @@ func (r WorkspaceConnectionsResource) List(ctx context.Context, options Workspac
 	response, err := r.client.api.ListConnectionsApiV1WorkspacesWorkspaceIdConnectionsGet(ctx, r.ids[0], &generated.ListConnectionsApiV1WorkspacesWorkspaceIdConnectionsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ConnectionPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r WorkspaceConnectionsResource) Pages(ctx context.Context, options WorkspaceConnectionsListOptions) iter.Seq2[Result[generated.ConnectionPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -1960,6 +3613,8 @@ func (r WorkspaceConnectionsResource) Pages(ctx context.Context, options Workspa
 		},
 		func(value generated.ConnectionPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/connections. Create Connection
 func (r WorkspaceConnectionsResource) Create(ctx context.Context, body generated.ConnectionCreate) (Result[generated.Connection], error) {
 	var zero Result[generated.Connection]
 	if err := r.validate(); err != nil {
@@ -1968,9 +3623,13 @@ func (r WorkspaceConnectionsResource) Create(ctx context.Context, body generated
 	response, err := r.client.api.CreateConnectionApiV1WorkspacesWorkspaceIdConnectionsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Connection](r.client, response, err, 201)
 }
+
+// Tools returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r WorkspaceConnectionResource) Tools() WorkspaceConnectionToolsResource {
 	return WorkspaceConnectionToolsResource{r.binding}
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/connections/{connection_id}. Get Connection
 func (r WorkspaceConnectionResource) Get(ctx context.Context) (Result[generated.Connection], error) {
 	var zero Result[generated.Connection]
 	if err := r.validate(); err != nil {
@@ -1979,6 +3638,9 @@ func (r WorkspaceConnectionResource) Get(ctx context.Context) (Result[generated.
 	response, err := r.client.api.GetConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Connection](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/connections/{connection_id}. Update Connection
+// See WorkspaceConnectionUpdateOptions for explicit parameters and preconditions.
 func (r WorkspaceConnectionResource) Update(ctx context.Context, body generated.ConnectionUpdate, options WorkspaceConnectionUpdateOptions) (Result[generated.Connection], error) {
 	var zero Result[generated.Connection]
 	if err := r.validate(); err != nil {
@@ -1990,6 +3652,11 @@ func (r WorkspaceConnectionResource) Update(ctx context.Context, body generated.
 	response, err := r.client.api.UpdateConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Connection](r.client, response, err, 200)
 }
+
+// Authorize calls POST /api/v1/workspaces/{workspace_id}/connections/{connection_id}/authorize. A
+// browser flow needs a login session and is bound to this browser by a cookie the callback checks; an
+// API key authorizes only a client-credentials client, without a browser. See
+// WorkspaceConnectionAuthorizeOptions for explicit parameters and preconditions.
 func (r WorkspaceConnectionResource) Authorize(ctx context.Context, body generated.AuthorizationRequest, options WorkspaceConnectionAuthorizeOptions) (Result[generated.AuthorizationResult], error) {
 	var zero Result[generated.AuthorizationResult]
 	if err := r.validate(); err != nil {
@@ -2001,6 +3668,9 @@ func (r WorkspaceConnectionResource) Authorize(ctx context.Context, body generat
 	response, err := r.client.api.AuthorizeConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdAuthorizePost(ctx, r.ids[0], r.ids[1], &generated.AuthorizeConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdAuthorizePostParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.AuthorizationResult](r.client, response, err, 200)
 }
+
+// Revoke calls POST /api/v1/workspaces/{workspace_id}/connections/{connection_id}/revoke. Revoke
+// Connection See WorkspaceConnectionRevokeOptions for explicit parameters and preconditions.
 func (r WorkspaceConnectionResource) Revoke(ctx context.Context, options WorkspaceConnectionRevokeOptions) (Result[generated.RevokedConnection], error) {
 	var zero Result[generated.RevokedConnection]
 	if err := r.validate(); err != nil {
@@ -2012,6 +3682,8 @@ func (r WorkspaceConnectionResource) Revoke(ctx context.Context, options Workspa
 	response, err := r.client.api.RevokeConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdRevokePost(ctx, r.ids[0], r.ids[1], &generated.RevokeConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdRevokePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.RevokedConnection](r.client, response, err, 200)
 }
+
+// Test calls POST /api/v1/workspaces/{workspace_id}/connections/{connection_id}/test. Test Connection
 func (r WorkspaceConnectionResource) Test(ctx context.Context) (Result[generated.ConnectionTest], error) {
 	var zero Result[generated.ConnectionTest]
 	if err := r.validate(); err != nil {
@@ -2020,6 +3692,8 @@ func (r WorkspaceConnectionResource) Test(ctx context.Context) (Result[generated
 	response, err := r.client.api.TestConnectionApiV1WorkspacesWorkspaceIdConnectionsConnectionIdTestPost(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ConnectionTest](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/connections/{connection_id}/tools. List Tools
 func (r WorkspaceConnectionToolsResource) List(ctx context.Context) (Result[generated.ToolPage], error) {
 	var zero Result[generated.ToolPage]
 	if err := r.validate(); err != nil {
@@ -2028,15 +3702,24 @@ func (r WorkspaceConnectionToolsResource) List(ctx context.Context) (Result[gene
 	response, err := r.client.api.ListToolsApiV1WorkspacesWorkspaceIdConnectionsConnectionIdToolsGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ToolPage](r.client, response, err, 200)
 }
+
+// Ref binds provider_id locally without checking existence or changing credential authority.
 func (r ConnectorProvidersResource) Ref(id string) ConnectorProviderResource {
 	return ConnectorProviderResource{r.selectID(fmt.Sprint(id))}
 }
+
+// Apps returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ConnectorProviderResource) Apps() ConnectorProviderAppsResource {
 	return ConnectorProviderAppsResource{r.binding}
 }
+
+// Ref binds app locally without checking existence or changing credential authority.
 func (r ConnectorProviderAppsResource) Ref(id string) ConnectorProviderAppResource {
 	return ConnectorProviderAppResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/connector-providers/{provider_id}/apps. List Apps
+// See ConnectorProviderAppsListOptions for explicit parameters and preconditions.
 func (r ConnectorProviderAppsResource) List(ctx context.Context, options ConnectorProviderAppsListOptions) (Result[generated.ConnectorAppPage], error) {
 	var zero Result[generated.ConnectorAppPage]
 	if err := r.validate(); err != nil {
@@ -2045,6 +3728,9 @@ func (r ConnectorProviderAppsResource) List(ctx context.Context, options Connect
 	response, err := r.client.api.ListAppsApiV1WorkspacesWorkspaceIdConnectorProvidersProviderIdAppsGet(ctx, r.ids[0], r.ids[1], &generated.ListAppsApiV1WorkspacesWorkspaceIdConnectorProvidersProviderIdAppsGetParams{Query: options.Query, Limit: options.Limit, Cursor: options.Cursor, Refresh: options.Refresh})
 	return jsonResult[generated.ConnectorAppPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r ConnectorProviderAppsResource) Pages(ctx context.Context, options ConnectorProviderAppsListOptions) iter.Seq2[Result[generated.ConnectorAppPage], error] {
 	if options.Query != nil {
 		value := *options.Query
@@ -2069,9 +3755,14 @@ func (r ConnectorProviderAppsResource) Pages(ctx context.Context, options Connec
 		},
 		func(value generated.ConnectorAppPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Actions returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ConnectorProviderAppResource) Actions() ConnectorProviderAppActionsResource {
 	return ConnectorProviderAppActionsResource{r.binding}
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/connector-providers/{provider_id}/apps/{app}. Get
+// App
 func (r ConnectorProviderAppResource) Get(ctx context.Context) (Result[generated.ConnectorApp], error) {
 	var zero Result[generated.ConnectorApp]
 	if err := r.validate(); err != nil {
@@ -2080,6 +3771,9 @@ func (r ConnectorProviderAppResource) Get(ctx context.Context) (Result[generated
 	response, err := r.client.api.GetAppApiV1WorkspacesWorkspaceIdConnectorProvidersProviderIdAppsAppGet(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[generated.ConnectorApp](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/connector-
+// providers/{provider_id}/apps/{app}/actions. List Actions
 func (r ConnectorProviderAppActionsResource) List(ctx context.Context) (Result[generated.ConnectorActionPage], error) {
 	var zero Result[generated.ConnectorActionPage]
 	if err := r.validate(); err != nil {
@@ -2088,9 +3782,14 @@ func (r ConnectorProviderAppActionsResource) List(ctx context.Context) (Result[g
 	response, err := r.client.api.ListActionsApiV1WorkspacesWorkspaceIdConnectorProvidersProviderIdAppsAppActionsGet(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[generated.ConnectorActionPage](r.client, response, err, 200)
 }
+
+// Ref binds template_id locally without checking existence or changing credential authority.
 func (r EnvironmentTemplatesResource) Ref(id string) EnvironmentTemplateResource {
 	return EnvironmentTemplateResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/environment-templates. List Templates See
+// EnvironmentTemplatesListOptions for explicit parameters and preconditions.
 func (r EnvironmentTemplatesResource) List(ctx context.Context, options EnvironmentTemplatesListOptions) (Result[generated.TemplatePage], error) {
 	var zero Result[generated.TemplatePage]
 	if err := r.validate(); err != nil {
@@ -2099,6 +3798,9 @@ func (r EnvironmentTemplatesResource) List(ctx context.Context, options Environm
 	response, err := r.client.api.ListTemplatesApiV1WorkspacesWorkspaceIdEnvironmentTemplatesGet(ctx, r.ids[0], &generated.ListTemplatesApiV1WorkspacesWorkspaceIdEnvironmentTemplatesGetParams{Label: options.Label, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.TemplatePage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r EnvironmentTemplatesResource) Pages(ctx context.Context, options EnvironmentTemplatesListOptions) iter.Seq2[Result[generated.TemplatePage], error] {
 	if options.Label != nil {
 		value := slices.Clone(*options.Label)
@@ -2119,6 +3821,8 @@ func (r EnvironmentTemplatesResource) Pages(ctx context.Context, options Environ
 		},
 		func(value generated.TemplatePage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/environment-templates. Create Template
 func (r EnvironmentTemplatesResource) Create(ctx context.Context, body generated.TemplateCreate) (Result[generated.Template], error) {
 	var zero Result[generated.Template]
 	if err := r.validate(); err != nil {
@@ -2127,6 +3831,8 @@ func (r EnvironmentTemplatesResource) Create(ctx context.Context, body generated
 	response, err := r.client.api.CreateTemplateApiV1WorkspacesWorkspaceIdEnvironmentTemplatesPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Template](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/environment-templates/{template_id}. Get Template
 func (r EnvironmentTemplateResource) Get(ctx context.Context) (Result[generated.Template], error) {
 	var zero Result[generated.Template]
 	if err := r.validate(); err != nil {
@@ -2135,6 +3841,9 @@ func (r EnvironmentTemplateResource) Get(ctx context.Context) (Result[generated.
 	response, err := r.client.api.GetTemplateApiV1WorkspacesWorkspaceIdEnvironmentTemplatesTemplateIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Template](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/environment-templates/{template_id}. Update
+// Template See EnvironmentTemplateUpdateOptions for explicit parameters and preconditions.
 func (r EnvironmentTemplateResource) Update(ctx context.Context, body generated.TemplateUpdate, options EnvironmentTemplateUpdateOptions) (Result[generated.Template], error) {
 	var zero Result[generated.Template]
 	if err := r.validate(); err != nil {
@@ -2146,9 +3855,14 @@ func (r EnvironmentTemplateResource) Update(ctx context.Context, body generated.
 	response, err := r.client.api.UpdateTemplateApiV1WorkspacesWorkspaceIdEnvironmentTemplatesTemplateIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateTemplateApiV1WorkspacesWorkspaceIdEnvironmentTemplatesTemplateIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Template](r.client, response, err, 200)
 }
+
+// Ref binds environment_id locally without checking existence or changing credential authority.
 func (r EnvironmentsResource) Ref(id string) EnvironmentResource {
 	return EnvironmentResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/environments. List Environments See
+// EnvironmentsListOptions for explicit parameters and preconditions.
 func (r EnvironmentsResource) List(ctx context.Context, options EnvironmentsListOptions) (Result[generated.EnvironmentPage], error) {
 	var zero Result[generated.EnvironmentPage]
 	if err := r.validate(); err != nil {
@@ -2157,6 +3871,9 @@ func (r EnvironmentsResource) List(ctx context.Context, options EnvironmentsList
 	response, err := r.client.api.ListEnvironmentsApiV1WorkspacesWorkspaceIdEnvironmentsGet(ctx, r.ids[0], &generated.ListEnvironmentsApiV1WorkspacesWorkspaceIdEnvironmentsGetParams{Status: options.Status, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.EnvironmentPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r EnvironmentsResource) Pages(ctx context.Context, options EnvironmentsListOptions) iter.Seq2[Result[generated.EnvironmentPage], error] {
 	if options.Status != nil {
 		value := *options.Status
@@ -2177,6 +3894,9 @@ func (r EnvironmentsResource) Pages(ctx context.Context, options EnvironmentsLis
 		},
 		func(value generated.EnvironmentPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/environments. Reserve a managed sandbox from a
+// template (`creating`), or register an external envd target (`ready`).
 func (r EnvironmentsResource) Create(ctx context.Context, body generated.CreateEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsPostJSONRequestBody) (Result[generated.EnvironmentView], error) {
 	var zero Result[generated.EnvironmentView]
 	if err := r.validate(); err != nil {
@@ -2185,6 +3905,9 @@ func (r EnvironmentsResource) Create(ctx context.Context, body generated.CreateE
 	response, err := r.client.api.CreateEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.EnvironmentView](r.client, response, err, 201)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/environments/{environment_id}. Delete
+// Environment See EnvironmentDeleteOptions for explicit parameters and preconditions.
 func (r EnvironmentResource) Delete(ctx context.Context, options EnvironmentDeleteOptions) (Result[generated.EnvironmentView], error) {
 	var zero Result[generated.EnvironmentView]
 	if err := r.validate(); err != nil {
@@ -2196,6 +3919,8 @@ func (r EnvironmentResource) Delete(ctx context.Context, options EnvironmentDele
 	response, err := r.client.api.DeleteEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsEnvironmentIdDelete(ctx, r.ids[0], r.ids[1], &generated.DeleteEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsEnvironmentIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.EnvironmentView](r.client, response, err, 202)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/environments/{environment_id}. Get Environment
 func (r EnvironmentResource) Get(ctx context.Context) (Result[generated.EnvironmentView], error) {
 	var zero Result[generated.EnvironmentView]
 	if err := r.validate(); err != nil {
@@ -2204,6 +3929,9 @@ func (r EnvironmentResource) Get(ctx context.Context) (Result[generated.Environm
 	response, err := r.client.api.GetEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsEnvironmentIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.EnvironmentView](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/environments/{environment_id}. Update
+// Environment See EnvironmentUpdateOptions for explicit parameters and preconditions.
 func (r EnvironmentResource) Update(ctx context.Context, body generated.EnvironmentUpdate, options EnvironmentUpdateOptions) (Result[generated.EnvironmentView], error) {
 	var zero Result[generated.EnvironmentView]
 	if err := r.validate(); err != nil {
@@ -2215,6 +3943,9 @@ func (r EnvironmentResource) Update(ctx context.Context, body generated.Environm
 	response, err := r.client.api.UpdateEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsEnvironmentIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsEnvironmentIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.EnvironmentView](r.client, response, err, 200)
 }
+
+// Stop calls POST /api/v1/workspaces/{workspace_id}/environments/{environment_id}/stop. Stop
+// Environment See EnvironmentStopOptions for explicit parameters and preconditions.
 func (r EnvironmentResource) Stop(ctx context.Context, options EnvironmentStopOptions) (Result[generated.EnvironmentView], error) {
 	var zero Result[generated.EnvironmentView]
 	if err := r.validate(); err != nil {
@@ -2226,9 +3957,14 @@ func (r EnvironmentResource) Stop(ctx context.Context, options EnvironmentStopOp
 	response, err := r.client.api.StopEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsEnvironmentIdStopPost(ctx, r.ids[0], r.ids[1], &generated.StopEnvironmentApiV1WorkspacesWorkspaceIdEnvironmentsEnvironmentIdStopPostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.EnvironmentView](r.client, response, err, 202)
 }
+
+// Ref binds grant_id locally without checking existence or changing credential authority.
 func (r GrantsResource) Ref(id string) GrantResource {
 	return GrantResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/grants. List Workspace Grants See GrantsListOptions
+// for explicit parameters and preconditions.
 func (r GrantsResource) List(ctx context.Context, options GrantsListOptions) (Result[generated.GrantPage], error) {
 	var zero Result[generated.GrantPage]
 	if err := r.validate(); err != nil {
@@ -2237,6 +3973,9 @@ func (r GrantsResource) List(ctx context.Context, options GrantsListOptions) (Re
 	response, err := r.client.api.ListWorkspaceGrantsApiV1WorkspacesWorkspaceIdGrantsGet(ctx, r.ids[0], &generated.ListWorkspaceGrantsApiV1WorkspacesWorkspaceIdGrantsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.GrantPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r GrantsResource) Pages(ctx context.Context, options GrantsListOptions) iter.Seq2[Result[generated.GrantPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -2253,6 +3992,8 @@ func (r GrantsResource) Pages(ctx context.Context, options GrantsListOptions) it
 		},
 		func(value generated.GrantPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/grants. Create Workspace Grant
 func (r GrantsResource) Create(ctx context.Context, body generated.GrantCreate) (Result[generated.GrantView], error) {
 	var zero Result[generated.GrantView]
 	if err := r.validate(); err != nil {
@@ -2261,6 +4002,8 @@ func (r GrantsResource) Create(ctx context.Context, body generated.GrantCreate) 
 	response, err := r.client.api.CreateWorkspaceGrantApiV1WorkspacesWorkspaceIdGrantsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.GrantView](r.client, response, err, 201)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/grants/{grant_id}. Delete Workspace Grant
 func (r GrantResource) Delete(ctx context.Context) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -2269,6 +4012,9 @@ func (r GrantResource) Delete(ctx context.Context) (Result[struct{}], error) {
 	response, err := r.client.api.DeleteWorkspaceGrantApiV1WorkspacesWorkspaceIdGrantsGrantIdDelete(ctx, r.ids[0], r.ids[1])
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/grants/{grant_id}. The grant is replaced: the
+// result carries its new ID.
 func (r GrantResource) Update(ctx context.Context, body generated.GrantUpdate) (Result[generated.GrantView], error) {
 	var zero Result[generated.GrantView]
 	if err := r.validate(); err != nil {
@@ -2277,6 +4023,9 @@ func (r GrantResource) Update(ctx context.Context, body generated.GrantUpdate) (
 	response, err := r.client.api.ChangeWorkspaceGrantApiV1WorkspacesWorkspaceIdGrantsGrantIdPatch(ctx, r.ids[0], r.ids[1], body)
 	return jsonResult[generated.GrantView](r.client, response, err, 200)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/icon. Delete Workspace Icon See
+// IconDeleteOptions for explicit parameters and preconditions.
 func (r IconResource) Delete(ctx context.Context, options IconDeleteOptions) (Result[generated.Workspace], error) {
 	var zero Result[generated.Workspace]
 	if err := r.validate(); err != nil {
@@ -2288,6 +4037,9 @@ func (r IconResource) Delete(ctx context.Context, options IconDeleteOptions) (Re
 	response, err := r.client.api.DeleteWorkspaceIconApiV1WorkspacesWorkspaceIdIconDelete(ctx, r.ids[0], &generated.DeleteWorkspaceIconApiV1WorkspacesWorkspaceIdIconDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Workspace](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/icon. Get Workspace Icon The caller must close the
+// returned BinaryResult or its Body.
 func (r IconResource) Get(ctx context.Context) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -2296,6 +4048,9 @@ func (r IconResource) Get(ctx context.Context) (*BinaryResult, error) {
 	response, err := r.client.api.GetWorkspaceIconApiV1WorkspacesWorkspaceIdIconGet(ctx, r.ids[0])
 	return binaryResult(r.client, response, err, 200)
 }
+
+// Replace calls PUT /api/v1/workspaces/{workspace_id}/icon. Put Workspace Icon See IconReplaceOptions
+// for explicit parameters and preconditions.
 func (r IconResource) Replace(ctx context.Context, body io.Reader, options IconReplaceOptions) (Result[generated.Workspace], error) {
 	var zero Result[generated.Workspace]
 	if err := r.validate(); err != nil {
@@ -2313,9 +4068,14 @@ func (r IconResource) Replace(ctx context.Context, body io.Reader, options IconR
 	response, err := r.client.api.PutWorkspaceIconApiV1WorkspacesWorkspaceIdIconPutWithBody(ctx, r.ids[0], &generated.PutWorkspaceIconApiV1WorkspacesWorkspaceIdIconPutParams{IfMatch: &options.IfMatch}, options.ContentType, readerOnly{body})
 	return jsonResult[generated.Workspace](r.client, response, err, 200)
 }
+
+// Ref binds invitation_id locally without checking existence or changing credential authority.
 func (r WorkspaceInvitationsResource) Ref(id string) WorkspaceInvitationResource {
 	return WorkspaceInvitationResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/invitations. List Workspace Invitations See
+// WorkspaceInvitationsListOptions for explicit parameters and preconditions.
 func (r WorkspaceInvitationsResource) List(ctx context.Context, options WorkspaceInvitationsListOptions) (Result[generated.InvitationPage], error) {
 	var zero Result[generated.InvitationPage]
 	if err := r.validate(); err != nil {
@@ -2324,6 +4084,9 @@ func (r WorkspaceInvitationsResource) List(ctx context.Context, options Workspac
 	response, err := r.client.api.ListWorkspaceInvitationsApiV1WorkspacesWorkspaceIdInvitationsGet(ctx, r.ids[0], &generated.ListWorkspaceInvitationsApiV1WorkspacesWorkspaceIdInvitationsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.InvitationPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r WorkspaceInvitationsResource) Pages(ctx context.Context, options WorkspaceInvitationsListOptions) iter.Seq2[Result[generated.InvitationPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -2340,6 +4103,8 @@ func (r WorkspaceInvitationsResource) Pages(ctx context.Context, options Workspa
 		},
 		func(value generated.InvitationPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/invitations. Create Workspace Invitation
 func (r WorkspaceInvitationsResource) Create(ctx context.Context, body generated.InvitationCreate) (Result[generated.InvitationReceipt], error) {
 	var zero Result[generated.InvitationReceipt]
 	if err := r.validate(); err != nil {
@@ -2348,6 +4113,9 @@ func (r WorkspaceInvitationsResource) Create(ctx context.Context, body generated
 	response, err := r.client.api.CreateWorkspaceInvitationApiV1WorkspacesWorkspaceIdInvitationsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.InvitationReceipt](r.client, response, err, 201)
 }
+
+// Resend calls POST /api/v1/workspaces/{workspace_id}/invitations/{invitation_id}/resend. Resend
+// Workspace Invitation See WorkspaceInvitationResendOptions for explicit parameters and preconditions.
 func (r WorkspaceInvitationResource) Resend(ctx context.Context, options WorkspaceInvitationResendOptions) (Result[generated.InvitationReceipt], error) {
 	var zero Result[generated.InvitationReceipt]
 	if err := r.validate(); err != nil {
@@ -2359,6 +4127,9 @@ func (r WorkspaceInvitationResource) Resend(ctx context.Context, options Workspa
 	response, err := r.client.api.ResendWorkspaceInvitationApiV1WorkspacesWorkspaceIdInvitationsInvitationIdResendPost(ctx, r.ids[0], r.ids[1], &generated.ResendWorkspaceInvitationApiV1WorkspacesWorkspaceIdInvitationsInvitationIdResendPostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.InvitationReceipt](r.client, response, err, 200)
 }
+
+// Revoke calls POST /api/v1/workspaces/{workspace_id}/invitations/{invitation_id}/revoke. Revoke
+// Workspace Invitation See WorkspaceInvitationRevokeOptions for explicit parameters and preconditions.
 func (r WorkspaceInvitationResource) Revoke(ctx context.Context, options WorkspaceInvitationRevokeOptions) (Result[generated.Invitation], error) {
 	var zero Result[generated.Invitation]
 	if err := r.validate(); err != nil {
@@ -2370,7 +4141,12 @@ func (r WorkspaceInvitationResource) Revoke(ctx context.Context, options Workspa
 	response, err := r.client.api.RevokeWorkspaceInvitationApiV1WorkspacesWorkspaceIdInvitationsInvitationIdRevokePost(ctx, r.ids[0], r.ids[1], &generated.RevokeWorkspaceInvitationApiV1WorkspacesWorkspaceIdInvitationsInvitationIdRevokePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Invitation](r.client, response, err, 200)
 }
+
+// Ref binds key_id locally without checking existence or changing credential authority.
 func (r KeysResource) Ref(id string) KeyResource { return KeyResource{r.selectID(fmt.Sprint(id))} }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/keys. List Workspace Keys See KeysListOptions for
+// explicit parameters and preconditions.
 func (r KeysResource) List(ctx context.Context, options KeysListOptions) (Result[generated.ApiKeyPage], error) {
 	var zero Result[generated.ApiKeyPage]
 	if err := r.validate(); err != nil {
@@ -2379,6 +4155,9 @@ func (r KeysResource) List(ctx context.Context, options KeysListOptions) (Result
 	response, err := r.client.api.ListWorkspaceKeysApiV1WorkspacesWorkspaceIdKeysGet(ctx, r.ids[0], &generated.ListWorkspaceKeysApiV1WorkspacesWorkspaceIdKeysGetParams{PrincipalId: options.PrincipalId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ApiKeyPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r KeysResource) Pages(ctx context.Context, options KeysListOptions) iter.Seq2[Result[generated.ApiKeyPage], error] {
 	if options.PrincipalId != nil {
 		value := *options.PrincipalId
@@ -2399,6 +4178,9 @@ func (r KeysResource) Pages(ctx context.Context, options KeysListOptions) iter.S
 		},
 		func(value generated.ApiKeyPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/keys/{key_id}. Revoke Workspace Key See
+// KeyDeleteOptions for explicit parameters and preconditions.
 func (r KeyResource) Delete(ctx context.Context, options KeyDeleteOptions) (Result[generated.ApiKey], error) {
 	var zero Result[generated.ApiKey]
 	if err := r.validate(); err != nil {
@@ -2410,6 +4192,8 @@ func (r KeyResource) Delete(ctx context.Context, options KeyDeleteOptions) (Resu
 	response, err := r.client.api.RevokeWorkspaceKeyApiV1WorkspacesWorkspaceIdKeysKeyIdDelete(ctx, r.ids[0], r.ids[1], &generated.RevokeWorkspaceKeyApiV1WorkspacesWorkspaceIdKeysKeyIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.ApiKey](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/media-understanding-defaults. Get Media Defaults
 func (r MediaUnderstandingDefaultsResource) Get(ctx context.Context) (Result[generated.MediaDefaults], error) {
 	var zero Result[generated.MediaDefaults]
 	if err := r.validate(); err != nil {
@@ -2418,6 +4202,10 @@ func (r MediaUnderstandingDefaultsResource) Get(ctx context.Context) (Result[gen
 	response, err := r.client.api.GetMediaDefaultsApiV1WorkspacesWorkspaceIdMediaUnderstandingDefaultsGet(ctx, r.ids[0])
 	return jsonResult[generated.MediaDefaults](r.client, response, err, 200)
 }
+
+// Replace calls PUT /api/v1/workspaces/{workspace_id}/media-understanding-defaults. Replaces all three
+// kinds; each model must declare it understands its kind. Requires workspace admin. See
+// MediaUnderstandingDefaultsReplaceOptions for explicit parameters and preconditions.
 func (r MediaUnderstandingDefaultsResource) Replace(ctx context.Context, body generated.MediaUnderstandingSelection, options MediaUnderstandingDefaultsReplaceOptions) (Result[generated.MediaDefaults], error) {
 	var zero Result[generated.MediaDefaults]
 	if err := r.validate(); err != nil {
@@ -2429,9 +4217,14 @@ func (r MediaUnderstandingDefaultsResource) Replace(ctx context.Context, body ge
 	response, err := r.client.api.ReplaceMediaDefaultsApiV1WorkspacesWorkspaceIdMediaUnderstandingDefaultsPut(ctx, r.ids[0], &generated.ReplaceMediaDefaultsApiV1WorkspacesWorkspaceIdMediaUnderstandingDefaultsPutParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.MediaDefaults](r.client, response, err, 200)
 }
+
+// Ref binds memory_id locally without checking existence or changing credential authority.
 func (r MemoriesResource) Ref(id string) MemoryResource {
 	return MemoryResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/memories. List Memories See MemoriesListOptions for
+// explicit parameters and preconditions.
 func (r MemoriesResource) List(ctx context.Context, options MemoriesListOptions) (Result[generated.MemoryPage], error) {
 	var zero Result[generated.MemoryPage]
 	if err := r.validate(); err != nil {
@@ -2440,6 +4233,9 @@ func (r MemoriesResource) List(ctx context.Context, options MemoriesListOptions)
 	response, err := r.client.api.ListMemoriesApiV1WorkspacesWorkspaceIdMemoriesGet(ctx, r.ids[0], &generated.ListMemoriesApiV1WorkspacesWorkspaceIdMemoriesGetParams{Label: options.Label, Kind: options.Kind, Type: options.Type, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.MemoryPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r MemoriesResource) Pages(ctx context.Context, options MemoriesListOptions) iter.Seq2[Result[generated.MemoryPage], error] {
 	if options.Label != nil {
 		value := slices.Clone(*options.Label)
@@ -2468,6 +4264,8 @@ func (r MemoriesResource) Pages(ctx context.Context, options MemoriesListOptions
 		},
 		func(value generated.MemoryPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/memories. Create Memory
 func (r MemoriesResource) Create(ctx context.Context, body generated.MemoryCreate) (Result[generated.Memory], error) {
 	var zero Result[generated.Memory]
 	if err := r.validate(); err != nil {
@@ -2476,11 +4274,20 @@ func (r MemoriesResource) Create(ctx context.Context, body generated.MemoryCreat
 	response, err := r.client.api.CreateMemoryApiV1WorkspacesWorkspaceIdMemoriesPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Memory](r.client, response, err, 201)
 }
-func (r MemoryResource) Files() MemoryFilesResource     { return MemoryFilesResource{r.binding} }
+
+// Files returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r MemoryResource) Files() MemoryFilesResource { return MemoryFilesResource{r.binding} }
+
+// Records returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r MemoryResource) Records() MemoryRecordsResource { return MemoryRecordsResource{r.binding} }
+
+// Revisions returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r MemoryResource) Revisions() MemoryRevisionsResource {
 	return MemoryRevisionsResource{r.binding}
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/memories/{memory_id}. Delete Memory See
+// MemoryDeleteOptions for explicit parameters and preconditions.
 func (r MemoryResource) Delete(ctx context.Context, options MemoryDeleteOptions) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -2492,6 +4299,8 @@ func (r MemoryResource) Delete(ctx context.Context, options MemoryDeleteOptions)
 	response, err := r.client.api.DeleteMemoryApiV1WorkspacesWorkspaceIdMemoriesMemoryIdDelete(ctx, r.ids[0], r.ids[1], &generated.DeleteMemoryApiV1WorkspacesWorkspaceIdMemoriesMemoryIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/memories/{memory_id}. Get Memory
 func (r MemoryResource) Get(ctx context.Context) (Result[generated.Memory], error) {
 	var zero Result[generated.Memory]
 	if err := r.validate(); err != nil {
@@ -2500,6 +4309,9 @@ func (r MemoryResource) Get(ctx context.Context) (Result[generated.Memory], erro
 	response, err := r.client.api.GetMemoryApiV1WorkspacesWorkspaceIdMemoriesMemoryIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Memory](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/memories/{memory_id}. Update Memory See
+// MemoryUpdateOptions for explicit parameters and preconditions.
 func (r MemoryResource) Update(ctx context.Context, body generated.MemoryUpdate, options MemoryUpdateOptions) (Result[generated.Memory], error) {
 	var zero Result[generated.Memory]
 	if err := r.validate(); err != nil {
@@ -2511,9 +4323,14 @@ func (r MemoryResource) Update(ctx context.Context, body generated.MemoryUpdate,
 	response, err := r.client.api.UpdateMemoryApiV1WorkspacesWorkspaceIdMemoriesMemoryIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateMemoryApiV1WorkspacesWorkspaceIdMemoriesMemoryIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Memory](r.client, response, err, 200)
 }
+
+// Ref binds path locally without checking existence or changing credential authority.
 func (r MemoryFilesResource) Ref(id string) MemoryFileResource {
 	return MemoryFileResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/memories/{memory_id}/files. List Files See
+// MemoryFilesListOptions for explicit parameters and preconditions.
 func (r MemoryFilesResource) List(ctx context.Context, options MemoryFilesListOptions) (Result[generated.MemoryFilePage], error) {
 	var zero Result[generated.MemoryFilePage]
 	if err := r.validate(); err != nil {
@@ -2522,6 +4339,9 @@ func (r MemoryFilesResource) List(ctx context.Context, options MemoryFilesListOp
 	response, err := r.client.api.ListFilesApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesGet(ctx, r.ids[0], r.ids[1], &generated.ListFilesApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesGetParams{Prefix: options.Prefix, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.MemoryFilePage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r MemoryFilesResource) Pages(ctx context.Context, options MemoryFilesListOptions) iter.Seq2[Result[generated.MemoryFilePage], error] {
 	if options.Prefix != nil {
 		value := *options.Prefix
@@ -2542,6 +4362,8 @@ func (r MemoryFilesResource) Pages(ctx context.Context, options MemoryFilesListO
 		},
 		func(value generated.MemoryFilePage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/memories/{memory_id}/files. Create File
 func (r MemoryFilesResource) Create(ctx context.Context, body generated.MemoryFileCreate) (Result[generated.MemoryFile], error) {
 	var zero Result[generated.MemoryFile]
 	if err := r.validate(); err != nil {
@@ -2550,6 +4372,10 @@ func (r MemoryFilesResource) Create(ctx context.Context, body generated.MemoryFi
 	response, err := r.client.api.CreateFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesPost(ctx, r.ids[0], r.ids[1], body)
 	return jsonResult[generated.MemoryFile](r.client, response, err, 201)
 }
+
+// Move calls POST /api/v1/workspaces/{workspace_id}/memories/{memory_id}/files/move. Move the source
+// file `If-Match` names; the destination must be free. See MemoryFilesMoveOptions for explicit
+// parameters and preconditions.
 func (r MemoryFilesResource) Move(ctx context.Context, body generated.MemoryFileMove, options MemoryFilesMoveOptions) (Result[generated.MemoryFile], error) {
 	var zero Result[generated.MemoryFile]
 	if err := r.validate(); err != nil {
@@ -2561,6 +4387,9 @@ func (r MemoryFilesResource) Move(ctx context.Context, body generated.MemoryFile
 	response, err := r.client.api.MoveFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesMovePost(ctx, r.ids[0], r.ids[1], &generated.MoveFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesMovePostParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.MemoryFile](r.client, response, err, 200)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/memories/{memory_id}/files/{path}. Delete File
+// See MemoryFileDeleteOptions for explicit parameters and preconditions.
 func (r MemoryFileResource) Delete(ctx context.Context, options MemoryFileDeleteOptions) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -2572,6 +4401,8 @@ func (r MemoryFileResource) Delete(ctx context.Context, options MemoryFileDelete
 	response, err := r.client.api.DeleteFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesPathDelete(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.DeleteFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesPathDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/memories/{memory_id}/files/{path}. Read File
 func (r MemoryFileResource) Get(ctx context.Context) (Result[generated.MemoryFile], error) {
 	var zero Result[generated.MemoryFile]
 	if err := r.validate(); err != nil {
@@ -2580,6 +4411,9 @@ func (r MemoryFileResource) Get(ctx context.Context) (Result[generated.MemoryFil
 	response, err := r.client.api.ReadFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesPathGet(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[generated.MemoryFile](r.client, response, err, 200)
 }
+
+// Replace calls PUT /api/v1/workspaces/{workspace_id}/memories/{memory_id}/files/{path}. Replace File
+// See MemoryFileReplaceOptions for explicit parameters and preconditions.
 func (r MemoryFileResource) Replace(ctx context.Context, body generated.MemoryFileReplace, options MemoryFileReplaceOptions) (Result[generated.MemoryFile], error) {
 	var zero Result[generated.MemoryFile]
 	if err := r.validate(); err != nil {
@@ -2591,9 +4425,14 @@ func (r MemoryFileResource) Replace(ctx context.Context, body generated.MemoryFi
 	response, err := r.client.api.ReplaceFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesPathPut(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.ReplaceFileApiV1WorkspacesWorkspaceIdMemoriesMemoryIdFilesPathPutParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.MemoryFile](r.client, response, err, 200)
 }
+
+// Ref binds record_id locally without checking existence or changing credential authority.
 func (r MemoryRecordsResource) Ref(id string) MemoryRecordResource {
 	return MemoryRecordResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/memories/{memory_id}/records. List Records See
+// MemoryRecordsListOptions for explicit parameters and preconditions.
 func (r MemoryRecordsResource) List(ctx context.Context, options MemoryRecordsListOptions) (Result[generated.MemoryRecordPage], error) {
 	var zero Result[generated.MemoryRecordPage]
 	if err := r.validate(); err != nil {
@@ -2602,6 +4441,9 @@ func (r MemoryRecordsResource) List(ctx context.Context, options MemoryRecordsLi
 	response, err := r.client.api.ListRecordsApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRecordsGet(ctx, r.ids[0], r.ids[1], &generated.ListRecordsApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRecordsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.MemoryRecordPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r MemoryRecordsResource) Pages(ctx context.Context, options MemoryRecordsListOptions) iter.Seq2[Result[generated.MemoryRecordPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -2618,6 +4460,8 @@ func (r MemoryRecordsResource) Pages(ctx context.Context, options MemoryRecordsL
 		},
 		func(value generated.MemoryRecordPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/memories/{memory_id}/records. Add Record
 func (r MemoryRecordsResource) Create(ctx context.Context, body generated.MemoryRecordText) (Result[generated.MemoryRecordView], error) {
 	var zero Result[generated.MemoryRecordView]
 	if err := r.validate(); err != nil {
@@ -2626,6 +4470,9 @@ func (r MemoryRecordsResource) Create(ctx context.Context, body generated.Memory
 	response, err := r.client.api.AddRecordApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRecordsPost(ctx, r.ids[0], r.ids[1], body)
 	return jsonResult[generated.MemoryRecordView](r.client, response, err, 201)
 }
+
+// Search calls POST /api/v1/workspaces/{workspace_id}/memories/{memory_id}/records/search. The records
+// most similar to the query; the query travels in the body, never the URL.
 func (r MemoryRecordsResource) Search(ctx context.Context, body generated.MemoryRecordSearch) (Result[generated.MemoryRecordPage], error) {
 	var zero Result[generated.MemoryRecordPage]
 	if err := r.validate(); err != nil {
@@ -2634,6 +4481,9 @@ func (r MemoryRecordsResource) Search(ctx context.Context, body generated.Memory
 	response, err := r.client.api.SearchRecordsApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRecordsSearchPost(ctx, r.ids[0], r.ids[1], body)
 	return jsonResult[generated.MemoryRecordPage](r.client, response, err, 200)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/memories/{memory_id}/records/{record_id}.
+// Delete Record
 func (r MemoryRecordResource) Delete(ctx context.Context) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -2642,6 +4492,9 @@ func (r MemoryRecordResource) Delete(ctx context.Context) (Result[struct{}], err
 	response, err := r.client.api.DeleteRecordApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRecordsRecordIdDelete(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Replace calls PUT /api/v1/workspaces/{workspace_id}/memories/{memory_id}/records/{record_id}.
+// Replace the record's text; records carry no version, so the last writer wins.
 func (r MemoryRecordResource) Replace(ctx context.Context, body generated.MemoryRecordText) (Result[generated.MemoryRecordView], error) {
 	var zero Result[generated.MemoryRecordView]
 	if err := r.validate(); err != nil {
@@ -2650,9 +4503,15 @@ func (r MemoryRecordResource) Replace(ctx context.Context, body generated.Memory
 	response, err := r.client.api.UpdateRecordApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRecordsRecordIdPut(ctx, r.ids[0], r.ids[1], r.ids[2], body)
 	return jsonResult[generated.MemoryRecordView](r.client, response, err, 200)
 }
+
+// Ref binds seq locally without checking existence or changing credential authority.
 func (r MemoryRevisionsResource) Ref(id int) MemoryRevisionResource {
 	return MemoryRevisionResource{r.selectID(fmt.Sprint(id))}
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/memories/{memory_id}/revisions. Delete every
+// retained revision of one file path. See MemoryRevisionsDeleteOptions for explicit parameters and
+// preconditions.
 func (r MemoryRevisionsResource) Delete(ctx context.Context, options MemoryRevisionsDeleteOptions) (Result[generated.HistoryPurge], error) {
 	var zero Result[generated.HistoryPurge]
 	if err := r.validate(); err != nil {
@@ -2661,6 +4520,9 @@ func (r MemoryRevisionsResource) Delete(ctx context.Context, options MemoryRevis
 	response, err := r.client.api.PurgeHistoryApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRevisionsDelete(ctx, r.ids[0], r.ids[1], &generated.PurgeHistoryApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRevisionsDeleteParams{Path: options.Path})
 	return jsonResult[generated.HistoryPurge](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/memories/{memory_id}/revisions. List Revisions See
+// MemoryRevisionsListOptions for explicit parameters and preconditions.
 func (r MemoryRevisionsResource) List(ctx context.Context, options MemoryRevisionsListOptions) (Result[generated.MemoryRevisionPage], error) {
 	var zero Result[generated.MemoryRevisionPage]
 	if err := r.validate(); err != nil {
@@ -2669,6 +4531,9 @@ func (r MemoryRevisionsResource) List(ctx context.Context, options MemoryRevisio
 	response, err := r.client.api.ListRevisionsApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRevisionsGet(ctx, r.ids[0], r.ids[1], &generated.ListRevisionsApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRevisionsGetParams{Path: options.Path, RunId: options.RunId, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.MemoryRevisionPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r MemoryRevisionsResource) Pages(ctx context.Context, options MemoryRevisionsListOptions) iter.Seq2[Result[generated.MemoryRevisionPage], error] {
 	if options.Path != nil {
 		value := *options.Path
@@ -2693,6 +4558,8 @@ func (r MemoryRevisionsResource) Pages(ctx context.Context, options MemoryRevisi
 		},
 		func(value generated.MemoryRevisionPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/memories/{memory_id}/revisions/{seq}. Get Revision
 func (r MemoryRevisionResource) Get(ctx context.Context) (Result[generated.MemoryRevisionDetail], error) {
 	var zero Result[generated.MemoryRevisionDetail]
 	if err := r.validate(); err != nil {
@@ -2701,6 +4568,10 @@ func (r MemoryRevisionResource) Get(ctx context.Context) (Result[generated.Memor
 	response, err := r.client.api.GetRevisionApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRevisionsSeqGet(ctx, r.ids[0], r.ids[1], int(r.integerID(2)))
 	return jsonResult[generated.MemoryRevisionDetail](r.client, response, err, 200)
 }
+
+// Restore calls POST /api/v1/workspaces/{workspace_id}/memories/{memory_id}/revisions/{seq}/restore.
+// Set the path back to the content the change replaced; `If-Match` names the file there, if any. See
+// MemoryRevisionRestoreOptions for explicit parameters and preconditions.
 func (r MemoryRevisionResource) Restore(ctx context.Context, options MemoryRevisionRestoreOptions) (Result[generated.MemoryFileState], error) {
 	var zero Result[generated.MemoryFileState]
 	if err := r.validate(); err != nil {
@@ -2709,10 +4580,20 @@ func (r MemoryRevisionResource) Restore(ctx context.Context, options MemoryRevis
 	response, err := r.client.api.RestoreRevisionApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRevisionsSeqRestorePost(ctx, r.ids[0], r.ids[1], int(r.integerID(2)), &generated.RestoreRevisionApiV1WorkspacesWorkspaceIdMemoriesMemoryIdRevisionsSeqRestorePostParams{IfMatch: options.IfMatch})
 	return jsonResult[generated.MemoryFileState](r.client, response, err, 200)
 }
-func (r RunsResource) Ref(id string) RunResource    { return RunResource{r.selectID(fmt.Sprint(id))} }
+
+// Ref binds run_id locally without checking existence or changing credential authority.
+func (r RunsResource) Ref(id string) RunResource { return RunResource{r.selectID(fmt.Sprint(id))} }
+
+// Attempts returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r RunResource) Attempts() RunAttemptsResource { return RunAttemptsResource{r.binding} }
-func (r RunResource) Items() RunItemsResource       { return RunItemsResource{r.binding} }
-func (r RunResource) Lineage() RunLineageResource   { return RunLineageResource{r.binding} }
+
+// Items returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r RunResource) Items() RunItemsResource { return RunItemsResource{r.binding} }
+
+// Lineage returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r RunResource) Lineage() RunLineageResource { return RunLineageResource{r.binding} }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/runs/{run_id}. Get Run
 func (r RunResource) Get(ctx context.Context) (Result[generated.RunView], error) {
 	var zero Result[generated.RunView]
 	if err := r.validate(); err != nil {
@@ -2721,6 +4602,9 @@ func (r RunResource) Get(ctx context.Context) (Result[generated.RunView], error)
 	response, err := r.client.api.GetRunApiV1WorkspacesWorkspaceIdRunsRunIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.RunView](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/runs/{run_id}. Labels only. See
+// RunUpdateOptions for explicit parameters and preconditions.
 func (r RunResource) Update(ctx context.Context, body generated.RunLabels, options RunUpdateOptions) (Result[generated.RunView], error) {
 	var zero Result[generated.RunView]
 	if err := r.validate(); err != nil {
@@ -2732,6 +4616,11 @@ func (r RunResource) Update(ctx context.Context, body generated.RunLabels, optio
 	response, err := r.client.api.UpdateRunApiV1WorkspacesWorkspaceIdRunsRunIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateRunApiV1WorkspacesWorkspaceIdRunsRunIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.RunView](r.client, response, err, 200)
 }
+
+// Fork calls POST /api/v1/workspaces/{workspace_id}/runs/{run_id}/fork. A new thread in the run's
+// session that continues from this run's committed history. Returns acceptance, not completion, with
+// canonical Thread/Entry references and an optional Run. A queued entry has no Run. See RunForkOptions
+// for explicit parameters and preconditions.
 func (r RunResource) Fork(ctx context.Context, body generated.Fork, options RunForkOptions) (*Submitted, error) {
 	var zero *Submitted
 	if err := r.validate(); err != nil {
@@ -2747,6 +4636,8 @@ func (r RunResource) Fork(ctx context.Context, body generated.Fork, options RunF
 	}
 	return bindSubmitted(r.client, receipt)
 }
+
+// Interrupt calls POST /api/v1/workspaces/{workspace_id}/runs/{run_id}/interrupt. Interrupt Run
 func (r RunResource) Interrupt(ctx context.Context) (Result[generated.RunView], error) {
 	var zero Result[generated.RunView]
 	if err := r.validate(); err != nil {
@@ -2755,6 +4646,11 @@ func (r RunResource) Interrupt(ctx context.Context) (Result[generated.RunView], 
 	response, err := r.client.api.InterruptRunApiV1WorkspacesWorkspaceIdRunsRunIdInterruptPost(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.RunView](r.client, response, err, 200)
 }
+
+// Resume calls POST /api/v1/workspaces/{workspace_id}/runs/{run_id}/resume. Answer the waiting run's
+// approvals and client tools; the successor run continues from them. Returns the successor Run. Bind
+// workspace.Runs().Ref(result.Value.Id) before waiting; Wait on the original reference never follows
+// successors. See RunResumeOptions for explicit parameters and preconditions.
 func (r RunResource) Resume(ctx context.Context, body generated.ResumeRequest, options RunResumeOptions) (Result[generated.RunView], error) {
 	var zero Result[generated.RunView]
 	if err := r.validate(); err != nil {
@@ -2766,9 +4662,13 @@ func (r RunResource) Resume(ctx context.Context, body generated.ResumeRequest, o
 	response, err := r.client.api.ResumeRunApiV1WorkspacesWorkspaceIdRunsRunIdResumePost(ctx, r.ids[0], r.ids[1], &generated.ResumeRunApiV1WorkspacesWorkspaceIdRunsRunIdResumePostParams{IdempotencyKey: options.IdempotencyKey}, body)
 	return jsonResult[generated.RunView](r.client, response, err, 200, 201)
 }
+
+// Ref binds attempt_id locally without checking existence or changing credential authority.
 func (r RunAttemptsResource) Ref(id string) RunAttemptResource {
 	return RunAttemptResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/runs/{run_id}/attempts. Run Attempts
 func (r RunAttemptsResource) List(ctx context.Context) (Result[generated.Attempts], error) {
 	var zero Result[generated.Attempts]
 	if err := r.validate(); err != nil {
@@ -2777,9 +4677,15 @@ func (r RunAttemptsResource) List(ctx context.Context) (Result[generated.Attempt
 	response, err := r.client.api.RunAttemptsApiV1WorkspacesWorkspaceIdRunsRunIdAttemptsGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Attempts](r.client, response, err, 200)
 }
+
+// Trace returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r RunAttemptResource) Trace() RunAttemptTraceResource {
 	return RunAttemptTraceResource{r.binding}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/runs/{run_id}/attempts/{attempt_id}/trace. The
+// attempt's spans, including its inline child runs. See RunAttemptTraceListOptions for explicit
+// parameters and preconditions.
 func (r RunAttemptTraceResource) List(ctx context.Context, options RunAttemptTraceListOptions) (Result[generated.SpanPage], error) {
 	var zero Result[generated.SpanPage]
 	if err := r.validate(); err != nil {
@@ -2788,6 +4694,9 @@ func (r RunAttemptTraceResource) List(ctx context.Context, options RunAttemptTra
 	response, err := r.client.api.ListAttemptSpansApiV1WorkspacesWorkspaceIdRunsRunIdAttemptsAttemptIdTraceGet(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.ListAttemptSpansApiV1WorkspacesWorkspaceIdRunsRunIdAttemptsAttemptIdTraceGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SpanPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r RunAttemptTraceResource) Pages(ctx context.Context, options RunAttemptTraceListOptions) iter.Seq2[Result[generated.SpanPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -2804,6 +4713,8 @@ func (r RunAttemptTraceResource) Pages(ctx context.Context, options RunAttemptTr
 		},
 		func(value generated.SpanPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/runs/{run_id}/items. Run Items
 func (r RunItemsResource) Get(ctx context.Context) (Result[generated.RunItems], error) {
 	var zero Result[generated.RunItems]
 	if err := r.validate(); err != nil {
@@ -2812,6 +4723,10 @@ func (r RunItemsResource) Get(ctx context.Context) (Result[generated.RunItems], 
 	response, err := r.client.api.RunItemsApiV1WorkspacesWorkspaceIdRunsRunIdItemsGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.RunItems](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/runs/{run_id}/lineage. The run and its ancestors,
+// nearest first, across fork origins. See RunLineageListOptions for explicit parameters and
+// preconditions.
 func (r RunLineageResource) List(ctx context.Context, options RunLineageListOptions) (Result[generated.RunPage], error) {
 	var zero Result[generated.RunPage]
 	if err := r.validate(); err != nil {
@@ -2820,6 +4735,9 @@ func (r RunLineageResource) List(ctx context.Context, options RunLineageListOpti
 	response, err := r.client.api.RunLineageApiV1WorkspacesWorkspaceIdRunsRunIdLineageGet(ctx, r.ids[0], r.ids[1], &generated.RunLineageApiV1WorkspacesWorkspaceIdRunsRunIdLineageGetParams{Cursor: options.Cursor})
 	return jsonResult[generated.RunPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r RunLineageResource) Pages(ctx context.Context, options RunLineageListOptions) iter.Seq2[Result[generated.RunPage], error] {
 	if options.Cursor != nil {
 		value := *options.Cursor
@@ -2832,9 +4750,14 @@ func (r RunLineageResource) Pages(ctx context.Context, options RunLineageListOpt
 		},
 		func(value generated.RunPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Ref binds secret_id locally without checking existence or changing credential authority.
 func (r SecretsResource) Ref(id string) SecretResource {
 	return SecretResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/secrets. List Secrets See SecretsListOptions for
+// explicit parameters and preconditions.
 func (r SecretsResource) List(ctx context.Context, options SecretsListOptions) (Result[generated.SecretPage], error) {
 	var zero Result[generated.SecretPage]
 	if err := r.validate(); err != nil {
@@ -2843,6 +4766,9 @@ func (r SecretsResource) List(ctx context.Context, options SecretsListOptions) (
 	response, err := r.client.api.ListSecretsApiV1WorkspacesWorkspaceIdSecretsGet(ctx, r.ids[0], &generated.ListSecretsApiV1WorkspacesWorkspaceIdSecretsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SecretPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r SecretsResource) Pages(ctx context.Context, options SecretsListOptions) iter.Seq2[Result[generated.SecretPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -2859,6 +4785,8 @@ func (r SecretsResource) Pages(ctx context.Context, options SecretsListOptions) 
 		},
 		func(value generated.SecretPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/secrets. Create Secret
 func (r SecretsResource) Create(ctx context.Context, body generated.SecretCreate) (Result[generated.Secret], error) {
 	var zero Result[generated.Secret]
 	if err := r.validate(); err != nil {
@@ -2867,6 +4795,9 @@ func (r SecretsResource) Create(ctx context.Context, body generated.SecretCreate
 	response, err := r.client.api.CreateSecretApiV1WorkspacesWorkspaceIdSecretsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Secret](r.client, response, err, 201)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/secrets/{secret_id}. Delete Secret See
+// SecretDeleteOptions for explicit parameters and preconditions.
 func (r SecretResource) Delete(ctx context.Context, options SecretDeleteOptions) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -2878,6 +4809,8 @@ func (r SecretResource) Delete(ctx context.Context, options SecretDeleteOptions)
 	response, err := r.client.api.DeleteSecretApiV1WorkspacesWorkspaceIdSecretsSecretIdDelete(ctx, r.ids[0], r.ids[1], &generated.DeleteSecretApiV1WorkspacesWorkspaceIdSecretsSecretIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/secrets/{secret_id}. Get Secret
 func (r SecretResource) Get(ctx context.Context) (Result[generated.Secret], error) {
 	var zero Result[generated.Secret]
 	if err := r.validate(); err != nil {
@@ -2886,6 +4819,9 @@ func (r SecretResource) Get(ctx context.Context) (Result[generated.Secret], erro
 	response, err := r.client.api.GetSecretApiV1WorkspacesWorkspaceIdSecretsSecretIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Secret](r.client, response, err, 200)
 }
+
+// Replace calls PUT /api/v1/workspaces/{workspace_id}/secrets/{secret_id}. Replace Secret See
+// SecretReplaceOptions for explicit parameters and preconditions.
 func (r SecretResource) Replace(ctx context.Context, body generated.SecretUpdate, options SecretReplaceOptions) (Result[generated.Secret], error) {
 	var zero Result[generated.Secret]
 	if err := r.validate(); err != nil {
@@ -2897,9 +4833,14 @@ func (r SecretResource) Replace(ctx context.Context, body generated.SecretUpdate
 	response, err := r.client.api.ReplaceSecretApiV1WorkspacesWorkspaceIdSecretsSecretIdPut(ctx, r.ids[0], r.ids[1], &generated.ReplaceSecretApiV1WorkspacesWorkspaceIdSecretsSecretIdPutParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Secret](r.client, response, err, 200)
 }
+
+// Ref binds account_id locally without checking existence or changing credential authority.
 func (r ServiceAccountsResource) Ref(id string) ServiceAccountResource {
 	return ServiceAccountResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/service-accounts. List Service Accounts See
+// ServiceAccountsListOptions for explicit parameters and preconditions.
 func (r ServiceAccountsResource) List(ctx context.Context, options ServiceAccountsListOptions) (Result[generated.ServiceAccountPage], error) {
 	var zero Result[generated.ServiceAccountPage]
 	if err := r.validate(); err != nil {
@@ -2908,6 +4849,9 @@ func (r ServiceAccountsResource) List(ctx context.Context, options ServiceAccoun
 	response, err := r.client.api.ListServiceAccountsApiV1WorkspacesWorkspaceIdServiceAccountsGet(ctx, r.ids[0], &generated.ListServiceAccountsApiV1WorkspacesWorkspaceIdServiceAccountsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ServiceAccountPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r ServiceAccountsResource) Pages(ctx context.Context, options ServiceAccountsListOptions) iter.Seq2[Result[generated.ServiceAccountPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -2924,6 +4868,8 @@ func (r ServiceAccountsResource) Pages(ctx context.Context, options ServiceAccou
 		},
 		func(value generated.ServiceAccountPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/service-accounts. Create Service Account
 func (r ServiceAccountsResource) Create(ctx context.Context, body generated.ServiceAccountCreate) (Result[generated.ServiceAccount], error) {
 	var zero Result[generated.ServiceAccount]
 	if err := r.validate(); err != nil {
@@ -2932,9 +4878,14 @@ func (r ServiceAccountsResource) Create(ctx context.Context, body generated.Serv
 	response, err := r.client.api.CreateServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.ServiceAccount](r.client, response, err, 201)
 }
+
+// Keys returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ServiceAccountResource) Keys() ServiceAccountKeysResource {
 	return ServiceAccountKeysResource{r.binding}
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/service-accounts/{account_id}. Delete Service
+// Account See ServiceAccountDeleteOptions for explicit parameters and preconditions.
 func (r ServiceAccountResource) Delete(ctx context.Context, options ServiceAccountDeleteOptions) (Result[generated.ServiceAccount], error) {
 	var zero Result[generated.ServiceAccount]
 	if err := r.validate(); err != nil {
@@ -2946,6 +4897,8 @@ func (r ServiceAccountResource) Delete(ctx context.Context, options ServiceAccou
 	response, err := r.client.api.DeleteServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdDelete(ctx, r.ids[0], r.ids[1], &generated.DeleteServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.ServiceAccount](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/service-accounts/{account_id}. Get Service Account
 func (r ServiceAccountResource) Get(ctx context.Context) (Result[generated.ServiceAccount], error) {
 	var zero Result[generated.ServiceAccount]
 	if err := r.validate(); err != nil {
@@ -2954,6 +4907,9 @@ func (r ServiceAccountResource) Get(ctx context.Context) (Result[generated.Servi
 	response, err := r.client.api.GetServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ServiceAccount](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/service-accounts/{account_id}. Update Service
+// Account See ServiceAccountUpdateOptions for explicit parameters and preconditions.
 func (r ServiceAccountResource) Update(ctx context.Context, body generated.ServiceAccountUpdate, options ServiceAccountUpdateOptions) (Result[generated.ServiceAccount], error) {
 	var zero Result[generated.ServiceAccount]
 	if err := r.validate(); err != nil {
@@ -2965,6 +4921,9 @@ func (r ServiceAccountResource) Update(ctx context.Context, body generated.Servi
 	response, err := r.client.api.UpdateServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.ServiceAccount](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/service-accounts/{account_id}/keys. List Service
+// Account Keys See ServiceAccountKeysListOptions for explicit parameters and preconditions.
 func (r ServiceAccountKeysResource) List(ctx context.Context, options ServiceAccountKeysListOptions) (Result[generated.ApiKeyPage], error) {
 	var zero Result[generated.ApiKeyPage]
 	if err := r.validate(); err != nil {
@@ -2973,6 +4932,9 @@ func (r ServiceAccountKeysResource) List(ctx context.Context, options ServiceAcc
 	response, err := r.client.api.ListServiceAccountKeysApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysGet(ctx, r.ids[0], r.ids[1], &generated.ListServiceAccountKeysApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ApiKeyPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r ServiceAccountKeysResource) Pages(ctx context.Context, options ServiceAccountKeysListOptions) iter.Seq2[Result[generated.ApiKeyPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -2989,6 +4951,9 @@ func (r ServiceAccountKeysResource) Pages(ctx context.Context, options ServiceAc
 		},
 		func(value generated.ApiKeyPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/service-accounts/{account_id}/keys. Needs a
+// login session: an API key never issues keys, so a leaked key cannot outlive its revocation.
 func (r ServiceAccountKeysResource) Create(ctx context.Context, body generated.KeyCreate) (Result[generated.IssuedKey], error) {
 	var zero Result[generated.IssuedKey]
 	if err := r.validate(); err != nil {
@@ -2997,9 +4962,14 @@ func (r ServiceAccountKeysResource) Create(ctx context.Context, body generated.K
 	response, err := r.client.api.CreateServiceAccountKeyApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysPost(ctx, r.ids[0], r.ids[1], body)
 	return jsonResult[generated.IssuedKey](r.client, response, err, 201)
 }
+
+// Ref binds session_id locally without checking existence or changing credential authority.
 func (r SessionsResource) Ref(id string) SessionResource {
 	return SessionResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/sessions. List Sessions See SessionsListOptions for
+// explicit parameters and preconditions.
 func (r SessionsResource) List(ctx context.Context, options SessionsListOptions) (Result[generated.SessionPage], error) {
 	var zero Result[generated.SessionPage]
 	if err := r.validate(); err != nil {
@@ -3008,6 +4978,9 @@ func (r SessionsResource) List(ctx context.Context, options SessionsListOptions)
 	response, err := r.client.api.ListSessionsApiV1WorkspacesWorkspaceIdSessionsGet(ctx, r.ids[0], &generated.ListSessionsApiV1WorkspacesWorkspaceIdSessionsGetParams{Q: options.Q, AgentId: options.AgentId, Status: options.Status, Trigger: options.Trigger, UpdatedAfter: options.UpdatedAfter, UpdatedBefore: options.UpdatedBefore, Label: options.Label, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SessionPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r SessionsResource) Pages(ctx context.Context, options SessionsListOptions) iter.Seq2[Result[generated.SessionPage], error] {
 	if options.Q != nil {
 		value := *options.Q
@@ -3052,6 +5025,8 @@ func (r SessionsResource) Pages(ctx context.Context, options SessionsListOptions
 		},
 		func(value generated.SessionPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/sessions. Create Session
 func (r SessionsResource) Create(ctx context.Context, body generated.SessionCreate) (Result[generated.SessionView], error) {
 	var zero Result[generated.SessionView]
 	if err := r.validate(); err != nil {
@@ -3060,6 +5035,8 @@ func (r SessionsResource) Create(ctx context.Context, body generated.SessionCrea
 	response, err := r.client.api.CreateSessionApiV1WorkspacesWorkspaceIdSessionsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.SessionView](r.client, response, err, 201)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/sessions/{session_id}. Get Session
 func (r SessionResource) Get(ctx context.Context) (Result[generated.SessionView], error) {
 	var zero Result[generated.SessionView]
 	if err := r.validate(); err != nil {
@@ -3068,6 +5045,9 @@ func (r SessionResource) Get(ctx context.Context) (Result[generated.SessionView]
 	response, err := r.client.api.GetSessionApiV1WorkspacesWorkspaceIdSessionsSessionIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.SessionView](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/sessions/{session_id}. Update Session See
+// SessionUpdateOptions for explicit parameters and preconditions.
 func (r SessionResource) Update(ctx context.Context, body generated.SessionUpdate, options SessionUpdateOptions) (Result[generated.SessionView], error) {
 	var zero Result[generated.SessionView]
 	if err := r.validate(); err != nil {
@@ -3079,9 +5059,16 @@ func (r SessionResource) Update(ctx context.Context, body generated.SessionUpdat
 	response, err := r.client.api.UpdateSessionApiV1WorkspacesWorkspaceIdSessionsSessionIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateSessionApiV1WorkspacesWorkspaceIdSessionsSessionIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.SessionView](r.client, response, err, 200)
 }
+
+// Ref binds skill_id locally without checking existence or changing credential authority.
 func (r SkillsResource) Ref(id string) SkillResource {
 	return SkillResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/skills. Skills of the workspace. `q` matches the
+// key, name or description, ignoring case; `source` the kind of source the default revision was read
+// from; `archived` keeps only archived skills, or only open ones. See SkillsListOptions for explicit
+// parameters and preconditions.
 func (r SkillsResource) List(ctx context.Context, options SkillsListOptions) (Result[generated.SkillPage], error) {
 	var zero Result[generated.SkillPage]
 	if err := r.validate(); err != nil {
@@ -3090,6 +5077,9 @@ func (r SkillsResource) List(ctx context.Context, options SkillsListOptions) (Re
 	response, err := r.client.api.ListSkillsApiV1WorkspacesWorkspaceIdSkillsGet(ctx, r.ids[0], &generated.ListSkillsApiV1WorkspacesWorkspaceIdSkillsGetParams{Label: options.Label, Q: options.Q, Source: options.Source, Archived: options.Archived, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SkillPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r SkillsResource) Pages(ctx context.Context, options SkillsListOptions) iter.Seq2[Result[generated.SkillPage], error] {
 	if options.Label != nil {
 		value := slices.Clone(*options.Label)
@@ -3122,6 +5112,8 @@ func (r SkillsResource) Pages(ctx context.Context, options SkillsListOptions) it
 		},
 		func(value generated.SkillPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/skills. Create Skill
 func (r SkillsResource) Create(ctx context.Context, body generated.SkillCreate) (Result[generated.Skill], error) {
 	var zero Result[generated.Skill]
 	if err := r.validate(); err != nil {
@@ -3130,6 +5122,9 @@ func (r SkillsResource) Create(ctx context.Context, body generated.SkillCreate) 
 	response, err := r.client.api.CreateSkillApiV1WorkspacesWorkspaceIdSkillsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.Skill](r.client, response, err, 201)
 }
+
+// Validate calls POST /api/v1/workspaces/{workspace_id}/skills/validate. The manifest the package
+// would give a new skill or revision, checked as creation checks it; nothing is stored.
 func (r SkillsResource) Validate(ctx context.Context, body generated.SkillValidate) (Result[generated.SkillManifest], error) {
 	var zero Result[generated.SkillManifest]
 	if err := r.validate(); err != nil {
@@ -3138,7 +5133,11 @@ func (r SkillsResource) Validate(ctx context.Context, body generated.SkillValida
 	response, err := r.client.api.ValidatePackageApiV1WorkspacesWorkspaceIdSkillsValidatePost(ctx, r.ids[0], body)
 	return jsonResult[generated.SkillManifest](r.client, response, err, 200)
 }
+
+// Revisions returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r SkillResource) Revisions() SkillRevisionsResource { return SkillRevisionsResource{r.binding} }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/skills/{skill_id}. Get Skill
 func (r SkillResource) Get(ctx context.Context) (Result[generated.Skill], error) {
 	var zero Result[generated.Skill]
 	if err := r.validate(); err != nil {
@@ -3147,6 +5146,10 @@ func (r SkillResource) Get(ctx context.Context) (Result[generated.Skill], error)
 	response, err := r.client.api.GetSkillApiV1WorkspacesWorkspaceIdSkillsSkillIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Skill](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/skills/{skill_id}. Name, description and
+// labels; an archived skill changes only by unarchiving. See SkillUpdateOptions for explicit
+// parameters and preconditions.
 func (r SkillResource) Update(ctx context.Context, body generated.SkillUpdate, options SkillUpdateOptions) (Result[generated.Skill], error) {
 	var zero Result[generated.Skill]
 	if err := r.validate(); err != nil {
@@ -3158,6 +5161,10 @@ func (r SkillResource) Update(ctx context.Context, body generated.SkillUpdate, o
 	response, err := r.client.api.UpdateSkillApiV1WorkspacesWorkspaceIdSkillsSkillIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateSkillApiV1WorkspacesWorkspaceIdSkillsSkillIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Skill](r.client, response, err, 200)
 }
+
+// Archive calls POST /api/v1/workspaces/{workspace_id}/skills/{skill_id}/archive. Archived skills keep
+// their revisions readable and pinned; they refuse new revisions and new pins. See SkillArchiveOptions
+// for explicit parameters and preconditions.
 func (r SkillResource) Archive(ctx context.Context, options SkillArchiveOptions) (Result[generated.Skill], error) {
 	var zero Result[generated.Skill]
 	if err := r.validate(); err != nil {
@@ -3169,6 +5176,9 @@ func (r SkillResource) Archive(ctx context.Context, options SkillArchiveOptions)
 	response, err := r.client.api.ArchiveSkillApiV1WorkspacesWorkspaceIdSkillsSkillIdArchivePost(ctx, r.ids[0], r.ids[1], &generated.ArchiveSkillApiV1WorkspacesWorkspaceIdSkillsSkillIdArchivePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Skill](r.client, response, err, 200)
 }
+
+// Unarchive calls POST /api/v1/workspaces/{workspace_id}/skills/{skill_id}/unarchive. Unarchive Skill
+// See SkillUnarchiveOptions for explicit parameters and preconditions.
 func (r SkillResource) Unarchive(ctx context.Context, options SkillUnarchiveOptions) (Result[generated.Skill], error) {
 	var zero Result[generated.Skill]
 	if err := r.validate(); err != nil {
@@ -3180,9 +5190,14 @@ func (r SkillResource) Unarchive(ctx context.Context, options SkillUnarchiveOpti
 	response, err := r.client.api.UnarchiveSkillApiV1WorkspacesWorkspaceIdSkillsSkillIdUnarchivePost(ctx, r.ids[0], r.ids[1], &generated.UnarchiveSkillApiV1WorkspacesWorkspaceIdSkillsSkillIdUnarchivePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Skill](r.client, response, err, 200)
 }
+
+// Ref binds revision_id locally without checking existence or changing credential authority.
 func (r SkillRevisionsResource) Ref(id string) SkillRevisionResource {
 	return SkillRevisionResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/skills/{skill_id}/revisions. List Revisions See
+// SkillRevisionsListOptions for explicit parameters and preconditions.
 func (r SkillRevisionsResource) List(ctx context.Context, options SkillRevisionsListOptions) (Result[generated.SkillRevisionPage], error) {
 	var zero Result[generated.SkillRevisionPage]
 	if err := r.validate(); err != nil {
@@ -3191,6 +5206,9 @@ func (r SkillRevisionsResource) List(ctx context.Context, options SkillRevisions
 	response, err := r.client.api.ListRevisionsApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsGet(ctx, r.ids[0], r.ids[1], &generated.ListRevisionsApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SkillRevisionPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r SkillRevisionsResource) Pages(ctx context.Context, options SkillRevisionsListOptions) iter.Seq2[Result[generated.SkillRevisionPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -3207,6 +5225,10 @@ func (r SkillRevisionsResource) Pages(ctx context.Context, options SkillRevision
 		},
 		func(value generated.SkillRevisionPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/skills/{skill_id}/revisions. A package whose
+// manifest equals the default revision's creates nothing and returns that revision. See
+// SkillRevisionsCreateOptions for explicit parameters and preconditions.
 func (r SkillRevisionsResource) Create(ctx context.Context, body generated.SkillRevisionCreate, options SkillRevisionsCreateOptions) (Result[generated.SkillRevision], error) {
 	var zero Result[generated.SkillRevision]
 	if err := r.validate(); err != nil {
@@ -3218,12 +5240,19 @@ func (r SkillRevisionsResource) Create(ctx context.Context, body generated.Skill
 	response, err := r.client.api.CreateRevisionApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsPost(ctx, r.ids[0], r.ids[1], &generated.CreateRevisionApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsPostParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.SkillRevision](r.client, response, err, 201)
 }
+
+// Content returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r SkillRevisionResource) Content() SkillRevisionContentResource {
 	return SkillRevisionContentResource{r.binding}
 }
+
+// Files returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r SkillRevisionResource) Files() SkillRevisionFilesResource {
 	return SkillRevisionFilesResource{r.binding}
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/skills/{skill_id}/revisions/{revision_id}. Get
+// Revision
 func (r SkillRevisionResource) Get(ctx context.Context) (Result[generated.SkillRevision], error) {
 	var zero Result[generated.SkillRevision]
 	if err := r.validate(); err != nil {
@@ -3232,6 +5261,10 @@ func (r SkillRevisionResource) Get(ctx context.Context) (Result[generated.SkillR
 	response, err := r.client.api.GetRevisionApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsRevisionIdGet(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[generated.SkillRevision](r.client, response, err, 200)
 }
+
+// SetDefault calls POST
+// /api/v1/workspaces/{workspace_id}/skills/{skill_id}/revisions/{revision_id}/set-default. Set Default
+// Revision See SkillRevisionSetDefaultOptions for explicit parameters and preconditions.
 func (r SkillRevisionResource) SetDefault(ctx context.Context, options SkillRevisionSetDefaultOptions) (Result[generated.Skill], error) {
 	var zero Result[generated.Skill]
 	if err := r.validate(); err != nil {
@@ -3243,6 +5276,10 @@ func (r SkillRevisionResource) SetDefault(ctx context.Context, options SkillRevi
 	response, err := r.client.api.SetDefaultRevisionApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsRevisionIdSetDefaultPost(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.SetDefaultRevisionApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsRevisionIdSetDefaultPostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Skill](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/skills/{skill_id}/revisions/{revision_id}/content.
+// The revision's package as a zip archive. The caller must close the returned BinaryResult or its
+// Body.
 func (r SkillRevisionContentResource) Get(ctx context.Context) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -3251,9 +5288,16 @@ func (r SkillRevisionContentResource) Get(ctx context.Context) (*BinaryResult, e
 	response, err := r.client.api.ReadArchiveApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsRevisionIdContentGet(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return binaryResult(r.client, response, err, 200)
 }
+
+// Ref binds path locally without checking existence or changing credential authority.
 func (r SkillRevisionFilesResource) Ref(id string) SkillRevisionFileResource {
 	return SkillRevisionFileResource{r.selectID(fmt.Sprint(id))}
 }
+
+// Get calls GET
+// /api/v1/workspaces/{workspace_id}/skills/{skill_id}/revisions/{revision_id}/files/{path}. One
+// package file, by the path the revision's manifest lists. The caller must close the returned
+// BinaryResult or its Body.
 func (r SkillRevisionFileResource) Get(ctx context.Context) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -3262,9 +5306,14 @@ func (r SkillRevisionFileResource) Get(ctx context.Context) (*BinaryResult, erro
 	response, err := r.client.api.ReadFileApiV1WorkspacesWorkspaceIdSkillsSkillIdRevisionsRevisionIdFilesPathGet(ctx, r.ids[0], r.ids[1], r.ids[2], r.ids[3])
 	return binaryResult(r.client, response, err, 200)
 }
+
+// Ref binds subscription_id locally without checking existence or changing credential authority.
 func (r SubscriptionsResource) Ref(id string) SubscriptionResource {
 	return SubscriptionResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/subscriptions. List Subscriptions See
+// SubscriptionsListOptions for explicit parameters and preconditions.
 func (r SubscriptionsResource) List(ctx context.Context, options SubscriptionsListOptions) (Result[generated.SubscriptionPage], error) {
 	var zero Result[generated.SubscriptionPage]
 	if err := r.validate(); err != nil {
@@ -3273,6 +5322,9 @@ func (r SubscriptionsResource) List(ctx context.Context, options SubscriptionsLi
 	response, err := r.client.api.ListSubscriptionsApiV1WorkspacesWorkspaceIdSubscriptionsGet(ctx, r.ids[0], &generated.ListSubscriptionsApiV1WorkspacesWorkspaceIdSubscriptionsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SubscriptionPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r SubscriptionsResource) Pages(ctx context.Context, options SubscriptionsListOptions) iter.Seq2[Result[generated.SubscriptionPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -3289,6 +5341,9 @@ func (r SubscriptionsResource) Pages(ctx context.Context, options SubscriptionsL
 		},
 		func(value generated.SubscriptionPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/subscriptions. The response is the only time the
+// signing secret is returned.
 func (r SubscriptionsResource) Create(ctx context.Context, body generated.SubscriptionCreate) (Result[generated.CreatedSubscription], error) {
 	var zero Result[generated.CreatedSubscription]
 	if err := r.validate(); err != nil {
@@ -3297,9 +5352,14 @@ func (r SubscriptionsResource) Create(ctx context.Context, body generated.Subscr
 	response, err := r.client.api.CreateSubscriptionApiV1WorkspacesWorkspaceIdSubscriptionsPost(ctx, r.ids[0], body)
 	return jsonResult[generated.CreatedSubscription](r.client, response, err, 201)
 }
+
+// Deliveries returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r SubscriptionResource) Deliveries() SubscriptionDeliveriesResource {
 	return SubscriptionDeliveriesResource{r.binding}
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/subscriptions/{subscription_id}. Delete
+// Subscription See SubscriptionDeleteOptions for explicit parameters and preconditions.
 func (r SubscriptionResource) Delete(ctx context.Context, options SubscriptionDeleteOptions) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -3311,6 +5371,8 @@ func (r SubscriptionResource) Delete(ctx context.Context, options SubscriptionDe
 	response, err := r.client.api.DeleteSubscriptionApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdDelete(ctx, r.ids[0], r.ids[1], &generated.DeleteSubscriptionApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/subscriptions/{subscription_id}. Get Subscription
 func (r SubscriptionResource) Get(ctx context.Context) (Result[generated.Subscription], error) {
 	var zero Result[generated.Subscription]
 	if err := r.validate(); err != nil {
@@ -3319,6 +5381,9 @@ func (r SubscriptionResource) Get(ctx context.Context) (Result[generated.Subscri
 	response, err := r.client.api.GetSubscriptionApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Subscription](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/subscriptions/{subscription_id}. Update
+// Subscription See SubscriptionUpdateOptions for explicit parameters and preconditions.
 func (r SubscriptionResource) Update(ctx context.Context, body generated.SubscriptionUpdate, options SubscriptionUpdateOptions) (Result[generated.Subscription], error) {
 	var zero Result[generated.Subscription]
 	if err := r.validate(); err != nil {
@@ -3330,9 +5395,14 @@ func (r SubscriptionResource) Update(ctx context.Context, body generated.Subscri
 	response, err := r.client.api.UpdateSubscriptionApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateSubscriptionApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.Subscription](r.client, response, err, 200)
 }
+
+// Ref binds delivery_id locally without checking existence or changing credential authority.
 func (r SubscriptionDeliveriesResource) Ref(id string) SubscriptionDeliveryResource {
 	return SubscriptionDeliveryResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/subscriptions/{subscription_id}/deliveries. List
+// Deliveries See SubscriptionDeliveriesListOptions for explicit parameters and preconditions.
 func (r SubscriptionDeliveriesResource) List(ctx context.Context, options SubscriptionDeliveriesListOptions) (Result[generated.DeliveryPage], error) {
 	var zero Result[generated.DeliveryPage]
 	if err := r.validate(); err != nil {
@@ -3341,6 +5411,9 @@ func (r SubscriptionDeliveriesResource) List(ctx context.Context, options Subscr
 	response, err := r.client.api.ListDeliveriesApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdDeliveriesGet(ctx, r.ids[0], r.ids[1], &generated.ListDeliveriesApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdDeliveriesGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.DeliveryPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r SubscriptionDeliveriesResource) Pages(ctx context.Context, options SubscriptionDeliveriesListOptions) iter.Seq2[Result[generated.DeliveryPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -3357,6 +5430,9 @@ func (r SubscriptionDeliveriesResource) Pages(ctx context.Context, options Subsc
 		},
 		func(value generated.DeliveryPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Redeliver calls POST /api/v1/workspaces/{workspace_id}/subscriptions/{subscription_id}/deliveries/{d
+// elivery_id}/redeliver. Redeliver
 func (r SubscriptionDeliveryResource) Redeliver(ctx context.Context) (Result[generated.WebhookDelivery], error) {
 	var zero Result[generated.WebhookDelivery]
 	if err := r.validate(); err != nil {
@@ -3365,9 +5441,14 @@ func (r SubscriptionDeliveryResource) Redeliver(ctx context.Context) (Result[gen
 	response, err := r.client.api.RedeliverApiV1WorkspacesWorkspaceIdSubscriptionsSubscriptionIdDeliveriesDeliveryIdRedeliverPost(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[generated.WebhookDelivery](r.client, response, err, 200)
 }
+
+// Ref binds thread_id locally without checking existence or changing credential authority.
 func (r ThreadsResource) Ref(id string) ThreadResource {
 	return ThreadResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/threads. List Threads See ThreadsListOptions for
+// explicit parameters and preconditions.
 func (r ThreadsResource) List(ctx context.Context, options ThreadsListOptions) (Result[generated.ThreadPage], error) {
 	var zero Result[generated.ThreadPage]
 	if err := r.validate(); err != nil {
@@ -3376,6 +5457,9 @@ func (r ThreadsResource) List(ctx context.Context, options ThreadsListOptions) (
 	response, err := r.client.api.ListThreadsApiV1WorkspacesWorkspaceIdThreadsGet(ctx, r.ids[0], &generated.ListThreadsApiV1WorkspacesWorkspaceIdThreadsGetParams{SessionId: options.SessionId, Label: options.Label, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.ThreadPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r ThreadsResource) Pages(ctx context.Context, options ThreadsListOptions) iter.Seq2[Result[generated.ThreadPage], error] {
 	if options.SessionId != nil {
 		value := *options.SessionId
@@ -3400,6 +5484,11 @@ func (r ThreadsResource) Pages(ctx context.Context, options ThreadsListOptions) 
 		},
 		func(value generated.ThreadPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/threads. Create a thread (and its session unless
+// one is named) with its first message. Returns acceptance, not completion, with canonical
+// Thread/Entry references and an optional Run. A queued entry has no Run. See ThreadsCreateOptions for
+// explicit parameters and preconditions.
 func (r ThreadsResource) Create(ctx context.Context, body generated.NewThread, options ThreadsCreateOptions) (*Submitted, error) {
 	var zero *Submitted
 	if err := r.validate(); err != nil {
@@ -3415,13 +5504,25 @@ func (r ThreadsResource) Create(ctx context.Context, body generated.NewThread, o
 	}
 	return bindSubmitted(r.client, receipt)
 }
+
+// Environments returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ThreadResource) Environments() ThreadEnvironmentsResource {
 	return ThreadEnvironmentsResource{r.binding}
 }
-func (r ThreadResource) Inbox() InboxResource             { return InboxResource{r.binding} }
+
+// Inbox returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ThreadResource) Inbox() InboxResource { return InboxResource{r.binding} }
+
+// Memories returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r ThreadResource) Memories() ThreadMemoriesResource { return ThreadMemoriesResource{r.binding} }
-func (r ThreadResource) Runs() ThreadRunsResource         { return ThreadRunsResource{r.binding} }
-func (r ThreadResource) Stream() ThreadStreamResource     { return ThreadStreamResource{r.binding} }
+
+// Runs returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ThreadResource) Runs() ThreadRunsResource { return ThreadRunsResource{r.binding} }
+
+// Stream returns a local reference sharing the client's lifetime; it performs no I/O.
+func (r ThreadResource) Stream() ThreadStreamResource { return ThreadStreamResource{r.binding} }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/threads/{thread_id}. Get Thread
 func (r ThreadResource) Get(ctx context.Context) (Result[generated.ThreadView], error) {
 	var zero Result[generated.ThreadView]
 	if err := r.validate(); err != nil {
@@ -3430,6 +5531,9 @@ func (r ThreadResource) Get(ctx context.Context) (Result[generated.ThreadView], 
 	response, err := r.client.api.GetThreadApiV1WorkspacesWorkspaceIdThreadsThreadIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.ThreadView](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/threads/{thread_id}. Update Thread See
+// ThreadUpdateOptions for explicit parameters and preconditions.
 func (r ThreadResource) Update(ctx context.Context, body generated.ThreadUpdate, options ThreadUpdateOptions) (Result[generated.ThreadView], error) {
 	var zero Result[generated.ThreadView]
 	if err := r.validate(); err != nil {
@@ -3441,6 +5545,9 @@ func (r ThreadResource) Update(ctx context.Context, body generated.ThreadUpdate,
 	response, err := r.client.api.UpdateThreadApiV1WorkspacesWorkspaceIdThreadsThreadIdPatch(ctx, r.ids[0], r.ids[1], &generated.UpdateThreadApiV1WorkspacesWorkspaceIdThreadsThreadIdPatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.ThreadView](r.client, response, err, 200)
 }
+
+// Archive calls POST /api/v1/workspaces/{workspace_id}/threads/{thread_id}/archive. Archive Thread See
+// ThreadArchiveOptions for explicit parameters and preconditions.
 func (r ThreadResource) Archive(ctx context.Context, options ThreadArchiveOptions) (Result[generated.ThreadView], error) {
 	var zero Result[generated.ThreadView]
 	if err := r.validate(); err != nil {
@@ -3452,9 +5559,13 @@ func (r ThreadResource) Archive(ctx context.Context, options ThreadArchiveOption
 	response, err := r.client.api.ArchiveThreadApiV1WorkspacesWorkspaceIdThreadsThreadIdArchivePost(ctx, r.ids[0], r.ids[1], &generated.ArchiveThreadApiV1WorkspacesWorkspaceIdThreadsThreadIdArchivePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.ThreadView](r.client, response, err, 200)
 }
+
+// Ref binds name locally without checking existence or changing credential authority.
 func (r ThreadEnvironmentsResource) Ref(id string) ThreadEnvironmentResource {
 	return ThreadEnvironmentResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/threads/{thread_id}/environments. List Mounts
 func (r ThreadEnvironmentsResource) List(ctx context.Context) (Result[generated.MountPage], error) {
 	var zero Result[generated.MountPage]
 	if err := r.validate(); err != nil {
@@ -3463,6 +5574,9 @@ func (r ThreadEnvironmentsResource) List(ctx context.Context) (Result[generated.
 	response, err := r.client.api.ListMountsApiV1WorkspacesWorkspaceIdThreadsThreadIdEnvironmentsGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.MountPage](r.client, response, err, 200)
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/threads/{thread_id}/environments. Add Mount See
+// ThreadEnvironmentsCreateOptions for explicit parameters and preconditions.
 func (r ThreadEnvironmentsResource) Create(ctx context.Context, body generated.MountCreate, options ThreadEnvironmentsCreateOptions) (Result[generated.MountView], error) {
 	var zero Result[generated.MountView]
 	if err := r.validate(); err != nil {
@@ -3474,6 +5588,9 @@ func (r ThreadEnvironmentsResource) Create(ctx context.Context, body generated.M
 	response, err := r.client.api.AddMountApiV1WorkspacesWorkspaceIdThreadsThreadIdEnvironmentsPost(ctx, r.ids[0], r.ids[1], &generated.AddMountApiV1WorkspacesWorkspaceIdThreadsThreadIdEnvironmentsPostParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.MountView](r.client, response, err, 201)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/threads/{thread_id}/environments/{name}.
+// Remove Mount See ThreadEnvironmentDeleteOptions for explicit parameters and preconditions.
 func (r ThreadEnvironmentResource) Delete(ctx context.Context, options ThreadEnvironmentDeleteOptions) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -3485,8 +5602,15 @@ func (r ThreadEnvironmentResource) Delete(ctx context.Context, options ThreadEnv
 	response, err := r.client.api.RemoveMountApiV1WorkspacesWorkspaceIdThreadsThreadIdEnvironmentsNameDelete(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.RemoveMountApiV1WorkspacesWorkspaceIdThreadsThreadIdEnvironmentsNameDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Order returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r InboxResource) Order() ThreadInboxOrderResource { return ThreadInboxOrderResource{r.binding} }
-func (r InboxResource) Ref(id string) EntryResource     { return EntryResource{r.selectID(fmt.Sprint(id))} }
+
+// Ref binds entry_id locally without checking existence or changing credential authority.
+func (r InboxResource) Ref(id string) EntryResource { return EntryResource{r.selectID(fmt.Sprint(id))} }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/threads/{thread_id}/inbox. In inbox order. See
+// InboxListOptions for explicit parameters and preconditions.
 func (r InboxResource) List(ctx context.Context, options InboxListOptions) (Result[generated.EntryPage], error) {
 	var zero Result[generated.EntryPage]
 	if err := r.validate(); err != nil {
@@ -3495,6 +5619,9 @@ func (r InboxResource) List(ctx context.Context, options InboxListOptions) (Resu
 	response, err := r.client.api.ListInboxApiV1WorkspacesWorkspaceIdThreadsThreadIdInboxGet(ctx, r.ids[0], r.ids[1], &generated.ListInboxApiV1WorkspacesWorkspaceIdThreadsThreadIdInboxGetParams{Status: options.Status, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.EntryPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r InboxResource) Pages(ctx context.Context, options InboxListOptions) iter.Seq2[Result[generated.EntryPage], error] {
 	if options.Status != nil {
 		value := slices.Clone(*options.Status)
@@ -3515,6 +5642,11 @@ func (r InboxResource) Pages(ctx context.Context, options InboxListOptions) iter
 		},
 		func(value generated.EntryPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/threads/{thread_id}/inbox. Append a message; it
+// starts a run at once when the thread can accept it, or steers the active run. Returns acceptance,
+// not completion, with canonical Thread/Entry references and an optional Run. A queued entry has no
+// Run. See InboxCreateOptions for explicit parameters and preconditions.
 func (r InboxResource) Create(ctx context.Context, body generated.Message, options InboxCreateOptions) (*Submitted, error) {
 	var zero *Submitted
 	if err := r.validate(); err != nil {
@@ -3530,6 +5662,9 @@ func (r InboxResource) Create(ctx context.Context, body generated.Message, optio
 	}
 	return bindSubmitted(r.client, receipt)
 }
+
+// Replace calls PUT /api/v1/workspaces/{workspace_id}/threads/{thread_id}/inbox/order. Reorder Inbox
+// See ThreadInboxOrderReplaceOptions for explicit parameters and preconditions.
 func (r ThreadInboxOrderResource) Replace(ctx context.Context, body generated.InboxOrder, options ThreadInboxOrderReplaceOptions) (Result[generated.ThreadView], error) {
 	var zero Result[generated.ThreadView]
 	if err := r.validate(); err != nil {
@@ -3541,6 +5676,11 @@ func (r ThreadInboxOrderResource) Replace(ctx context.Context, body generated.In
 	response, err := r.client.api.ReorderInboxApiV1WorkspacesWorkspaceIdThreadsThreadIdInboxOrderPut(ctx, r.ids[0], r.ids[1], &generated.ReorderInboxApiV1WorkspacesWorkspaceIdThreadsThreadIdInboxOrderPutParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.ThreadView](r.client, response, err, 200)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/threads/{thread_id}/inbox/{entry_id}. Withdraw
+// a pending entry; its tombstone keeps the request key. Returns acceptance, not completion, with
+// canonical Thread/Entry references and an optional Run. A queued entry has no Run. See
+// EntryDeleteOptions for explicit parameters and preconditions.
 func (r EntryResource) Delete(ctx context.Context, options EntryDeleteOptions) (*Submitted, error) {
 	var zero *Submitted
 	if err := r.validate(); err != nil {
@@ -3556,6 +5696,9 @@ func (r EntryResource) Delete(ctx context.Context, options EntryDeleteOptions) (
 	}
 	return bindSubmitted(r.client, receipt)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/threads/{thread_id}/inbox/{entry_id}. One entry and
+// its disposition; edits name the thread's ETag.
 func (r EntryResource) Get(ctx context.Context) (Result[generated.EntryView], error) {
 	var zero Result[generated.EntryView]
 	if err := r.validate(); err != nil {
@@ -3564,6 +5707,10 @@ func (r EntryResource) Get(ctx context.Context) (Result[generated.EntryView], er
 	response, err := r.client.api.GetEntryApiV1WorkspacesWorkspaceIdThreadsThreadIdInboxEntryIdGet(ctx, r.ids[0], r.ids[1], r.ids[2])
 	return jsonResult[generated.EntryView](r.client, response, err, 200)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/threads/{thread_id}/inbox/{entry_id}. Edit
+// Entry Returns acceptance, not completion, with canonical Thread/Entry references and an optional
+// Run. A queued entry has no Run. See EntryUpdateOptions for explicit parameters and preconditions.
 func (r EntryResource) Update(ctx context.Context, body generated.EntryUpdate, options EntryUpdateOptions) (*Submitted, error) {
 	var zero *Submitted
 	if err := r.validate(); err != nil {
@@ -3579,9 +5726,13 @@ func (r EntryResource) Update(ctx context.Context, body generated.EntryUpdate, o
 	}
 	return bindSubmitted(r.client, receipt)
 }
+
+// Ref binds name locally without checking existence or changing credential authority.
 func (r ThreadMemoriesResource) Ref(id string) ThreadMemoryResource {
 	return ThreadMemoryResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/threads/{thread_id}/memories. List Mounts
 func (r ThreadMemoriesResource) List(ctx context.Context) (Result[generated.MemoryMountPage], error) {
 	var zero Result[generated.MemoryMountPage]
 	if err := r.validate(); err != nil {
@@ -3590,6 +5741,9 @@ func (r ThreadMemoriesResource) List(ctx context.Context) (Result[generated.Memo
 	response, err := r.client.api.ListMountsApiV1WorkspacesWorkspaceIdThreadsThreadIdMemoriesGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.MemoryMountPage](r.client, response, err, 200)
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/threads/{thread_id}/memories. Add Mount See
+// ThreadMemoriesCreateOptions for explicit parameters and preconditions.
 func (r ThreadMemoriesResource) Create(ctx context.Context, body generated.MemoryMount, options ThreadMemoriesCreateOptions) (Result[generated.MemoryMount], error) {
 	var zero Result[generated.MemoryMount]
 	if err := r.validate(); err != nil {
@@ -3601,6 +5755,9 @@ func (r ThreadMemoriesResource) Create(ctx context.Context, body generated.Memor
 	response, err := r.client.api.AddMountApiV1WorkspacesWorkspaceIdThreadsThreadIdMemoriesPost(ctx, r.ids[0], r.ids[1], &generated.AddMountApiV1WorkspacesWorkspaceIdThreadsThreadIdMemoriesPostParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.MemoryMount](r.client, response, err, 201)
 }
+
+// Delete calls DELETE /api/v1/workspaces/{workspace_id}/threads/{thread_id}/memories/{name}. Remove
+// Mount See ThreadMemoryDeleteOptions for explicit parameters and preconditions.
 func (r ThreadMemoryResource) Delete(ctx context.Context, options ThreadMemoryDeleteOptions) (Result[struct{}], error) {
 	var zero Result[struct{}]
 	if err := r.validate(); err != nil {
@@ -3612,6 +5769,9 @@ func (r ThreadMemoryResource) Delete(ctx context.Context, options ThreadMemoryDe
 	response, err := r.client.api.RemoveMountApiV1WorkspacesWorkspaceIdThreadsThreadIdMemoriesNameDelete(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.RemoveMountApiV1WorkspacesWorkspaceIdThreadsThreadIdMemoriesNameDeleteParams{IfMatch: &options.IfMatch})
 	return jsonResult[struct{}](r.client, response, err, 204)
 }
+
+// Update calls PATCH /api/v1/workspaces/{workspace_id}/threads/{thread_id}/memories/{name}. Update
+// Mount See ThreadMemoryUpdateOptions for explicit parameters and preconditions.
 func (r ThreadMemoryResource) Update(ctx context.Context, body generated.MemoryMountUpdate, options ThreadMemoryUpdateOptions) (Result[generated.MemoryMount], error) {
 	var zero Result[generated.MemoryMount]
 	if err := r.validate(); err != nil {
@@ -3623,6 +5783,9 @@ func (r ThreadMemoryResource) Update(ctx context.Context, body generated.MemoryM
 	response, err := r.client.api.UpdateMountApiV1WorkspacesWorkspaceIdThreadsThreadIdMemoriesNamePatch(ctx, r.ids[0], r.ids[1], r.ids[2], &generated.UpdateMountApiV1WorkspacesWorkspaceIdThreadsThreadIdMemoriesNamePatchParams{IfMatch: &options.IfMatch}, body)
 	return jsonResult[generated.MemoryMount](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/threads/{thread_id}/runs. Newest first. See
+// ThreadRunsListOptions for explicit parameters and preconditions.
 func (r ThreadRunsResource) List(ctx context.Context, options ThreadRunsListOptions) (Result[generated.RunPage], error) {
 	var zero Result[generated.RunPage]
 	if err := r.validate(); err != nil {
@@ -3631,6 +5794,9 @@ func (r ThreadRunsResource) List(ctx context.Context, options ThreadRunsListOpti
 	response, err := r.client.api.ListThreadRunsApiV1WorkspacesWorkspaceIdThreadsThreadIdRunsGet(ctx, r.ids[0], r.ids[1], &generated.ListThreadRunsApiV1WorkspacesWorkspaceIdThreadsThreadIdRunsGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.RunPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r ThreadRunsResource) Pages(ctx context.Context, options ThreadRunsListOptions) iter.Seq2[Result[generated.RunPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -3647,6 +5813,12 @@ func (r ThreadRunsResource) Pages(ctx context.Context, options ThreadRunsListOpt
 		},
 		func(value generated.RunPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/threads/{thread_id}/stream. Live output of the
+// thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`. The caller
+// must close the returned BinaryResult or its Body. This is raw SSE; use ThreadResource.Events for
+// typed frames and applied-cursor recovery. See ThreadStreamGetOptions for explicit parameters and
+// preconditions.
 func (r ThreadStreamResource) Get(ctx context.Context, options ThreadStreamGetOptions) (*BinaryResult, error) {
 	var zero *BinaryResult
 	if err := r.validate(); err != nil {
@@ -3655,6 +5827,8 @@ func (r ThreadStreamResource) Get(ctx context.Context, options ThreadStreamGetOp
 	response, err := r.client.api.ThreadStreamApiV1WorkspacesWorkspaceIdThreadsThreadIdStreamGet(ctx, r.ids[0], r.ids[1], &generated.ThreadStreamApiV1WorkspacesWorkspaceIdThreadsThreadIdStreamGetParams{LastEventID: options.LastEventID})
 	return binaryResult(r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/toolsets. List Toolsets
 func (r ToolsetsResource) List(ctx context.Context) (Result[generated.ToolsetCatalog], error) {
 	var zero Result[generated.ToolsetCatalog]
 	if err := r.validate(); err != nil {
@@ -3663,6 +5837,9 @@ func (r ToolsetsResource) List(ctx context.Context) (Result[generated.ToolsetCat
 	response, err := r.client.api.ListToolsetsApiV1WorkspacesWorkspaceIdToolsetsGet(ctx, r.ids[0])
 	return jsonResult[generated.ToolsetCatalog](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/trace-backend. The backend trace queries read, and
+// how far back they find a trace.
 func (r TraceBackendResource) Get(ctx context.Context) (Result[generated.TraceBackend], error) {
 	var zero Result[generated.TraceBackend]
 	if err := r.validate(); err != nil {
@@ -3671,9 +5848,14 @@ func (r TraceBackendResource) Get(ctx context.Context) (Result[generated.TraceBa
 	response, err := r.client.api.GetTraceBackendApiV1WorkspacesWorkspaceIdTraceBackendGet(ctx, r.ids[0])
 	return jsonResult[generated.TraceBackend](r.client, response, err, 200)
 }
+
+// Ref binds trace_id locally without checking existence or changing credential authority.
 func (r TracesResource) Ref(id string) TraceResource {
 	return TraceResource{r.selectID(fmt.Sprint(id))}
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/traces. Trace root spans, one per attempt. A cursor
+// keeps the window of the first page. See TracesListOptions for explicit parameters and preconditions.
 func (r TracesResource) List(ctx context.Context, options TracesListOptions) (Result[generated.SpanPage], error) {
 	var zero Result[generated.SpanPage]
 	if err := r.validate(); err != nil {
@@ -3682,6 +5864,9 @@ func (r TracesResource) List(ctx context.Context, options TracesListOptions) (Re
 	response, err := r.client.api.ListTracesApiV1WorkspacesWorkspaceIdTracesGet(ctx, r.ids[0], &generated.ListTracesApiV1WorkspacesWorkspaceIdTracesGetParams{SessionId: options.SessionId, ThreadId: options.ThreadId, RunId: options.RunId, Attribute: options.Attribute, StartedAfter: options.StartedAfter, StartedBefore: options.StartedBefore, Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SpanPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r TracesResource) Pages(ctx context.Context, options TracesListOptions) iter.Seq2[Result[generated.SpanPage], error] {
 	if options.SessionId != nil {
 		value := *options.SessionId
@@ -3722,7 +5907,11 @@ func (r TracesResource) Pages(ctx context.Context, options TracesListOptions) it
 		},
 		func(value generated.SpanPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Spans returns a local reference sharing the client's lifetime; it performs no I/O.
 func (r TraceResource) Spans() TraceSpansResource { return TraceSpansResource{r.binding} }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/traces/{trace_id}. The trace's root span.
 func (r TraceResource) Get(ctx context.Context) (Result[generated.Span], error) {
 	var zero Result[generated.Span]
 	if err := r.validate(); err != nil {
@@ -3731,6 +5920,9 @@ func (r TraceResource) Get(ctx context.Context) (Result[generated.Span], error) 
 	response, err := r.client.api.GetTraceApiV1WorkspacesWorkspaceIdTracesTraceIdGet(ctx, r.ids[0], r.ids[1])
 	return jsonResult[generated.Span](r.client, response, err, 200)
 }
+
+// List calls GET /api/v1/workspaces/{workspace_id}/traces/{trace_id}/spans. The trace's spans. See
+// TraceSpansListOptions for explicit parameters and preconditions.
 func (r TraceSpansResource) List(ctx context.Context, options TraceSpansListOptions) (Result[generated.SpanPage], error) {
 	var zero Result[generated.SpanPage]
 	if err := r.validate(); err != nil {
@@ -3739,6 +5931,9 @@ func (r TraceSpansResource) List(ctx context.Context, options TraceSpansListOpti
 	response, err := r.client.api.ListTraceSpansApiV1WorkspacesWorkspaceIdTracesTraceIdSpansGet(ctx, r.ids[0], r.ids[1], &generated.ListTraceSpansApiV1WorkspacesWorkspaceIdTracesTraceIdSpansGetParams{Limit: options.Limit, Cursor: options.Cursor})
 	return jsonResult[generated.SpanPage](r.client, response, err, 200)
 }
+
+// Pages lazily yields one response page at a time, including its metadata. Options are snapshotted;
+// breaking iteration stops requests. Context bounds each request; repeated cursors fail.
 func (r TraceSpansResource) Pages(ctx context.Context, options TraceSpansListOptions) iter.Seq2[Result[generated.SpanPage], error] {
 	if options.Limit != nil {
 		value := *options.Limit
@@ -3755,6 +5950,10 @@ func (r TraceSpansResource) Pages(ctx context.Context, options TraceSpansListOpt
 		},
 		func(value generated.SpanPage) string { return value.NextCursor.GetOrEmpty() })
 }
+
+// Create calls POST /api/v1/workspaces/{workspace_id}/uploads. Repeating a request with the same
+// `Idempotency-Key` and bytes returns the same upload. The upload reader remains caller-owned. See
+// UploadsCreateOptions for explicit parameters and preconditions.
 func (r UploadsResource) Create(ctx context.Context, file UploadFile, options UploadsCreateOptions) (Result[generated.Upload], error) {
 	var zero Result[generated.Upload]
 	if err := r.validate(); err != nil {
@@ -3770,6 +5969,9 @@ func (r UploadsResource) Create(ctx context.Context, file UploadFile, options Up
 	response, err := r.client.api.CreateUploadApiV1WorkspacesWorkspaceIdUploadsPostWithBody(ctx, r.ids[0], &generated.CreateUploadApiV1WorkspacesWorkspaceIdUploadsPostParams{IdempotencyKey: options.IdempotencyKey}, contentType, body)
 	return jsonResult[generated.Upload](r.client, response, err, 200)
 }
+
+// Get calls GET /api/v1/workspaces/{workspace_id}/usage. Summarize Usage See UsageGetOptions for
+// explicit parameters and preconditions.
 func (r UsageResource) Get(ctx context.Context, options UsageGetOptions) (Result[generated.UsageSummary], error) {
 	var zero Result[generated.UsageSummary]
 	if err := r.validate(); err != nil {
@@ -3778,6 +5980,8 @@ func (r UsageResource) Get(ctx context.Context, options UsageGetOptions) (Result
 	response, err := r.client.api.SummarizeUsageApiV1WorkspacesWorkspaceIdUsageGet(ctx, r.ids[0], &generated.SummarizeUsageApiV1WorkspacesWorkspaceIdUsageGetParams{RunId: options.RunId, ThreadId: options.ThreadId, SessionId: options.SessionId, IngestedAfter: options.IngestedAfter, IngestedBefore: options.IngestedBefore})
 	return jsonResult[generated.UsageSummary](r.client, response, err, 200)
 }
+
+// Get calls GET /healthz. Health
 func (r HealthzResource) Get(ctx context.Context) (Result[map[string]string], error) {
 	var zero Result[map[string]string]
 	if err := r.validate(); err != nil {
@@ -3786,6 +5990,9 @@ func (r HealthzResource) Get(ctx context.Context) (Result[map[string]string], er
 	response, err := r.client.api.HealthHealthzGet(ctx)
 	return jsonResult[map[string]string](r.client, response, err, 200)
 }
+
+// Get calls GET /readyz. Ready while started and the database holds a usable schema. Redis only speeds
+// work up, so losing it is reported as degraded rather than taking the replica out of service.
 func (r ReadyzResource) Get(ctx context.Context) (Result[interface{}], error) {
 	var zero Result[interface{}]
 	if err := r.validate(); err != nil {

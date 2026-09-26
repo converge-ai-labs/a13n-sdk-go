@@ -88,6 +88,10 @@ type ThreadStream struct {
 	retries  int
 }
 
+// Events observes typed Thread frames under ctx, which bounds the entire stream.
+// Reconnection is opt-in and uses applied cursors. Apply each frame before the
+// next Next call acknowledges it. Close releases observation without stopping
+// the durable Run. Stream().Get is the raw SSE alternative, without this decoder.
 func (r ThreadResource) Events(ctx context.Context, options StreamOptions) (*ThreadStream, error) {
 	if err := r.validate(); err != nil {
 		return nil, err

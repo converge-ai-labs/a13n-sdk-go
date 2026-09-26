@@ -53,21 +53,21 @@ func (t apiTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 	response, err := c.http.Do(req)
 	if err != nil {
-		outcome := transportError(ctx, c, err)
+		outcome := transportError(ctx, c, err, "request")
 		cleanup()
 		return nil, outcome
 	}
 	response.Body = &apiBody{ReadCloser: response.Body, ctx: ctx, client: c, cleanup: cleanup}
 	return response, nil
 }
-func transportError(ctx context.Context, c *Client, err error) error {
+func transportError(ctx context.Context, c *Client, err error, stage string) error {
 	if c.lifetime.Err() != nil {
 		return ErrClosed
 	}
 	if ctx.Err() != nil {
 		return ctx.Err()
 	}
-	return ErrTransport
+	return &TransportError{Stage: stage, Kind: transportKind(err)}
 }
 
 type apiBody struct {
@@ -82,7 +82,7 @@ func (b *apiBody) Read(p []byte) (int, error) {
 	n, err := b.ReadCloser.Read(p)
 	if err != nil {
 		if err != io.EOF {
-			err = transportError(b.ctx, b.client, err)
+			err = transportError(b.ctx, b.client, err, "body")
 		}
 		b.once.Do(b.cleanup)
 	}
