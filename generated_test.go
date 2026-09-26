@@ -54,6 +54,34 @@ func TestGeneratedWireModels(t *testing.T) {
 	}
 }
 
+func TestModelPriceRuleSelectors(t *testing.T) {
+	for _, payload := range []string{
+		`{"prices":[],"rule_id":"default"}`,
+		`{"prices":[],"rule_id":"default","max_input_tokens":null,"service_tier":null}`,
+		`{"prices":[],"rule_id":"default","max_input_tokens":128000,"service_tier":"priority"}`,
+	} {
+		for _, model := range []any{&generated.ModelPriceRuleInput{}, &generated.ModelPriceRuleOutput{}} {
+			if err := json.Unmarshal([]byte(payload), model); err != nil {
+				t.Fatal(err)
+			}
+			encoded, err := json.Marshal(model)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var expected, actual map[string]any
+			if err := json.Unmarshal([]byte(payload), &expected); err != nil {
+				t.Fatal(err)
+			}
+			if err := json.Unmarshal(encoded, &actual); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(actual, expected) {
+				t.Fatalf("%T selectors lost: got %s, want %s", model, encoded, payload)
+			}
+		}
+	}
+}
+
 func TestGeneratedHTTPAndBinaryShareTransport(t *testing.T) {
 	var paths []string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
