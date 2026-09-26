@@ -19,13 +19,13 @@ generate:
 
 format:
 	git ls-files -z -- '*.md' ':!:contract/semantics/**' | xargs -0 uv run --locked mdformat --number
-	gofmt -w *.go generated/*.go
+	gofmt -w *.go generated/*.go scripts/acceptance/*.go
 	uv run --locked ruff check --fix .
 	uv run --locked ruff format .
 
 lint:
 	git ls-files -z -- '*.md' ':!:contract/semantics/**' | xargs -0 uv run --locked mdformat --check --number
-	@test -z "$$(gofmt -l *.go generated/*.go)" || { gofmt -l *.go generated/*.go; exit 1; }
+	@test -z "$$(gofmt -l *.go generated/*.go scripts/acceptance/*.go)" || { gofmt -l *.go generated/*.go scripts/acceptance/*.go; exit 1; }
 	go vet ./...
 	uv run --locked ruff check --no-fix .
 	uv run --locked ruff format --check .
@@ -36,6 +36,7 @@ typecheck:
 test:
 	go test -race ./...
 	uv run --locked python -m pytest
+	uv run --locked python scripts/accept-installed.py --offline
 
 build:
 	go build ./...
