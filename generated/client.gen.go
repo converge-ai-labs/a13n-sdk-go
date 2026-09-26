@@ -2983,17 +2983,21 @@ type ModelPage struct {
 // ModelPriceRuleInput One complete set of prices and the condition selecting it.
 type ModelPriceRuleInput struct {
 	// Constraint A stable condition selecting one ordered model price rule.
-	Constraint *PricingConstraint    `json:"constraint,omitempty"`
-	Prices     []PriceComponentInput `json:"prices"`
-	RuleId     string                `json:"rule_id"`
+	Constraint     *PricingConstraint        `json:"constraint,omitempty"`
+	MaxInputTokens nullable.Nullable[int]    `json:"max_input_tokens,omitempty"`
+	Prices         []PriceComponentInput     `json:"prices"`
+	RuleId         string                    `json:"rule_id"`
+	ServiceTier    nullable.Nullable[string] `json:"service_tier,omitempty"`
 }
 
 // ModelPriceRuleOutput One complete set of prices and the condition selecting it.
 type ModelPriceRuleOutput struct {
 	// Constraint A stable condition selecting one ordered model price rule.
-	Constraint *PricingConstraint     `json:"constraint,omitempty"`
-	Prices     []PriceComponentOutput `json:"prices"`
-	RuleId     string                 `json:"rule_id"`
+	Constraint     *PricingConstraint        `json:"constraint,omitempty"`
+	MaxInputTokens nullable.Nullable[int]    `json:"max_input_tokens,omitempty"`
+	Prices         []PriceComponentOutput    `json:"prices"`
+	RuleId         string                    `json:"rule_id"`
+	ServiceTier    nullable.Nullable[string] `json:"service_tier,omitempty"`
 }
 
 // ModelPricingEntryInput Complete pricing declaration for one provider-qualified model.
