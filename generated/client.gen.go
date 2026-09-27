@@ -7621,6 +7621,15 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/workspaces/{workspace_id} (the `UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatch` operationId).
 	UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatch(ctx context.Context, workspaceId string, params *UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchParams, body UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost Prepare Composer
+	//
+	// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+	//
+	// Refused with `model_required` while the workspace has no model the caller can use.
+	//
+	// Corresponds with POST /api/v1/workspaces/{workspace_id}/agent-composer (the `PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost` operationId).
+	PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListAgentsApiV1WorkspacesWorkspaceIdAgentsGet List Agents
 	//
 	// Agents of the workspace. `q` matches the key, name or description, ignoring case; `archived` keeps only
@@ -7800,15 +7809,6 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/workspaces/{workspace_id}/audit-events (the `ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGet` operationId).
 	ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGet(ctx context.Context, workspaceId string, params *ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost Prepare Assistant
-	//
-	// The workspace's configuration assistant, created or brought up to date with the deployment's definition.
-	//
-	// Refused with `model_required` while the workspace has no model the caller can use.
-	//
-	// Corresponds with POST /api/v1/workspaces/{workspace_id}/configuration-assistant (the `PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost` operationId).
-	PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListConnectionsApiV1WorkspacesWorkspaceIdConnectionsGet List Connections
 	//
@@ -10718,6 +10718,25 @@ func (c *Client) UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatch(ctx context.Cont
 	return c.Client.Do(req)
 }
 
+// PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost Prepare Composer
+//
+// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+//
+// Refused with `model_required` while the workspace has no model the caller can use.
+//
+// Corresponds with POST /api/v1/workspaces/{workspace_id}/agent-composer (the `PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost` operationId).
+func (c *Client) PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostRequest(c.Server, workspaceId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListAgentsApiV1WorkspacesWorkspaceIdAgentsGet List Agents
 //
 // Agents of the workspace. `q` matches the key, name or description, ignoring case; `archived` keeps only
@@ -11168,25 +11187,6 @@ func (c *Client) ReadAssetContentApiV1WorkspacesWorkspaceIdAssetsAssetIdContentG
 // Corresponds with GET /api/v1/workspaces/{workspace_id}/audit-events (the `ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGet` operationId).
 func (c *Client) ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGet(ctx context.Context, workspaceId string, params *ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetRequest(c.Server, workspaceId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost Prepare Assistant
-//
-// The workspace's configuration assistant, created or brought up to date with the deployment's definition.
-//
-// Refused with `model_required` while the workspace has no model the caller can use.
-//
-// Corresponds with POST /api/v1/workspaces/{workspace_id}/configuration-assistant (the `PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost` operationId).
-func (c *Client) PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostRequest(c.Server, workspaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -18127,6 +18127,40 @@ func NewUpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchRequestWithBody(server str
 	return req, nil
 }
 
+// NewPrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostRequest constructs an http.Request for the PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost method
+func NewPrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostRequest(server string, workspaceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "workspace_id", workspaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/workspaces/%s/agent-composer", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListAgentsApiV1WorkspacesWorkspaceIdAgentsGetRequest constructs an http.Request for the ListAgentsApiV1WorkspacesWorkspaceIdAgentsGet method
 func NewListAgentsApiV1WorkspacesWorkspaceIdAgentsGetRequest(server string, workspaceId string, params *ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetParams) (*http.Request, error) {
 	var err error
@@ -19418,40 +19452,6 @@ func NewListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetRequest(
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostRequest constructs an http.Request for the PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost method
-func NewPrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostRequest(server string, workspaceId string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "workspace_id", workspaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/workspaces/%s/configuration-assistant", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -28250,6 +28250,17 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/workspaces/{workspace_id} (the `UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatch` operationId).
 	UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchWithResponse(ctx context.Context, workspaceId string, params *UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchParams, body UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchResponse, error)
 
+	// PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostWithResponse Prepare Composer
+	//
+	// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+	//
+	// Refused with `model_required` while the workspace has no model the caller can use.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/workspaces/{workspace_id}/agent-composer (the `PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost` operationId).
+	PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostWithResponse(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse, error)
+
 	// ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetWithResponse List Agents
 	//
 	// Agents of the workspace. `q` matches the key, name or description, ignoring case; `archived` keeps only
@@ -28459,17 +28470,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/workspaces/{workspace_id}/audit-events (the `ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGet` operationId).
 	ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetWithResponse(ctx context.Context, workspaceId string, params *ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetParams, reqEditors ...RequestEditorFn) (*ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetResponse, error)
-
-	// PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostWithResponse Prepare Assistant
-	//
-	// The workspace's configuration assistant, created or brought up to date with the deployment's definition.
-	//
-	// Refused with `model_required` while the workspace has no model the caller can use.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/workspaces/{workspace_id}/configuration-assistant (the `PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost` operationId).
-	PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostWithResponse(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse, error)
 
 	// ListConnectionsApiV1WorkspacesWorkspaceIdConnectionsGetWithResponse List Connections
 	//
@@ -34954,6 +34954,75 @@ func (r UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchResponse) ContentType() st
 	return ""
 }
 
+// PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse400Headers the declared response headers of an HTTP 400 response for PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost
+type PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponseDefaultHeaders the declared response headers of an HTTP default response for PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost
+type PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Agent
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse) GetJSON200() *Agent {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetResponse400Headers the declared response headers of an HTTP 400 response for ListAgentsApiV1WorkspacesWorkspaceIdAgentsGet
 type ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetResponse400Headers struct {
 	XRequestId *string
@@ -36452,75 +36521,6 @@ func (r ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetResponse
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse400Headers the declared response headers of an HTTP 400 response for PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost
-type PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse400Headers struct {
-	XRequestId *string
-}
-
-// PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponseDefaultHeaders the declared response headers of an HTTP default response for PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost
-type PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *Agent
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse) GetJSON200() *Agent {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -46813,6 +46813,23 @@ func (c *ClientWithResponses) UpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchWith
 	return ParseUpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchResponse(rsp)
 }
 
+// PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostWithResponse Prepare Composer
+//
+// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+//
+// Refused with `model_required` while the workspace has no model the caller can use.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/workspaces/{workspace_id}/agent-composer (the `PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost` operationId).
+func (c *ClientWithResponses) PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostWithResponse(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse, error) {
+	rsp, err := c.PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost(ctx, workspaceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse(rsp)
+}
+
 // ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetWithResponse List Agents
 //
 // Agents of the workspace. `q` matches the key, name or description, ignoring case; `archived` keeps only
@@ -47189,23 +47206,6 @@ func (c *ClientWithResponses) ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceId
 		return nil, err
 	}
 	return ParseListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetResponse(rsp)
-}
-
-// PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostWithResponse Prepare Assistant
-//
-// The workspace's configuration assistant, created or brought up to date with the deployment's definition.
-//
-// Refused with `model_required` while the workspace has no model the caller can use.
-//
-// Returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/workspaces/{workspace_id}/configuration-assistant (the `PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost` operationId).
-func (c *ClientWithResponses) PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostWithResponse(ctx context.Context, workspaceId string, reqEditors ...RequestEditorFn) (*PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse, error) {
-	rsp, err := c.PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost(ctx, workspaceId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse(rsp)
 }
 
 // ListConnectionsApiV1WorkspacesWorkspaceIdConnectionsGetWithResponse List Connections
@@ -54275,6 +54275,69 @@ func ParseUpdateWorkspaceApiV1WorkspacesWorkspaceIdPatchResponse(rsp *http.Respo
 	return response, nil
 }
 
+// ParsePrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse parses an HTTP response from a PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostWithResponse call
+func ParsePrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse(rsp *http.Response) (*PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Agent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListAgentsApiV1WorkspacesWorkspaceIdAgentsGetResponse parses an HTTP response from a ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetWithResponse call
 func ParseListAgentsApiV1WorkspacesWorkspaceIdAgentsGetResponse(rsp *http.Response) (*ListAgentsApiV1WorkspacesWorkspaceIdAgentsGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -55637,69 +55700,6 @@ func ParseListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetRespon
 		response.Headers400 = &headers
 	case true:
 		var headers ListWorkspaceAuditEventsApiV1WorkspacesWorkspaceIdAuditEventsGetResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParsePrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse parses an HTTP response from a PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostWithResponse call
-func ParsePrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse(rsp *http.Response) (*PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Agent
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPostResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

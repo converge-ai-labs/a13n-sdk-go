@@ -1258,14 +1258,14 @@ func TestEveryResourceOperation(t *testing.T) {
 			t.Fatal("operation was not dispatched")
 		}
 	})
-	t.Run("ArchiveWorkspaceApiV1WorkspacesWorkspaceIdArchivePost200", func(t *testing.T) {
+	t.Run("PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost200", func(t *testing.T) {
 		called := false
 		client := coverageClient(t, func(req *http.Request) *http.Response {
 			called = true
-			checkCoverageRequest(t, req, "POST", "/api/v1/workspaces/{workspace_id}/archive")
+			checkCoverageRequest(t, req, "POST", "/api/v1/workspaces/{workspace_id}/agent-composer")
 			return coverageResponse(200, "{}")
 		})
-		result, err := client.Resources().Workspaces().Ref("part /雪%").Archive(context.Background(), WorkspaceArchiveOptions{IfMatch: "header"})
+		result, err := client.Resources().Workspaces().Ref("part /雪%").AgentComposer(context.Background())
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -1274,14 +1274,14 @@ func TestEveryResourceOperation(t *testing.T) {
 			t.Fatal("operation was not dispatched")
 		}
 	})
-	t.Run("PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost200", func(t *testing.T) {
+	t.Run("ArchiveWorkspaceApiV1WorkspacesWorkspaceIdArchivePost200", func(t *testing.T) {
 		called := false
 		client := coverageClient(t, func(req *http.Request) *http.Response {
 			called = true
-			checkCoverageRequest(t, req, "POST", "/api/v1/workspaces/{workspace_id}/configuration-assistant")
+			checkCoverageRequest(t, req, "POST", "/api/v1/workspaces/{workspace_id}/archive")
 			return coverageResponse(200, "{}")
 		})
-		result, err := client.Resources().Workspaces().Ref("part /雪%").ConfigurationAssistant(context.Background())
+		result, err := client.Resources().Workspaces().Ref("part /雪%").Archive(context.Background(), WorkspaceArchiveOptions{IfMatch: "header"})
 		if err != nil {
 			t.Fatal(err)
 		}

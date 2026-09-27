@@ -3172,6 +3172,18 @@ func (r WorkspaceResource) Update(ctx context.Context, body generated.WorkspaceU
 	return jsonResult[generated.Workspace](r.client, response, err, 200)
 }
 
+// AgentComposer calls POST /api/v1/workspaces/{workspace_id}/agent-composer. The workspace's Agent
+// Composer, created or brought up to date with the deployment's definition. Refused with
+// `model_required` while the workspace has no model the caller can use.
+func (r WorkspaceResource) AgentComposer(ctx context.Context) (Result[generated.Agent], error) {
+	var zero Result[generated.Agent]
+	if err := r.validate(); err != nil {
+		return zero, err
+	}
+	response, err := r.client.api.PrepareComposerApiV1WorkspacesWorkspaceIdAgentComposerPost(ctx, r.ids[0])
+	return jsonResult[generated.Agent](r.client, response, err, 200)
+}
+
 // Archive calls POST /api/v1/workspaces/{workspace_id}/archive. Archive Workspace See
 // WorkspaceArchiveOptions for explicit parameters and preconditions.
 func (r WorkspaceResource) Archive(ctx context.Context, options WorkspaceArchiveOptions) (Result[generated.Workspace], error) {
@@ -3184,18 +3196,6 @@ func (r WorkspaceResource) Archive(ctx context.Context, options WorkspaceArchive
 	}
 	response, err := r.client.api.ArchiveWorkspaceApiV1WorkspacesWorkspaceIdArchivePost(ctx, r.ids[0], &generated.ArchiveWorkspaceApiV1WorkspacesWorkspaceIdArchivePostParams{IfMatch: &options.IfMatch})
 	return jsonResult[generated.Workspace](r.client, response, err, 200)
-}
-
-// ConfigurationAssistant calls POST /api/v1/workspaces/{workspace_id}/configuration-assistant. The
-// workspace's configuration assistant, created or brought up to date with the deployment's definition.
-// Refused with `model_required` while the workspace has no model the caller can use.
-func (r WorkspaceResource) ConfigurationAssistant(ctx context.Context) (Result[generated.Agent], error) {
-	var zero Result[generated.Agent]
-	if err := r.validate(); err != nil {
-		return zero, err
-	}
-	response, err := r.client.api.PrepareAssistantApiV1WorkspacesWorkspaceIdConfigurationAssistantPost(ctx, r.ids[0])
-	return jsonResult[generated.Agent](r.client, response, err, 200)
 }
 
 // Ref binds agent_id locally without checking existence or changing credential authority.
@@ -6080,8 +6080,8 @@ var resourceOperations = map[string]string{
 	"GET /api/v1/workspaces":                                                                                    "WorkspacesResource.List",
 	"GET /api/v1/workspaces/{workspace_id}":                                                                     "WorkspaceResource.Get",
 	"PATCH /api/v1/workspaces/{workspace_id}":                                                                   "WorkspaceResource.Update",
+	"POST /api/v1/workspaces/{workspace_id}/agent-composer":                                                     "WorkspaceResource.AgentComposer",
 	"POST /api/v1/workspaces/{workspace_id}/archive":                                                            "WorkspaceResource.Archive",
-	"POST /api/v1/workspaces/{workspace_id}/configuration-assistant":                                            "WorkspaceResource.ConfigurationAssistant",
 	"GET /api/v1/workspaces/{workspace_id}/agents":                                                              "AgentsResource.List",
 	"POST /api/v1/workspaces/{workspace_id}/agents":                                                             "AgentsResource.Create",
 	"POST /api/v1/workspaces/{workspace_id}/agents/validate":                                                    "AgentsResource.Validate",
