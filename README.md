@@ -2,6 +2,12 @@
 
 A typed Go SDK for a13n Service: a complete generated resource API, full HTTP access, and thin submission, waiting and Thread SSE helpers. Go 1.25 or newer is required.
 
+## Documentation and installation
+
+The [application guide](docs/README.md) covers installation, authentication, resource discovery, queue/recovery handling, Memory and errors. The examples below are a quick start; [external-package examples](example_test.go) provide compiled workflows. Documentation lives as Markdown in this repository, not in the parent Service repository.
+
+Use `go get github.com/converge-ai-labs/a13n-sdk-go@<version>` with an available release tag or a reviewed commit. Registry access and release availability are separate from a successful local build.
+
 ## Start a Thread
 
 ```go
@@ -46,7 +52,7 @@ if err != nil { return err }
 // import "github.com/oapi-codegen/nullable"
 updated, err := agent.Update(ctx, generated.AgentUpdate{
     Name: nullable.NewNullableWithValue("Support"),
-    Description: nullable.NewNullNullable[string](), // explicit null clears it
+    Description: nullable.NewNullNullable[string](), // JSON null; Service defines its meaning
 }, a13n.AgentUpdateOptions{
     IfMatch: current.ETag(),
 })
@@ -61,7 +67,7 @@ for page, err := range workspace.Threads().Pages(ctx, a13n.ThreadsListOptions{})
 
 `List` makes one request; `Pages` is lazy and retains each response's metadata. Breaking iteration stops further requests. Only cursor-bearing collections have `Pages`. Run Items uses `run.Items().Get(ctx)`.
 
-Ordinary selectors and filters use `a13n.ProviderKind`, `a13n.MemberKind` and `a13n.SkillSource` with readable constants such as `ProviderKindMemory` and `MemberKindServiceAccount`. These are generated aliases, not additional wire types. Other models live in `generated`. Nullable fields use `nullable.Nullable[T]` from `github.com/oapi-codegen/nullable`: the zero value omits a field, `NewNullNullable[T]()` clears it, and `NewNullableWithValue(value)` supplies it. Union helpers expose typed `As...` and `From...` branches. These are wire models, not a promise of complete local JSON Schema validation.
+Ordinary selectors and filters use `a13n.ProviderKind`, `a13n.MemberKind` and `a13n.SkillSource` with readable constants such as `ProviderKindMemory` and `MemberKindServiceAccount`. These are generated aliases, not additional wire types. Other models live in `generated`. Nullable fields use `nullable.Nullable[T]` from `github.com/oapi-codegen/nullable`: the zero value omits a field, `NewNullNullable[T]()` sends JSON null, and `NewNullableWithValue(value)` supplies it. Union helpers expose typed `As...` and `From...` branches. These are wire models, not a promise of complete local JSON Schema validation.
 
 ## Observe a Thread
 
