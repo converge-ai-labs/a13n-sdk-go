@@ -141,7 +141,7 @@ func ExampleAgentResource_Update() {
 	}
 	updated, err := agent.Update(ctx, generated.AgentUpdate{
 		Name:        nullable.NewNullableWithValue("Support"),
-		Description: nullable.NewNullNullable[string](), // clear, rather than omit
+		Description: nullable.NewNullNullable[string](), // JSON null; Service defines its meaning
 	}, a13n.AgentUpdateOptions{IfMatch: current.ETag()})
 	if err != nil {
 		panic(err)
