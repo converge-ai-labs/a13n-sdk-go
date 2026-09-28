@@ -3303,20 +3303,20 @@ type ProfileUpdate struct {
 
 // Provider defines model for Provider.
 type Provider struct {
-	Config               map[string]JsonValue `json:"config"`
-	CreatedAt            time.Time            `json:"created_at"`
-	CreatedById          string               `json:"created_by_id"`
-	CredentialConfigured bool                 `json:"credential_configured"`
-	Enabled              bool                 `json:"enabled"`
-	HeaderNames          []string             `json:"header_names"`
-	Id                   string               `json:"id"`
-	Name                 string               `json:"name"`
-	OrganizationId       string               `json:"organization_id"`
-	Type                 string               `json:"type"`
-	UpdatedAt            time.Time            `json:"updated_at"`
-	UpdatedById          string               `json:"updated_by_id"`
-	Version              int                  `json:"version"`
-	WorkspaceId          string               `json:"workspace_id"`
+	Config               map[string]JsonValue      `json:"config"`
+	CreatedAt            time.Time                 `json:"created_at"`
+	CreatedById          nullable.Nullable[string] `json:"created_by_id"`
+	CredentialConfigured bool                      `json:"credential_configured"`
+	Enabled              bool                      `json:"enabled"`
+	HeaderNames          []string                  `json:"header_names"`
+	Id                   string                    `json:"id"`
+	Name                 string                    `json:"name"`
+	OrganizationId       string                    `json:"organization_id"`
+	Type                 string                    `json:"type"`
+	UpdatedAt            time.Time                 `json:"updated_at"`
+	UpdatedById          nullable.Nullable[string] `json:"updated_by_id"`
+	Version              int                       `json:"version"`
+	WorkspaceId          string                    `json:"workspace_id"`
 }
 
 // ProviderCreate defines model for ProviderCreate.
@@ -3901,7 +3901,7 @@ type SubscriptionUpdate struct {
 type Template struct {
 	Config         TemplateConfig            `json:"config"`
 	CreatedAt      time.Time                 `json:"created_at"`
-	CreatedById    string                    `json:"created_by_id"`
+	CreatedById    nullable.Nullable[string] `json:"created_by_id"`
 	Description    nullable.Nullable[string] `json:"description"`
 	Enabled        bool                      `json:"enabled"`
 	Id             string                    `json:"id"`
@@ -3910,7 +3910,7 @@ type Template struct {
 	OrganizationId string                    `json:"organization_id"`
 	ProviderId     string                    `json:"provider_id"`
 	UpdatedAt      time.Time                 `json:"updated_at"`
-	UpdatedById    string                    `json:"updated_by_id"`
+	UpdatedById    nullable.Nullable[string] `json:"updated_by_id"`
 	Version        int                       `json:"version"`
 	WorkspaceId    string                    `json:"workspace_id"`
 }
