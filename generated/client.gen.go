@@ -278,21 +278,6 @@ func (e ClientToolDefinitionPermission) Valid() bool {
 	}
 }
 
-// Defines values for CompleteAction.
-const (
-	CompleteActionComplete CompleteAction = "complete"
-)
-
-// Valid indicates whether the value is a known member of the CompleteAction enum.
-func (e CompleteAction) Valid() bool {
-	switch e {
-	case CompleteActionComplete:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ConnectionAuth.
 const (
 	ConnectionAuthAccount ConnectionAuth = "account"
@@ -473,6 +458,21 @@ func (e Delivery) Valid() bool {
 	}
 }
 
+// Defines values for DenyAction.
+const (
+	DenyActionDeny DenyAction = "deny"
+)
+
+// Valid indicates whether the value is a known member of the DenyAction enum.
+func (e DenyAction) Valid() bool {
+	switch e {
+	case DenyActionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for EntryStatus.
 const (
 	EntryStatusAssigned  EntryStatus = "assigned"
@@ -569,6 +569,21 @@ func (e ErrorCode) Valid() bool {
 	case ErrorCodeUnauthenticated:
 		return true
 	case ErrorCodeUnavailable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FailedStatus.
+const (
+	FailedStatusFailed FailedStatus = "failed"
+)
+
+// Valid indicates whether the value is a known member of the FailedStatus enum.
+func (e FailedStatus) Valid() bool {
+	switch e {
+	case FailedStatusFailed:
 		return true
 	default:
 		return false
@@ -944,21 +959,6 @@ func (e NewThreadKind) Valid() bool {
 	}
 }
 
-// Defines values for NoResponseAction.
-const (
-	NoResponseActionNoResponse NoResponseAction = "no_response"
-)
-
-// Valid indicates whether the value is a known member of the NoResponseAction enum.
-func (e NoResponseAction) Valid() bool {
-	switch e {
-	case NoResponseActionNoResponse:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for OAuthGrant.
 const (
 	AuthorizationCode OAuthGrant = "authorization_code"
@@ -979,43 +979,22 @@ func (e OAuthGrant) Valid() bool {
 
 // Defines values for OperationKind.
 const (
-	OperationKindComplete OperationKind = "complete"
-	OperationKindRefresh  OperationKind = "refresh"
-	OperationKindRevoke   OperationKind = "revoke"
-	OperationKindSetup    OperationKind = "setup"
+	Complete OperationKind = "complete"
+	Refresh  OperationKind = "refresh"
+	Revoke   OperationKind = "revoke"
+	Setup    OperationKind = "setup"
 )
 
 // Valid indicates whether the value is a known member of the OperationKind enum.
 func (e OperationKind) Valid() bool {
 	switch e {
-	case OperationKindComplete:
+	case Complete:
 		return true
-	case OperationKindRefresh:
+	case Refresh:
 		return true
-	case OperationKindRevoke:
+	case Revoke:
 		return true
-	case OperationKindSetup:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for PendingKind.
-const (
-	PendingKindApproval   PendingKind = "approval"
-	PendingKindClientTool PendingKind = "client_tool"
-	PendingKindUserInput  PendingKind = "user_input"
-)
-
-// Valid indicates whether the value is a known member of the PendingKind enum.
-func (e PendingKind) Valid() bool {
-	switch e {
-	case PendingKindApproval:
-		return true
-	case PendingKindClientTool:
-		return true
-	case PendingKindUserInput:
+	case Setup:
 		return true
 	default:
 		return false
@@ -1064,15 +1043,15 @@ func (e ProviderTestStatus) Valid() bool {
 	}
 }
 
-// Defines values for RejectAction.
+// Defines values for ReturnedStatus.
 const (
-	RejectActionReject RejectAction = "reject"
+	ReturnedStatusReturned ReturnedStatus = "returned"
 )
 
-// Valid indicates whether the value is a known member of the RejectAction enum.
-func (e RejectAction) Valid() bool {
+// Valid indicates whether the value is a known member of the ReturnedStatus enum.
+func (e ReturnedStatus) Valid() bool {
 	switch e {
-	case RejectActionReject:
+	case ReturnedStatusReturned:
 		return true
 	default:
 		return false
@@ -1495,22 +1474,19 @@ func (e Verb) Valid() bool {
 
 // Defines values for WaitReason.
 const (
-	WaitReasonApproval   WaitReason = "approval"
-	WaitReasonClientTool WaitReason = "client_tool"
-	WaitReasonMultiple   WaitReason = "multiple"
-	WaitReasonUserInput  WaitReason = "user_input"
+	Approval WaitReason = "approval"
+	Call     WaitReason = "call"
+	Multiple WaitReason = "multiple"
 )
 
 // Valid indicates whether the value is a known member of the WaitReason enum.
 func (e WaitReason) Valid() bool {
 	switch e {
-	case WaitReasonApproval:
+	case Approval:
 		return true
-	case WaitReasonClientTool:
+	case Call:
 		return true
-	case WaitReasonMultiple:
-		return true
-	case WaitReasonUserInput:
+	case Multiple:
 		return true
 	default:
 		return false
@@ -1826,6 +1802,20 @@ type AgentUpdate struct {
 	Name        nullable.Nullable[string]            `json:"name,omitempty"`
 }
 
+// AgentUsage defines model for AgentUsage.
+type AgentUsage struct {
+	AgentId string       `json:"agent_id"`
+	Name    string       `json:"name"`
+	Runs    RunMetrics   `json:"runs"`
+	Usage   ModelMetrics `json:"usage"`
+}
+
+// AgentUsagePage defines model for AgentUsagePage.
+type AgentUsagePage struct {
+	Items      []AgentUsage              `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
 // AgentValidate A configuration to check as creating a revision would, storing nothing.
 //
 // `agent_id` names the agent it would become a revision of, whose inline subagents may not lead back to it;
@@ -1833,11 +1823,6 @@ type AgentUpdate struct {
 type AgentValidate struct {
 	AgentId nullable.Nullable[string] `json:"agent_id,omitempty"`
 	Config  AgentConfigInput          `json:"config"`
-}
-
-// Answer defines model for Answer.
-type Answer struct {
-	union json.RawMessage
 }
 
 // ApiKey defines model for ApiKey.
@@ -1861,10 +1846,14 @@ type ApiKeyPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// ApprovalDecision defines model for ApprovalDecision.
+type ApprovalDecision struct {
+	union json.RawMessage
+}
+
 // Approve defines model for Approve.
 type Approve struct {
-	Action     ApproveAction `json:"action"`
-	ToolCallId string        `json:"tool_call_id"`
+	Action ApproveAction `json:"action"`
 }
 
 // ApproveAction defines model for Approve.Action.
@@ -2011,6 +2000,11 @@ type BootstrapInput struct {
 	Password *string             `json:"password,omitempty"`
 }
 
+// CallResult defines model for CallResult.
+type CallResult struct {
+	union json.RawMessage
+}
+
 // CallbackOutcome defines model for CallbackOutcome.
 type CallbackOutcome struct {
 	ConnectionId string                    `json:"connection_id"`
@@ -2066,16 +2060,6 @@ type ClientToolDefinition struct {
 
 // ClientToolDefinitionPermission defines model for ClientToolDefinition.Permission.
 type ClientToolDefinitionPermission string
-
-// Complete defines model for Complete.
-type Complete struct {
-	Action     CompleteAction `json:"action"`
-	Result     JsonValue      `json:"result"`
-	ToolCallId string         `json:"tool_call_id"`
-}
-
-// CompleteAction defines model for Complete.Action.
-type CompleteAction string
 
 // Connection defines model for Connection.
 type Connection struct {
@@ -2235,6 +2219,12 @@ type CreatedSubscription struct {
 // CredentialMode defines model for CredentialMode.
 type CredentialMode string
 
+// DailyUsage defines model for DailyUsage.
+type DailyUsage struct {
+	Date  openapi_types.Date `json:"date"`
+	Usage ModelMetrics       `json:"usage"`
+}
+
 // DelegationContextPolicy defines model for DelegationContextPolicy.
 type DelegationContextPolicy struct {
 	History     *DelegationContextPolicyHistory   `json:"history,omitempty"`
@@ -2256,6 +2246,15 @@ type DeliveryPage struct {
 	Items      []WebhookDelivery         `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
+
+// Deny defines model for Deny.
+type Deny struct {
+	Action DenyAction                `json:"action"`
+	Reason nullable.Nullable[string] `json:"reason,omitempty"`
+}
+
+// DenyAction defines model for Deny.Action.
+type DenyAction string
 
 // EmailChangeConfirm defines model for EmailChangeConfirm.
 type EmailChangeConfirm struct {
@@ -2390,6 +2389,15 @@ type ExternalTargetCreate struct {
 	Name     nullable.Nullable[string] `json:"name,omitempty"`
 	Token    *string                   `json:"token,omitempty"`
 }
+
+// Failed An explicit external tool failure, including an intentional unanswered question.
+type Failed struct {
+	Message string       `json:"message"`
+	Status  FailedStatus `json:"status"`
+}
+
+// FailedStatus defines model for Failed.Status.
+type FailedStatus string
 
 // Failure defines model for Failure.
 type Failure struct {
@@ -2968,6 +2976,17 @@ type ModelCreate struct {
 	ProviderId  string                                    `json:"provider_id"`
 }
 
+// ModelMetrics defines model for ModelMetrics.
+type ModelMetrics struct {
+	CacheHitRate     nullable.Nullable[float32] `json:"cache_hit_rate"`
+	CacheReadTokens  int                        `json:"cache_read_tokens"`
+	Cost             nullable.Nullable[string]  `json:"cost"`
+	InputTokens      int                        `json:"input_tokens"`
+	OutputTokens     int                        `json:"output_tokens"`
+	Requests         int                        `json:"requests"`
+	UnpricedRequests int                        `json:"unpriced_requests"`
+}
+
 // ModelPage defines model for ModelPage.
 type ModelPage struct {
 	Items      []Model                   `json:"items"`
@@ -3037,6 +3056,19 @@ type ModelUsage struct {
 	Requests         int                       `json:"requests"`
 }
 
+// ModelUsageGroup defines model for ModelUsageGroup.
+type ModelUsageGroup struct {
+	Model nullable.Nullable[string] `json:"model"`
+	Name  nullable.Nullable[string] `json:"name"`
+	Usage ModelMetrics              `json:"usage"`
+}
+
+// ModelUsagePage defines model for ModelUsagePage.
+type ModelUsagePage struct {
+	Items      []ModelUsageGroup         `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
 // MountCreate defines model for MountCreate.
 type MountCreate struct {
 	EnvironmentId    string                    `json:"environment_id"`
@@ -3075,20 +3107,6 @@ type NewThread struct {
 
 // NewThreadKind defines model for NewThread.Kind.
 type NewThreadKind string
-
-// NoResponse defines model for NoResponse.
-type NoResponse struct {
-	Action     *NoResponseAction `json:"action,omitempty"`
-	ToolCallId string            `json:"tool_call_id"`
-}
-
-// NoResponseAction defines model for NoResponse.Action.
-type NoResponseAction string
-
-// NormalizedAnswer defines model for NormalizedAnswer.
-type NormalizedAnswer struct {
-	union json.RawMessage
-}
 
 // OAuthGrant defines model for OAuthGrant.
 type OAuthGrant string
@@ -3172,22 +3190,19 @@ type PasswordResetConfirm struct {
 	Token    string  `json:"token"`
 }
 
-// Pending Public projection of the exact sealed pending set; the native requests live in the state object.
+// Pending Public projection; complete native requests and private metadata stay in the checkpoint.
 type Pending struct {
-	Items []PendingItem `json:"items"`
+	Approvals []PendingCall `json:"approvals"`
+	Calls     []PendingCall `json:"calls"`
 }
 
-// PendingItem defines model for PendingItem.
-type PendingItem struct {
+// PendingCall defines model for PendingCall.
+type PendingCall struct {
 	Arguments    map[string]JsonValue                    `json:"arguments"`
-	Kind         PendingKind                             `json:"kind"`
 	Presentation nullable.Nullable[map[string]JsonValue] `json:"presentation,omitempty"`
-	ToolCallId   string                                  `json:"tool_call_id"`
+	ToolCallId   ToolCallId                              `json:"tool_call_id"`
 	ToolName     string                                  `json:"tool_name"`
 }
-
-// PendingKind defines model for PendingKind.
-type PendingKind string
 
 // PluginSelection One instance of a Harness plugin factory the deployment installed.
 type PluginSelection struct {
@@ -3367,24 +3382,10 @@ type ProviderUpdate struct {
 	Name         nullable.Nullable[string]               `json:"name,omitempty"`
 }
 
-// Reject defines model for Reject.
-type Reject struct {
-	Action     RejectAction              `json:"action"`
-	Reason     nullable.Nullable[string] `json:"reason,omitempty"`
-	ToolCallId string                    `json:"tool_call_id"`
-}
-
-// RejectAction defines model for Reject.Action.
-type RejectAction string
-
-// Resume The normalized batch stored on the successor: one answer per pending call of the exact wait.
+// Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
-	Answers []NormalizedAnswer `json:"answers"`
-}
-
-// ResumeRequest defines model for ResumeRequest.
-type ResumeRequest struct {
-	Answers *[]Answer `json:"answers,omitempty"`
+	Approvals map[string]ApprovalDecision `json:"approvals"`
+	Calls     map[string]CallResult       `json:"calls"`
 }
 
 // RetryConfig defines model for RetryConfig.
@@ -3398,6 +3399,15 @@ type RetryOverride struct {
 	Output nullable.Nullable[int] `json:"output,omitempty"`
 	Tools  nullable.Nullable[int] `json:"tools,omitempty"`
 }
+
+// Returned A JSON tool result. Built-in question values are validated by the Harness.
+type Returned struct {
+	Status ReturnedStatus `json:"status"`
+	Value  JsonValue      `json:"value"`
+}
+
+// ReturnedStatus defines model for Returned.Status.
+type ReturnedStatus string
 
 // RevokedConnection defines model for RevokedConnection.
 type RevokedConnection struct {
@@ -3439,6 +3449,12 @@ type RunItems struct {
 // RunLabels defines model for RunLabels.
 type RunLabels struct {
 	Labels map[string]string `json:"labels"`
+}
+
+// RunMetrics defines model for RunMetrics.
+type RunMetrics struct {
+	AverageDurationSeconds nullable.Nullable[float32] `json:"average_duration_seconds"`
+	Runs                   int                        `json:"runs"`
 }
 
 // RunOptionsInput What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
@@ -3980,6 +3996,9 @@ type ThreadView struct {
 // ThreadViewOrigin defines model for ThreadView.Origin.
 type ThreadViewOrigin string
 
+// ToolCallId defines model for ToolCallId.
+type ToolCallId = string
+
 // ToolDefinition defines model for ToolDefinition.
 type ToolDefinition struct {
 	ConfigSchema         map[string]JsonValue                    `json:"config_schema"`
@@ -4168,6 +4187,13 @@ type UsageLimitsOutput struct {
 	RequestLimit               nullable.Nullable[int]    `json:"request_limit,omitempty"`
 	ToolCallsLimit             nullable.Nullable[int]    `json:"tool_calls_limit,omitempty"`
 	TotalTokensLimit           nullable.Nullable[int]    `json:"total_tokens_limit,omitempty"`
+}
+
+// UsageOverview defines model for UsageOverview.
+type UsageOverview struct {
+	Daily []DailyUsage `json:"daily"`
+	Runs  RunMetrics   `json:"runs"`
+	Usage ModelMetrics `json:"usage"`
 }
 
 // UsageSummary defines model for UsageSummary.
@@ -5509,6 +5535,38 @@ type SummarizeUsageApiV1UsageGetParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// UsageAgentsApiV1UsageAgentsGetParams defines parameters for UsageAgentsApiV1UsageAgentsGet.
+type UsageAgentsApiV1UsageAgentsGetParams struct {
+	Start  time.Time `form:"start" json:"start"`
+	End    time.Time `form:"end" json:"end"`
+	Limit  *int      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UsageModelsApiV1UsageModelsGetParams defines parameters for UsageModelsApiV1UsageModelsGet.
+type UsageModelsApiV1UsageModelsGetParams struct {
+	Start  time.Time `form:"start" json:"start"`
+	End    time.Time `form:"end" json:"end"`
+	Limit  *int      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UsageOverviewApiV1UsageOverviewGetParams defines parameters for UsageOverviewApiV1UsageOverviewGet.
+type UsageOverviewApiV1UsageOverviewGetParams struct {
+	Start    time.Time `form:"start" json:"start"`
+	End      time.Time `form:"end" json:"end"`
+	Timezone *string   `form:"timezone,omitempty" json:"timezone,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // UpdateProfileApiV1UsersMePatchParams defines parameters for UpdateProfileApiV1UsersMePatch.
 type UpdateProfileApiV1UsersMePatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
@@ -5821,7 +5879,7 @@ type UpdateRunApiV1RunsRunIdPatchJSONRequestBody = RunLabels
 type ForkRunApiV1RunsRunIdForkPostJSONRequestBody = Fork
 
 // ResumeRunApiV1RunsRunIdResumePostJSONRequestBody defines body for ResumeRunApiV1RunsRunIdResumePost for application/json ContentType.
-type ResumeRunApiV1RunsRunIdResumePostJSONRequestBody = ResumeRequest
+type ResumeRunApiV1RunsRunIdResumePostJSONRequestBody = Resume
 
 // CreateSessionApiV1SessionsPostJSONRequestBody defines body for CreateSessionApiV1SessionsPost for application/json ContentType.
 type CreateSessionApiV1SessionsPostJSONRequestBody = SessionCreate
@@ -5913,15 +5971,15 @@ type UpdateServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdPatch
 // CreateServiceAccountKeyApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysPostJSONRequestBody defines body for CreateServiceAccountKeyApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysPost for application/json ContentType.
 type CreateServiceAccountKeyApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysPostJSONRequestBody = KeyCreate
 
-// AsApprove returns the union data inside the Answer as a Approve
-func (t Answer) AsApprove() (Approve, error) {
+// AsApprove returns the union data inside the ApprovalDecision as a Approve
+func (t ApprovalDecision) AsApprove() (Approve, error) {
 	var body Approve
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromApprove overwrites any union data inside the Answer as the provided Approve
-func (t *Answer) FromApprove(v Approve) error {
+// FromApprove overwrites any union data inside the ApprovalDecision as the provided Approve
+func (t *ApprovalDecision) FromApprove(v Approve) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -5931,8 +5989,8 @@ func (t *Answer) FromApprove(v Approve) error {
 	return err
 }
 
-// MergeApprove performs a merge with any union data inside the Answer, using the provided Approve
-func (t *Answer) MergeApprove(v Approve) error {
+// MergeApprove performs a merge with any union data inside the ApprovalDecision, using the provided Approve
+func (t *ApprovalDecision) MergeApprove(v Approve) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -5947,31 +6005,31 @@ func (t *Answer) MergeApprove(v Approve) error {
 	return err
 }
 
-// AsReject returns the union data inside the Answer as a Reject
-func (t Answer) AsReject() (Reject, error) {
-	var body Reject
+// AsDeny returns the union data inside the ApprovalDecision as a Deny
+func (t ApprovalDecision) AsDeny() (Deny, error) {
+	var body Deny
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromReject overwrites any union data inside the Answer as the provided Reject
-func (t *Answer) FromReject(v Reject) error {
+// FromDeny overwrites any union data inside the ApprovalDecision as the provided Deny
+func (t *ApprovalDecision) FromDeny(v Deny) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
 	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"reject"}`))
+	b, err = runtime.JSONMerge(b, []byte(`{"action":"deny"}`))
 	t.union = b
 	return err
 }
 
-// MergeReject performs a merge with any union data inside the Answer, using the provided Reject
-func (t *Answer) MergeReject(v Reject) error {
+// MergeDeny performs a merge with any union data inside the ApprovalDecision, using the provided Deny
+func (t *ApprovalDecision) MergeDeny(v Deny) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
 	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"reject"}`))
+	b, err = runtime.JSONMerge(b, []byte(`{"action":"deny"}`))
 	if err != nil {
 		return err
 	}
@@ -5981,41 +6039,7 @@ func (t *Answer) MergeReject(v Reject) error {
 	return err
 }
 
-// AsComplete returns the union data inside the Answer as a Complete
-func (t Answer) AsComplete() (Complete, error) {
-	var body Complete
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromComplete overwrites any union data inside the Answer as the provided Complete
-func (t *Answer) FromComplete(v Complete) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"complete"}`))
-	t.union = b
-	return err
-}
-
-// MergeComplete performs a merge with any union data inside the Answer, using the provided Complete
-func (t *Answer) MergeComplete(v Complete) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"complete"}`))
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t Answer) Discriminator() (string, error) {
+func (t ApprovalDecision) Discriminator() (string, error) {
 	var discriminator struct {
 		Discriminator string `json:"action"`
 	}
@@ -6023,7 +6047,7 @@ func (t Answer) Discriminator() (string, error) {
 	return discriminator.Discriminator, err
 }
 
-func (t Answer) ValueByDiscriminator() (interface{}, error) {
+func (t ApprovalDecision) ValueByDiscriminator() (interface{}, error) {
 	discriminator, err := t.Discriminator()
 	if err != nil {
 		return nil, err
@@ -6031,21 +6055,19 @@ func (t Answer) ValueByDiscriminator() (interface{}, error) {
 	switch discriminator {
 	case "approve":
 		return t.AsApprove()
-	case "complete":
-		return t.AsComplete()
-	case "reject":
-		return t.AsReject()
+	case "deny":
+		return t.AsDeny()
 	default:
 		return nil, errors.New("unknown discriminator value: " + discriminator)
 	}
 }
 
-func (t Answer) MarshalJSON() ([]byte, error) {
+func (t ApprovalDecision) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *Answer) UnmarshalJSON(b []byte) error {
+func (t *ApprovalDecision) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -6134,6 +6156,107 @@ func (t AuthenticationCase_Equals) MarshalJSON() ([]byte, error) {
 }
 
 func (t *AuthenticationCase_Equals) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsReturned returns the union data inside the CallResult as a Returned
+func (t CallResult) AsReturned() (Returned, error) {
+	var body Returned
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromReturned overwrites any union data inside the CallResult as the provided Returned
+func (t *CallResult) FromReturned(v Returned) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"status":"returned"}`))
+	t.union = b
+	return err
+}
+
+// MergeReturned performs a merge with any union data inside the CallResult, using the provided Returned
+func (t *CallResult) MergeReturned(v Returned) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"status":"returned"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsFailed returns the union data inside the CallResult as a Failed
+func (t CallResult) AsFailed() (Failed, error) {
+	var body Failed
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFailed overwrites any union data inside the CallResult as the provided Failed
+func (t *CallResult) FromFailed(v Failed) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"status":"failed"}`))
+	t.union = b
+	return err
+}
+
+// MergeFailed performs a merge with any union data inside the CallResult, using the provided Failed
+func (t *CallResult) MergeFailed(v Failed) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"status":"failed"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CallResult) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"status"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t CallResult) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "failed":
+		return t.AsFailed()
+	case "returned":
+		return t.AsReturned()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t CallResult) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CallResult) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -6258,179 +6381,6 @@ func (t EnteredCredential) MarshalJSON() ([]byte, error) {
 }
 
 func (t *EnteredCredential) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsApprove returns the union data inside the NormalizedAnswer as a Approve
-func (t NormalizedAnswer) AsApprove() (Approve, error) {
-	var body Approve
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromApprove overwrites any union data inside the NormalizedAnswer as the provided Approve
-func (t *NormalizedAnswer) FromApprove(v Approve) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"approve"}`))
-	t.union = b
-	return err
-}
-
-// MergeApprove performs a merge with any union data inside the NormalizedAnswer, using the provided Approve
-func (t *NormalizedAnswer) MergeApprove(v Approve) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"approve"}`))
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsReject returns the union data inside the NormalizedAnswer as a Reject
-func (t NormalizedAnswer) AsReject() (Reject, error) {
-	var body Reject
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromReject overwrites any union data inside the NormalizedAnswer as the provided Reject
-func (t *NormalizedAnswer) FromReject(v Reject) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"reject"}`))
-	t.union = b
-	return err
-}
-
-// MergeReject performs a merge with any union data inside the NormalizedAnswer, using the provided Reject
-func (t *NormalizedAnswer) MergeReject(v Reject) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"reject"}`))
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsComplete returns the union data inside the NormalizedAnswer as a Complete
-func (t NormalizedAnswer) AsComplete() (Complete, error) {
-	var body Complete
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromComplete overwrites any union data inside the NormalizedAnswer as the provided Complete
-func (t *NormalizedAnswer) FromComplete(v Complete) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"complete"}`))
-	t.union = b
-	return err
-}
-
-// MergeComplete performs a merge with any union data inside the NormalizedAnswer, using the provided Complete
-func (t *NormalizedAnswer) MergeComplete(v Complete) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"complete"}`))
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsNoResponse returns the union data inside the NormalizedAnswer as a NoResponse
-func (t NormalizedAnswer) AsNoResponse() (NoResponse, error) {
-	var body NoResponse
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromNoResponse overwrites any union data inside the NormalizedAnswer as the provided NoResponse
-func (t *NormalizedAnswer) FromNoResponse(v NoResponse) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"no_response"}`))
-	t.union = b
-	return err
-}
-
-// MergeNoResponse performs a merge with any union data inside the NormalizedAnswer, using the provided NoResponse
-func (t *NormalizedAnswer) MergeNoResponse(v NoResponse) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"action":"no_response"}`))
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t NormalizedAnswer) Discriminator() (string, error) {
-	var discriminator struct {
-		Discriminator string `json:"action"`
-	}
-	err := json.Unmarshal(t.union, &discriminator)
-	return discriminator.Discriminator, err
-}
-
-func (t NormalizedAnswer) ValueByDiscriminator() (interface{}, error) {
-	discriminator, err := t.Discriminator()
-	if err != nil {
-		return nil, err
-	}
-	switch discriminator {
-	case "approve":
-		return t.AsApprove()
-	case "complete":
-		return t.AsComplete()
-	case "no_response":
-		return t.AsNoResponse()
-	case "reject":
-		return t.AsReject()
-	default:
-		return nil, errors.New("unknown discriminator value: " + discriminator)
-	}
-}
-
-func (t NormalizedAnswer) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *NormalizedAnswer) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -8657,7 +8607,7 @@ type ClientInterface interface {
 
 	// ResumeRunApiV1RunsRunIdResumePostWithBody Resume Run
 	//
-	// Answer the waiting run's approvals and client tools; the successor run continues from them.
+	// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8666,7 +8616,7 @@ type ClientInterface interface {
 
 	// ResumeRunApiV1RunsRunIdResumePost Resume Run
 	//
-	// Answer the waiting run's approvals and client tools; the successor run continues from them.
+	// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9128,6 +9078,21 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage (the `SummarizeUsageApiV1UsageGet` operationId).
 	SummarizeUsageApiV1UsageGet(ctx context.Context, params *SummarizeUsageApiV1UsageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsageAgentsApiV1UsageAgentsGet Usage Agents
+	//
+	// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
+	UsageAgentsApiV1UsageAgentsGet(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsageModelsApiV1UsageModelsGet Usage Models
+	//
+	// Corresponds with GET /api/v1/usage/models (the `UsageModelsApiV1UsageModelsGet` operationId).
+	UsageModelsApiV1UsageModelsGet(ctx context.Context, params *UsageModelsApiV1UsageModelsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsageOverviewApiV1UsageOverviewGet Usage Overview
+	//
+	// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
+	UsageOverviewApiV1UsageOverviewGet(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetProfileApiV1UsersMeGet Get Profile
 	//
@@ -12391,7 +12356,7 @@ func (c *Client) RunLineageApiV1RunsRunIdLineageGet(ctx context.Context, runId s
 
 // ResumeRunApiV1RunsRunIdResumePostWithBody Resume Run
 //
-// Answer the waiting run's approvals and client tools; the successor run continues from them.
+// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 //
 // Takes any type of body and a specified content type.
 //
@@ -12410,7 +12375,7 @@ func (c *Client) ResumeRunApiV1RunsRunIdResumePostWithBody(ctx context.Context, 
 
 // ResumeRunApiV1RunsRunIdResumePost Resume Run
 //
-// Answer the waiting run's approvals and client tools; the successor run continues from them.
+// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -13543,6 +13508,51 @@ func (c *Client) CreateUploadApiV1UploadsPostWithBody(ctx context.Context, param
 // Corresponds with GET /api/v1/usage (the `SummarizeUsageApiV1UsageGet` operationId).
 func (c *Client) SummarizeUsageApiV1UsageGet(ctx context.Context, params *SummarizeUsageApiV1UsageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewSummarizeUsageApiV1UsageGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsageAgentsApiV1UsageAgentsGet Usage Agents
+//
+// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
+func (c *Client) UsageAgentsApiV1UsageAgentsGet(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsageAgentsApiV1UsageAgentsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsageModelsApiV1UsageModelsGet Usage Models
+//
+// Corresponds with GET /api/v1/usage/models (the `UsageModelsApiV1UsageModelsGet` operationId).
+func (c *Client) UsageModelsApiV1UsageModelsGet(ctx context.Context, params *UsageModelsApiV1UsageModelsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsageModelsApiV1UsageModelsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsageOverviewApiV1UsageOverviewGet Usage Overview
+//
+// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
+func (c *Client) UsageOverviewApiV1UsageOverviewGet(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsageOverviewApiV1UsageOverviewGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -26096,6 +26106,285 @@ func NewSummarizeUsageApiV1UsageGetRequest(server string, params *SummarizeUsage
 	return req, nil
 }
 
+// NewUsageAgentsApiV1UsageAgentsGetRequest constructs an http.Request for the UsageAgentsApiV1UsageAgentsGet method
+func NewUsageAgentsApiV1UsageAgentsGetRequest(server string, params *UsageAgentsApiV1UsageAgentsGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/agents")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start", params.Start, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end", params.End, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUsageModelsApiV1UsageModelsGetRequest constructs an http.Request for the UsageModelsApiV1UsageModelsGet method
+func NewUsageModelsApiV1UsageModelsGetRequest(server string, params *UsageModelsApiV1UsageModelsGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/models")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start", params.Start, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end", params.End, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUsageOverviewApiV1UsageOverviewGetRequest constructs an http.Request for the UsageOverviewApiV1UsageOverviewGet method
+func NewUsageOverviewApiV1UsageOverviewGetRequest(server string, params *UsageOverviewApiV1UsageOverviewGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/overview")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start", params.Start, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end", params.End, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.Timezone != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "timezone", *params.Timezone, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetProfileApiV1UsersMeGetRequest constructs an http.Request for the GetProfileApiV1UsersMeGet method
 func NewGetProfileApiV1UsersMeGetRequest(server string) (*http.Request, error) {
 	var err error
@@ -29864,7 +30153,7 @@ type ClientWithResponsesInterface interface {
 
 	// ResumeRunApiV1RunsRunIdResumePostWithBodyWithResponse Resume Run
 	//
-	// Answer the waiting run's approvals and client tools; the successor run continues from them.
+	// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -29873,7 +30162,7 @@ type ClientWithResponsesInterface interface {
 
 	// ResumeRunApiV1RunsRunIdResumePostWithResponse Resume Run
 	//
-	// Answer the waiting run's approvals and client tools; the successor run continues from them.
+	// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -30403,6 +30692,27 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage (the `SummarizeUsageApiV1UsageGet` operationId).
 	SummarizeUsageApiV1UsageGetWithResponse(ctx context.Context, params *SummarizeUsageApiV1UsageGetParams, reqEditors ...RequestEditorFn) (*SummarizeUsageApiV1UsageGetResponse, error)
+
+	// UsageAgentsApiV1UsageAgentsGetWithResponse Usage Agents
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
+	UsageAgentsApiV1UsageAgentsGetWithResponse(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*UsageAgentsApiV1UsageAgentsGetResponse, error)
+
+	// UsageModelsApiV1UsageModelsGetWithResponse Usage Models
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/models (the `UsageModelsApiV1UsageModelsGet` operationId).
+	UsageModelsApiV1UsageModelsGetWithResponse(ctx context.Context, params *UsageModelsApiV1UsageModelsGetParams, reqEditors ...RequestEditorFn) (*UsageModelsApiV1UsageModelsGetResponse, error)
+
+	// UsageOverviewApiV1UsageOverviewGetWithResponse Usage Overview
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
+	UsageOverviewApiV1UsageOverviewGetWithResponse(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*UsageOverviewApiV1UsageOverviewGetResponse, error)
 
 	// GetProfileApiV1UsersMeGetWithResponse Get Profile
 	//
@@ -43095,6 +43405,213 @@ func (r SummarizeUsageApiV1UsageGetResponse) ContentType() string {
 	return ""
 }
 
+// UsageAgentsApiV1UsageAgentsGetResponse400Headers the declared response headers of an HTTP 400 response for UsageAgentsApiV1UsageAgentsGet
+type UsageAgentsApiV1UsageAgentsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// UsageAgentsApiV1UsageAgentsGetResponseDefaultHeaders the declared response headers of an HTTP default response for UsageAgentsApiV1UsageAgentsGet
+type UsageAgentsApiV1UsageAgentsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UsageAgentsApiV1UsageAgentsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AgentUsagePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UsageAgentsApiV1UsageAgentsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UsageAgentsApiV1UsageAgentsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UsageAgentsApiV1UsageAgentsGetResponse) GetJSON200() *AgentUsagePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UsageAgentsApiV1UsageAgentsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsageAgentsApiV1UsageAgentsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsageAgentsApiV1UsageAgentsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsageAgentsApiV1UsageAgentsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsageAgentsApiV1UsageAgentsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsageAgentsApiV1UsageAgentsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UsageModelsApiV1UsageModelsGetResponse400Headers the declared response headers of an HTTP 400 response for UsageModelsApiV1UsageModelsGet
+type UsageModelsApiV1UsageModelsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// UsageModelsApiV1UsageModelsGetResponseDefaultHeaders the declared response headers of an HTTP default response for UsageModelsApiV1UsageModelsGet
+type UsageModelsApiV1UsageModelsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UsageModelsApiV1UsageModelsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ModelUsagePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UsageModelsApiV1UsageModelsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UsageModelsApiV1UsageModelsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UsageModelsApiV1UsageModelsGetResponse) GetJSON200() *ModelUsagePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UsageModelsApiV1UsageModelsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsageModelsApiV1UsageModelsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsageModelsApiV1UsageModelsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsageModelsApiV1UsageModelsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsageModelsApiV1UsageModelsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsageModelsApiV1UsageModelsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UsageOverviewApiV1UsageOverviewGetResponse400Headers the declared response headers of an HTTP 400 response for UsageOverviewApiV1UsageOverviewGet
+type UsageOverviewApiV1UsageOverviewGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// UsageOverviewApiV1UsageOverviewGetResponseDefaultHeaders the declared response headers of an HTTP default response for UsageOverviewApiV1UsageOverviewGet
+type UsageOverviewApiV1UsageOverviewGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UsageOverviewApiV1UsageOverviewGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *UsageOverview
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UsageOverviewApiV1UsageOverviewGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UsageOverviewApiV1UsageOverviewGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UsageOverviewApiV1UsageOverviewGetResponse) GetJSON200() *UsageOverview {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UsageOverviewApiV1UsageOverviewGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsageOverviewApiV1UsageOverviewGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsageOverviewApiV1UsageOverviewGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsageOverviewApiV1UsageOverviewGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsageOverviewApiV1UsageOverviewGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsageOverviewApiV1UsageOverviewGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetProfileApiV1UsersMeGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetProfileApiV1UsersMeGet
 type GetProfileApiV1UsersMeGetResponseDefaultHeaders struct {
 	XRequestId *string
@@ -48448,7 +48965,7 @@ func (c *ClientWithResponses) RunLineageApiV1RunsRunIdLineageGetWithResponse(ctx
 
 // ResumeRunApiV1RunsRunIdResumePostWithBodyWithResponse Resume Run
 //
-// Answer the waiting run's approvals and client tools; the successor run continues from them.
+// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -48463,7 +48980,7 @@ func (c *ClientWithResponses) ResumeRunApiV1RunsRunIdResumePostWithBodyWithRespo
 
 // ResumeRunApiV1RunsRunIdResumePostWithResponse Resume Run
 //
-// Answer the waiting run's approvals and client tools; the successor run continues from them.
+// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -49400,6 +49917,45 @@ func (c *ClientWithResponses) SummarizeUsageApiV1UsageGetWithResponse(ctx contex
 		return nil, err
 	}
 	return ParseSummarizeUsageApiV1UsageGetResponse(rsp)
+}
+
+// UsageAgentsApiV1UsageAgentsGetWithResponse Usage Agents
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
+func (c *ClientWithResponses) UsageAgentsApiV1UsageAgentsGetWithResponse(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*UsageAgentsApiV1UsageAgentsGetResponse, error) {
+	rsp, err := c.UsageAgentsApiV1UsageAgentsGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsageAgentsApiV1UsageAgentsGetResponse(rsp)
+}
+
+// UsageModelsApiV1UsageModelsGetWithResponse Usage Models
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/models (the `UsageModelsApiV1UsageModelsGet` operationId).
+func (c *ClientWithResponses) UsageModelsApiV1UsageModelsGetWithResponse(ctx context.Context, params *UsageModelsApiV1UsageModelsGetParams, reqEditors ...RequestEditorFn) (*UsageModelsApiV1UsageModelsGetResponse, error) {
+	rsp, err := c.UsageModelsApiV1UsageModelsGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsageModelsApiV1UsageModelsGetResponse(rsp)
+}
+
+// UsageOverviewApiV1UsageOverviewGetWithResponse Usage Overview
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
+func (c *ClientWithResponses) UsageOverviewApiV1UsageOverviewGetWithResponse(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*UsageOverviewApiV1UsageOverviewGetResponse, error) {
+	rsp, err := c.UsageOverviewApiV1UsageOverviewGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsageOverviewApiV1UsageOverviewGetResponse(rsp)
 }
 
 // GetProfileApiV1UsersMeGetWithResponse Get Profile
@@ -61371,6 +61927,195 @@ func ParseSummarizeUsageApiV1UsageGetResponse(rsp *http.Response) (*SummarizeUsa
 		response.Headers400 = &headers
 	case true:
 		var headers SummarizeUsageApiV1UsageGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUsageAgentsApiV1UsageAgentsGetResponse parses an HTTP response from a UsageAgentsApiV1UsageAgentsGetWithResponse call
+func ParseUsageAgentsApiV1UsageAgentsGetResponse(rsp *http.Response) (*UsageAgentsApiV1UsageAgentsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsageAgentsApiV1UsageAgentsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AgentUsagePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UsageAgentsApiV1UsageAgentsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UsageAgentsApiV1UsageAgentsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUsageModelsApiV1UsageModelsGetResponse parses an HTTP response from a UsageModelsApiV1UsageModelsGetWithResponse call
+func ParseUsageModelsApiV1UsageModelsGetResponse(rsp *http.Response) (*UsageModelsApiV1UsageModelsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsageModelsApiV1UsageModelsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ModelUsagePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UsageModelsApiV1UsageModelsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UsageModelsApiV1UsageModelsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUsageOverviewApiV1UsageOverviewGetResponse parses an HTTP response from a UsageOverviewApiV1UsageOverviewGetWithResponse call
+func ParseUsageOverviewApiV1UsageOverviewGetResponse(rsp *http.Response) (*UsageOverviewApiV1UsageOverviewGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsageOverviewApiV1UsageOverviewGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest UsageOverview
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UsageOverviewApiV1UsageOverviewGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UsageOverviewApiV1UsageOverviewGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
