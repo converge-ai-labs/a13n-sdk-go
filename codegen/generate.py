@@ -53,16 +53,9 @@ def install(output: Path, target: Path) -> None:
 
 
 def main() -> None:
-    from resources import generate_resources
-
     document = json.loads((ROOT / "contract/openapi.json").read_text())
     with tempfile.TemporaryDirectory(prefix="a13n-codegen-") as temp:
-        output = generate(document, Path(temp))
-        generate_resources(document, (output / "client.gen.go").read_text(), Path(temp))
-        run("gofmt", "-w", str(Path(temp) / "resources.gen.go"), str(Path(temp) / "resources_coverage.gen_test.go"))
-        install(output, TARGET)
-        for name in ("resources.gen.go", "resources_coverage.gen_test.go"):
-            shutil.copyfile(Path(temp) / name, ROOT / name)
+        install(generate(document, Path(temp)), TARGET)
 
 
 if __name__ == "__main__":

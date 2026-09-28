@@ -54,6 +54,7 @@ type Client struct {
 	once          sync.Once
 	tokenMu       sync.RWMutex
 	csrf          func() string
+	workspaceID   string
 	responseLimit int64
 }
 
@@ -63,10 +64,22 @@ type ClientOption func(*Client) error
 // The callback may be called concurrently; it is not called in bearer mode.
 func WithSession(jar http.CookieJar, csrf func() string) ClientOption {
 	return func(c *Client) error {
-		if jar == nil || c.token.value != "" {
+		if jar == nil || csrf == nil || c.token.value != "" {
 			return errors.New("session authentication requires a cookie jar and no bearer token")
 		}
 		c.http.Jar, c.csrf = jar, csrf
+		return nil
+	}
+}
+
+// WithSessionWorkspace selects business scope for semantic methods with a
+// login session. Generated operations keep their explicit X-Workspace-ID params.
+func WithSessionWorkspace(id string) ClientOption {
+	return func(c *Client) error {
+		if id == "" || c.token.value != "" {
+			return errors.New("session workspace needs an ID and cookie authentication")
+		}
+		c.workspaceID = id
 		return nil
 	}
 }
@@ -102,6 +115,10 @@ func NewClient(baseURL string, token Secret, transport http.RoundTripper, option
 			return nil, err
 		}
 	}
+	if c.workspaceID != "" && c.csrf == nil {
+		_ = c.Close()
+		return nil, errors.New("session workspace requires WithSession")
+	}
 	c.api, err = generated.NewClientWithResponses(c.baseURL, generated.WithHTTPClient(apiTransport{c}))
 	if err != nil {
 		_ = c.Close()
@@ -121,5 +138,14 @@ func (c *Client) Close() error {
 	return nil
 }
 
-// Resources is the complete generated ordinary resource surface. Binding is local.
-func (c *Client) Resources() ServiceResources { return ServiceResources{binding{client: c}} }
+// Agent binds an Agent ID locally; authorization belongs to Service.
+func (c *Client) Agent(id string) Agent { return Agent{c, id} }
+
+// Thread binds a Thread ID locally. Threads do not own one Agent.
+func (c *Client) Thread(id string) Thread { return Thread{c, id} }
+
+// Run binds the exact Run ID, never a Thread's latest Run.
+func (c *Client) Run(id string) Run { return Run{c, id} }
+
+// Entry binds a Thread inbox Entry locally.
+func (c *Client) Entry(threadID, id string) Entry { return Entry{c, threadID, id} }

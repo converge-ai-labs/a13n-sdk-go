@@ -1,129 +1,150 @@
-# a13n for Go
+# a13n SDK for Go
 
-A typed Go SDK for a13n Service: a complete generated resource API, full HTTP access, and thin submission, waiting and Thread SSE helpers. Go 1.25 or newer is required.
+Run an existing a13n Service Agent from a Go application, read its result, and continue the conversation. Go 1.25+; execution and authorization stay in the Service.
 
-## Documentation and installation
+## Before you start
 
-The [application guide](docs/README.md) covers installation, authentication, resource discovery, queue/recovery handling, Memory and errors. The examples below are a quick start; [external-package examples](example_test.go) provide compiled workflows. Documentation lives as Markdown in this repository, not in the parent Service repository.
+1. [Set up a Service](https://github.com/converge-ai-labs/agent-foundation/blob/main/docs/a13n-service/get-started.md) and create an Agent in Console under **Agents → Create agent**. Copy its ID (`ap_…`). The Agent needs a configured model.
+2. In the Agent's workspace, create a key under **Workspace settings → My API keys**. Copy the secret when it is shown; it is not displayed again. The key must have permission to run that Agent. For an application identity, an administrator can instead create a service account and issue its key under **Workspace settings → Service accounts**.
+3. Use the Service origin as `A13N_SERVICE_URL` (for example `http://127.0.0.1:8080`), **without** `/api/v1`. Keep the API key out of source control and logs.
 
-Use `go get github.com/converge-ai-labs/a13n-sdk-go@<version>` with an available release tag or a reviewed commit. Registry access and release availability are separate from a successful local build.
+This SDK is in pre-public development: do not assume a Go module release is available. Use a local SDK checkout for the example below, or replace the local `replace` directive with `go get github.com/converge-ai-labs/a13n-sdk-go@<published-version>` **after** a version has been published.
 
-## Start a Thread
+## Run your first Agent
+
+Create a separate application directory and `main.go`:
+
+```bash
+mkdir agent-example && cd agent-example
+go mod init example.com/agent-example
+```
 
 ```go
+package main
+
 import (
     "context"
+    "crypto/rand"
+    "encoding/json"
+    "fmt"
+    "log"
+    "os"
     "time"
 
     a13n "github.com/converge-ai-labs/a13n-sdk-go"
     "github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
-client, err := a13n.NewClient(baseURL, a13n.NewSecret(token), nil)
-if err != nil { return err }
-defer client.Close()
-
-ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-defer cancel()
-workspace := client.Resources().Workspaces().Ref("my-workspace")
-submitted, err := workspace.Threads().Create(ctx, generated.NewThread{
-    AgentId: "agent_example",
-    Payload: a13n.TextPayload("Explain this project"),
-}, a13n.ThreadsCreateOptions{IdempotencyKey: requestKey})
-if err != nil { return err }
-if submitted.Run != nil {
-    run, err := submitted.Run.Wait(ctx, 0) // default polling interval
-    if err != nil { return err }
-    _ = run.Value.Status // waiting/failed/cancelled are not successful completion
-}
-// A queued receipt has no Run. Observe submitted.Entry explicitly instead.
-```
-
-Binding a reference is local. The server authorizes requests and resolves IDs or keys. Full generated request models, including rich payloads, mounts and run options, are accepted directly. Submission references use the canonical workspace ID returned by Service. The receipt preserves status, headers and the nullable Run. `Run.Resume` instead returns the successor Run: bind `workspace.Runs().Ref(resumed.Value.Id)` before waiting. Waiting on the original reference never follows that successor.
-
-[Compiled external-package examples](example_test.go) cover submission/readback, queued entries, resume, CAS/null updates, typed events and binary ownership. They are type-checked by `go test`; Service examples require your own explicit resources to execute.
-
-## Read, update and page
-
-```go
-agent := workspace.Agents().Ref("agent_example")
-current, err := agent.Get(ctx)
-if err != nil { return err }
-// import "github.com/oapi-codegen/nullable"
-updated, err := agent.Update(ctx, generated.AgentUpdate{
-    Name: nullable.NewNullableWithValue("Support"),
-    Description: nullable.NewNullNullable[string](), // JSON null; Service defines its meaning
-}, a13n.AgentUpdateOptions{
-    IfMatch: current.ETag(),
-})
-if err != nil { return err }
-_ = updated.RequestID()
-
-for page, err := range workspace.Threads().Pages(ctx, a13n.ThreadsListOptions{}) {
-    if err != nil { return err }
-    for _, thread := range page.Value.Items { _ = thread.Id }
-}
-```
-
-`List` makes one request; `Pages` is lazy and retains each response's metadata. Breaking iteration stops further requests. Only cursor-bearing collections have `Pages`. Run Items uses `run.Items().Get(ctx)`.
-
-Ordinary selectors and filters use `a13n.ProviderKind`, `a13n.MemberKind` and `a13n.SkillSource` with readable constants such as `ProviderKindMemory` and `MemberKindServiceAccount`. These are generated aliases, not additional wire types. Other models live in `generated`. Nullable fields use `nullable.Nullable[T]` from `github.com/oapi-codegen/nullable`: the zero value omits a field, `NewNullNullable[T]()` sends JSON null, and `NewNullableWithValue(value)` supplies it. Union helpers expose typed `As...` and `From...` branches. These are wire models, not a promise of complete local JSON Schema validation.
-
-## Observe a Thread
-
-```go
-stream, err := submitted.Thread.Events(ctx, a13n.StreamOptions{MaxReconnects: 3})
-if err != nil { return err }
-defer stream.Close()
-for {
-    frame, err := stream.Next()
-    if err == io.EOF { break } // import "io"
-    if err != nil { return err }
-    switch event := frame.(type) {
-    case a13n.DeltaFrame:
-        _ = event.Event // apply provisional content before calling Next again
-    case a13n.GapFrame:
-        _, err = workspace.Runs().Ref(event.RunID).Items().Get(ctx)
-    case a13n.ResetFrame:
-        _, err = workspace.Runs().Ref(event.RunID).Items().Get(ctx)
-    case a13n.ChangedFrame:
-        _, err = submitted.Thread.Get(ctx)
+func main() {
+    if err := run(); err != nil {
+        log.Fatal(err)
     }
-    if err != nil { return err }
+}
+
+func run() error {
+    baseURL, apiKey, agentID := os.Getenv("A13N_SERVICE_URL"), os.Getenv("A13N_API_TOKEN"), os.Getenv("A13N_AGENT_ID")
+    if baseURL == "" || apiKey == "" || agentID == "" {
+        return fmt.Errorf("set A13N_SERVICE_URL, A13N_API_TOKEN and A13N_AGENT_ID")
+    }
+
+    client, err := a13n.NewClient(baseURL, a13n.NewSecret(apiKey), nil)
+    if err != nil {
+        return err
+    }
+    defer client.Close()
+
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+    defer cancel()
+    interaction, err := client.Agent(agentID).Start(ctx, "Explain this project in two sentences.",
+        a13n.StartOptions{RequestKey: rand.Text()})
+    if err != nil {
+        return err
+    }
+    defer interaction.Close()
+
+    outcome, err := interaction.Result(ctx) // no stream loop is required
+    if err != nil {
+        return err
+    }
+    if outcome.Status() != generated.RunStatusCompleted {
+        return fmt.Errorf("run %s ended with status %s", outcome.Run.ID, outcome.Status())
+    }
+    messages, err := outcome.Run.Items(ctx)
+    if err != nil {
+        return err
+    }
+    encoded, err := json.MarshalIndent(messages.Value, "", "  ")
+    if err != nil {
+        return err
+    }
+    fmt.Printf("Thread: %s\nOutput: %s\n", interaction.Thread.ID, encoded)
+    return nil
 }
 ```
 
-`thread.Stream().Get(...)` returns raw SSE bytes; prefer `thread.Events(...)` for typed frames and cursor recovery. Readback results must be applied by the application. `Next` acknowledges the previously returned data frame, not the one it is about to return. Persist application checkpoints explicitly. Reconnection uses only the applied cursor; closing does not acknowledge pending data or stop a server Run. The context passed to `Events` bounds the whole stream; `Close` can cancel a pending read from another goroutine.
-
-## Authentication and transfer
-
-Use a bearer API key for its authorized workspace scope. Public endpoints work with `a13n.Secret{}`. For login-session operations, pass `a13n.WithSession(jar, csrfCallback)` with no bearer token. The cookie jar and concurrency-safe callback supply current session state; the SDK does not infer tenant authority from credentials.
-
-Uploads use `UploadFile{Name, ContentType, Reader}`. Image `Replace` takes an `io.Reader` and an explicit allowed content type in its options. Input readers stay caller-owned. Download `BinaryResult` bodies are unbuffered: always close the result. Resource JSON is bounded to 16 MiB by default (`WithResponseLimit` changes it); binary success bodies have no such buffering limit.
-
-`Result[T]` exposes `Value`, `StatusCode`, `Header`, `ETag()` and `RequestID()`. Use `errors.As` to inspect `*a13n.ApiError`; use `errors.Is` for context deadlines/cancellation, `ErrClosed`, `ErrTransport` and `ErrProtocol`. An uncertain mutation is not automatically retried, even when it carries an idempotency key.
-
-`errors.As` also exposes `*a13n.TransportError` (request/body stage and DNS/TLS/timeout/network category) and `*a13n.ProtocolError` (JSON/content-type/size reason, HTTP status and request ID). `errors.Is` still matches the respective sentinel. Raw transport causes are not retained because they can contain URLs or credentials. Protocol diagnostic strings omit bodies and request IDs; inspect `RequestID` explicitly when reconciling with Service. Neither category nor cancellation proves rollback.
-
-## Advanced protocol access
-
-`api, err := client.API()` exposes every generated HTTP operation on the same transport and lifetime. Raw methods return caller-owned `*http.Response` bodies; `WithResponse` methods buffer and expose status-specific bodies and headers. They retain the generated parser's behavior rather than ordinary resource error mapping and JSON limits.
-
-The ordinary resource API is generated, not a second handwritten route catalogue. `codegen/generate.py` uses pinned oapi-codegen 2.8.0 and `codegen/resources.py`; both consume local contract files. `contract/source.json` identifies the Service revision; module versions are independent of that pin.
-
-## Development and releases
+Point Go at your local SDK checkout, fetch its dependencies, and run the program. Enter the API key at the prompt rather than putting it in a command or file:
 
 ```bash
-make install
-make generate
-make check-all # formatting, vet, tooling types, race tests and build
+SDK_DIR=/absolute/path/to/agent-foundation/sdk/go # change to your checkout
+go mod edit -require=github.com/converge-ai-labs/a13n-sdk-go@v0.0.0
+go mod edit -replace=github.com/converge-ai-labs/a13n-sdk-go="$SDK_DIR"
+go mod tidy
+export A13N_SERVICE_URL=http://127.0.0.1:8080 A13N_AGENT_ID=ap_your_agent_id
+read -r -s -p 'Service API key: ' A13N_API_TOKEN; printf '\n'; export A13N_API_TOKEN
+go run .
 ```
 
-`make check-all` also installs a locally assembled module ZIP through a temporary file-based Go proxy into an isolated consumer, without a `replace` directive. This verifies the package boundary without publishing a version.
+This example prints saved messages and tool activity as JSON. `outcome.Output()` is an optional Run output value; a completed conversation can have messages without that value.
 
-For an explicitly provisioned disposable HTTPS Service, set `A13N_SERVICE_URL`, `A13N_API_TOKEN`, `A13N_WORKSPACE`, `A13N_AGENT`, `A13N_CLIENT_TOOL_AGENT`, `A13N_ORGANIZATION`, `A13N_MEMORY_PROVIDER` and `A13N_CA_BUNDLE`, then run `uv run --locked python scripts/accept-installed.py`. It exercises the installed module's submission/replay, streaming recovery, inbox/control, binary transfer, CAS and memory journeys with certificate verification enabled. It creates resources; never point it at production. The caller owns provisioning and fixture cleanup. Scripted model and memory-provider fixtures do not establish external cloud-provider compatibility.
+This example needs a reachable Service and Agent; `go run` does not start one. `rand.Text()` gives each new submission its own request key. For a *retry of the same logical submission*, reuse its original key and reconcile the response rather than generating a new one.
 
-The module is unpublished until a separately authorized release. Release workflows create canonical `v<version>` module tags from `release/a13n/go/<version>` tags. No release is implied by local tests or a contract update. See [SDK contract](spec/README.md), [contract provenance](contract/README.md) and [Contributing](CONTRIBUTING.md).
+## Continue or stream
+
+Save the printed Thread ID. A later request can continue it with an explicitly chosen Agent:
+
+```go
+followUp, err := client.Agent(agentID).Send(ctx, threadID, "What are the trade-offs?",
+    a13n.SendOptions{RequestKey: rand.Text()})
+if err != nil { return err }
+defer followUp.Close()
+followUpOutcome, err := followUp.Result(ctx)
+if err != nil { return err }
+if followUpOutcome.Status() != generated.RunStatusCompleted {
+    return fmt.Errorf("run %s ended %s", followUpOutcome.Run.ID, followUpOutcome.Status())
+}
+messages, err := followUpOutcome.Run.Items(ctx)
+if err != nil { return err }
+fmt.Println(messages.Value.Items)
+```
+
+To show **provisional** frames as they arrive, call `Next()` *before* `Result(ctx)` on the same interaction:
+
+```go
+for {
+    frame, err := interaction.Next()
+    if errors.Is(err, io.EOF) { break }
+    if err != nil { return err }
+    if delta, ok := frame.(a13n.DeltaFrame); ok { fmt.Println(delta.Event) }
+}
+outcome, err := interaction.Result(ctx) // use the final result even if no frames arrived
+if err != nil { return err }
+if outcome.Status() != generated.RunStatusCompleted {
+    return fmt.Errorf("run %s ended %s", outcome.Run.ID, outcome.Status())
+}
+items, err := outcome.Run.Items(ctx)
+if err != nil { return err }
+fmt.Println(items.Value.Items)
+```
+
+Add `errors` and `io` to your imports for that loop. A Run can finish before the stream attaches, so zero frames is valid. Always `Close()` the interaction, even when you stop reading early; that does not interrupt the remote Run. Reuse a fresh context for a later `Send` if the first request's deadline has passed.
+
+## Go further
+
+- [Application guide](docs/README.md): task-based chapters for [conversations](docs/agents-and-conversations.md), [streaming/readback](docs/streaming-and-readback.md), [waiting and tools](docs/waiting-and-tools.md), [files and Memory](docs/files-and-memory.md), [authentication](docs/authentication.md), [generated API](docs/generated-api.md), and [recovery](docs/errors-and-recovery.md).
+- [Compiled examples](example_test.go) and [SDK contract](spec/README.md): exact types and lifecycle guarantees.
+- [Pinned Service API](contract/openapi.json) and [provenance](contract/README.md): what this checkout was generated from. `client.API()` exposes its complete generated low-level API; [contribution guide](CONTRIBUTING.md) covers generation and validation.
+
+For result-only applications, `Start`/`Send` plus `Result` is enough. A queued submission might wait before it runs; a waiting Run needs an explicit authorized answer. A timeout or broken connection does **not** prove the remote submission failed, and the SDK does not automatically retry it.
 
 ## License
 
