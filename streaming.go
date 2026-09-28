@@ -16,6 +16,8 @@ import (
 	"sync/atomic"
 	"time"
 	"unicode/utf8"
+
+	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
 var streamCursor = regexp.MustCompile(`^[0-9]{1,20}-[0-9]{1,20}$`)
@@ -73,7 +75,7 @@ type StreamOptions struct {
 // ThreadStream has one Next reader; Close may run concurrently. A subsequent
 // Next acknowledges the previously returned data frame. Closing does not ack it.
 type ThreadStream struct {
-	thread   ThreadResource
+	thread   Thread
 	ctx      context.Context
 	cancel   context.CancelFunc
 	options  StreamOptions
@@ -88,12 +90,10 @@ type ThreadStream struct {
 	retries  int
 }
 
-// Events observes typed Thread frames under ctx, which bounds the entire stream.
-// Reconnection is opt-in and uses applied cursors. Apply each frame before the
-// next Next call acknowledges it. Close releases observation without stopping
-// the durable Run. Stream().Get is the raw SSE alternative, without this decoder.
-func (r ThreadResource) Events(ctx context.Context, options StreamOptions) (*ThreadStream, error) {
-	if err := r.validate(); err != nil {
+// events is the internal typed parser used by finite interactions. The
+// generated API retains direct access to the persistent Thread-wide SSE route.
+func (r Thread) events(ctx context.Context, options StreamOptions) (*ThreadStream, error) {
+	if err := validateClient(r.client, r.ID); err != nil {
 		return nil, err
 	}
 	if options.After != "" && !streamCursor.MatchString(options.After) {
@@ -228,11 +228,12 @@ func (s *ThreadStream) attach() error {
 	if s.ctx.Err() != nil {
 		return s.ctx.Err()
 	}
-	options := ThreadStreamGetOptions{}
+	options := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{XWorkspaceID: s.thread.client.semanticWorkspace()}
 	if cursor := s.AppliedCursor(); cursor != "" {
 		options.LastEventID = &cursor
 	}
-	response, err := s.thread.Stream().Get(s.ctx, options)
+	raw, err := s.thread.client.api.ThreadStreamApiV1ThreadsThreadIdStreamGet(s.ctx, s.thread.ID, &options)
+	response, err := binaryResult(s.thread.client, raw, err, 200)
 	if err != nil {
 		return err
 	}

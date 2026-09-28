@@ -72,7 +72,7 @@ func TestStreamReconnectUsesOnlyAppliedCursor(t *testing.T) {
 		response.Header.Set("Content-Type", "text/event-stream")
 		return response
 	})
-	stream, err := client.Resources().Workspaces().Ref("ws").Threads().Ref("thr").Events(context.Background(), StreamOptions{MaxReconnects: 1, ReconnectDelay: time.Millisecond})
+	stream, err := client.Thread("thr").events(context.Background(), StreamOptions{MaxReconnects: 1, ReconnectDelay: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -104,7 +104,7 @@ func TestStreamCloseDoesNotAcknowledgeOrInterrupt(t *testing.T) {
 		response.Header.Set("Content-Type", "text/event-stream")
 		return response
 	})
-	stream, err := client.Resources().Workspaces().Ref("ws").Threads().Ref("thr").Events(context.Background(), StreamOptions{})
+	stream, err := client.Thread("thr").events(context.Background(), StreamOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -125,7 +125,7 @@ func TestStreamAuthorizationIsNotRetried(t *testing.T) {
 		calls++
 		return coverageResponse(403, `{"error":{"code":"forbidden","message":"denied"}}`)
 	})
-	_, err := client.Resources().Workspaces().Ref("ws").Threads().Ref("thr").Events(context.Background(), StreamOptions{MaxReconnects: 3, ReconnectDelay: time.Millisecond})
+	_, err := client.Thread("thr").events(context.Background(), StreamOptions{MaxReconnects: 3, ReconnectDelay: time.Millisecond})
 	var api *ApiError
 	if !errors.As(err, &api) || api.Status != 403 || calls != 1 {
 		t.Fatalf("authorization: %v %d", err, calls)
@@ -146,7 +146,7 @@ func TestStreamCloseCancelsPendingRead(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer client.Close()
-	stream, err := client.Resources().Workspaces().Ref("ws").Threads().Ref("thr").Events(context.Background(), StreamOptions{})
+	stream, err := client.Thread("thr").events(context.Background(), StreamOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -176,7 +176,7 @@ func TestStreamLifetimeStopsBufferedFrames(t *testing.T) {
 			})
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
-			stream, err := client.Resources().Workspaces().Ref("ws").Threads().Ref("thr").Events(ctx, StreamOptions{})
+			stream, err := client.Thread("thr").events(ctx, StreamOptions{})
 			if err != nil {
 				t.Fatal(err)
 			}

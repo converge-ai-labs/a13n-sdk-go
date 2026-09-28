@@ -130,8 +130,6 @@ diff -r "$sdk/contract" "$work/current"
 export TEST_GENERATED=generated/client.gen.go TEST_ADDED=generated/secrets.gen.go TEST_REMOVED=generated/obsolete.go
 mkdir -p "$sdk/$(dirname "$TEST_GENERATED")" "$sdk/$(dirname "$TEST_ADDED")"
 cp "$sdk/contract/openapi.json" "$sdk/$TEST_GENERATED"
-cp "$sdk/contract/openapi.json" "$sdk/resources.gen.go"
-cp "$sdk/contract/openapi.json" "$sdk/resources_coverage.gen_test.go"
 if [[ -n "$TEST_REMOVED" ]]; then
   echo obsolete > "$sdk/$TEST_REMOVED"
 else
@@ -186,8 +184,6 @@ printf 'not a generated file\n' > handwritten.txt
 printf 'untracked build output\n' > unexpected.txt
 if [[ ${TEST_GENERATE_FAIL:-false} != false ]]; then exit 1; fi
 cp contract/openapi.json "$TEST_GENERATED"
-cp contract/openapi.json resources.gen.go
-cp contract/openapi.json resources_coverage.gen_test.go
 if [[ $(jq '.paths | length' contract/openapi.json) != 0 ]]; then
   cp contract/openapi.json "$TEST_ADDED"
   if [[ -n "$TEST_REMOVED" ]]; then rm -f "$TEST_REMOVED"; fi
@@ -319,7 +315,7 @@ reject propose "$http"
 http_head=$(head)
 [[ "$http_head" != "$first_head" ]]
 git -C "$sdk" merge-base --is-ancestor "$first_head" "$http_head"
-for output in "$TEST_GENERATED" "$TEST_ADDED" resources.gen.go resources_coverage.gen_test.go; do
+for output in "$TEST_GENERATED" "$TEST_ADDED"; do
   git -C "$sdk" show "HEAD:$output" > "$work/actual"
   cmp "$work/actual" "$work/http.json"
 done

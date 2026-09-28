@@ -14,6 +14,11 @@ import (
 	"testing"
 )
 
+func healthCheck(client *Client) (Result[map[string]any], error) {
+	response, err := client.api.HealthHealthzGet(context.Background())
+	return jsonResult[map[string]any](client, response, err, 200)
+}
+
 func TestTransportDiagnostics(t *testing.T) {
 	secret := "private-credential-in-error"
 	cases := []struct {
@@ -38,7 +43,7 @@ func TestTransportDiagnostics(t *testing.T) {
 				t.Fatal(err)
 			}
 			defer client.Close()
-			_, err = client.Resources().Healthz().Get(context.Background())
+			_, err = healthCheck(client)
 			var diagnostic *TransportError
 			if !errors.Is(err, ErrTransport) || !errors.As(err, &diagnostic) || diagnostic.Kind != tc.kind || diagnostic.Stage != "request" {
 				t.Fatalf("classification: %v", err)
@@ -67,7 +72,7 @@ func TestBodyDiagnosticsAndErrorIdentity(t *testing.T) {
 		response.Body = body
 		return response
 	})
-	_, err := client.Resources().Healthz().Get(context.Background())
+	_, err := healthCheck(client)
 	var diagnostic *TransportError
 	if !errors.As(err, &diagnostic) || diagnostic.Stage != "body" || diagnostic.Kind != "unexpected_eof" || !body.closed {
 		t.Fatalf("body error: %v, closed=%v", err, body.closed)
@@ -115,7 +120,7 @@ func TestProtocolDiagnostics(t *testing.T) {
 				return response
 			})
 			client.responseLimit = 64
-			_, err := client.Resources().Healthz().Get(context.Background())
+			_, err := healthCheck(client)
 			var diagnostic *ProtocolError
 			if !errors.Is(err, ErrProtocol) || !errors.As(err, &diagnostic) || diagnostic.Kind != tc.kind || diagnostic.StatusCode != tc.status || diagnostic.RequestID != "private-request-id" {
 				t.Fatalf("response evidence: %v", err)

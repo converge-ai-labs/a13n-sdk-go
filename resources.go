@@ -2,17 +2,14 @@ package a13n
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
-	"iter"
 	"mime"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
 	"slices"
-	"strconv"
 	"strings"
 )
 
@@ -34,27 +31,6 @@ type BinaryResult struct {
 }
 
 func (r *BinaryResult) Close() error { return r.Body.Close() }
-
-type binding struct {
-	client *Client
-	ids    []string
-}
-
-func (r binding) selectID(id string) binding {
-	return binding{r.client, append(slices.Clone(r.ids), id)}
-}
-func (r binding) integerID(index int) int { value, _ := strconv.Atoi(r.ids[index]); return value }
-func (r binding) validate() error {
-	if r.client == nil {
-		return fmt.Errorf("resource is not bound to a client")
-	}
-	for _, id := range r.ids {
-		if id == "" || id == "." || id == ".." {
-			return fmt.Errorf("resource selectors must be nonempty and not dot segments")
-		}
-	}
-	return nil
-}
 
 func readJSON(response *http.Response, limit int64) ([]byte, error) {
 	defer response.Body.Close()
@@ -93,6 +69,14 @@ func apiFailure(response *http.Response, limit int64) error {
 	return &ApiError{Status: response.StatusCode, Code: envelope.Error.Code, Message: envelope.Error.Message,
 		Details: envelope.Error.Details, RequestID: requestID, RetryAfter: response.Header.Get("Retry-After"), Header: response.Header.Clone()}
 }
+
+// ParseJSON decodes one raw generated HTTP response with bounded buffering,
+// structured Service errors, and status/header evidence. It owns and closes
+// the response body. Generated WithResponse methods have separate parsers.
+func ParseJSON[T any](client *Client, response *http.Response, err error, success ...int) (Result[T], error) {
+	return jsonResult[T](client, response, err, success...)
+}
+
 func jsonResult[T any](client *Client, response *http.Response, err error, success ...int) (Result[T], error) {
 	var result Result[T]
 	if err != nil {
@@ -172,33 +156,4 @@ func multipartBody(file UploadFile) (string, io.Reader, error) {
 	}
 	body := io.MultiReader(bytes.NewReader(start), file.Reader, bytes.NewReader(prefix.Bytes()))
 	return writer.FormDataContentType(), body, nil
-}
-
-// paginate returns one page at a time, retaining each response's headers. A new
-// iteration restarts at the supplied cursor; it never buffers all pages.
-func paginate[O, T any](ctx context.Context, options O, getCursor func(O) *string, setCursor func(*O, string), fetch func(context.Context, O) (Result[T], error), next func(T) string) iter.Seq2[Result[T], error] {
-	return func(yield func(Result[T], error) bool) {
-		local := options
-		seen := map[string]bool{}
-		if initial := getCursor(local); initial != nil {
-			seen[*initial] = true
-		}
-		for {
-			page, err := fetch(ctx, local)
-			if err != nil {
-				yield(page, err)
-				return
-			}
-			cursor := next(page.Value)
-			if !yield(page, nil) || cursor == "" {
-				return
-			}
-			if seen[cursor] {
-				yield(Result[T]{}, fmt.Errorf("%w: repeated pagination cursor", ErrProtocol))
-				return
-			}
-			seen[cursor] = true
-			setCursor(&local, cursor)
-		}
-	}
 }

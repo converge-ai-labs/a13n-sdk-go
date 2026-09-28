@@ -12,6 +12,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
 type ownedInput struct {
@@ -51,13 +53,15 @@ func TestUploadAndImagePreserveCallerOwnership(t *testing.T) {
 		}
 		return coverageResponse(200, `{}`)
 	})
-	workspace := client.Resources().Workspaces().Ref("ws")
-	_, err := workspace.Uploads().Create(context.Background(), UploadFile{Name: "notes.txt", ContentType: "text/plain", Reader: input}, UploadsCreateOptions{IdempotencyKey: "upload"})
+	_, err := client.Upload(context.Background(), UploadFile{Name: "notes.txt", ContentType: "text/plain", Reader: input}, "upload")
 	if err != nil || input.closed {
 		t.Fatal("input closed", err)
 	}
 	image := &ownedInput{Reader: strings.NewReader("image")}
-	_, err = workspace.Icon().Replace(context.Background(), image, IconReplaceOptions{IfMatch: `"v1"`, ContentType: "image/png"})
+	response, err := client.api.PutWorkspaceIconApiV1WorkspacesWorkspaceIdIconPutWithBody(context.Background(), "ws", &generated.PutWorkspaceIconApiV1WorkspacesWorkspaceIdIconPutParams{IfMatch: pointer(`"v1"`)}, "image/png", readerOnly{image})
+	if err == nil {
+		_, err = binaryResult(client, response, err, 200)
+	}
 	if err != nil || image.closed {
 		t.Fatal("image input closed", err)
 	}
@@ -77,7 +81,7 @@ func TestBinaryDeliveryRemainsUnbufferedAndCancellable(t *testing.T) {
 	defer client.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	result, err := client.Resources().Workspaces().Ref("ws").Assets().Ref("asset").Content().Get(ctx)
+	result, err := client.Asset("asset").Download(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -104,12 +108,13 @@ func TestJSONBoundAndCallbackRedirect(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer client.Close()
-	_, err = client.Resources().Workspaces().Ref("ws").Get(context.Background())
+	_, err = client.Thread("thread").Get(context.Background())
 	if !errors.Is(err, ErrProtocol) {
 		t.Fatal(err)
 	}
-	redirect, err := client.Resources().Connections().Callback().Get(context.Background(), ConnectionsCallbackGetOptions{State: "state"})
-	if err != nil || redirect.StatusCode != 303 || redirect.Header.Get("Location") != "https://app.test/return" {
-		t.Fatal(redirect, err)
+	response, err := client.api.CompleteAuthorizationApiV1ConnectionsCallbackGet(context.Background(), &generated.CompleteAuthorizationApiV1ConnectionsCallbackGetParams{State: "state"})
+	if err != nil || response.StatusCode != 303 || response.Header.Get("Location") != "https://app.test/return" {
+		t.Fatal(response, err)
 	}
+	_ = response.Body.Close()
 }

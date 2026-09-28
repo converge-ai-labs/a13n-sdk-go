@@ -6,6 +6,7 @@ import (
 	"fmt"
 	a13n "github.com/converge-ai-labs/a13n-sdk-go"
 	"github.com/converge-ai-labs/a13n-sdk-go/generated"
+	"github.com/oapi-codegen/nullable"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -112,7 +113,7 @@ func TestGeneratedHTTPAndBinaryShareTransport(t *testing.T) {
 	if err != nil || result.JSON200 == nil || result.HTTPResponse.Header.Get("X-Request-ID") != "req_test" {
 		t.Fatalf("metadata: %v %v", result, err)
 	}
-	response, err := client.Resources().Workspaces().Ref("ws").Assets().Ref("ast").Content().Get(context.Background())
+	response, err := client.Asset("ast").Download(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -125,7 +126,7 @@ func TestGeneratedHTTPAndBinaryShareTransport(t *testing.T) {
 	if _, err := api.GetWorkspaceApiV1WorkspacesWorkspaceIdGet(context.Background(), "ws"); err == nil {
 		t.Fatal("closed client allowed request")
 	}
-	if !reflect.DeepEqual(paths, []string{"/prefix/api/v1/workspaces/ws", "/prefix/api/v1/workspaces/ws/assets/ast/content"}) {
+	if !reflect.DeepEqual(paths, []string{"/prefix/api/v1/workspaces/ws", "/prefix/api/v1/assets/ast/content"}) {
 		t.Fatal(paths)
 	}
 }
@@ -143,5 +144,56 @@ var _ = generated.MessagePayload{Content: 42}
 	output, err := exec.Command("go", "test", source).CombinedOutput()
 	if err == nil || strings.Count(string(output), "cannot use 42") != 2 {
 		t.Fatalf("expected two type errors: %v: %s", err, output)
+	}
+}
+
+func TestModelSettingsExtraObjectsPreserveEmptyAndReplacementWire(t *testing.T) {
+	override := generated.AgentOverrideInput{ModelSettings: nullable.NewNullableWithValue(map[string]generated.JsonValue{
+		"extra_body":    map[string]any{},
+		"extra_headers": map[string]any{"X-Trace": "trace-1"},
+	})}
+	body := generated.NewThread{AgentId: "agent", Payload: a13n.TextPayload("hi"), Options: &generated.RunOptionsInput{Overrides: nullable.NewNullableWithValue(override)}}
+	encoded, err := json.Marshal(body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var decoded map[string]any
+	if err := json.Unmarshal(encoded, &decoded); err != nil {
+		t.Fatal(err)
+	}
+	options := decoded["options"].(map[string]any)["overrides"].(map[string]any)["model_settings"].(map[string]any)
+	if !reflect.DeepEqual(options["extra_body"], map[string]any{}) || !reflect.DeepEqual(options["extra_headers"], map[string]any{"X-Trace": "trace-1"}) {
+		t.Fatalf("model settings object replacement lost: %s", encoded)
+	}
+	if strings.Contains(string(encoded), `"session_id"`) || strings.Contains(string(encoded), `"agent_revision_id"`) {
+		t.Fatal("omitted nullable fields serialized")
+	}
+}
+
+func TestGeneratedMemoryPathEscapesUnicodeAndReservedCharacters(t *testing.T) {
+	var escaped string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		escaped = req.URL.EscapedPath()
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"content":"first","path":"projects/计划 #1%.md"}`))
+	}))
+	defer server.Close()
+	client, err := a13n.NewClient(server.URL+"/proxy", a13n.NewSecret("key"), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Close()
+	api, err := client.API()
+	if err != nil {
+		t.Fatal(err)
+	}
+	response, err := api.ReadFileApiV1MemoriesMemoryIdFilesPathGet(context.Background(), "mem",
+		"projects/计划 #1%.md", &generated.ReadFileApiV1MemoriesMemoryIdFilesPathGetParams{})
+	result, err := a13n.ParseJSON[generated.MemoryFile](client, response, err, 200)
+	if err != nil || result.Value.Path != "projects/计划 #1%.md" {
+		t.Fatal(result, err)
+	}
+	if escaped != "/proxy/api/v1/memories/mem/files/projects%2F%E8%AE%A1%E5%88%92%20%231%25.md" {
+		t.Fatalf("path encoding: %s", escaped)
 	}
 }

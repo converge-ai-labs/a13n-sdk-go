@@ -25,7 +25,3 @@ func (ProviderCreate) String() string         { return "ProviderCreate { .. }" }
 func (ProviderCreate) GoString() string       { return "ProviderCreate { .. }" }
 func (ProviderUpdate) String() string         { return "ProviderUpdate { .. }" }
 func (ProviderUpdate) GoString() string       { return "ProviderUpdate { .. }" }
-func (SecretCreate) String() string           { return "SecretCreate { .. }" }
-func (SecretCreate) GoString() string         { return "SecretCreate { .. }" }
-func (SecretUpdate) String() string           { return "SecretUpdate { .. }" }
-func (SecretUpdate) GoString() string         { return "SecretUpdate { .. }" }
