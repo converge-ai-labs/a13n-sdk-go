@@ -2902,6 +2902,9 @@ type Message struct {
 // MessageKind defines model for Message.Kind.
 type MessageKind string
 
+// MessageHistory Pydantic AI ModelMessage JSON objects, validated by the Service. Imports completed user text, model text and closed tool-call/JSON-result exchanges; no instructions, media or suspended execution. At most 256 messages and 256 KiB of normalized JSON.
+type MessageHistory = []map[string]JsonValue
+
 // MessagePayload defines model for MessagePayload.
 type MessagePayload struct {
 	Content []Part `json:"content"`
@@ -3098,6 +3101,9 @@ type NewThread struct {
 	Kind            *NewThreadKind            `json:"kind,omitempty"`
 	McpHeaders      *McpHeaders               `json:"mcp_headers,omitempty"`
 	Memories        *[]MemoryMount            `json:"memories,omitempty"`
+
+	// MessageHistory Pydantic AI ModelMessage JSON objects, validated by the Service. Imports completed user text, model text and closed tool-call/JSON-result exchanges; no instructions, media or suspended execution. At most 256 messages and 256 KiB of normalized JSON.
+	MessageHistory *MessageHistory `json:"message_history,omitempty"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 	Options   *RunOptionsInput          `json:"options,omitempty"`
@@ -3384,8 +3390,9 @@ type ProviderUpdate struct {
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
-	Approvals map[string]ApprovalDecision `json:"approvals"`
-	Calls     map[string]CallResult       `json:"calls"`
+	Approvals map[string]ApprovalDecision       `json:"approvals"`
+	Calls     map[string]CallResult             `json:"calls"`
+	Input     nullable.Nullable[MessagePayload] `json:"input,omitempty"`
 }
 
 // RetryConfig defines model for RetryConfig.
@@ -3974,23 +3981,26 @@ type ThreadUpdate struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
-	ArchivedAt       nullable.Nullable[time.Time] `json:"archived_at"`
-	CreatedAt        time.Time                    `json:"created_at"`
-	CurrentRunId     nullable.Nullable[string]    `json:"current_run_id"`
-	HeadRunId        nullable.Nullable[string]    `json:"head_run_id"`
-	Id               string                       `json:"id"`
-	Labels           map[string]string            `json:"labels"`
-	LastRunId        nullable.Nullable[string]    `json:"last_run_id"`
-	McpHeaders       map[string]map[string]string `json:"mcp_headers"`
-	Origin           ThreadViewOrigin             `json:"origin"`
-	OriginRunId      nullable.Nullable[string]    `json:"origin_run_id"`
-	OriginThreadId   nullable.Nullable[string]    `json:"origin_thread_id"`
-	OriginToolCallId nullable.Nullable[string]    `json:"origin_tool_call_id"`
-	SessionId        string                       `json:"session_id"`
-	Subagent         nullable.Nullable[string]    `json:"subagent"`
-	UpdatedAt        time.Time                    `json:"updated_at"`
-	Version          int                          `json:"version"`
-	WorkspaceId      string                       `json:"workspace_id"`
+	ArchivedAt   nullable.Nullable[time.Time] `json:"archived_at"`
+	CreatedAt    time.Time                    `json:"created_at"`
+	CurrentRunId nullable.Nullable[string]    `json:"current_run_id"`
+	HeadRunId    nullable.Nullable[string]    `json:"head_run_id"`
+	Id           string                       `json:"id"`
+	Labels       map[string]string            `json:"labels"`
+	LastRunId    nullable.Nullable[string]    `json:"last_run_id"`
+	McpHeaders   map[string]map[string]string `json:"mcp_headers"`
+
+	// MessageHistory Pydantic AI ModelMessage JSON objects, validated by the Service. Imports completed user text, model text and closed tool-call/JSON-result exchanges; no instructions, media or suspended execution. At most 256 messages and 256 KiB of normalized JSON.
+	MessageHistory   MessageHistory            `json:"message_history"`
+	Origin           ThreadViewOrigin          `json:"origin"`
+	OriginRunId      nullable.Nullable[string] `json:"origin_run_id"`
+	OriginThreadId   nullable.Nullable[string] `json:"origin_thread_id"`
+	OriginToolCallId nullable.Nullable[string] `json:"origin_tool_call_id"`
+	SessionId        string                    `json:"session_id"`
+	Subagent         nullable.Nullable[string] `json:"subagent"`
+	UpdatedAt        time.Time                 `json:"updated_at"`
+	Version          int                       `json:"version"`
+	WorkspaceId      string                    `json:"workspace_id"`
 }
 
 // ThreadViewOrigin defines model for ThreadView.Origin.
