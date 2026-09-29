@@ -3446,11 +3446,12 @@ type RevokedConnectionRemoteRevocation string
 
 // RunItems A run's committed display with the run it describes. Live output continues after `position`.
 type RunItems struct {
-	Complete bool                      `json:"complete"`
-	Dropped  int                       `json:"dropped"`
-	Items    []Item                    `json:"items"`
-	Position nullable.Nullable[string] `json:"position"`
-	Run      RunView                   `json:"run"`
+	Complete    bool                      `json:"complete"`
+	Dropped     int                       `json:"dropped"`
+	Items       []Item                    `json:"items"`
+	Position    nullable.Nullable[string] `json:"position"`
+	ResumeAfter nullable.Nullable[string] `json:"resume_after,omitempty"`
+	Run         RunView                   `json:"run"`
 }
 
 // RunLabels defines model for RunLabels.
@@ -5475,6 +5476,8 @@ type ListThreadRunsApiV1ThreadsThreadIdRunsGetParams struct {
 
 // ThreadStreamApiV1ThreadsThreadIdStreamGetParams defines parameters for ThreadStreamApiV1ThreadsThreadIdStreamGet.
 type ThreadStreamApiV1ThreadsThreadIdStreamGetParams struct {
+	Run         *string `form:"run,omitempty" json:"run,omitempty"`
+	Position    *string `form:"position,omitempty" json:"position,omitempty"`
 	LastEventID *string `json:"Last-Event-ID,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -25536,6 +25539,45 @@ func NewThreadStreamApiV1ThreadsThreadIdStreamGetRequest(server string, threadId
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Run != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "run", *params.Run, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Position != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "position", *params.Position, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
