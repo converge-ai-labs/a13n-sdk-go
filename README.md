@@ -144,7 +144,7 @@ Add `errors` and `io` to your imports for that loop. A Run can finish before the
 - [Compiled examples](example_test.go) and [SDK contract](spec/README.md): exact types and lifecycle guarantees.
 - [Pinned Service API](contract/openapi.json) and [provenance](contract/README.md): what this checkout was generated from. `client.API()` exposes its complete generated low-level API; [contribution guide](CONTRIBUTING.md) covers generation and validation.
 
-For result-only applications, `Start`/`Send` plus `Result` is enough. A queued submission might wait before it runs; a waiting Run needs an explicit authorized answer. A timeout or broken connection does **not** prove the remote submission failed, and the SDK does not automatically retry it.
+For result-only applications, `Start`/`Send` plus `Result` is enough. `StartOptions.MessageHistory` can import completed Pydantic AI conversation JSON when creating a new Thread; later `Send` calls do not reseed it. A queued submission might wait before it runs; a waiting Run requires a complete, explicit batch of approval decisions and call results. `Run.Resume(ctx, generated.Resume{Approvals: ..., Calls: ..., Input: ...}, key)` may include an *additional* typed message payload atomically in that same successor Run. It does not answer a missing call or approve one implicitly. A timeout or broken connection does **not** prove the remote submission failed, and the SDK does not automatically retry it.
 
 ## License
 
