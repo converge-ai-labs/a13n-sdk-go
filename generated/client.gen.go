@@ -7820,31 +7820,31 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/connections/{connection_id}/tools (the `ListToolsApiV1ConnectionsConnectionIdToolsGet` operationId).
 	ListToolsApiV1ConnectionsConnectionIdToolsGet(ctx context.Context, connectionId string, params *ListToolsApiV1ConnectionsConnectionIdToolsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListProvidersApiV1ConnectorProvidersGet List Providers
+	// ListProvidersApiV1ConnectorProvidersGet List connector providers
 	//
 	// Corresponds with GET /api/v1/connector-providers (the `ListProvidersApiV1ConnectorProvidersGet` operationId).
 	ListProvidersApiV1ConnectorProvidersGet(ctx context.Context, params *ListProvidersApiV1ConnectorProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1ConnectorProvidersPostWithBody Create Provider
+	// CreateProviderApiV1ConnectorProvidersPostWithBody Create connector provider
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with POST /api/v1/connector-providers (the `CreateProviderApiV1ConnectorProvidersPost` operationId).
 	CreateProviderApiV1ConnectorProvidersPostWithBody(ctx context.Context, params *CreateProviderApiV1ConnectorProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1ConnectorProvidersPost Create Provider
+	// CreateProviderApiV1ConnectorProvidersPost Create connector provider
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with POST /api/v1/connector-providers (the `CreateProviderApiV1ConnectorProvidersPost` operationId).
 	CreateProviderApiV1ConnectorProvidersPost(ctx context.Context, params *CreateProviderApiV1ConnectorProvidersPostParams, body CreateProviderApiV1ConnectorProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProviderApiV1ConnectorProvidersProviderIdGet Get Provider
+	// GetProviderApiV1ConnectorProvidersProviderIdGet Get connector provider
 	//
 	// Corresponds with GET /api/v1/connector-providers/{provider_id} (the `GetProviderApiV1ConnectorProvidersProviderIdGet` operationId).
 	GetProviderApiV1ConnectorProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1ConnectorProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update Provider
+	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update connector provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -7853,7 +7853,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/connector-providers/{provider_id} (the `UpdateProviderApiV1ConnectorProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody(ctx context.Context, providerId string, params *UpdateProviderApiV1ConnectorProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update Provider
+	// UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update connector provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -7877,36 +7877,36 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions (the `ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet` operationId).
 	ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet(ctx context.Context, providerId string, app string, params *ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// TestProviderApiV1ConnectorProvidersProviderIdTestPost Test Provider
+	// TestProviderApiV1ConnectorProvidersProviderIdTestPost Test connector provider
 	//
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestProviderApiV1ConnectorProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1ConnectorProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1ConnectorProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListProvidersApiV1EnvironmentProvidersGet List Providers
+	// ListProvidersApiV1EnvironmentProvidersGet List environment providers
 	//
 	// Corresponds with GET /api/v1/environment-providers (the `ListProvidersApiV1EnvironmentProvidersGet` operationId).
 	ListProvidersApiV1EnvironmentProvidersGet(ctx context.Context, params *ListProvidersApiV1EnvironmentProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1EnvironmentProvidersPostWithBody Create Provider
+	// CreateProviderApiV1EnvironmentProvidersPostWithBody Create environment provider
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPostWithBody(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1EnvironmentProvidersPost Create Provider
+	// CreateProviderApiV1EnvironmentProvidersPost Create environment provider
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPost(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, body CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProviderApiV1EnvironmentProvidersProviderIdGet Get Provider
+	// GetProviderApiV1EnvironmentProvidersProviderIdGet Get environment provider
 	//
 	// Corresponds with GET /api/v1/environment-providers/{provider_id} (the `GetProviderApiV1EnvironmentProvidersProviderIdGet` operationId).
 	GetProviderApiV1EnvironmentProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1EnvironmentProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update Provider
+	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update environment provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -7915,7 +7915,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update Provider
+	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update environment provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -7924,7 +7924,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// TestProviderApiV1EnvironmentProvidersProviderIdTestPost Test Provider
+	// TestProviderApiV1EnvironmentProvidersProviderIdTestPost Test environment provider
 	//
 	// Corresponds with POST /api/v1/environment-providers/{provider_id}/test (the `TestProviderApiV1EnvironmentProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1EnvironmentProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1EnvironmentProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8255,31 +8255,31 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/memories/{memory_id}/revisions/{seq}/restore (the `RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost` operationId).
 	RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost(ctx context.Context, memoryId string, seq int, params *RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListProvidersApiV1MemoryProvidersGet List Providers
+	// ListProvidersApiV1MemoryProvidersGet List memory providers
 	//
 	// Corresponds with GET /api/v1/memory-providers (the `ListProvidersApiV1MemoryProvidersGet` operationId).
 	ListProvidersApiV1MemoryProvidersGet(ctx context.Context, params *ListProvidersApiV1MemoryProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1MemoryProvidersPostWithBody Create Provider
+	// CreateProviderApiV1MemoryProvidersPostWithBody Create memory provider
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with POST /api/v1/memory-providers (the `CreateProviderApiV1MemoryProvidersPost` operationId).
 	CreateProviderApiV1MemoryProvidersPostWithBody(ctx context.Context, params *CreateProviderApiV1MemoryProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1MemoryProvidersPost Create Provider
+	// CreateProviderApiV1MemoryProvidersPost Create memory provider
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with POST /api/v1/memory-providers (the `CreateProviderApiV1MemoryProvidersPost` operationId).
 	CreateProviderApiV1MemoryProvidersPost(ctx context.Context, params *CreateProviderApiV1MemoryProvidersPostParams, body CreateProviderApiV1MemoryProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProviderApiV1MemoryProvidersProviderIdGet Get Provider
+	// GetProviderApiV1MemoryProvidersProviderIdGet Get memory provider
 	//
 	// Corresponds with GET /api/v1/memory-providers/{provider_id} (the `GetProviderApiV1MemoryProvidersProviderIdGet` operationId).
 	GetProviderApiV1MemoryProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1MemoryProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update Provider
+	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update memory provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -8288,7 +8288,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/memory-providers/{provider_id} (the `UpdateProviderApiV1MemoryProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody(ctx context.Context, providerId string, params *UpdateProviderApiV1MemoryProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1MemoryProvidersProviderIdPatch Update Provider
+	// UpdateProviderApiV1MemoryProvidersProviderIdPatch Update memory provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -8297,7 +8297,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/memory-providers/{provider_id} (the `UpdateProviderApiV1MemoryProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1MemoryProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1MemoryProvidersProviderIdPatchParams, body UpdateProviderApiV1MemoryProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// TestProviderApiV1MemoryProvidersProviderIdTestPost Test Provider
+	// TestProviderApiV1MemoryProvidersProviderIdTestPost Test memory provider
 	//
 	// Corresponds with POST /api/v1/memory-providers/{provider_id}/test (the `TestProviderApiV1MemoryProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1MemoryProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1MemoryProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8309,31 +8309,31 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
 	GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListProvidersApiV1ModelProvidersGet List Providers
+	// ListProvidersApiV1ModelProvidersGet List model providers
 	//
 	// Corresponds with GET /api/v1/model-providers (the `ListProvidersApiV1ModelProvidersGet` operationId).
 	ListProvidersApiV1ModelProvidersGet(ctx context.Context, params *ListProvidersApiV1ModelProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1ModelProvidersPostWithBody Create Provider
+	// CreateProviderApiV1ModelProvidersPostWithBody Create model provider
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with POST /api/v1/model-providers (the `CreateProviderApiV1ModelProvidersPost` operationId).
 	CreateProviderApiV1ModelProvidersPostWithBody(ctx context.Context, params *CreateProviderApiV1ModelProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1ModelProvidersPost Create Provider
+	// CreateProviderApiV1ModelProvidersPost Create model provider
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with POST /api/v1/model-providers (the `CreateProviderApiV1ModelProvidersPost` operationId).
 	CreateProviderApiV1ModelProvidersPost(ctx context.Context, params *CreateProviderApiV1ModelProvidersPostParams, body CreateProviderApiV1ModelProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProviderApiV1ModelProvidersProviderIdGet Get Provider
+	// GetProviderApiV1ModelProvidersProviderIdGet Get model provider
 	//
 	// Corresponds with GET /api/v1/model-providers/{provider_id} (the `GetProviderApiV1ModelProvidersProviderIdGet` operationId).
 	GetProviderApiV1ModelProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1ModelProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update Provider
+	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update model provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -8342,7 +8342,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/model-providers/{provider_id} (the `UpdateProviderApiV1ModelProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody(ctx context.Context, providerId string, params *UpdateProviderApiV1ModelProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1ModelProvidersProviderIdPatch Update Provider
+	// UpdateProviderApiV1ModelProvidersProviderIdPatch Update model provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -8351,7 +8351,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/model-providers/{provider_id} (the `UpdateProviderApiV1ModelProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ModelProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1ModelProvidersProviderIdPatchParams, body UpdateProviderApiV1ModelProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// TestProviderApiV1ModelProvidersProviderIdTestPost Test Provider
+	// TestProviderApiV1ModelProvidersProviderIdTestPost Test model provider
 	//
 	// Corresponds with POST /api/v1/model-providers/{provider_id}/test (the `TestProviderApiV1ModelProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1ModelProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1ModelProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -9220,31 +9220,31 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/users/{user_id}/avatar (the `GetAvatarApiV1UsersUserIdAvatarGet` operationId).
 	GetAvatarApiV1UsersUserIdAvatarGet(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListProvidersApiV1WebProvidersGet List Providers
+	// ListProvidersApiV1WebProvidersGet List web providers
 	//
 	// Corresponds with GET /api/v1/web-providers (the `ListProvidersApiV1WebProvidersGet` operationId).
 	ListProvidersApiV1WebProvidersGet(ctx context.Context, params *ListProvidersApiV1WebProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1WebProvidersPostWithBody Create Provider
+	// CreateProviderApiV1WebProvidersPostWithBody Create web provider
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with POST /api/v1/web-providers (the `CreateProviderApiV1WebProvidersPost` operationId).
 	CreateProviderApiV1WebProvidersPostWithBody(ctx context.Context, params *CreateProviderApiV1WebProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateProviderApiV1WebProvidersPost Create Provider
+	// CreateProviderApiV1WebProvidersPost Create web provider
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with POST /api/v1/web-providers (the `CreateProviderApiV1WebProvidersPost` operationId).
 	CreateProviderApiV1WebProvidersPost(ctx context.Context, params *CreateProviderApiV1WebProvidersPostParams, body CreateProviderApiV1WebProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProviderApiV1WebProvidersProviderIdGet Get Provider
+	// GetProviderApiV1WebProvidersProviderIdGet Get web provider
 	//
 	// Corresponds with GET /api/v1/web-providers/{provider_id} (the `GetProviderApiV1WebProvidersProviderIdGet` operationId).
 	GetProviderApiV1WebProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1WebProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update Provider
+	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update web provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -9253,7 +9253,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/web-providers/{provider_id} (the `UpdateProviderApiV1WebProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1WebProvidersProviderIdPatchWithBody(ctx context.Context, providerId string, params *UpdateProviderApiV1WebProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateProviderApiV1WebProvidersProviderIdPatch Update Provider
+	// UpdateProviderApiV1WebProvidersProviderIdPatch Update web provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -9262,7 +9262,7 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/web-providers/{provider_id} (the `UpdateProviderApiV1WebProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1WebProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1WebProvidersProviderIdPatchParams, body UpdateProviderApiV1WebProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// TestProviderApiV1WebProvidersProviderIdTestPost Test Provider
+	// TestProviderApiV1WebProvidersProviderIdTestPost Test web provider
 	//
 	// Corresponds with POST /api/v1/web-providers/{provider_id}/test (the `TestProviderApiV1WebProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1WebProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1WebProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -10369,7 +10369,7 @@ func (c *Client) ListToolsApiV1ConnectionsConnectionIdToolsGet(ctx context.Conte
 	return c.Client.Do(req)
 }
 
-// ListProvidersApiV1ConnectorProvidersGet List Providers
+// ListProvidersApiV1ConnectorProvidersGet List connector providers
 //
 // Corresponds with GET /api/v1/connector-providers (the `ListProvidersApiV1ConnectorProvidersGet` operationId).
 func (c *Client) ListProvidersApiV1ConnectorProvidersGet(ctx context.Context, params *ListProvidersApiV1ConnectorProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -10384,7 +10384,7 @@ func (c *Client) ListProvidersApiV1ConnectorProvidersGet(ctx context.Context, pa
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1ConnectorProvidersPostWithBody Create Provider
+// CreateProviderApiV1ConnectorProvidersPostWithBody Create connector provider
 //
 // Takes any type of body and a specified content type.
 //
@@ -10401,7 +10401,7 @@ func (c *Client) CreateProviderApiV1ConnectorProvidersPostWithBody(ctx context.C
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1ConnectorProvidersPost Create Provider
+// CreateProviderApiV1ConnectorProvidersPost Create connector provider
 //
 // Takes a body of the `application/json` content type.
 //
@@ -10418,7 +10418,7 @@ func (c *Client) CreateProviderApiV1ConnectorProvidersPost(ctx context.Context, 
 	return c.Client.Do(req)
 }
 
-// GetProviderApiV1ConnectorProvidersProviderIdGet Get Provider
+// GetProviderApiV1ConnectorProvidersProviderIdGet Get connector provider
 //
 // Corresponds with GET /api/v1/connector-providers/{provider_id} (the `GetProviderApiV1ConnectorProvidersProviderIdGet` operationId).
 func (c *Client) GetProviderApiV1ConnectorProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1ConnectorProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -10433,7 +10433,7 @@ func (c *Client) GetProviderApiV1ConnectorProvidersProviderIdGet(ctx context.Con
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update Provider
+// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update connector provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -10452,7 +10452,7 @@ func (c *Client) UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody(ct
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update Provider
+// UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update connector provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -10516,7 +10516,7 @@ func (c *Client) ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet(c
 	return c.Client.Do(req)
 }
 
-// TestProviderApiV1ConnectorProvidersProviderIdTestPost Test Provider
+// TestProviderApiV1ConnectorProvidersProviderIdTestPost Test connector provider
 //
 // Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestProviderApiV1ConnectorProvidersProviderIdTestPost` operationId).
 func (c *Client) TestProviderApiV1ConnectorProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1ConnectorProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -10531,7 +10531,7 @@ func (c *Client) TestProviderApiV1ConnectorProvidersProviderIdTestPost(ctx conte
 	return c.Client.Do(req)
 }
 
-// ListProvidersApiV1EnvironmentProvidersGet List Providers
+// ListProvidersApiV1EnvironmentProvidersGet List environment providers
 //
 // Corresponds with GET /api/v1/environment-providers (the `ListProvidersApiV1EnvironmentProvidersGet` operationId).
 func (c *Client) ListProvidersApiV1EnvironmentProvidersGet(ctx context.Context, params *ListProvidersApiV1EnvironmentProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -10546,7 +10546,7 @@ func (c *Client) ListProvidersApiV1EnvironmentProvidersGet(ctx context.Context, 
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1EnvironmentProvidersPostWithBody Create Provider
+// CreateProviderApiV1EnvironmentProvidersPostWithBody Create environment provider
 //
 // Takes any type of body and a specified content type.
 //
@@ -10563,7 +10563,7 @@ func (c *Client) CreateProviderApiV1EnvironmentProvidersPostWithBody(ctx context
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1EnvironmentProvidersPost Create Provider
+// CreateProviderApiV1EnvironmentProvidersPost Create environment provider
 //
 // Takes a body of the `application/json` content type.
 //
@@ -10580,7 +10580,7 @@ func (c *Client) CreateProviderApiV1EnvironmentProvidersPost(ctx context.Context
 	return c.Client.Do(req)
 }
 
-// GetProviderApiV1EnvironmentProvidersProviderIdGet Get Provider
+// GetProviderApiV1EnvironmentProvidersProviderIdGet Get environment provider
 //
 // Corresponds with GET /api/v1/environment-providers/{provider_id} (the `GetProviderApiV1EnvironmentProvidersProviderIdGet` operationId).
 func (c *Client) GetProviderApiV1EnvironmentProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1EnvironmentProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -10595,7 +10595,7 @@ func (c *Client) GetProviderApiV1EnvironmentProvidersProviderIdGet(ctx context.C
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update Provider
+// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update environment provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -10614,7 +10614,7 @@ func (c *Client) UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody(
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update Provider
+// UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update environment provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -10633,7 +10633,7 @@ func (c *Client) UpdateProviderApiV1EnvironmentProvidersProviderIdPatch(ctx cont
 	return c.Client.Do(req)
 }
 
-// TestProviderApiV1EnvironmentProvidersProviderIdTestPost Test Provider
+// TestProviderApiV1EnvironmentProvidersProviderIdTestPost Test environment provider
 //
 // Corresponds with POST /api/v1/environment-providers/{provider_id}/test (the `TestProviderApiV1EnvironmentProvidersProviderIdTestPost` operationId).
 func (c *Client) TestProviderApiV1EnvironmentProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1EnvironmentProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -11454,7 +11454,7 @@ func (c *Client) RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost(ctx
 	return c.Client.Do(req)
 }
 
-// ListProvidersApiV1MemoryProvidersGet List Providers
+// ListProvidersApiV1MemoryProvidersGet List memory providers
 //
 // Corresponds with GET /api/v1/memory-providers (the `ListProvidersApiV1MemoryProvidersGet` operationId).
 func (c *Client) ListProvidersApiV1MemoryProvidersGet(ctx context.Context, params *ListProvidersApiV1MemoryProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -11469,7 +11469,7 @@ func (c *Client) ListProvidersApiV1MemoryProvidersGet(ctx context.Context, param
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1MemoryProvidersPostWithBody Create Provider
+// CreateProviderApiV1MemoryProvidersPostWithBody Create memory provider
 //
 // Takes any type of body and a specified content type.
 //
@@ -11486,7 +11486,7 @@ func (c *Client) CreateProviderApiV1MemoryProvidersPostWithBody(ctx context.Cont
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1MemoryProvidersPost Create Provider
+// CreateProviderApiV1MemoryProvidersPost Create memory provider
 //
 // Takes a body of the `application/json` content type.
 //
@@ -11503,7 +11503,7 @@ func (c *Client) CreateProviderApiV1MemoryProvidersPost(ctx context.Context, par
 	return c.Client.Do(req)
 }
 
-// GetProviderApiV1MemoryProvidersProviderIdGet Get Provider
+// GetProviderApiV1MemoryProvidersProviderIdGet Get memory provider
 //
 // Corresponds with GET /api/v1/memory-providers/{provider_id} (the `GetProviderApiV1MemoryProvidersProviderIdGet` operationId).
 func (c *Client) GetProviderApiV1MemoryProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1MemoryProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -11518,7 +11518,7 @@ func (c *Client) GetProviderApiV1MemoryProvidersProviderIdGet(ctx context.Contex
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update Provider
+// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update memory provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -11537,7 +11537,7 @@ func (c *Client) UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody(ctx c
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1MemoryProvidersProviderIdPatch Update Provider
+// UpdateProviderApiV1MemoryProvidersProviderIdPatch Update memory provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -11556,7 +11556,7 @@ func (c *Client) UpdateProviderApiV1MemoryProvidersProviderIdPatch(ctx context.C
 	return c.Client.Do(req)
 }
 
-// TestProviderApiV1MemoryProvidersProviderIdTestPost Test Provider
+// TestProviderApiV1MemoryProvidersProviderIdTestPost Test memory provider
 //
 // Corresponds with POST /api/v1/memory-providers/{provider_id}/test (the `TestProviderApiV1MemoryProvidersProviderIdTestPost` operationId).
 func (c *Client) TestProviderApiV1MemoryProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1MemoryProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -11588,7 +11588,7 @@ func (c *Client) GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, reqEdi
 	return c.Client.Do(req)
 }
 
-// ListProvidersApiV1ModelProvidersGet List Providers
+// ListProvidersApiV1ModelProvidersGet List model providers
 //
 // Corresponds with GET /api/v1/model-providers (the `ListProvidersApiV1ModelProvidersGet` operationId).
 func (c *Client) ListProvidersApiV1ModelProvidersGet(ctx context.Context, params *ListProvidersApiV1ModelProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -11603,7 +11603,7 @@ func (c *Client) ListProvidersApiV1ModelProvidersGet(ctx context.Context, params
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1ModelProvidersPostWithBody Create Provider
+// CreateProviderApiV1ModelProvidersPostWithBody Create model provider
 //
 // Takes any type of body and a specified content type.
 //
@@ -11620,7 +11620,7 @@ func (c *Client) CreateProviderApiV1ModelProvidersPostWithBody(ctx context.Conte
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1ModelProvidersPost Create Provider
+// CreateProviderApiV1ModelProvidersPost Create model provider
 //
 // Takes a body of the `application/json` content type.
 //
@@ -11637,7 +11637,7 @@ func (c *Client) CreateProviderApiV1ModelProvidersPost(ctx context.Context, para
 	return c.Client.Do(req)
 }
 
-// GetProviderApiV1ModelProvidersProviderIdGet Get Provider
+// GetProviderApiV1ModelProvidersProviderIdGet Get model provider
 //
 // Corresponds with GET /api/v1/model-providers/{provider_id} (the `GetProviderApiV1ModelProvidersProviderIdGet` operationId).
 func (c *Client) GetProviderApiV1ModelProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1ModelProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -11652,7 +11652,7 @@ func (c *Client) GetProviderApiV1ModelProvidersProviderIdGet(ctx context.Context
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update Provider
+// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update model provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -11671,7 +11671,7 @@ func (c *Client) UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody(ctx co
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1ModelProvidersProviderIdPatch Update Provider
+// UpdateProviderApiV1ModelProvidersProviderIdPatch Update model provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -11690,7 +11690,7 @@ func (c *Client) UpdateProviderApiV1ModelProvidersProviderIdPatch(ctx context.Co
 	return c.Client.Do(req)
 }
 
-// TestProviderApiV1ModelProvidersProviderIdTestPost Test Provider
+// TestProviderApiV1ModelProvidersProviderIdTestPost Test model provider
 //
 // Corresponds with POST /api/v1/model-providers/{provider_id}/test (the `TestProviderApiV1ModelProvidersProviderIdTestPost` operationId).
 func (c *Client) TestProviderApiV1ModelProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1ModelProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -13859,7 +13859,7 @@ func (c *Client) GetAvatarApiV1UsersUserIdAvatarGet(ctx context.Context, userId 
 	return c.Client.Do(req)
 }
 
-// ListProvidersApiV1WebProvidersGet List Providers
+// ListProvidersApiV1WebProvidersGet List web providers
 //
 // Corresponds with GET /api/v1/web-providers (the `ListProvidersApiV1WebProvidersGet` operationId).
 func (c *Client) ListProvidersApiV1WebProvidersGet(ctx context.Context, params *ListProvidersApiV1WebProvidersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -13874,7 +13874,7 @@ func (c *Client) ListProvidersApiV1WebProvidersGet(ctx context.Context, params *
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1WebProvidersPostWithBody Create Provider
+// CreateProviderApiV1WebProvidersPostWithBody Create web provider
 //
 // Takes any type of body and a specified content type.
 //
@@ -13891,7 +13891,7 @@ func (c *Client) CreateProviderApiV1WebProvidersPostWithBody(ctx context.Context
 	return c.Client.Do(req)
 }
 
-// CreateProviderApiV1WebProvidersPost Create Provider
+// CreateProviderApiV1WebProvidersPost Create web provider
 //
 // Takes a body of the `application/json` content type.
 //
@@ -13908,7 +13908,7 @@ func (c *Client) CreateProviderApiV1WebProvidersPost(ctx context.Context, params
 	return c.Client.Do(req)
 }
 
-// GetProviderApiV1WebProvidersProviderIdGet Get Provider
+// GetProviderApiV1WebProvidersProviderIdGet Get web provider
 //
 // Corresponds with GET /api/v1/web-providers/{provider_id} (the `GetProviderApiV1WebProvidersProviderIdGet` operationId).
 func (c *Client) GetProviderApiV1WebProvidersProviderIdGet(ctx context.Context, providerId string, params *GetProviderApiV1WebProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -13923,7 +13923,7 @@ func (c *Client) GetProviderApiV1WebProvidersProviderIdGet(ctx context.Context, 
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update Provider
+// UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update web provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -13942,7 +13942,7 @@ func (c *Client) UpdateProviderApiV1WebProvidersProviderIdPatchWithBody(ctx cont
 	return c.Client.Do(req)
 }
 
-// UpdateProviderApiV1WebProvidersProviderIdPatch Update Provider
+// UpdateProviderApiV1WebProvidersProviderIdPatch Update web provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -13961,7 +13961,7 @@ func (c *Client) UpdateProviderApiV1WebProvidersProviderIdPatch(ctx context.Cont
 	return c.Client.Do(req)
 }
 
-// TestProviderApiV1WebProvidersProviderIdTestPost Test Provider
+// TestProviderApiV1WebProvidersProviderIdTestPost Test web provider
 //
 // Corresponds with POST /api/v1/web-providers/{provider_id}/test (the `TestProviderApiV1WebProvidersProviderIdTestPost` operationId).
 func (c *Client) TestProviderApiV1WebProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1WebProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -29291,35 +29291,35 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/connections/{connection_id}/tools (the `ListToolsApiV1ConnectionsConnectionIdToolsGet` operationId).
 	ListToolsApiV1ConnectionsConnectionIdToolsGetWithResponse(ctx context.Context, connectionId string, params *ListToolsApiV1ConnectionsConnectionIdToolsGetParams, reqEditors ...RequestEditorFn) (*ListToolsApiV1ConnectionsConnectionIdToolsGetResponse, error)
 
-	// ListProvidersApiV1ConnectorProvidersGetWithResponse List Providers
+	// ListProvidersApiV1ConnectorProvidersGetWithResponse List connector providers
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/connector-providers (the `ListProvidersApiV1ConnectorProvidersGet` operationId).
 	ListProvidersApiV1ConnectorProvidersGetWithResponse(ctx context.Context, params *ListProvidersApiV1ConnectorProvidersGetParams, reqEditors ...RequestEditorFn) (*ListProvidersApiV1ConnectorProvidersGetResponse, error)
 
-	// CreateProviderApiV1ConnectorProvidersPostWithBodyWithResponse Create Provider
+	// CreateProviderApiV1ConnectorProvidersPostWithBodyWithResponse Create connector provider
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/connector-providers (the `CreateProviderApiV1ConnectorProvidersPost` operationId).
 	CreateProviderApiV1ConnectorProvidersPostWithBodyWithResponse(ctx context.Context, params *CreateProviderApiV1ConnectorProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProviderApiV1ConnectorProvidersPostResponse, error)
 
-	// CreateProviderApiV1ConnectorProvidersPostWithResponse Create Provider
+	// CreateProviderApiV1ConnectorProvidersPostWithResponse Create connector provider
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/connector-providers (the `CreateProviderApiV1ConnectorProvidersPost` operationId).
 	CreateProviderApiV1ConnectorProvidersPostWithResponse(ctx context.Context, params *CreateProviderApiV1ConnectorProvidersPostParams, body CreateProviderApiV1ConnectorProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProviderApiV1ConnectorProvidersPostResponse, error)
 
-	// GetProviderApiV1ConnectorProvidersProviderIdGetWithResponse Get Provider
+	// GetProviderApiV1ConnectorProvidersProviderIdGetWithResponse Get connector provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/connector-providers/{provider_id} (the `GetProviderApiV1ConnectorProvidersProviderIdGet` operationId).
 	GetProviderApiV1ConnectorProvidersProviderIdGetWithResponse(ctx context.Context, providerId string, params *GetProviderApiV1ConnectorProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*GetProviderApiV1ConnectorProvidersProviderIdGetResponse, error)
 
-	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update Provider
+	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update connector provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29328,7 +29328,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/connector-providers/{provider_id} (the `UpdateProviderApiV1ConnectorProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1ConnectorProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1ConnectorProvidersProviderIdPatchResponse, error)
 
-	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update Provider
+	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update connector provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29358,42 +29358,42 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions (the `ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet` operationId).
 	ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetWithResponse(ctx context.Context, providerId string, app string, params *ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams, reqEditors ...RequestEditorFn) (*ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponse, error)
 
-	// TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse Test Provider
+	// TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse Test connector provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestProviderApiV1ConnectorProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse(ctx context.Context, providerId string, params *TestProviderApiV1ConnectorProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*TestProviderApiV1ConnectorProvidersProviderIdTestPostResponse, error)
 
-	// ListProvidersApiV1EnvironmentProvidersGetWithResponse List Providers
+	// ListProvidersApiV1EnvironmentProvidersGetWithResponse List environment providers
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/environment-providers (the `ListProvidersApiV1EnvironmentProvidersGet` operationId).
 	ListProvidersApiV1EnvironmentProvidersGetWithResponse(ctx context.Context, params *ListProvidersApiV1EnvironmentProvidersGetParams, reqEditors ...RequestEditorFn) (*ListProvidersApiV1EnvironmentProvidersGetResponse, error)
 
-	// CreateProviderApiV1EnvironmentProvidersPostWithBodyWithResponse Create Provider
+	// CreateProviderApiV1EnvironmentProvidersPostWithBodyWithResponse Create environment provider
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPostWithBodyWithResponse(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProviderApiV1EnvironmentProvidersPostResponse, error)
 
-	// CreateProviderApiV1EnvironmentProvidersPostWithResponse Create Provider
+	// CreateProviderApiV1EnvironmentProvidersPostWithResponse Create environment provider
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPostWithResponse(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, body CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProviderApiV1EnvironmentProvidersPostResponse, error)
 
-	// GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get Provider
+	// GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get environment provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/environment-providers/{provider_id} (the `GetProviderApiV1EnvironmentProvidersProviderIdGet` operationId).
 	GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse(ctx context.Context, providerId string, params *GetProviderApiV1EnvironmentProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*GetProviderApiV1EnvironmentProvidersProviderIdGetResponse, error)
 
-	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update Provider
+	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update environment provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29402,7 +29402,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse, error)
 
-	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update Provider
+	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update environment provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29411,7 +29411,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse, error)
 
-	// TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test Provider
+	// TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test environment provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -29784,35 +29784,35 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/memories/{memory_id}/revisions/{seq}/restore (the `RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost` operationId).
 	RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostWithResponse(ctx context.Context, memoryId string, seq int, params *RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostParams, reqEditors ...RequestEditorFn) (*RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostResponse, error)
 
-	// ListProvidersApiV1MemoryProvidersGetWithResponse List Providers
+	// ListProvidersApiV1MemoryProvidersGetWithResponse List memory providers
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/memory-providers (the `ListProvidersApiV1MemoryProvidersGet` operationId).
 	ListProvidersApiV1MemoryProvidersGetWithResponse(ctx context.Context, params *ListProvidersApiV1MemoryProvidersGetParams, reqEditors ...RequestEditorFn) (*ListProvidersApiV1MemoryProvidersGetResponse, error)
 
-	// CreateProviderApiV1MemoryProvidersPostWithBodyWithResponse Create Provider
+	// CreateProviderApiV1MemoryProvidersPostWithBodyWithResponse Create memory provider
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/memory-providers (the `CreateProviderApiV1MemoryProvidersPost` operationId).
 	CreateProviderApiV1MemoryProvidersPostWithBodyWithResponse(ctx context.Context, params *CreateProviderApiV1MemoryProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProviderApiV1MemoryProvidersPostResponse, error)
 
-	// CreateProviderApiV1MemoryProvidersPostWithResponse Create Provider
+	// CreateProviderApiV1MemoryProvidersPostWithResponse Create memory provider
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/memory-providers (the `CreateProviderApiV1MemoryProvidersPost` operationId).
 	CreateProviderApiV1MemoryProvidersPostWithResponse(ctx context.Context, params *CreateProviderApiV1MemoryProvidersPostParams, body CreateProviderApiV1MemoryProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProviderApiV1MemoryProvidersPostResponse, error)
 
-	// GetProviderApiV1MemoryProvidersProviderIdGetWithResponse Get Provider
+	// GetProviderApiV1MemoryProvidersProviderIdGetWithResponse Get memory provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/memory-providers/{provider_id} (the `GetProviderApiV1MemoryProvidersProviderIdGet` operationId).
 	GetProviderApiV1MemoryProvidersProviderIdGetWithResponse(ctx context.Context, providerId string, params *GetProviderApiV1MemoryProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*GetProviderApiV1MemoryProvidersProviderIdGetResponse, error)
 
-	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update Provider
+	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update memory provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29821,7 +29821,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/memory-providers/{provider_id} (the `UpdateProviderApiV1MemoryProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1MemoryProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1MemoryProvidersProviderIdPatchResponse, error)
 
-	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update Provider
+	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update memory provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29830,7 +29830,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/memory-providers/{provider_id} (the `UpdateProviderApiV1MemoryProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1MemoryProvidersProviderIdPatchParams, body UpdateProviderApiV1MemoryProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1MemoryProvidersProviderIdPatchResponse, error)
 
-	// TestProviderApiV1MemoryProvidersProviderIdTestPostWithResponse Test Provider
+	// TestProviderApiV1MemoryProvidersProviderIdTestPostWithResponse Test memory provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -29846,35 +29846,35 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
 	GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error)
 
-	// ListProvidersApiV1ModelProvidersGetWithResponse List Providers
+	// ListProvidersApiV1ModelProvidersGetWithResponse List model providers
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/model-providers (the `ListProvidersApiV1ModelProvidersGet` operationId).
 	ListProvidersApiV1ModelProvidersGetWithResponse(ctx context.Context, params *ListProvidersApiV1ModelProvidersGetParams, reqEditors ...RequestEditorFn) (*ListProvidersApiV1ModelProvidersGetResponse, error)
 
-	// CreateProviderApiV1ModelProvidersPostWithBodyWithResponse Create Provider
+	// CreateProviderApiV1ModelProvidersPostWithBodyWithResponse Create model provider
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/model-providers (the `CreateProviderApiV1ModelProvidersPost` operationId).
 	CreateProviderApiV1ModelProvidersPostWithBodyWithResponse(ctx context.Context, params *CreateProviderApiV1ModelProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProviderApiV1ModelProvidersPostResponse, error)
 
-	// CreateProviderApiV1ModelProvidersPostWithResponse Create Provider
+	// CreateProviderApiV1ModelProvidersPostWithResponse Create model provider
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/model-providers (the `CreateProviderApiV1ModelProvidersPost` operationId).
 	CreateProviderApiV1ModelProvidersPostWithResponse(ctx context.Context, params *CreateProviderApiV1ModelProvidersPostParams, body CreateProviderApiV1ModelProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProviderApiV1ModelProvidersPostResponse, error)
 
-	// GetProviderApiV1ModelProvidersProviderIdGetWithResponse Get Provider
+	// GetProviderApiV1ModelProvidersProviderIdGetWithResponse Get model provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/model-providers/{provider_id} (the `GetProviderApiV1ModelProvidersProviderIdGet` operationId).
 	GetProviderApiV1ModelProvidersProviderIdGetWithResponse(ctx context.Context, providerId string, params *GetProviderApiV1ModelProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*GetProviderApiV1ModelProvidersProviderIdGetResponse, error)
 
-	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update Provider
+	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update model provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29883,7 +29883,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/model-providers/{provider_id} (the `UpdateProviderApiV1ModelProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1ModelProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1ModelProvidersProviderIdPatchResponse, error)
 
-	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update Provider
+	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update model provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -29892,7 +29892,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/model-providers/{provider_id} (the `UpdateProviderApiV1ModelProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1ModelProvidersProviderIdPatchParams, body UpdateProviderApiV1ModelProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1ModelProvidersProviderIdPatchResponse, error)
 
-	// TestProviderApiV1ModelProvidersProviderIdTestPostWithResponse Test Provider
+	// TestProviderApiV1ModelProvidersProviderIdTestPostWithResponse Test model provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -30895,35 +30895,35 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/users/{user_id}/avatar (the `GetAvatarApiV1UsersUserIdAvatarGet` operationId).
 	GetAvatarApiV1UsersUserIdAvatarGetWithResponse(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*GetAvatarApiV1UsersUserIdAvatarGetResponse, error)
 
-	// ListProvidersApiV1WebProvidersGetWithResponse List Providers
+	// ListProvidersApiV1WebProvidersGetWithResponse List web providers
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/web-providers (the `ListProvidersApiV1WebProvidersGet` operationId).
 	ListProvidersApiV1WebProvidersGetWithResponse(ctx context.Context, params *ListProvidersApiV1WebProvidersGetParams, reqEditors ...RequestEditorFn) (*ListProvidersApiV1WebProvidersGetResponse, error)
 
-	// CreateProviderApiV1WebProvidersPostWithBodyWithResponse Create Provider
+	// CreateProviderApiV1WebProvidersPostWithBodyWithResponse Create web provider
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/web-providers (the `CreateProviderApiV1WebProvidersPost` operationId).
 	CreateProviderApiV1WebProvidersPostWithBodyWithResponse(ctx context.Context, params *CreateProviderApiV1WebProvidersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProviderApiV1WebProvidersPostResponse, error)
 
-	// CreateProviderApiV1WebProvidersPostWithResponse Create Provider
+	// CreateProviderApiV1WebProvidersPostWithResponse Create web provider
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/web-providers (the `CreateProviderApiV1WebProvidersPost` operationId).
 	CreateProviderApiV1WebProvidersPostWithResponse(ctx context.Context, params *CreateProviderApiV1WebProvidersPostParams, body CreateProviderApiV1WebProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProviderApiV1WebProvidersPostResponse, error)
 
-	// GetProviderApiV1WebProvidersProviderIdGetWithResponse Get Provider
+	// GetProviderApiV1WebProvidersProviderIdGetWithResponse Get web provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/web-providers/{provider_id} (the `GetProviderApiV1WebProvidersProviderIdGet` operationId).
 	GetProviderApiV1WebProvidersProviderIdGetWithResponse(ctx context.Context, providerId string, params *GetProviderApiV1WebProvidersProviderIdGetParams, reqEditors ...RequestEditorFn) (*GetProviderApiV1WebProvidersProviderIdGetResponse, error)
 
-	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update Provider
+	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update web provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -30932,7 +30932,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/web-providers/{provider_id} (the `UpdateProviderApiV1WebProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1WebProvidersProviderIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1WebProvidersProviderIdPatchResponse, error)
 
-	// UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update Provider
+	// UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update web provider
 	//
 	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 	//
@@ -30941,7 +30941,7 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/web-providers/{provider_id} (the `UpdateProviderApiV1WebProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1WebProvidersProviderIdPatchParams, body UpdateProviderApiV1WebProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1WebProvidersProviderIdPatchResponse, error)
 
-	// TestProviderApiV1WebProvidersProviderIdTestPostWithResponse Test Provider
+	// TestProviderApiV1WebProvidersProviderIdTestPostWithResponse Test web provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -47383,7 +47383,7 @@ func (c *ClientWithResponses) ListToolsApiV1ConnectionsConnectionIdToolsGetWithR
 	return ParseListToolsApiV1ConnectionsConnectionIdToolsGetResponse(rsp)
 }
 
-// ListProvidersApiV1ConnectorProvidersGetWithResponse List Providers
+// ListProvidersApiV1ConnectorProvidersGetWithResponse List connector providers
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -47396,7 +47396,7 @@ func (c *ClientWithResponses) ListProvidersApiV1ConnectorProvidersGetWithRespons
 	return ParseListProvidersApiV1ConnectorProvidersGetResponse(rsp)
 }
 
-// CreateProviderApiV1ConnectorProvidersPostWithBodyWithResponse Create Provider
+// CreateProviderApiV1ConnectorProvidersPostWithBodyWithResponse Create connector provider
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -47409,7 +47409,7 @@ func (c *ClientWithResponses) CreateProviderApiV1ConnectorProvidersPostWithBodyW
 	return ParseCreateProviderApiV1ConnectorProvidersPostResponse(rsp)
 }
 
-// CreateProviderApiV1ConnectorProvidersPostWithResponse Create Provider
+// CreateProviderApiV1ConnectorProvidersPostWithResponse Create connector provider
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -47422,7 +47422,7 @@ func (c *ClientWithResponses) CreateProviderApiV1ConnectorProvidersPostWithRespo
 	return ParseCreateProviderApiV1ConnectorProvidersPostResponse(rsp)
 }
 
-// GetProviderApiV1ConnectorProvidersProviderIdGetWithResponse Get Provider
+// GetProviderApiV1ConnectorProvidersProviderIdGetWithResponse Get connector provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -47435,7 +47435,7 @@ func (c *ClientWithResponses) GetProviderApiV1ConnectorProvidersProviderIdGetWit
 	return ParseGetProviderApiV1ConnectorProvidersProviderIdGetResponse(rsp)
 }
 
-// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update Provider
+// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update connector provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -47450,7 +47450,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1ConnectorProvidersProviderIdPat
 	return ParseUpdateProviderApiV1ConnectorProvidersProviderIdPatchResponse(rsp)
 }
 
-// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update Provider
+// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update connector provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -47504,7 +47504,7 @@ func (c *ClientWithResponses) ListActionsApiV1ConnectorProvidersProviderIdAppsAp
 	return ParseListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponse(rsp)
 }
 
-// TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse Test Provider
+// TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse Test connector provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -47517,7 +47517,7 @@ func (c *ClientWithResponses) TestProviderApiV1ConnectorProvidersProviderIdTestP
 	return ParseTestProviderApiV1ConnectorProvidersProviderIdTestPostResponse(rsp)
 }
 
-// ListProvidersApiV1EnvironmentProvidersGetWithResponse List Providers
+// ListProvidersApiV1EnvironmentProvidersGetWithResponse List environment providers
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -47530,7 +47530,7 @@ func (c *ClientWithResponses) ListProvidersApiV1EnvironmentProvidersGetWithRespo
 	return ParseListProvidersApiV1EnvironmentProvidersGetResponse(rsp)
 }
 
-// CreateProviderApiV1EnvironmentProvidersPostWithBodyWithResponse Create Provider
+// CreateProviderApiV1EnvironmentProvidersPostWithBodyWithResponse Create environment provider
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -47543,7 +47543,7 @@ func (c *ClientWithResponses) CreateProviderApiV1EnvironmentProvidersPostWithBod
 	return ParseCreateProviderApiV1EnvironmentProvidersPostResponse(rsp)
 }
 
-// CreateProviderApiV1EnvironmentProvidersPostWithResponse Create Provider
+// CreateProviderApiV1EnvironmentProvidersPostWithResponse Create environment provider
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -47556,7 +47556,7 @@ func (c *ClientWithResponses) CreateProviderApiV1EnvironmentProvidersPostWithRes
 	return ParseCreateProviderApiV1EnvironmentProvidersPostResponse(rsp)
 }
 
-// GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get Provider
+// GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get environment provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -47569,7 +47569,7 @@ func (c *ClientWithResponses) GetProviderApiV1EnvironmentProvidersProviderIdGetW
 	return ParseGetProviderApiV1EnvironmentProvidersProviderIdGetResponse(rsp)
 }
 
-// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update Provider
+// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update environment provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -47584,7 +47584,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1EnvironmentProvidersProviderIdP
 	return ParseUpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse(rsp)
 }
 
-// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update Provider
+// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update environment provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -47599,7 +47599,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1EnvironmentProvidersProviderIdP
 	return ParseUpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse(rsp)
 }
 
-// TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test Provider
+// TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test environment provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -48266,7 +48266,7 @@ func (c *ClientWithResponses) RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRe
 	return ParseRestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostResponse(rsp)
 }
 
-// ListProvidersApiV1MemoryProvidersGetWithResponse List Providers
+// ListProvidersApiV1MemoryProvidersGetWithResponse List memory providers
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -48279,7 +48279,7 @@ func (c *ClientWithResponses) ListProvidersApiV1MemoryProvidersGetWithResponse(c
 	return ParseListProvidersApiV1MemoryProvidersGetResponse(rsp)
 }
 
-// CreateProviderApiV1MemoryProvidersPostWithBodyWithResponse Create Provider
+// CreateProviderApiV1MemoryProvidersPostWithBodyWithResponse Create memory provider
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -48292,7 +48292,7 @@ func (c *ClientWithResponses) CreateProviderApiV1MemoryProvidersPostWithBodyWith
 	return ParseCreateProviderApiV1MemoryProvidersPostResponse(rsp)
 }
 
-// CreateProviderApiV1MemoryProvidersPostWithResponse Create Provider
+// CreateProviderApiV1MemoryProvidersPostWithResponse Create memory provider
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -48305,7 +48305,7 @@ func (c *ClientWithResponses) CreateProviderApiV1MemoryProvidersPostWithResponse
 	return ParseCreateProviderApiV1MemoryProvidersPostResponse(rsp)
 }
 
-// GetProviderApiV1MemoryProvidersProviderIdGetWithResponse Get Provider
+// GetProviderApiV1MemoryProvidersProviderIdGetWithResponse Get memory provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -48318,7 +48318,7 @@ func (c *ClientWithResponses) GetProviderApiV1MemoryProvidersProviderIdGetWithRe
 	return ParseGetProviderApiV1MemoryProvidersProviderIdGetResponse(rsp)
 }
 
-// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update Provider
+// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update memory provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -48333,7 +48333,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1MemoryProvidersProviderIdPatchW
 	return ParseUpdateProviderApiV1MemoryProvidersProviderIdPatchResponse(rsp)
 }
 
-// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update Provider
+// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update memory provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -48348,7 +48348,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1MemoryProvidersProviderIdPatchW
 	return ParseUpdateProviderApiV1MemoryProvidersProviderIdPatchResponse(rsp)
 }
 
-// TestProviderApiV1MemoryProvidersProviderIdTestPostWithResponse Test Provider
+// TestProviderApiV1MemoryProvidersProviderIdTestPostWithResponse Test memory provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -48376,7 +48376,7 @@ func (c *ClientWithResponses) GetModelCatalogApiV1ModelCatalogGetWithResponse(ct
 	return ParseGetModelCatalogApiV1ModelCatalogGetResponse(rsp)
 }
 
-// ListProvidersApiV1ModelProvidersGetWithResponse List Providers
+// ListProvidersApiV1ModelProvidersGetWithResponse List model providers
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -48389,7 +48389,7 @@ func (c *ClientWithResponses) ListProvidersApiV1ModelProvidersGetWithResponse(ct
 	return ParseListProvidersApiV1ModelProvidersGetResponse(rsp)
 }
 
-// CreateProviderApiV1ModelProvidersPostWithBodyWithResponse Create Provider
+// CreateProviderApiV1ModelProvidersPostWithBodyWithResponse Create model provider
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -48402,7 +48402,7 @@ func (c *ClientWithResponses) CreateProviderApiV1ModelProvidersPostWithBodyWithR
 	return ParseCreateProviderApiV1ModelProvidersPostResponse(rsp)
 }
 
-// CreateProviderApiV1ModelProvidersPostWithResponse Create Provider
+// CreateProviderApiV1ModelProvidersPostWithResponse Create model provider
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -48415,7 +48415,7 @@ func (c *ClientWithResponses) CreateProviderApiV1ModelProvidersPostWithResponse(
 	return ParseCreateProviderApiV1ModelProvidersPostResponse(rsp)
 }
 
-// GetProviderApiV1ModelProvidersProviderIdGetWithResponse Get Provider
+// GetProviderApiV1ModelProvidersProviderIdGetWithResponse Get model provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -48428,7 +48428,7 @@ func (c *ClientWithResponses) GetProviderApiV1ModelProvidersProviderIdGetWithRes
 	return ParseGetProviderApiV1ModelProvidersProviderIdGetResponse(rsp)
 }
 
-// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update Provider
+// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update model provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -48443,7 +48443,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1ModelProvidersProviderIdPatchWi
 	return ParseUpdateProviderApiV1ModelProvidersProviderIdPatchResponse(rsp)
 }
 
-// UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update Provider
+// UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update model provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -48458,7 +48458,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1ModelProvidersProviderIdPatchWi
 	return ParseUpdateProviderApiV1ModelProvidersProviderIdPatchResponse(rsp)
 }
 
-// TestProviderApiV1ModelProvidersProviderIdTestPostWithResponse Test Provider
+// TestProviderApiV1ModelProvidersProviderIdTestPostWithResponse Test model provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -50241,7 +50241,7 @@ func (c *ClientWithResponses) GetAvatarApiV1UsersUserIdAvatarGetWithResponse(ctx
 	return ParseGetAvatarApiV1UsersUserIdAvatarGetResponse(rsp)
 }
 
-// ListProvidersApiV1WebProvidersGetWithResponse List Providers
+// ListProvidersApiV1WebProvidersGetWithResponse List web providers
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -50254,7 +50254,7 @@ func (c *ClientWithResponses) ListProvidersApiV1WebProvidersGetWithResponse(ctx 
 	return ParseListProvidersApiV1WebProvidersGetResponse(rsp)
 }
 
-// CreateProviderApiV1WebProvidersPostWithBodyWithResponse Create Provider
+// CreateProviderApiV1WebProvidersPostWithBodyWithResponse Create web provider
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -50267,7 +50267,7 @@ func (c *ClientWithResponses) CreateProviderApiV1WebProvidersPostWithBodyWithRes
 	return ParseCreateProviderApiV1WebProvidersPostResponse(rsp)
 }
 
-// CreateProviderApiV1WebProvidersPostWithResponse Create Provider
+// CreateProviderApiV1WebProvidersPostWithResponse Create web provider
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -50280,7 +50280,7 @@ func (c *ClientWithResponses) CreateProviderApiV1WebProvidersPostWithResponse(ct
 	return ParseCreateProviderApiV1WebProvidersPostResponse(rsp)
 }
 
-// GetProviderApiV1WebProvidersProviderIdGetWithResponse Get Provider
+// GetProviderApiV1WebProvidersProviderIdGetWithResponse Get web provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -50293,7 +50293,7 @@ func (c *ClientWithResponses) GetProviderApiV1WebProvidersProviderIdGetWithRespo
 	return ParseGetProviderApiV1WebProvidersProviderIdGetResponse(rsp)
 }
 
-// UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update Provider
+// UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update web provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -50308,7 +50308,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1WebProvidersProviderIdPatchWith
 	return ParseUpdateProviderApiV1WebProvidersProviderIdPatchResponse(rsp)
 }
 
-// UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update Provider
+// UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update web provider
 //
 // A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
 //
@@ -50323,7 +50323,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1WebProvidersProviderIdPatchWith
 	return ParseUpdateProviderApiV1WebProvidersProviderIdPatchResponse(rsp)
 }
 
-// TestProviderApiV1WebProvidersProviderIdTestPostWithResponse Test Provider
+// TestProviderApiV1WebProvidersProviderIdTestPostWithResponse Test web provider
 //
 // Returns a wrapper object for the known response body format(s).
 //
