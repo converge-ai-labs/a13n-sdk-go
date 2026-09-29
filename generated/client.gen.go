@@ -2950,6 +2950,7 @@ type ModelConfigInput struct {
 	MaxTokens       nullable.Nullable[int]            `json:"max_tokens,omitempty"`
 	ModelApi        string                            `json:"model_api"`
 	ModelName       string                            `json:"model_name"`
+	Settings        *map[string]JsonValue             `json:"settings,omitempty"`
 	Temperature     nullable.Nullable[float32]        `json:"temperature,omitempty"`
 	TopP            nullable.Nullable[float32]        `json:"top_p,omitempty"`
 }
@@ -2963,6 +2964,7 @@ type ModelConfigOutput struct {
 	MaxTokens       nullable.Nullable[int]             `json:"max_tokens,omitempty"`
 	ModelApi        string                             `json:"model_api"`
 	ModelName       string                             `json:"model_name"`
+	Settings        *map[string]JsonValue              `json:"settings,omitempty"`
 	Temperature     nullable.Nullable[float32]         `json:"temperature,omitempty"`
 	TopP            nullable.Nullable[float32]         `json:"top_p,omitempty"`
 }
