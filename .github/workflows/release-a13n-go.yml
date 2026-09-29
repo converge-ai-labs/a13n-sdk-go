@@ -20,7 +20,7 @@ concurrency:
 jobs:
   validate:
     name: Prepare a13n for Go release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.version.outputs.version }}
       commit: ${{ steps.version.outputs.commit }}
@@ -47,7 +47,7 @@ jobs:
   publish-tag:
     name: Publish Go module tag
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: sdk-go-github
     permissions:
       contents: write
@@ -75,7 +75,7 @@ jobs:
   create-release:
     name: Create GitHub Release
     needs: [validate, publish-tag]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
       pull-requests: read

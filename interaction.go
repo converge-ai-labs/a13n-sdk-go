@@ -43,6 +43,7 @@ type StartOptions struct {
 	Kind            *generated.NewThreadKind
 	McpHeaders      *generated.McpHeaders
 	Memories        *[]generated.MemoryMount
+	MessageHistory  *generated.MessageHistory
 	Options         *generated.RunOptionsInput
 	SessionId       nullable.Nullable[string]
 }
@@ -137,7 +138,8 @@ func (a Agent) StartPayload(ctx context.Context, payload generated.MessagePayloa
 	}
 	body := generated.NewThread{AgentId: a.ID, Payload: payload, AgentRevisionId: options.AgentRevisionId,
 		Delivery: options.Delivery, Environments: options.Environments, Kind: options.Kind,
-		McpHeaders: options.McpHeaders, Memories: options.Memories, Options: options.Options, SessionId: options.SessionId}
+		McpHeaders: options.McpHeaders, Memories: options.Memories, MessageHistory: options.MessageHistory,
+		Options: options.Options, SessionId: options.SessionId}
 	observation, cancel := observationContext(ctx)
 	r, err := a.client.api.CreateThreadApiV1ThreadsPost(observation, &generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: options.RequestKey, XWorkspaceID: a.client.semanticWorkspace()}, body)
 	result, err := jsonResult[generated.Submitted](a.client, r, err, 200, 201)
@@ -357,7 +359,7 @@ func waitFor[T any](ctx context.Context, c *Client, get func(context.Context) (R
 
 // Resume requests a distinct successor Run and returns it with original status
 // and headers. It never mutates the bound predecessor's identity.
-func (r Run) Resume(ctx context.Context, answers generated.ResumeRequest, requestKey string) (Run, Result[generated.RunView], error) {
+func (r Run) Resume(ctx context.Context, request generated.Resume, requestKey string) (Run, Result[generated.RunView], error) {
 	var zero Result[generated.RunView]
 	if err := validateClient(r.client, r.ID); err != nil {
 		return Run{}, zero, err
@@ -365,7 +367,7 @@ func (r Run) Resume(ctx context.Context, answers generated.ResumeRequest, reques
 	if requestKey == "" {
 		return Run{}, zero, errors.New("Idempotency-Key is required")
 	}
-	resp, err := r.client.api.ResumeRunApiV1RunsRunIdResumePost(ctx, r.ID, &generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: requestKey, XWorkspaceID: r.client.semanticWorkspace()}, answers)
+	resp, err := r.client.api.ResumeRunApiV1RunsRunIdResumePost(ctx, r.ID, &generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: requestKey, XWorkspaceID: r.client.semanticWorkspace()}, request)
 	result, err := jsonResult[generated.RunView](r.client, resp, err, 200, 201)
 	if err != nil {
 		return Run{}, result, err

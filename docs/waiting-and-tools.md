@@ -1,24 +1,22 @@
-# Waiting, approvals and client tools
+# Waiting, approvals and external calls
 
-A Run can stop at `waiting` with pending requests. This is not a completed answer or permission for the SDK to approve anything. Inspect what the Service actually asked before choosing the next action. With `a13n`, `generated`, `encoding/json`, `fmt` and `io` imported:
+A Run that returns `waiting` has not completed. Read its `Pending()` snapshot before deciding what the Service needs. There are **two arrays**, not a generic list: `Approvals` authorizes or denies server-side work; `Calls` needs a result from a client tool, a human-operated tool or a built-in question. Each item has a `ToolCallId`, `ToolName` and arguments. Display them to an authorized person or dispatch them only to a known tool. With `a13n`, `generated`, `encoding/json`, `fmt` and `io` imported:
 
 ```go
-func showPending(result a13n.RunOutcome, out io.Writer) ([]generated.PendingItem, error) {
+func showPending(result a13n.RunOutcome, out io.Writer) (generated.Pending, error) {
     if result.Status() != generated.RunStatusWaiting {
-        return nil, fmt.Errorf("run %s is %s, not waiting", result.Run.ID, result.Status())
+        return generated.Pending{}, fmt.Errorf("run %s is %s, not waiting", result.Run.ID, result.Status())
     }
     pending, err := result.Pending().Get()
-    if err != nil { return nil, err }
-    if err := json.NewEncoder(out).Encode(pending.Items); err != nil { return nil, err }
-    return pending.Items, nil
+    if err != nil { return generated.Pending{}, err }
+    if err := json.NewEncoder(out).Encode(pending); err != nil { return generated.Pending{}, err }
+    return pending, nil
 }
 ```
 
-The printed items carry a `kind`, `tool_call_id`, `tool_name`, arguments and optional presentation. Show the relevant information to an authorized reviewer or your client-tool implementation; do not assume `Items[0]` exists or that every kind accepts the same answer. `PendingKindApproval` accepts **approve or reject**, `PendingKindClientTool` accepts **complete**, and a question-only `PendingKindUserInput` wait continues with an ordinary message rather than a structured answer.
+## Submit a reviewer's decision
 
-## Submit a reviewer's approval decision
-
-This helper takes the decision from your application's reviewer workflow; it does **not** decide for them. It deliberately handles only one approval item. If several requests are pending, collect a decision for **each** before constructing one answer batch: omitted approvals are treated as rejections by the Service. Import `context`, `crypto/rand`, `fmt`, `a13n`, `generated` and `nullable`:
+The reviewer supplies `approved` and `reason`; this helper does not decide for them. For clarity it accepts *exactly one* approval and no calls. An actual multi-item wait needs a decision or result for **every** ID in the respective arrays. Import `context`, `crypto/rand`, `fmt`, `a13n`, `generated` and `nullable`:
 
 ```go
 func resumeSingleApproval(ctx context.Context, waiting a13n.RunOutcome, approved bool, reason string) (a13n.RunOutcome, error) {
@@ -27,28 +25,29 @@ func resumeSingleApproval(ctx context.Context, waiting a13n.RunOutcome, approved
     }
     pending, err := waiting.Pending().Get()
     if err != nil { return a13n.RunOutcome{}, err }
-    if len(pending.Items) != 1 || pending.Items[0].Kind != generated.PendingKindApproval {
-        return a13n.RunOutcome{}, fmt.Errorf("expected exactly one approval request")
+    if len(pending.Approvals) != 1 || len(pending.Calls) != 0 {
+        return a13n.RunOutcome{}, fmt.Errorf("expected one approval and no external calls")
     }
-    callID := pending.Items[0].ToolCallId
-    var answer generated.Answer
+    id := pending.Approvals[0].ToolCallId
+    var decision generated.ApprovalDecision
     if approved {
-        err = answer.FromApprove(generated.Approve{Action: generated.ApproveActionApprove, ToolCallId: callID})
+        err = decision.FromApprove(generated.Approve{Action: generated.ApproveActionApprove})
     } else {
-        err = answer.FromReject(generated.Reject{
-            Action: generated.RejectActionReject, ToolCallId: callID,
-            Reason: nullable.NewNullableWithValue(reason),
+        err = decision.FromDeny(generated.Deny{
+            Action: generated.DenyActionDeny, Reason: nullable.NewNullableWithValue(reason),
         })
     }
     if err != nil { return a13n.RunOutcome{}, err }
-    answers := []generated.Answer{answer}
-    successor, _, err := waiting.Run.Resume(ctx, generated.ResumeRequest{Answers: &answers}, rand.Text())
+    successor, _, err := waiting.Run.Resume(ctx, generated.Resume{
+        Approvals: map[string]generated.ApprovalDecision{id: decision},
+        Calls: map[string]generated.CallResult{},
+    }, rand.Text())
     if err != nil { return a13n.RunOutcome{}, err }
     return successor.Wait(ctx)
 }
 ```
 
-The returned outcome belongs to a **different** Run. For example, after your reviewer supplies `approved` and `reason`, display that successor's committed messages (imports: `context`, `encoding/json`, `fmt`, `io`, `a13n`, `generated`):
+The returned outcome is a **different Run**. After the reviewer decides, display its committed items only if it completed (imports: `context`, `encoding/json`, `fmt`, `io`, `a13n`, `generated`):
 
 ```go
 func displayReviewedResult(ctx context.Context, waiting a13n.RunOutcome, approved bool, reason string, out io.Writer) error {
@@ -63,52 +62,45 @@ func displayReviewedResult(ctx context.Context, waiting a13n.RunOutcome, approve
 }
 ```
 
-Do not label a `waiting`/`failed`/`cancelled` successor as completed. Resume answers must target the exact waiting head; stale decisions can be rejected after another actor changes it. Keep the request key for reconciliation if the resume response is lost.
+The SDK passes your complete batch unchanged. Service checks the waiting Run is still the head and all pending IDs are covered; an expired decision conflicts rather than approving a different wait.
 
-## Complete a client tool with a real result
+## Complete a known client tool and add user input atomically
 
-The client tool implementation supplies its computed result; do not send a fabricated approval-shaped value. This helper requires exactly one `client_tool` item **with the expected tool name**. Its `invoke` callback must validate the actual arguments before performing work and return a JSON-compatible result. It imports `context`, `crypto/rand`, `fmt`, `a13n` and `generated`:
+For a `Calls` item, check its name and validate arguments against your *own* allowed tool implementation before executing it. This example accepts exactly one call named `echo_text` and no approvals, then sends its result **together with** an optional ordinary user message. Import `context`, `crypto/rand`, `fmt`, `a13n`, `generated` and `nullable`:
 
 ```go
-func resumeSingleClientTool(ctx context.Context, waiting a13n.RunOutcome, expectedToolName string, invoke func(context.Context, map[string]generated.JsonValue) (generated.JsonValue, error)) (a13n.RunOutcome, error) {
+func resumeEcho(ctx context.Context, waiting a13n.RunOutcome, additionalText string) (a13n.RunOutcome, error) {
     if waiting.Status() != generated.RunStatusWaiting {
         return a13n.RunOutcome{}, fmt.Errorf("run %s is not waiting", waiting.Run.ID)
     }
     pending, err := waiting.Pending().Get()
     if err != nil { return a13n.RunOutcome{}, err }
-    if len(pending.Items) != 1 || pending.Items[0].Kind != generated.PendingKindClientTool || pending.Items[0].ToolName != expectedToolName {
-        return a13n.RunOutcome{}, fmt.Errorf("expected exactly one %q client tool", expectedToolName)
+    if len(pending.Approvals) != 0 || len(pending.Calls) != 1 || pending.Calls[0].ToolName != "echo_text" {
+        return a13n.RunOutcome{}, fmt.Errorf("expected one echo_text call and no approvals")
     }
-    toolResult, err := invoke(ctx, pending.Items[0].Arguments)
-    if err != nil { return a13n.RunOutcome{}, err }
-    var answer generated.Answer
-    err = answer.FromComplete(generated.Complete{
-        Action: generated.CompleteActionComplete,
-        ToolCallId: pending.Items[0].ToolCallId,
-        Result: toolResult,
+    text, ok := pending.Calls[0].Arguments["text"].(string)
+    if !ok || text == "" { return a13n.RunOutcome{}, fmt.Errorf("echo_text requires nonempty text") }
+    var result generated.CallResult
+    err = result.FromReturned(generated.Returned{
+        Status: generated.ReturnedStatusReturned,
+        Value: map[string]string{"text": text},
     })
     if err != nil { return a13n.RunOutcome{}, err }
-    answers := []generated.Answer{answer}
-    successor, _, err := waiting.Run.Resume(ctx, generated.ResumeRequest{Answers: &answers}, rand.Text())
+    request := generated.Resume{
+        Approvals: map[string]generated.ApprovalDecision{},
+        Calls: map[string]generated.CallResult{pending.Calls[0].ToolCallId: result},
+    }
+    if additionalText != "" {
+        request.Input = nullable.NewNullableWithValue(a13n.TextPayload(additionalText))
+    }
+    successor, _, err := waiting.Run.Resume(ctx, request, rand.Text())
     if err != nil { return a13n.RunOutcome{}, err }
     return successor.Wait(ctx)
 }
 ```
 
-For example, if the Agent explicitly defines a client tool named `echo_text`, this implementation only accepts a string `text` argument and returns that validated value (imports: `context`, `fmt`, `a13n`, `generated`):
+For another tool, use its allowlisted name, validate its schema, and return its *actual* JSON-compatible result. A tool failure is `CallResult.FromFailed(generated.Failed{Status: generated.FailedStatusFailed, Message: "…"})`, not a returned business object with an `error` field. `Resume.Input` accepts a typed `generated.MessagePayload` (text, JSON, Asset or URL parts) **in the same resume request** as all required decisions/results; it is *additional* user content, not a substitute for a missing call result or an approval. There is no separate `Send` needed to attach that input to this successor. Save the resume request key and body to reconcile an unknown outcome instead of issuing a different answer.
 
-```go
-func echoText(ctx context.Context, args map[string]generated.JsonValue) (generated.JsonValue, error) {
-    text, ok := args["text"].(string)
-    if !ok || text == "" { return nil, fmt.Errorf("echo_text requires a nonempty text argument") }
-    return map[string]string{"text": text}, nil
-}
+## Reply to a built-in question
 
-func resumeEcho(ctx context.Context, waiting a13n.RunOutcome) (a13n.RunOutcome, error) {
-    return resumeSingleClientTool(ctx, waiting, "echo_text", echoText)
-}
-```
-
-Substitute your own allowlisted tool name and schema-checked implementation; do not pass arbitrary `toolResult` or execute based solely on an untrusted `tool_name`. A resumed result may wait again, so inspect its status and `Run.Items` before showing success.
-
-For a **question-only** wait (every pending item is `user_input`), submit the person's text with `client.Agent(agentID).Send(ctx, threadID, text, a13n.SendOptions{RequestKey: rand.Text()})` and read that interaction's `Result(ctx)`. Ordinary text does *not* grant an approval or complete a client tool. Multiple kinds and multiple items need application-specific routing; use the [Service's Run contract](../contract/semantics/runs.md) rather than guessing a default answer.
+A built-in `ask_user_question` also appears in `Pending.Calls`. Render its arguments to the person, collect their answer, then submit it as a **returned call value on the exact waiting Run**. It is not an ordinary `Agent.Send`, which remains queued while the Run waits. The native answer value has an `answers` map keyed by question text and, optionally, a general `response`. Build that JSON value from the person's selections, put it in a `generated.Returned` and fill `Resume.Calls` by `ToolCallId` as above. The Service checks it against the question's original arguments. Intentional skipping uses `CallResult.FromFailed` with a meaningful message. For mixed or multiple pending items, supply **both complete maps**; omitted items have no default. Read the [Service Run contract](../contract/semantics/runs.md#waiting-interrupt-and-fork) for exact answer semantics.

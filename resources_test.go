@@ -447,7 +447,7 @@ func TestRunResumeReturnsDistinctSuccessor(t *testing.T) {
 		}
 		return coverageResponse(200, runView("run", "cancelled", "thr"))
 	})
-	successor, receipt, err := client.Run("run").Resume(context.Background(), generated.ResumeRequest{}, "answer")
+	successor, receipt, err := client.Run("run").Resume(context.Background(), generated.Resume{Approvals: map[string]generated.ApprovalDecision{}, Calls: map[string]generated.CallResult{}}, "answer")
 	if err != nil || successor.ID != "successor" || receipt.StatusCode != 201 {
 		t.Fatal(successor, receipt, err)
 	}

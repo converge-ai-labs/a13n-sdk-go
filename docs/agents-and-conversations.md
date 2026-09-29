@@ -46,6 +46,34 @@ func firstTurn(client *a13n.Client, agentID string) (string, generated.RunItems,
 
 Display `items.Items` according to the item's kind; `items.Run` identifies the Run they belong to. Save the returned Thread ID for follow-up. `result.Output()` is optional—even a completed conversation can have committed messages without it. If the result is `waiting`, use [waiting and tools](waiting-and-tools.md) instead of presenting it as finished.
 
+## Start from an imported conversation
+
+If another Pydantic AI application already completed a conversation, pass its public `ModelMessage` JSON objects on **new Thread creation**. This is not a prompt string or Harness checkpoint. The Service accepts completed user/model text and closed tool-call/JSON-result exchanges; it validates the actual format and limits (at most 256 messages and 256 KiB normalized JSON). The SDK intentionally forwards JSON objects without inventing another Pydantic AI type hierarchy or filtering content locally. This example imports `context`, `crypto/rand`, `fmt`, `a13n` and `generated`:
+
+```go
+func importConversation(ctx context.Context, client *a13n.Client, agentID string) (string, a13n.RunOutcome, error) {
+    history := generated.MessageHistory{
+        {"kind": "request", "parts": []map[string]any{{"part_kind": "user-prompt", "content": "What changed?"}}},
+        {"kind": "response", "parts": []map[string]any{{"part_kind": "tool-call", "tool_name": "lookup", "tool_call_id": "call-1", "args": map[string]any{"key": "x"}}}},
+        {"kind": "request", "parts": []map[string]any{{"part_kind": "tool-return", "tool_name": "lookup", "tool_call_id": "call-1", "content": map[string]any{"value": "ok"}}}},
+        {"kind": "response", "parts": []map[string]any{{"part_kind": "text", "content": "The API changed."}}},
+    }
+    interaction, err := client.Agent(agentID).Start(ctx, "Continue from this history.",
+        a13n.StartOptions{RequestKey: rand.Text(), MessageHistory: &history})
+    if err != nil { return "", a13n.RunOutcome{}, err }
+    defer interaction.Close()
+    view, err := interaction.Thread.Get(ctx)
+    if err != nil { return "", a13n.RunOutcome{}, err }
+    if len(view.Value.MessageHistory) != len(history) {
+        return "", a13n.RunOutcome{}, fmt.Errorf("imported history length changed")
+    }
+    result, err := interaction.Result(ctx)
+    return interaction.Thread.ID, result, err
+}
+```
+
+Inspect `result.Status()` and `result.Run.Items(ctx)` before presenting an answer. `Thread.Get(ctx).Value.MessageHistory` reads back the immutable seed; it is not an unbounded transcript of later turns. Omit `MessageHistory` to start empty, or pass a pointer to an empty slice to send explicit `[]`. Import is only available on `Start`/`StartPayload`, not on `Send`, `Resume` or fork; later turns reuse the Thread's context without reseeding it. Use the **same** history and request key to replay an uncertain create. Invalid/oversized history is rejected by Service; don't truncate it silently on the client.
+
 ## Continue a saved Thread
 
 Use an explicitly chosen Agent again; a Thread does not have a permanent Agent. Use a *new* context and request key for a new message:

@@ -40,8 +40,20 @@ func required(name string) string {
 func key() string           { return fmt.Sprintf("go-sdk-%d", time.Now().UnixNano()) }
 func ptr[T any](value T) *T { return &value }
 
+// Imported history is the upstream Pydantic AI JSON shape, not an SDK-specific
+// prompt transcript. Only the new Thread receives it; later Sends do not reseed.
+func importedHistory() generated.MessageHistory {
+	return generated.MessageHistory{
+		{"kind": "request", "parts": []map[string]any{{"part_kind": "user-prompt", "content": "What changed?"}}},
+		{"kind": "response", "parts": []map[string]any{{"part_kind": "text", "content": "The API changed."}}},
+	}
+}
+
 func offline() {
-	var submitted, streams int
+	var submitted, continued, resumeCalls, streams int
+	history := importedHistory()
+	expectedHistory := must(json.Marshal(history))
+	var resumeBody []byte
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Request-ID", "consumer-request")
 		w.Header().Set("Content-Type", "application/json")
@@ -54,8 +66,35 @@ func offline() {
 			check(r.Header.Get("Idempotency-Key") == "offline", "caller key")
 			check(r.Header.Get("Authorization") == "Bearer offline", "auth")
 			check(r.Header.Get("X-Workspace-ID") == "", "API-key scope implicit")
+			var body map[string]json.RawMessage
+			check(json.NewDecoder(r.Body).Decode(&body) == nil && string(body["message_history"]) == string(expectedHistory), "installed imported history wire")
+			if submitted == 1 {
+				w.WriteHeader(201)
+			} else {
+				w.WriteHeader(200)
+			}
+			_, _ = io.WriteString(w, `{"thread":{"id":"thr"},"entry":{"id":"ent","thread_id":"thr"},"run":null}`)
+		case r.URL.Path == "/api/v1/threads/thr/inbox" && r.Method == "POST":
+			continued++
+			var body map[string]json.RawMessage
+			check(json.NewDecoder(r.Body).Decode(&body) == nil, "decode continuation")
+			_, reseeded := body["message_history"]
+			check(!reseeded, "continuation must not re-import history")
 			w.WriteHeader(201)
 			_, _ = io.WriteString(w, `{"thread":{"id":"thr"},"entry":{"id":"ent","thread_id":"thr"},"run":null}`)
+		case r.URL.Path == "/api/v1/threads/thr" && r.Method == "GET":
+			encoded := must(json.Marshal(map[string]any{"id": "thr", "message_history": history}))
+			_, _ = w.Write(encoded)
+		case r.URL.Path == "/api/v1/runs/wait/resume":
+			resumeCalls++
+			body := must(io.ReadAll(r.Body))
+			check(r.Header.Get("Idempotency-Key") == "resume-offline" && string(body) == string(resumeBody), "installed atomic resume maps and input")
+			if resumeCalls == 1 {
+				w.WriteHeader(201)
+			} else {
+				w.WriteHeader(200)
+			}
+			_, _ = io.WriteString(w, `{"id":"successor","thread_id":"thr","status":"accepted"}`)
 		case r.URL.Path == "/api/v1/threads/thr/inbox/ent":
 			_, _ = io.WriteString(w, `{"id":"ent","thread_id":"thr","status":"consumed","assigned_run_id":"run"}`)
 		case r.URL.Path == "/api/v1/runs/run":
@@ -92,14 +131,37 @@ func offline() {
 	client := must(a13n.NewClient(server.URL, a13n.NewSecret("offline"), nil))
 	defer client.Close()
 	ctx := context.Background()
-	interaction := must(client.Agent("agent").Start(ctx, "Hello", a13n.StartOptions{RequestKey: "offline"}))
+	interaction := must(client.Agent("agent").Start(ctx, "Hello", a13n.StartOptions{RequestKey: "offline", MessageHistory: &history}))
 	defer interaction.Close()
 	check(interaction.Run == nil && interaction.Receipt.StatusCode == 201, "queued receipt")
 	outcome := must(interaction.Result(ctx))
 	check(outcome.Run.ID == "run" && outcome.Status() == generated.RunStatusCompleted && outcome.Snapshot.RequestID() == "consumer-request", "exact Run and metadata")
 	_, err := interaction.Next()
 	check(errors.Is(err, io.EOF) && streams == 0 && submitted == 1, "finite result-only, no duplicate mutation")
+	thread := must(interaction.Thread.Get(ctx))
+	readback := must(json.Marshal(thread.Value.MessageHistory))
+	check(string(readback) == string(expectedHistory), "installed imported history readback")
 	api := must(client.API())
+	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
+		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: "offline"},
+		generated.NewThread{AgentId: "agent", Payload: a13n.TextPayload("Hello"), MessageHistory: &history})
+	replay := must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
+	check(replay.Value.Entry.Id == interaction.Entry.ID && submitted == 2, "installed generated same-key Create replay")
+	followup := must(client.Agent("agent").Send(ctx, interaction.Thread.ID, "Continue.", a13n.SendOptions{RequestKey: "followup-offline"}))
+	defer followup.Close()
+	check(must(followup.Result(ctx)).Run.ID == outcome.Run.ID && continued == 1, "no history reseed on continuation")
+	var call generated.CallResult
+	check(call.FromReturned(generated.Returned{Status: generated.ReturnedStatusReturned, Value: map[string]any{"answer": 42}}) == nil, "typed call result")
+	resume := generated.Resume{Approvals: map[string]generated.ApprovalDecision{},
+		Calls: map[string]generated.CallResult{"call-1": call},
+		Input: nullable.NewNullableWithValue(a13n.TextPayload("Plus this user input."))}
+	resumeBody = must(json.Marshal(resume))
+	successor, accepted, err := client.Run("wait").Resume(ctx, resume, "resume-offline")
+	check(err == nil && successor.ID == "successor" && accepted.StatusCode == 201, "installed atomic resume successor")
+	replayedResponse, err := api.ResumeRunApiV1RunsRunIdResumePost(ctx, "wait",
+		&generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: "resume-offline"}, resume)
+	replayed := must(a13n.ParseJSON[generated.RunView](client, replayedResponse, err, 200))
+	check(replayed.Value.Id == successor.ID && resumeCalls == 2 && continued == 1, "installed raw resume replay no follow-up input send")
 	pages := 0
 	for page, err := range a13n.Pages(ctx, "", func(ctx context.Context, cursor *string) (a13n.Result[generated.ThreadPage], error) {
 		response, err := api.ListThreadsApiV1ThreadsGet(ctx, &generated.ListThreadsApiV1ThreadsGetParams{Cursor: cursor})
@@ -161,7 +223,11 @@ func live() {
 	check(response.StatusCode == 200, "health")
 	_ = response.Body.Close()
 	agent := required("A13N_AGENT")
-	first := must(client.Agent(agent).Start(ctx, "[slow] [long] Summarize this project.", a13n.StartOptions{RequestKey: key()}))
+	history := importedHistory()
+	firstKey := key()
+	firstText := "[slow] [long] Summarize this project."
+	first := must(client.Agent(agent).Start(ctx, firstText,
+		a13n.StartOptions{RequestKey: firstKey, MessageHistory: &history}))
 	defer first.Close()
 	frames := 0 // a Run can seal before SSE attachment; zero retained frames is valid.
 	for {
@@ -178,6 +244,14 @@ func live() {
 	check(outcome.Status() == generated.RunStatusCompleted, "Agent start")
 	items := must(outcome.Run.Items(ctx))
 	check(items.Value.Complete && items.Value.Run.Id == outcome.Run.ID, "exact committed Items")
+	thread := must(first.Thread.Get(ctx))
+	check(len(thread.Value.MessageHistory) == len(history), "immutable imported history readback")
+	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
+		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: firstKey},
+		generated.NewThread{AgentId: agent, Payload: a13n.TextPayload(firstText), MessageHistory: &history})
+	replay := must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
+	check(replay.Value.Thread.Id == first.Thread.ID && replay.Value.Entry.Id == first.Entry.ID,
+		"same-key imported history replay returns original Entry")
 	followUp := must(client.Agent(agent).Send(ctx, first.Thread.ID, "Explain the trade-off.", a13n.SendOptions{RequestKey: key()}))
 	defer followUp.Close()
 	check(must(followUp.Result(ctx)).Status() == generated.RunStatusCompleted, "explicit Agent continuation")
@@ -189,7 +263,7 @@ func live() {
 	waitingOutcome := must(waiting.Result(ctx))
 	check(waitingOutcome.Status() == generated.RunStatusWaiting, "client-tool waiting")
 	pending := must(waitingOutcome.Pending().Get())
-	check(len(pending.Items) == 1, "pending client action count")
+	check(len(pending.Approvals) == 0 && len(pending.Calls) == 1, "pending client call count")
 	delivery := generated.NextRun
 	queuedPayload := a13n.TextPayload("Follow up after the client tool answer.")
 	queuedKey := key()
@@ -199,15 +273,19 @@ func live() {
 	check(queued.Run == nil && queued.Receipt.StatusCode == 201, "next_run queued receipt")
 	// Reconcile the same logical mutation through the complete generated API.
 	// This explicit same-key replay must return the original Entry, not submit twice.
-	replayResponse, err := api.SubmitMessageApiV1ThreadsThreadIdInboxPost(ctx, waiting.Thread.ID,
+	replayResponse, err = api.SubmitMessageApiV1ThreadsThreadIdInboxPost(ctx, waiting.Thread.ID,
 		&generated.SubmitMessageApiV1ThreadsThreadIdInboxPostParams{IdempotencyKey: queuedKey},
 		generated.Message{AgentId: clientToolAgent, Payload: queuedPayload, Delivery: &delivery})
-	replay := must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
+	replay = must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
 	check(replay.StatusCode == 200 && replay.Value.Entry.Id == queued.Entry.ID && replay.Value.Thread.Id == waiting.Thread.ID, "same-key replay")
-	var answer generated.Answer
-	check(answer.FromComplete(generated.Complete{Action: "complete", ToolCallId: pending.Items[0].ToolCallId,
-		Result: map[string]any{"decision": "approved"}}) == nil, "typed resume answer")
-	successor, successorReceipt, err := waitingOutcome.Run.Resume(ctx, generated.ResumeRequest{Answers: &[]generated.Answer{answer}}, key())
+	var answer generated.CallResult
+	check(answer.FromReturned(generated.Returned{Status: generated.ReturnedStatusReturned,
+		Value: map[string]any{"decision": "reviewed"}}) == nil, "typed client-tool result")
+	successorInput := a13n.TextPayload("Also consider the follow-up constraints.")
+	resume := generated.Resume{Approvals: map[string]generated.ApprovalDecision{},
+		Calls: map[string]generated.CallResult{pending.Calls[0].ToolCallId: answer},
+		Input: nullable.NewNullableWithValue(successorInput)}
+	successor, successorReceipt, err := waitingOutcome.Run.Resume(ctx, resume, key())
 	check(err == nil && successor.ID != waitingOutcome.Run.ID && successorReceipt.Value.Id == successor.ID,
 		"explicit distinct resume successor")
 	check(must(successor.Wait(ctx)).Status() == generated.RunStatusCompleted, "resume successor completion")
@@ -217,7 +295,7 @@ func live() {
 	check(entry.Value.Status == generated.EntryStatusConsumed && entry.Value.AssignedRunId.GetOrEmpty() == queuedOutcome.Run.ID &&
 		queuedOutcome.Run.ID != waitingOutcome.Run.ID && queuedOutcome.Status() == generated.RunStatusCompleted,
 		"queued next_run bound to its exact consuming Run")
-	fmt.Println("Verified HTTPS: waiting, queued next_run, same-key replay, distinct resume and consumed Entry passed")
+	fmt.Println("Verified HTTPS: waiting, queued next_run, same-key replay, atomic resume with input and consumed Entry passed")
 
 	content := bytes.Repeat([]byte("asset\n"), 50000)
 	upload := must(client.Upload(ctx, a13n.UploadFile{Name: "acceptance.bin", ContentType: "application/octet-stream", Reader: bytes.NewReader(content)}, key()))
