@@ -58,4 +58,47 @@ fmt.Printf("display complete=%t, dropped=%d\n", items.Value.Complete, items.Valu
 if err := json.NewEncoder(os.Stdout).Encode(items.Value.Items); err != nil { return err }
 ```
 
+## Rebuild an advanced reader from committed coverage
+
+The generated persistent reader accepts `Run` and `Position` **together**. `RunItems.Position` is the `{attempt}-{sequence}` coverage of the display; `ResumeAfter` is an optional Redis ID hint, not a second coverage cursor. Use the full snapshot, including `Dropped`, `Complete` and item truncation/omission metadata. Missing or null hints are valid; a retained, expired or incompatible hint does not change the position claim. Import `context`, `fmt`, `net/http`, `a13n` and `generated`:
+
+```go
+func rebuildReader(ctx context.Context, client *a13n.Client, runID string) (
+    a13n.Result[generated.RunItems], *http.Response, error,
+) {
+    snapshot, err := client.Run(runID).Items(ctx)
+    if err != nil { return snapshot, nil, err }
+    if snapshot.Value.Run.Id != runID {
+        return snapshot, nil, fmt.Errorf("items do not belong to run %s", runID)
+    }
+    if snapshot.Value.Complete { return snapshot, nil, nil }
+    position := snapshot.Value.Position.GetOrEmpty()
+    if position == "" {
+        return snapshot, nil, fmt.Errorf("no committed display yet; wait for a checkpoint")
+    }
+    params := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{
+        Run: &runID, Position: &position,
+    }
+    if after := snapshot.Value.ResumeAfter.GetOrEmpty(); after != "" {
+        params.LastEventID = &after
+    }
+    api, err := client.API()
+    if err != nil { return snapshot, nil, err }
+    response, err := api.ThreadStreamApiV1ThreadsThreadIdStreamGet(ctx,
+        snapshot.Value.Run.ThreadId, &params)
+    if err != nil { return snapshot, nil, err }
+    if response.StatusCode != http.StatusOK {
+        _, err = a13n.ParseJSON[struct{}](client, response, nil, http.StatusOK)
+        return snapshot, nil, err
+    }
+    return snapshot, response, nil
+}
+```
+
+Render the returned snapshot as the saved baseline before applying SSE output from the returned response. The caller owns the persistent response body and must close it (and use a context deadline); a nil response means the Run is already sealed. This advanced path does not become another finite Agent invocation or follow a successor Run. Session callers must also set `XWorkspaceID` explicitly on generated params.
+
+`a13n.GapFrame.Position` is a `*string`: nil means transport loss with no known missing range, while a value identifies the position the replacement snapshot must cover. A gap or a boundary beyond contiguous applied output is not proof that the hole healed. Do not advance coverage or the hint past it. Refresh Items when a newer boundary or terminal state can cover that target, rather than repeatedly reading the same stale snapshot. The explicit coverage reader freezes its position and hint after a gap, reset, uncovered sequence hole or newer attempt. Later contiguous deltas cannot unfreeze it: apply an authoritative snapshot, then explicitly rebuild the reader with that snapshot's position and hint. A stale snapshot must not be treated as covering the recovery target. A `ResetFrame` means superseded provisional output must be discarded; it does not prove an empty display baseline for the new attempt. Terminal reads replace provisional output with the saved display. The SDK returns these signals without silently folding events or doing readback.
+
+Within the default finite interaction, asking for the next frame acknowledges the preceding one. Reconnect uses only its acknowledged Redis ID, never a merely received ID. It does not automatically add Run/position query parameters or claim a display baseline. Exact-Run filtering and the finite lifecycle remain unchanged. Close does not acknowledge the last returned frame. Advanced readers that maintain their own display must opt into coverage explicitly and follow the applied-only rule. Position components are canonical nonnegative decimal integers, at most 20 digits each; a hint alone uses the older `Last-Event-ID` replay behavior and cannot establish complete delivery.
+
 A Run's `Output()` is an optional structured value, not the last text delta; `Items` is the bounded persisted display of messages and tool activity, not a full transcript. Handle `waiting` outcomes through [waiting and tools](waiting-and-tools.md), and consult [errors and recovery](errors-and-recovery.md) if `Next` fails before a result is available. For long-lived subscriptions to all activity on a Thread, the low-level generated `ThreadStreamApiV1ThreadsThreadIdStreamGet` remains available through `client.API()` with a caller-owned response body; it is not a second high-level Agent interaction.

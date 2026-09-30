@@ -65,6 +65,9 @@ func TestInteractionOwnFramesThenIdleSSETerminates(t *testing.T) {
 				_, _ = w.Write([]byte(runView("run", "running", "thr")))
 			}
 		case strings.HasSuffix(req.URL.Path, "/stream"):
+			if req.URL.Query().Has("run") || req.URL.Query().Has("position") {
+				t.Error("finite stream added an implicit coverage baseline")
+			}
 			streams.Add(1)
 			w.Header().Set("Content-Type", "text/event-stream")
 			_, _ = w.Write([]byte("id: 1-1\nevent: boundary\ndata: {\"run_id\":\"other\",\"attempt\":1,\"sequence\":1}\n\n" + boundaryEvent + "event: changed\ndata: {\"version\":3}\n\n"))
