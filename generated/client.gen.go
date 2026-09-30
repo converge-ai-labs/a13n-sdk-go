@@ -2468,18 +2468,24 @@ type GrantView struct {
 
 // HarnessModelCharacteristicsInput Resolved Harness characteristics of the active Agent model.
 type HarnessModelCharacteristicsInput struct {
-	Capabilities                        *[]ModelCapability         `json:"capabilities,omitempty"`
-	CompactThreshold                    *float32                   `json:"compact_threshold,omitempty"`
-	ContextWindowTokens                 nullable.Nullable[int]     `json:"context_window_tokens,omitempty"`
-	ProactiveContextManagementThreshold nullable.Nullable[float32] `json:"proactive_context_management_threshold,omitempty"`
+	Capabilities        *[]ModelCapability     `json:"capabilities,omitempty"`
+	CompactThreshold    *float32               `json:"compact_threshold,omitempty"`
+	ContextWindowTokens nullable.Nullable[int] `json:"context_window_tokens,omitempty"`
+
+	// ImageInput Image preparation policy; omitted uses native defaults, null disables automatic preparation.
+	ImageInput                          nullable.Nullable[ImageInputPolicy] `json:"image_input,omitempty"`
+	ProactiveContextManagementThreshold nullable.Nullable[float32]          `json:"proactive_context_management_threshold,omitempty"`
 }
 
 // HarnessModelCharacteristicsOutput Resolved Harness characteristics of the active Agent model.
 type HarnessModelCharacteristicsOutput struct {
-	Capabilities                        *[]string                  `json:"capabilities,omitempty"`
-	CompactThreshold                    *float32                   `json:"compact_threshold,omitempty"`
-	ContextWindowTokens                 nullable.Nullable[int]     `json:"context_window_tokens,omitempty"`
-	ProactiveContextManagementThreshold nullable.Nullable[float32] `json:"proactive_context_management_threshold,omitempty"`
+	Capabilities        *[]string              `json:"capabilities,omitempty"`
+	CompactThreshold    *float32               `json:"compact_threshold,omitempty"`
+	ContextWindowTokens nullable.Nullable[int] `json:"context_window_tokens,omitempty"`
+
+	// ImageInput Image preparation policy; omitted uses native defaults, null disables automatic preparation.
+	ImageInput                          nullable.Nullable[ImageInputPolicy] `json:"image_input,omitempty"`
+	ProactiveContextManagementThreshold nullable.Nullable[float32]          `json:"proactive_context_management_threshold,omitempty"`
 }
 
 // HeadersCredential defines model for HeadersCredential.
@@ -2490,6 +2496,23 @@ type HeadersCredential struct {
 // HistoryPurge defines model for HistoryPurge.
 type HistoryPurge struct {
 	Purged int `json:"purged"`
+}
+
+// ImageInputPolicy Preparation limits for one model's image input, not native ModelSettings.
+type ImageInputPolicy struct {
+	ImageSplitMaxHeight *int `json:"image_split_max_height,omitempty"`
+	ImageSplitOverlap   *int `json:"image_split_overlap,omitempty"`
+
+	// MaxImageBytes Maximum base64-encoded bytes per image; zero disables this byte limit.
+	MaxImageBytes *int `json:"max_image_bytes,omitempty"`
+
+	// MaxImageDimension Maximum image axis; zero disables this limit.
+	MaxImageDimension *int `json:"max_image_dimension,omitempty"`
+
+	// MaxImages Keep the newest images; zero removes all image input.
+	MaxImages        *int  `json:"max_images,omitempty"`
+	SplitLargeImages *bool `json:"split_large_images,omitempty"`
+	SupportGif       *bool `json:"support_gif,omitempty"`
 }
 
 // InboxOrder defines model for InboxOrder.
