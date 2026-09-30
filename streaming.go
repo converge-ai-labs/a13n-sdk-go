@@ -21,6 +21,7 @@ import (
 )
 
 var streamCursor = regexp.MustCompile(`^[0-9]{1,20}-[0-9]{1,20}$`)
+var streamPosition = regexp.MustCompile(`^(0|[1-9][0-9]{0,19})-(0|[1-9][0-9]{0,19})$`)
 
 // ThreadFrame is a closed set of five provisional stream variants. Applications
 // explicitly reconcile gap/reset with Run Items and changed with Thread Get.
@@ -61,11 +62,16 @@ type ResetFrame struct {
 }
 type GapFrame struct {
 	frameMeta
-	RunID string `json:"run_id"`
+	RunID    string  `json:"run_id"`
+	Position *string `json:"position,omitempty"` // nil means the missing range is unknown
 }
 
 type StreamOptions struct {
 	After string
+	// RunID and Position describe applied display coverage; they are paired.
+	// After is only a retained Redis hint when coverage is supplied.
+	RunID    string
+	Position string
 	// Zero disables reconnection. Progress resets this bounded failure budget.
 	MaxReconnects  int
 	MaxFrameBytes  int
@@ -86,7 +92,9 @@ type ThreadStream struct {
 	parser   *sseParser
 	applied  string
 	received string
-	pending  string
+	pending  ThreadFrame
+	position string
+	frozen   bool
 	retries  int
 }
 
@@ -95,6 +103,9 @@ type ThreadStream struct {
 func (r Thread) events(ctx context.Context, options StreamOptions) (*ThreadStream, error) {
 	if err := validateClient(r.client, r.ID); err != nil {
 		return nil, err
+	}
+	if (options.RunID == "") != (options.Position == "") || (options.Position != "" && !streamPosition.MatchString(options.Position)) {
+		return nil, fmt.Errorf("stream RunID and canonical Position must be supplied together")
 	}
 	if options.After != "" && !streamCursor.MatchString(options.After) {
 		return nil, fmt.Errorf("invalid stream cursor")
@@ -109,7 +120,7 @@ func (r Thread) events(ctx context.Context, options StreamOptions) (*ThreadStrea
 		options.ReconnectDelay = 250 * time.Millisecond
 	}
 	ctx, cancel := context.WithCancel(ctx)
-	stream := &ThreadStream{thread: r, ctx: ctx, cancel: cancel, options: options, applied: options.After}
+	stream := &ThreadStream{thread: r, ctx: ctx, cancel: cancel, options: options, applied: options.After, position: options.Position}
 	if err := stream.attachWithRecovery(); err != nil {
 		_ = stream.Close()
 		return nil, err
@@ -134,7 +145,8 @@ func (s *ThreadStream) detach() error {
 	}
 	return nil
 }
-func (s *ThreadStream) AppliedCursor() string { s.mu.Lock(); defer s.mu.Unlock(); return s.applied }
+func (s *ThreadStream) AppliedCursor() string   { s.mu.Lock(); defer s.mu.Unlock(); return s.applied }
+func (s *ThreadStream) AppliedPosition() string { s.mu.Lock(); defer s.mu.Unlock(); return s.position }
 func (s *ThreadStream) LastReceivedCursor() string {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -158,11 +170,9 @@ func (s *ThreadStream) Next() (ThreadFrame, error) {
 		return nil, err
 	}
 	s.mu.Lock()
-	if s.pending != "" {
-		if s.applied != s.pending {
-			s.retries = 0
-		}
-		s.applied, s.pending = s.pending, ""
+	if s.pending != nil {
+		s.acknowledge(s.pending)
+		s.pending = nil
 	}
 	s.mu.Unlock()
 	for {
@@ -172,11 +182,12 @@ func (s *ThreadStream) Next() (ThreadFrame, error) {
 			return nil, stopped
 		}
 		if err == nil {
+			s.mu.Lock()
 			if frame.Cursor() != "" {
-				s.mu.Lock()
-				s.received, s.pending = frame.Cursor(), frame.Cursor()
-				s.mu.Unlock()
+				s.received = frame.Cursor()
 			}
+			s.pending = frame
+			s.mu.Unlock()
 			return frame, nil
 		}
 		_ = s.detach()
@@ -201,6 +212,73 @@ func (s *ThreadStream) Next() (ThreadFrame, error) {
 			return nil, err
 		}
 	}
+}
+
+// acknowledge runs under mu only after the caller advances Next. A Redis ID is
+// not display coverage: scoped reconnects retain only a contiguous applied tail.
+func (s *ThreadStream) acknowledge(frame ThreadFrame) {
+	if s.options.RunID == "" {
+		if cursor := frame.Cursor(); cursor != "" && cursor != s.applied {
+			s.applied, s.retries = cursor, 0
+		}
+		return
+	}
+	if s.frozen {
+		return
+	}
+	var boundary BoundaryFrame
+	isDelta := false
+	switch f := frame.(type) {
+	case GapFrame:
+		if f.RunID == s.options.RunID {
+			s.frozen = true
+		}
+		return
+	case ResetFrame:
+		if f.RunID == s.options.RunID {
+			s.frozen = true
+		}
+		return
+	case DeltaFrame:
+		boundary, isDelta = f.BoundaryFrame, true
+	case BoundaryFrame:
+		boundary = f
+	default: // A gap is missing output, not acknowledgement of it.
+		return
+	}
+	if boundary.RunID != s.options.RunID || boundary.Attempt < 0 || boundary.Sequence < 0 {
+		return
+	}
+	attempt, sequence := strconv.Itoa(boundary.Attempt), strconv.Itoa(boundary.Sequence)
+	coveredAttempt, coveredSequence, _ := strings.Cut(s.position, "-")
+	switch compareComponent(attempt, coveredAttempt) {
+	case -1:
+		return
+	case 1:
+		// A new attempt invalidates the caller's applied display baseline.
+		// Only applying a fresh snapshot and explicitly reopening restores it.
+		s.frozen = true
+		return
+	}
+	if (isDelta && boundary.Sequence > 0 && strconv.Itoa(boundary.Sequence-1) == coveredSequence) || (!isDelta && sequence == coveredSequence) {
+		s.position = attempt + "-" + sequence
+		if s.applied != frame.Cursor() {
+			s.applied, s.retries = frame.Cursor(), 0
+		}
+	} else if compareComponent(sequence, coveredSequence) > 0 {
+		s.frozen = true // A later delta or boundary cannot bridge unseen output.
+	}
+}
+
+// Components remain decimal strings because the wire permits 20 digits.
+func compareComponent(a, b string) int {
+	if len(a) < len(b) {
+		return -1
+	}
+	if len(a) > len(b) {
+		return 1
+	}
+	return strings.Compare(a, b)
 }
 
 // Check outside transport reads too: the parser may already hold complete frames.
@@ -229,7 +307,13 @@ func (s *ThreadStream) attach() error {
 		return s.ctx.Err()
 	}
 	options := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{XWorkspaceID: s.thread.client.semanticWorkspace()}
-	if cursor := s.AppliedCursor(); cursor != "" {
+	s.mu.Lock()
+	cursor, position := s.applied, s.position
+	s.mu.Unlock()
+	if s.options.RunID != "" {
+		options.Run, options.Position = &s.options.RunID, &position
+	}
+	if cursor != "" {
 		options.LastEventID = &cursor
 	}
 	raw, err := s.thread.client.api.ThreadStreamApiV1ThreadsThreadIdStreamGet(s.ctx, s.thread.ID, &options)
@@ -430,7 +514,12 @@ func parseThreadFrame(event, cursor string, hasID bool, data []byte) (ThreadFram
 			return invalid()
 		}
 		if event == "gap" {
-			return GapFrame{meta, payload.RunID}, nil
+			var frame GapFrame
+			if json.Unmarshal(data, &frame) != nil || (frame.Position != nil && !streamPosition.MatchString(*frame.Position)) {
+				return invalid()
+			}
+			frame.frameMeta = meta
+			return frame, nil
 		}
 		return ResetFrame{meta, payload.RunID}, nil
 	default:
