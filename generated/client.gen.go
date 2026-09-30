@@ -3469,6 +3469,26 @@ type RevokedConnection struct {
 // RevokedConnectionRemoteRevocation defines model for RevokedConnection.RemoteRevocation.
 type RevokedConnectionRemoteRevocation string
 
+// RunConfigurationInput An accepted snapshot, independent of Agent definitions and Capability configuration.
+//
+// Consumers explicitly opt into namespaced extensions and own their validation.
+// Extension lookups return detached values, not mutable shared state.
+type RunConfigurationInput struct {
+	// AllowedHosts Allowed normalized hostnames/IP literals or regex:<Python pattern> rules matched against the entire normalized hostname. Null is unrestricted; an empty array denies all.
+	AllowedHosts nullable.Nullable[[]string] `json:"allowed_hosts,omitempty"`
+	Extensions   *map[string]JsonValue       `json:"extensions,omitempty"`
+}
+
+// RunConfigurationOutput An accepted snapshot, independent of Agent definitions and Capability configuration.
+//
+// Consumers explicitly opt into namespaced extensions and own their validation.
+// Extension lookups return detached values, not mutable shared state.
+type RunConfigurationOutput struct {
+	// AllowedHosts Allowed normalized hostnames/IP literals or regex:<Python pattern> rules matched against the entire normalized hostname. Null is unrestricted; an empty array denies all.
+	AllowedHosts nullable.Nullable[[]string] `json:"allowed_hosts,omitempty"`
+	Extensions   *map[string]JsonValue       `json:"extensions,omitempty"`
+}
+
 // RunItems A run's committed display with the run it describes. Live output continues after `position`.
 type RunItems struct {
 	Complete    bool                      `json:"complete"`
@@ -3492,16 +3512,18 @@ type RunMetrics struct {
 
 // RunOptionsInput What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptionsInput struct {
-	Labels    *map[string]string                    `json:"labels,omitempty"`
-	MaxUsage  nullable.Nullable[UsageLimit]         `json:"max_usage,omitempty"`
-	Overrides nullable.Nullable[AgentOverrideInput] `json:"overrides,omitempty"`
+	Configuration nullable.Nullable[RunConfigurationInput] `json:"configuration,omitempty"`
+	Labels        *map[string]string                       `json:"labels,omitempty"`
+	MaxUsage      nullable.Nullable[UsageLimit]            `json:"max_usage,omitempty"`
+	Overrides     nullable.Nullable[AgentOverrideInput]    `json:"overrides,omitempty"`
 }
 
 // RunOptionsOutput What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptionsOutput struct {
-	Labels    *map[string]string                     `json:"labels,omitempty"`
-	MaxUsage  nullable.Nullable[UsageLimit]          `json:"max_usage,omitempty"`
-	Overrides nullable.Nullable[AgentOverrideOutput] `json:"overrides,omitempty"`
+	Configuration nullable.Nullable[RunConfigurationOutput] `json:"configuration,omitempty"`
+	Labels        *map[string]string                        `json:"labels,omitempty"`
+	MaxUsage      nullable.Nullable[UsageLimit]             `json:"max_usage,omitempty"`
+	Overrides     nullable.Nullable[AgentOverrideOutput]    `json:"overrides,omitempty"`
 }
 
 // RunPage defines model for RunPage.
