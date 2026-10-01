@@ -19,7 +19,7 @@ const gapEvent = "event: gap\ndata: {\"run_id\":\"run\"}\n\n"
 func TestThreadParserVariantsAndLineEndings(t *testing.T) {
 	data := "\ufeff: keepalive\n\n" + boundaryEvent +
 		"id: 100-2\nevent: delta\ndata: {\"run_id\":\"run\",\"attempt\":1,\"sequence\":3,\n" +
-		"data: \"event\":{\"type\":\"custom\"},\"item\":null}\n\n" +
+		"data: \"event\":{\"type\":\"CUSTOM\",\"name\":\"a13n.test\",\"value\":null},\"item\":null}\n\n" +
 		"event: changed\ndata: {\"version\":4}\n\n" + gapEvent + "event: reset\ndata: {\"run_id\":\"run\"}\n\n"
 	for _, newline := range []string{"\n", "\r\n", "\r"} {
 		parser := sseParser{reader: bufio.NewReader(strings.NewReader(strings.ReplaceAll(data, "\n", newline))), limit: 1 << 20, first: true}
@@ -31,7 +31,7 @@ func TestThreadParserVariantsAndLineEndings(t *testing.T) {
 			if i >= 2 && frame.Cursor() != "" {
 				t.Fatal("hint acquired cursor")
 			}
-			if delta, ok := frame.(DeltaFrame); ok && (delta.RunID != "run" || delta.Sequence != 3 || string(delta.Event["type"]) != `"custom"`) {
+			if delta, ok := frame.(DeltaFrame); ok && (delta.RunID != "run" || delta.Sequence != 3 || string(delta.Event["type"]) != `"CUSTOM"` || string(delta.Event["value"]) != `null`) {
 				t.Fatalf("typed delta: %#v", delta)
 			}
 		}

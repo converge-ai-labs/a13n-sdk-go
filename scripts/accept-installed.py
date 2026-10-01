@@ -38,7 +38,8 @@ def main() -> None:
                 archive.write(source, f"{MODULE}@{VERSION}/{source.relative_to(ROOT)}")
         consumer = temp / "consumer"
         consumer.mkdir()
-        shutil.copyfile(ROOT / "scripts" / "acceptance" / "main.go", consumer / "main.go")
+        for source in (ROOT / "scripts" / "acceptance").glob("*.go"):
+            shutil.copyfile(source, consumer / source.name)
         (consumer / "go.mod").write_text(
             f"module example.invalid/sdk-consumer\n\ngo 1.25.0\n\nrequire {MODULE} {VERSION}\n"
         )

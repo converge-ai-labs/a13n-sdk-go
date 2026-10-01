@@ -98,3 +98,34 @@ func continueTurn(ctx context.Context, client *a13n.Client, agentID, threadID st
 Import `context`, `crypto/rand`, `fmt`, `a13n` and `generated` for this function. `StartPayload` and `SendPayload` accept a typed `generated.MessagePayload` when text alone is insufficient; [files and Memory](files-and-memory.md) shows an Asset part. `StartOptions` also exposes revision/session choice, delivery, environment/Memory mounts, MCP headers and typed Run options; `SendOptions` exposes the continuation fields. The SDK does not silently select a model, Agent or successor Run for you.
 
 A `RequestKey` belongs to *one logical mutation*. Generating another key retries as a new submission, not an idempotent replay. If an earlier request's outcome is unknown, save its key and reconcile it as described in [errors and recovery](errors-and-recovery.md).
+
+## Supply one native Run configuration snapshot
+
+`StartOptions.Options` and `SendOptions.Options` use the same generated `RunOptionsInput` as a low-level `generated.Message`. Its `Configuration` is distinct from `Overrides`: it selects the accepted Run's network rules and namespaced JSON extensions, not another Agent definition or provider settings object. There is no second configuration argument or local merge. Import `context`, `crypto/rand`, `a13n`, `generated` and `nullable`:
+
+```go
+func startConfigured(ctx context.Context, client *a13n.Client, agentID string) (*a13n.Interaction, error) {
+    extensions := map[string]generated.JsonValue{
+        "myapp.review": map[string]any{"enabled": false, "tags": []string{}, "note": nil},
+    }
+    configuration := generated.RunConfigurationInput{
+        AllowedHosts: nullable.NewNullableWithValue([]string{"api.example.com"}),
+        Extensions: &extensions,
+    }
+    return client.Agent(agentID).StartPayload(ctx, a13n.TextPayload("Review the project."), a13n.StartOptions{
+        RequestKey: rand.Text(),
+        Options: &generated.RunOptionsInput{
+            Configuration: nullable.NewNullableWithValue(configuration),
+        },
+    })
+}
+```
+
+Close the returned interaction; `Result(ctx).Snapshot.Value.Options.Configuration` is the accepted readback. Service normalizes hostname rules and freezes the snapshot. Choose destinations needed by the selected model and its owned input/HTTP routes, not merely the example hostname. The SDK does not enforce TLS, DNS, provider eligibility or media budgets.
+
+- Leave `Configuration` zero-valued to omit it, or use `nullable.NewNullNullable[generated.RunConfigurationInput]()` to send null. Both select the default for a new Run and retain its snapshot when steering against an active Run (`accepted` or `running`).
+- `nullable.NewNullableWithValue(generated.RunConfigurationInput{})` sends an explicit complete empty object. It does not merge old fields or hidden defaults.
+- `AllowedHosts: nullable.NewNullNullable[[]string]()` explicitly removes a restriction for a new Run; `nullable.NewNullableWithValue([]string{})` sends an empty array that denies every destination. An omitted field inside an explicit object follows that object's Service defaults, not the active Run's value.
+- A pointer to an empty `Extensions` map sends `{}`. False, zero, empty arrays/objects and nested null values are kept as JSON. Each namespace's consumer owns its meaning and validation.
+
+Use the same `Options` field on `SendPayload`. A `steer` or pending-entry edit against an **active Run** (`accepted` or `running`) may omit configuration or explicitly match its frozen snapshot; a different explicit value fails with `conflict` reason `run_configuration_immutable`, rather than becoming a later Run. A sealed `waiting` Run is not active merely because it needs resume; its status alone does not imply this conflict. Set `delivery := generated.NextRun` and pass `Delivery: &delivery` to select a new snapshot for a later Run. Recovery, handoff and explicit resume successors inherit the frozen configuration; resume input does not change it. See the [pinned configuration contract](../contract/semantics/runs.md#run-configuration) for canonical idempotency and child inheritance.

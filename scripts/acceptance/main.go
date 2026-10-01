@@ -205,6 +205,7 @@ func offline() {
 	var protocol *a13n.ProtocolError
 	check(errors.Is(err, a13n.ErrProtocol) && errors.As(err, &protocol) && protocol.Kind == "content_type", "bounded protocol errors")
 	streamRecoveryOffline()
+	refreshOffline()
 	fmt.Println("Installed module: interaction, exact Run, lazy pages, metadata, unions, null and diagnostics passed")
 }
 
@@ -227,8 +228,9 @@ func live() {
 	history := importedHistory()
 	firstKey := key()
 	firstText := "[slow] [long] Summarize this project."
-	first := must(client.Agent(agent).Start(ctx, firstText,
-		a13n.StartOptions{RequestKey: firstKey, MessageHistory: &history}))
+	initialOptions := configurationOptions("initial")
+	first := must(client.Agent(agent).StartPayload(ctx, a13n.TextPayload(firstText),
+		a13n.StartOptions{RequestKey: firstKey, MessageHistory: &history, Options: initialOptions}))
 	defer first.Close()
 	frames := 0 // a Run can seal before SSE attachment; zero retained frames is valid.
 	for {
@@ -243,6 +245,7 @@ func live() {
 	}
 	outcome := must(first.Result(ctx))
 	check(outcome.Status() == generated.RunStatusCompleted, "Agent start")
+	checkConfiguration(outcome.Snapshot.Value, initialOptions)
 	items := must(outcome.Run.Items(ctx))
 	check(items.Value.Complete && items.Value.Run.Id == outcome.Run.ID, "exact committed Items")
 	readCtx, stopRead := context.WithTimeout(ctx, 20*time.Second)
@@ -255,34 +258,42 @@ func live() {
 	check(len(thread.Value.MessageHistory) == len(history), "immutable imported history readback")
 	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
 		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: firstKey},
-		generated.NewThread{AgentId: agent, Payload: a13n.TextPayload(firstText), MessageHistory: &history})
+		generated.NewThread{AgentId: agent, Payload: a13n.TextPayload(firstText), MessageHistory: &history, Options: initialOptions})
 	replay := must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
 	check(replay.Value.Thread.Id == first.Thread.ID && replay.Value.Entry.Id == first.Entry.ID,
 		"same-key imported history replay returns original Entry")
-	followUp := must(client.Agent(agent).Send(ctx, first.Thread.ID, "Explain the trade-off.", a13n.SendOptions{RequestKey: key()}))
+	followOptions := configurationOptions("follow-up")
+	followUp := must(client.Agent(agent).SendPayload(ctx, first.Thread.ID, a13n.TextPayload("Explain the trade-off."), a13n.SendOptions{RequestKey: key(), Options: followOptions}))
 	defer followUp.Close()
-	check(must(followUp.Result(ctx)).Status() == generated.RunStatusCompleted, "explicit Agent continuation")
+	followOutcome := must(followUp.Result(ctx))
+	check(followOutcome.Status() == generated.RunStatusCompleted, "explicit Agent continuation")
+	checkConfiguration(followOutcome.Snapshot.Value, followOptions)
 	fmt.Printf("Verified HTTPS: finite Agent iteration (%d provisional frames), exact Run/Items and continuation passed\n", frames)
 
+	activeConfigurationConflictLive(ctx, client, agent)
+
 	clientToolAgent := required("A13N_CLIENT_TOOL_AGENT")
-	waiting := must(client.Agent(clientToolAgent).Start(ctx, "[client] Review local SDK scenario.", a13n.StartOptions{RequestKey: key()}))
+	waitingOptions := configurationOptions("waiting")
+	waiting := must(client.Agent(clientToolAgent).Start(ctx, "[client] Review local SDK scenario.", a13n.StartOptions{RequestKey: key(), Options: waitingOptions}))
 	defer waiting.Close()
 	waitingOutcome := must(waiting.Result(ctx))
 	check(waitingOutcome.Status() == generated.RunStatusWaiting, "client-tool waiting")
+	checkConfiguration(waitingOutcome.Snapshot.Value, waitingOptions)
 	pending := must(waitingOutcome.Pending().Get())
 	check(len(pending.Approvals) == 0 && len(pending.Calls) == 1, "pending client call count")
 	delivery := generated.NextRun
 	queuedPayload := a13n.TextPayload("Follow up after the client tool answer.")
 	queuedKey := key()
+	queuedOptions := configurationOptions("next-run")
 	queued := must(client.Agent(clientToolAgent).SendPayload(ctx, waiting.Thread.ID, queuedPayload,
-		a13n.SendOptions{RequestKey: queuedKey, Delivery: &delivery}))
+		a13n.SendOptions{RequestKey: queuedKey, Delivery: &delivery, Options: queuedOptions}))
 	defer queued.Close()
 	check(queued.Run == nil && queued.Receipt.StatusCode == 201, "next_run queued receipt")
 	// Reconcile the same logical mutation through the complete generated API.
 	// This explicit same-key replay must return the original Entry, not submit twice.
 	replayResponse, err = api.SubmitMessageApiV1ThreadsThreadIdInboxPost(ctx, waiting.Thread.ID,
 		&generated.SubmitMessageApiV1ThreadsThreadIdInboxPostParams{IdempotencyKey: queuedKey},
-		generated.Message{AgentId: clientToolAgent, Payload: queuedPayload, Delivery: &delivery})
+		generated.Message{AgentId: clientToolAgent, Payload: queuedPayload, Delivery: &delivery, Options: queuedOptions})
 	replay = must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
 	check(replay.StatusCode == 200 && replay.Value.Entry.Id == queued.Entry.ID && replay.Value.Thread.Id == waiting.Thread.ID, "same-key replay")
 	var answer generated.CallResult
@@ -295,14 +306,18 @@ func live() {
 	successor, successorReceipt, err := waitingOutcome.Run.Resume(ctx, resume, key())
 	check(err == nil && successor.ID != waitingOutcome.Run.ID && successorReceipt.Value.Id == successor.ID,
 		"explicit distinct resume successor")
-	check(must(successor.Wait(ctx)).Status() == generated.RunStatusCompleted, "resume successor completion")
+	successorOutcome := must(successor.Wait(ctx))
+	check(successorOutcome.Status() == generated.RunStatusCompleted, "resume successor completion")
+	checkConfiguration(successorOutcome.Snapshot.Value, waitingOptions)
 	check(must(waitingOutcome.Run.Get(ctx)).Value.Status == generated.RunStatusWaiting, "waiting Run did not follow successor")
 	queuedOutcome := must(queued.Result(ctx))
+	checkConfiguration(queuedOutcome.Snapshot.Value, queuedOptions)
 	entry := must(queued.Entry.Get(ctx))
 	check(entry.Value.Status == generated.EntryStatusConsumed && entry.Value.AssignedRunId.GetOrEmpty() == queuedOutcome.Run.ID &&
 		queuedOutcome.Run.ID != waitingOutcome.Run.ID && queuedOutcome.Status() == generated.RunStatusCompleted,
 		"queued next_run bound to its exact consuming Run")
 	fmt.Println("Verified HTTPS: waiting, queued next_run, same-key replay, atomic resume with input and consumed Entry passed")
+	fmt.Println("Verified HTTPS: native StartPayload/SendPayload configuration, next_run snapshot and resume inheritance passed")
 
 	content := bytes.Repeat([]byte("asset\n"), 50000)
 	upload := must(client.Upload(ctx, a13n.UploadFile{Name: "acceptance.bin", ContentType: "application/octet-stream", Reader: bytes.NewReader(content)}, key()))
