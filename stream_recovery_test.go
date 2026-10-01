@@ -12,7 +12,7 @@ import (
 )
 
 func deltaAt(run string, attempt, sequence int, cursor string) string {
-	return fmt.Sprintf("id: %s\nevent: delta\ndata: {\"run_id\":%q,\"attempt\":%d,\"sequence\":%d,\"event\":{\"type\":\"custom\"},\"item\":null}\n\n", cursor, run, attempt, sequence)
+	return fmt.Sprintf("id: %s\nevent: delta\ndata: {\"run_id\":%q,\"attempt\":%d,\"sequence\":%d,\"event\":{\"type\":\"CUSTOM\",\"name\":\"a13n.test\",\"value\":null},\"item\":null}\n\n", cursor, run, attempt, sequence)
 }
 
 func TestGapPositionNativeNullableAndCanonical(t *testing.T) {

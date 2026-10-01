@@ -44,8 +44,10 @@ type StartOptions struct {
 	McpHeaders      *generated.McpHeaders
 	Memories        *[]generated.MemoryMount
 	MessageHistory  *generated.MessageHistory
-	Options         *generated.RunOptionsInput
-	SessionId       nullable.Nullable[string]
+	// Options includes the complete typed Configuration snapshot, independent
+	// of Agent Overrides. Its nullable fields are forwarded without merging.
+	Options   *generated.RunOptionsInput
+	SessionId nullable.Nullable[string]
 }
 
 // SendOptions exposes all user-selectable Message fields. The Agent and payload
@@ -55,7 +57,9 @@ type SendOptions struct {
 	AgentRevisionId nullable.Nullable[string]
 	Delivery        *generated.Delivery
 	Kind            *generated.MessageKind
-	Options         *generated.RunOptionsInput
+	// Options.Configuration is forwarded as authored; the Service decides
+	// whether it matches an active Run or selects a new next_run snapshot.
+	Options *generated.RunOptionsInput
 }
 
 // submission is acceptance, not completion. Run is nil for queued input.
