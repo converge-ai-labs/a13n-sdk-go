@@ -194,6 +194,45 @@ func (e AttemptViewStatus) Valid() bool {
 	}
 }
 
+// Defines values for AuthorizationStartMethod.
+const (
+	ManualCallback AuthorizationStartMethod = "manual_callback"
+)
+
+// Valid indicates whether the value is a known member of the AuthorizationStartMethod enum.
+func (e AuthorizationStartMethod) Valid() bool {
+	switch e {
+	case ManualCallback:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AuthorizationStatusState.
+const (
+	Connected                AuthorizationStatusState = "connected"
+	Disconnected             AuthorizationStatusState = "disconnected"
+	ReauthenticationRequired AuthorizationStatusState = "reauthentication_required"
+	Refreshing               AuthorizationStatusState = "refreshing"
+)
+
+// Valid indicates whether the value is a known member of the AuthorizationStatusState enum.
+func (e AuthorizationStatusState) Valid() bool {
+	switch e {
+	case Connected:
+		return true
+	case Disconnected:
+		return true
+	case ReauthenticationRequired:
+		return true
+	case Refreshing:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Certainty.
 const (
 	Known         Certainty = "known"
@@ -1978,6 +2017,18 @@ type AuthenticationCase_Equals struct {
 	union json.RawMessage
 }
 
+// AuthorizationCallback defines model for AuthorizationCallback.
+type AuthorizationCallback struct {
+	AttemptId   string  `json:"attempt_id"`
+	CallbackUrl *string `json:"callback_url,omitempty"`
+}
+
+// AuthorizationDisconnect defines model for AuthorizationDisconnect.
+type AuthorizationDisconnect struct {
+	LocalTokensCleared  *bool                   `json:"local_tokens_cleared,omitempty"`
+	RevocationConfirmed nullable.Nullable[bool] `json:"revocation_confirmed,omitempty"`
+}
+
 // AuthorizationRequest defines model for AuthorizationRequest.
 type AuthorizationRequest struct {
 	ReturnUrl nullable.Nullable[string] `json:"return_url,omitempty"`
@@ -1988,6 +2039,32 @@ type AuthorizationResult struct {
 	ExpiresAt   nullable.Nullable[time.Time] `json:"expires_at"`
 	RedirectUrl nullable.Nullable[string]    `json:"redirect_url"`
 }
+
+// AuthorizationStart defines model for AuthorizationStart.
+type AuthorizationStart struct {
+	AttemptId        string                    `json:"attempt_id"`
+	AuthorizationUrl string                    `json:"authorization_url"`
+	ExpiresAt        time.Time                 `json:"expires_at"`
+	Method           *AuthorizationStartMethod `json:"method,omitempty"`
+}
+
+// AuthorizationStartMethod defines model for AuthorizationStart.Method.
+type AuthorizationStartMethod string
+
+// AuthorizationStatus defines model for AuthorizationStatus.
+type AuthorizationStatus struct {
+	ClientId   nullable.Nullable[string]    `json:"client_id,omitempty"`
+	Email      nullable.Nullable[string]    `json:"email,omitempty"`
+	ExpiresAt  nullable.Nullable[time.Time] `json:"expires_at,omitempty"`
+	Message    nullable.Nullable[string]    `json:"message,omitempty"`
+	Pending    *bool                        `json:"pending,omitempty"`
+	ProviderId string                       `json:"provider_id"`
+	State      AuthorizationStatusState     `json:"state"`
+	Subject    nullable.Nullable[string]    `json:"subject,omitempty"`
+}
+
+// AuthorizationStatusState defines model for AuthorizationStatus.State.
+type AuthorizationStatusState string
 
 // BearerCredential defines model for BearerCredential.
 type BearerCredential struct {
@@ -2035,6 +2112,12 @@ type CatalogRef struct {
 
 // Certainty defines model for Certainty.
 type Certainty string
+
+// ChatGPTModel defines model for ChatGPTModel.
+type ChatGPTModel struct {
+	DisplayName string `json:"display_name"`
+	Slug        string `json:"slug"`
+}
 
 // ChildEnvironmentPolicy What a child run mounts: no environment, the parent's, or a new one from `template_id`.
 type ChildEnvironmentPolicy struct {
@@ -3350,6 +3433,11 @@ type Provider struct {
 	WorkspaceId          string                    `json:"workspace_id"`
 }
 
+// ProviderAuthorizationRequest defines model for ProviderAuthorizationRequest.
+type ProviderAuthorizationRequest struct {
+	NewRegistration *bool `json:"new_registration,omitempty"`
+}
+
 // ProviderCreate defines model for ProviderCreate.
 type ProviderCreate struct {
 	Config       *map[string]JsonValue                   `json:"config,omitempty"`
@@ -3388,6 +3476,7 @@ type ProviderType struct {
 	EnvironmentSchema   nullable.Nullable[map[string]JsonValue]            `json:"environment_schema,omitempty"`
 	ModelApiLabels      nullable.Nullable[map[string]string]               `json:"model_api_labels,omitempty"`
 	ModelApis           nullable.Nullable[[]string]                        `json:"model_apis,omitempty"`
+	OauthScheme         nullable.Nullable[string]                          `json:"oauth_scheme,omitempty"`
 	Operations          nullable.Nullable[[]WebOperation]                  `json:"operations,omitempty"`
 	SettingsSchemas     nullable.Nullable[map[string]map[string]JsonValue] `json:"settings_schemas,omitempty"`
 	SetupLabel          nullable.Nullable[string]                          `json:"setup_label"`
@@ -4988,6 +5077,36 @@ type UpdateProviderApiV1ModelProvidersProviderIdPatchParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams defines parameters for DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete.
+type DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams defines parameters for ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet.
+type ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams defines parameters for CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost.
+type CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams defines parameters for AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost.
+type AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams defines parameters for DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet.
+type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // TestProviderApiV1ModelProvidersProviderIdTestPostParams defines parameters for TestProviderApiV1ModelProvidersProviderIdTestPost.
 type TestProviderApiV1ModelProvidersProviderIdTestPostParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -5910,6 +6029,12 @@ type CreateProviderApiV1ModelProvidersPostJSONRequestBody = ProviderCreate
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatchJSONRequestBody defines body for UpdateProviderApiV1ModelProvidersProviderIdPatch for application/json ContentType.
 type UpdateProviderApiV1ModelProvidersProviderIdPatchJSONRequestBody = ProviderUpdate
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostJSONRequestBody defines body for CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost for application/json ContentType.
+type CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostJSONRequestBody = AuthorizationCallback
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostJSONRequestBody defines body for AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost for application/json ContentType.
+type AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostJSONRequestBody = ProviderAuthorizationRequest
 
 // CreateModelApiV1ModelsPostJSONRequestBody defines body for CreateModelApiV1ModelsPost for application/json ContentType.
 type CreateModelApiV1ModelsPostJSONRequestBody = ModelCreate
@@ -8397,6 +8522,49 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/model-providers/{provider_id} (the `UpdateProviderApiV1ModelProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ModelProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1ModelProvidersProviderIdPatchParams, body UpdateProviderApiV1ModelProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete Disconnect Model Authorization
+	//
+	// Corresponds with DELETE /api/v1/model-providers/{provider_id}/authorization (the `DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete` operationId).
+	DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx context.Context, providerId string, params *DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet Model Authorization
+	//
+	// Corresponds with GET /api/v1/model-providers/{provider_id}/authorization (the `ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet` operationId).
+	ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet(ctx context.Context, providerId string, params *ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBody Complete Model Authorization
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+	CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBody(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost Complete Model Authorization
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+	CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, body CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBody Authorize Model
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+	AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBody(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost Authorize Model
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+	AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, body AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet Discover Model Provider Models
+	//
+	// Corresponds with GET /api/v1/model-providers/{provider_id}/models (the `DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet` operationId).
+	DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx context.Context, providerId string, params *DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// TestProviderApiV1ModelProvidersProviderIdTestPost Test model provider
 	//
@@ -11727,6 +11895,119 @@ func (c *Client) UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody(ctx co
 // Corresponds with PATCH /api/v1/model-providers/{provider_id} (the `UpdateProviderApiV1ModelProvidersProviderIdPatch` operationId).
 func (c *Client) UpdateProviderApiV1ModelProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1ModelProvidersProviderIdPatchParams, body UpdateProviderApiV1ModelProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateProviderApiV1ModelProvidersProviderIdPatchRequest(c.Server, providerId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete Disconnect Model Authorization
+//
+// Corresponds with DELETE /api/v1/model-providers/{provider_id}/authorization (the `DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete` operationId).
+func (c *Client) DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx context.Context, providerId string, params *DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet Model Authorization
+//
+// Corresponds with GET /api/v1/model-providers/{provider_id}/authorization (the `ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet` operationId).
+func (c *Client) ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet(ctx context.Context, providerId string, params *ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBody Complete Model Authorization
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+func (c *Client) CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBody(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostRequestWithBody(c.Server, providerId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost Complete Model Authorization
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+func (c *Client) CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, body CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostRequest(c.Server, providerId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBody Authorize Model
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+func (c *Client) AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBody(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostRequestWithBody(c.Server, providerId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost Authorize Model
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+func (c *Client) AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, body AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostRequest(c.Server, providerId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet Discover Model Provider Models
+//
+// Corresponds with GET /api/v1/model-providers/{provider_id}/models (the `DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet` operationId).
+func (c *Client) DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx context.Context, providerId string, params *DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetRequest(c.Server, providerId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -20579,6 +20860,277 @@ func NewUpdateProviderApiV1ModelProvidersProviderIdPatchRequestWithBody(server s
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteRequest constructs an http.Request for the DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete method
+func NewDisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteRequest(server string, providerId string, params *DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/model-providers/%s/authorization", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetRequest constructs an http.Request for the ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet method
+func NewModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetRequest(server string, providerId string, params *ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/model-providers/%s/authorization", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostRequest calls the generic CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost builder with application/json body
+func NewCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostRequest(server string, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, body CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostRequestWithBody(server, providerId, params, "application/json", bodyReader)
+}
+
+// NewCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostRequestWithBody constructs an http.Request for the CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost method, with any body, and a specified content type
+func NewCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostRequestWithBody(server string, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/model-providers/%s/authorization/callback", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostRequest calls the generic AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost builder with application/json body
+func NewAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostRequest(server string, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, body AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostRequestWithBody(server, providerId, params, "application/json", bodyReader)
+}
+
+// NewAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostRequestWithBody constructs an http.Request for the AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost method, with any body, and a specified content type
+func NewAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostRequestWithBody(server string, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/model-providers/%s/authorize", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetRequest constructs an http.Request for the DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet method
+func NewDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetRequest(server string, providerId string, params *DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/model-providers/%s/models", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -29939,6 +30491,55 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/model-providers/{provider_id} (the `UpdateProviderApiV1ModelProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1ModelProvidersProviderIdPatchParams, body UpdateProviderApiV1ModelProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1ModelProvidersProviderIdPatchResponse, error)
 
+	// DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteWithResponse Disconnect Model Authorization
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/model-providers/{provider_id}/authorization (the `DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete` operationId).
+	DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteWithResponse(ctx context.Context, providerId string, params *DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams, reqEditors ...RequestEditorFn) (*DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse, error)
+
+	// ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetWithResponse Model Authorization
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/model-providers/{provider_id}/authorization (the `ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet` operationId).
+	ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetWithResponse(ctx context.Context, providerId string, params *ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams, reqEditors ...RequestEditorFn) (*ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse, error)
+
+	// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBodyWithResponse Complete Model Authorization
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+	CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBodyWithResponse(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse, error)
+
+	// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithResponse Complete Model Authorization
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+	CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithResponse(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, body CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse, error)
+
+	// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBodyWithResponse Authorize Model
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+	AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBodyWithResponse(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse, error)
+
+	// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithResponse Authorize Model
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+	AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithResponse(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, body AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostJSONRequestBody, reqEditors ...RequestEditorFn) (*AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse, error)
+
+	// DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetWithResponse Discover Model Provider Models
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/model-providers/{provider_id}/models (the `DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet` operationId).
+	DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetWithResponse(ctx context.Context, providerId string, params *DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams, reqEditors ...RequestEditorFn) (*DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse, error)
+
 	// TestProviderApiV1ModelProvidersProviderIdTestPostWithResponse Test model provider
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -37730,6 +38331,351 @@ func (r UpdateProviderApiV1ModelProvidersProviderIdPatchResponse) StatusCode() i
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateProviderApiV1ModelProvidersProviderIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse400Headers the declared response headers of an HTTP 400 response for DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete
+type DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse400Headers struct {
+	XRequestId *string
+}
+
+// DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete
+type DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AuthorizationDisconnect
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse) GetJSON200() *AuthorizationDisconnect {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse400Headers the declared response headers of an HTTP 400 response for ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet
+type ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponseDefaultHeaders the declared response headers of an HTTP default response for ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet
+type ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AuthorizationStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse) GetJSON200() *AuthorizationStatus {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse400Headers the declared response headers of an HTTP 400 response for CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost
+type CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponseDefaultHeaders the declared response headers of an HTTP default response for CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost
+type CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AuthorizationStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse) GetJSON200() *AuthorizationStatus {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse400Headers the declared response headers of an HTTP 400 response for AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost
+type AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse400Headers struct {
+	XRequestId *string
+}
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponseDefaultHeaders the declared response headers of an HTTP default response for AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost
+type AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AuthorizationStart
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse) GetJSON200() *AuthorizationStart {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse400Headers the declared response headers of an HTTP 400 response for DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet
+type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponseDefaultHeaders the declared response headers of an HTTP default response for DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet
+type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *[]ChatGPTModel
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetJSON200() *[]ChatGPTModel {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -48505,6 +49451,97 @@ func (c *ClientWithResponses) UpdateProviderApiV1ModelProvidersProviderIdPatchWi
 	return ParseUpdateProviderApiV1ModelProvidersProviderIdPatchResponse(rsp)
 }
 
+// DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteWithResponse Disconnect Model Authorization
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/model-providers/{provider_id}/authorization (the `DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete` operationId).
+func (c *ClientWithResponses) DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteWithResponse(ctx context.Context, providerId string, params *DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams, reqEditors ...RequestEditorFn) (*DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse, error) {
+	rsp, err := c.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse(rsp)
+}
+
+// ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetWithResponse Model Authorization
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/model-providers/{provider_id}/authorization (the `ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet` operationId).
+func (c *ClientWithResponses) ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetWithResponse(ctx context.Context, providerId string, params *ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams, reqEditors ...RequestEditorFn) (*ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse, error) {
+	rsp, err := c.ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse(rsp)
+}
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBodyWithResponse Complete Model Authorization
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+func (c *ClientWithResponses) CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBodyWithResponse(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse, error) {
+	rsp, err := c.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithBody(ctx, providerId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse(rsp)
+}
+
+// CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithResponse Complete Model Authorization
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorization/callback (the `CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost` operationId).
+func (c *ClientWithResponses) CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithResponse(ctx context.Context, providerId string, params *CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams, body CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse, error) {
+	rsp, err := c.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost(ctx, providerId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse(rsp)
+}
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBodyWithResponse Authorize Model
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+func (c *ClientWithResponses) AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBodyWithResponse(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse, error) {
+	rsp, err := c.AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithBody(ctx, providerId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse(rsp)
+}
+
+// AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithResponse Authorize Model
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/model-providers/{provider_id}/authorize (the `AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost` operationId).
+func (c *ClientWithResponses) AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithResponse(ctx context.Context, providerId string, params *AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams, body AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostJSONRequestBody, reqEditors ...RequestEditorFn) (*AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse, error) {
+	rsp, err := c.AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost(ctx, providerId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse(rsp)
+}
+
+// DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetWithResponse Discover Model Provider Models
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/model-providers/{provider_id}/models (the `DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet` operationId).
+func (c *ClientWithResponses) DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetWithResponse(ctx context.Context, providerId string, params *DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams, reqEditors ...RequestEditorFn) (*DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse, error) {
+	rsp, err := c.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse(rsp)
+}
+
 // TestProviderApiV1ModelProvidersProviderIdTestPostWithResponse Test model provider
 //
 // Returns a wrapper object for the known response body format(s).
@@ -56750,6 +57787,321 @@ func ParseUpdateProviderApiV1ModelProvidersProviderIdPatchResponse(rsp *http.Res
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateProviderApiV1ModelProvidersProviderIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse parses an HTTP response from a DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteWithResponse call
+func ParseDisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse(rsp *http.Response) (*DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AuthorizationDisconnect
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse parses an HTTP response from a ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetWithResponse call
+func ParseModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse(rsp *http.Response) (*ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AuthorizationStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse parses an HTTP response from a CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostWithResponse call
+func ParseCompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse(rsp *http.Response) (*CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AuthorizationStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse parses an HTTP response from a AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostWithResponse call
+func ParseAuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse(rsp *http.Response) (*AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AuthorizationStart
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse parses an HTTP response from a DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetWithResponse call
+func ParseDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse(rsp *http.Response) (*DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []ChatGPTModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
