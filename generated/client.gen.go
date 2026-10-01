@@ -1511,6 +1511,21 @@ func (e Verb) Valid() bool {
 	}
 }
 
+// Defines values for VideoUrlType.
+const (
+	Youtube VideoUrlType = "youtube"
+)
+
+// Valid indicates whether the value is a known member of the VideoUrlType enum.
+func (e VideoUrlType) Valid() bool {
+	switch e {
+	case Youtube:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WaitReason.
 const (
 	Approval WaitReason = "approval"
@@ -2558,6 +2573,12 @@ type HarnessModelCharacteristicsInput struct {
 	// ImageInput Image preparation policy; omitted uses native defaults, null disables automatic preparation.
 	ImageInput                          nullable.Nullable[ImageInputPolicy] `json:"image_input,omitempty"`
 	ProactiveContextManagementThreshold nullable.Nullable[float32]          `json:"proactive_context_management_threshold,omitempty"`
+
+	// UrlInput URL subtypes consumed natively by the selected transport.
+	UrlInput *UrlInputSupportInput `json:"url_input,omitempty"`
+
+	// VideoInput Base64-after byte budget for both one video and all inline videos in a request.
+	VideoInput *VideoInputPolicy `json:"video_input,omitempty"`
 }
 
 // HarnessModelCharacteristicsOutput Resolved Harness characteristics of the active Agent model.
@@ -2569,6 +2590,12 @@ type HarnessModelCharacteristicsOutput struct {
 	// ImageInput Image preparation policy; omitted uses native defaults, null disables automatic preparation.
 	ImageInput                          nullable.Nullable[ImageInputPolicy] `json:"image_input,omitempty"`
 	ProactiveContextManagementThreshold nullable.Nullable[float32]          `json:"proactive_context_management_threshold,omitempty"`
+
+	// UrlInput URL subtypes consumed natively by the selected transport.
+	UrlInput *UrlInputSupportOutput `json:"url_input,omitempty"`
+
+	// VideoInput Base64-after byte budget for both one video and all inline videos in a request.
+	VideoInput *VideoInputPolicy `json:"video_input,omitempty"`
 }
 
 // HeadersCredential defines model for HeadersCredential.
@@ -4277,6 +4304,16 @@ type UploadSource struct {
 // UploadSourceKind defines model for UploadSource.Kind.
 type UploadSourceKind string
 
+// UrlInputSupportInput URL subtypes consumed natively by the selected transport.
+type UrlInputSupportInput struct {
+	Video *[]VideoUrlType `json:"video,omitempty"`
+}
+
+// UrlInputSupportOutput URL subtypes consumed natively by the selected transport.
+type UrlInputSupportOutput struct {
+	Video *[]string `json:"video,omitempty"`
+}
+
 // UrlPart defines model for UrlPart.
 type UrlPart struct {
 	Type UrlPartType `json:"type"`
@@ -4357,6 +4394,15 @@ type UserKeyCreate struct {
 
 // Verb defines model for Verb.
 type Verb string
+
+// VideoInputPolicy Base64-after byte budget for both one video and all inline videos in a request.
+type VideoInputPolicy struct {
+	// MaxVideoBytes Maximum Base64-encoded bytes per video and in aggregate per model request.
+	MaxVideoBytes *int `json:"max_video_bytes,omitempty"`
+}
+
+// VideoUrlType defines model for VideoUrlType.
+type VideoUrlType string
 
 // WaitReason defines model for WaitReason.
 type WaitReason string
