@@ -196,12 +196,15 @@ func (e AttemptViewStatus) Valid() bool {
 
 // Defines values for AuthorizationStartMethod.
 const (
-	ManualCallback AuthorizationStartMethod = "manual_callback"
+	BrowserCallback AuthorizationStartMethod = "browser_callback"
+	ManualCallback  AuthorizationStartMethod = "manual_callback"
 )
 
 // Valid indicates whether the value is a known member of the AuthorizationStartMethod enum.
 func (e AuthorizationStartMethod) Valid() bool {
 	switch e {
+	case BrowserCallback:
+		return true
 	case ManualCallback:
 		return true
 	default:
