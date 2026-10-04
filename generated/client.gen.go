@@ -2702,6 +2702,7 @@ type Item struct {
 	Id            string                       `json:"id"`
 	Kind          ItemKind                     `json:"kind"`
 	LastStreamId  string                       `json:"last_stream_id"`
+	Ordinal       int                          `json:"ordinal"`
 	StartedAt     time.Time                    `json:"started_at"`
 	State         ItemState                    `json:"state"`
 }
@@ -3608,10 +3609,10 @@ type RunConfigurationOutput struct {
 	Extensions   *map[string]JsonValue       `json:"extensions,omitempty"`
 }
 
-// RunItems A run's committed display with the run it describes. Live output continues after `position`.
+// RunItems Items of a run's committed display, in ordinal order, with the run they describe. Ordinals are dense from 1,
+// so the first item's ordinal tells whether earlier ones exist. Live output continues after `position`.
 type RunItems struct {
 	Complete    bool                      `json:"complete"`
-	Dropped     int                       `json:"dropped"`
 	Items       []Item                    `json:"items"`
 	Position    nullable.Nullable[string] `json:"position"`
 	ResumeAfter nullable.Nullable[string] `json:"resume_after,omitempty"`
@@ -4151,7 +4152,6 @@ type ThreadView struct {
 	ArchivedAt   nullable.Nullable[time.Time] `json:"archived_at"`
 	CreatedAt    time.Time                    `json:"created_at"`
 	CurrentRunId nullable.Nullable[string]    `json:"current_run_id"`
-	HeadRunId    nullable.Nullable[string]    `json:"head_run_id"`
 	Id           string                       `json:"id"`
 	Labels       map[string]string            `json:"labels"`
 	LastRunId    nullable.Nullable[string]    `json:"last_run_id"`
@@ -5311,6 +5311,13 @@ type InterruptRunApiV1RunsRunIdInterruptPostParams struct {
 
 // RunItemsApiV1RunsRunIdItemsGetParams defines parameters for RunItemsApiV1RunsRunIdItemsGet.
 type RunItemsApiV1RunsRunIdItemsGetParams struct {
+	// Before Return the items just before this ordinal
+	Before *int `form:"before,omitempty" json:"before,omitempty"`
+
+	// After Return the items just after this ordinal
+	After *int `form:"after,omitempty" json:"after,omitempty"`
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -8871,6 +8878,9 @@ type ClientInterface interface {
 	InterruptRunApiV1RunsRunIdInterruptPost(ctx context.Context, runId string, params *InterruptRunApiV1RunsRunIdInterruptPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RunItemsApiV1RunsRunIdItemsGet Run Items
+	//
+	// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
+	// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/items (the `RunItemsApiV1RunsRunIdItemsGet` operationId).
 	RunItemsApiV1RunsRunIdItemsGet(ctx context.Context, runId string, params *RunItemsApiV1RunsRunIdItemsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -12713,6 +12723,9 @@ func (c *Client) InterruptRunApiV1RunsRunIdInterruptPost(ctx context.Context, ru
 }
 
 // RunItemsApiV1RunsRunIdItemsGet Run Items
+//
+// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
+// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
 //
 // Corresponds with GET /api/v1/runs/{run_id}/items (the `RunItemsApiV1RunsRunIdItemsGet` operationId).
 func (c *Client) RunItemsApiV1RunsRunIdItemsGet(ctx context.Context, runId string, params *RunItemsApiV1RunsRunIdItemsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -22961,6 +22974,57 @@ func NewRunItemsApiV1RunsRunIdItemsGetRequest(server string, runId string, param
 		return nil, err
 	}
 
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Before != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "before", *params.Before, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.After != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "after", *params.After, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -30885,6 +30949,9 @@ type ClientWithResponsesInterface interface {
 	InterruptRunApiV1RunsRunIdInterruptPostWithResponse(ctx context.Context, runId string, params *InterruptRunApiV1RunsRunIdInterruptPostParams, reqEditors ...RequestEditorFn) (*InterruptRunApiV1RunsRunIdInterruptPostResponse, error)
 
 	// RunItemsApiV1RunsRunIdItemsGetWithResponse Run Items
+	//
+	// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
+	// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -50121,6 +50188,9 @@ func (c *ClientWithResponses) InterruptRunApiV1RunsRunIdInterruptPostWithRespons
 }
 
 // RunItemsApiV1RunsRunIdItemsGetWithResponse Run Items
+//
+// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
+// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
 //
 // Returns a wrapper object for the known response body format(s).
 //
