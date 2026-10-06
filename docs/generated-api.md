@@ -53,6 +53,8 @@ func listThreads(ctx context.Context, client *a13n.Client) ([]generated.ThreadVi
 
 `Pages` requests only the next page when iteration advances. Breaking out stops more requests; a repeated cursor is a protocol error. Each page still carries its HTTP metadata. For filters (label, limit, path), capture a stable value in the fetch closure and change only `Cursor`. Memory revisions use the same pattern and expose numeric `Seq`; see [files and Memory](files-and-memory.md#read-and-edit-files-safely).
 
+Run Items is not a cursor collection: use `Run.Items(ctx, a13n.RunItemsOptions{Before: ..., After: ..., Limit: ...})` or the generated operation's native Before/After/Limit params for one ordinal window. Do not feed Items into `Pages` or treat Complete as all-history coverage. See [ordinal display windows](streaming-and-readback.md#read-one-ordinal-history-window).
+
 ## Change model settings for one Run
 
 Run options are typed, but the SDK does not guess provider policy. This example sends an **empty** `extra_body` to clear the inherited object for this Run; import `context`, `crypto/rand`, `a13n`, `generated` and `nullable`:
@@ -72,6 +74,8 @@ func runWithClearedExtraBody(ctx context.Context, client *a13n.Client, agentID s
 ```
 
 `extra_body` and `extra_headers` each replace their inherited object (Run over Agent over Model defaults), not merge nested entries. `{}` clears that object; omission and explicit null remain distinct. Pass only Service-allowed keys/values; do not forward arbitrary user input into provider HTTP headers. Check the outcome's status and `Run.Items(ctx)` before presenting execution as successful.
+
+Model, connector and Environment provider catalogues are deployment-discovered through the generated API, not an SDK-owned exhaustive provider whitelist. Service can add model backends (including Cerebras, SambaNova and xAI) and Environment backends (including Vercel) without a new SDK enum or operation. MCP transport, tool discovery and issuer handling remain Service-owned; the SDK forwards native Model/Connection configuration and does not embed an MCP client.
 
 ## Model Provider authorization and discovery
 

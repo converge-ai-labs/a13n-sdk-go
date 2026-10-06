@@ -97,6 +97,8 @@ func continueTurn(ctx context.Context, client *a13n.Client, agentID, threadID st
 
 Import `context`, `crypto/rand`, `fmt`, `a13n` and `generated` for this function. `StartPayload` and `SendPayload` accept a typed `generated.MessagePayload` when text alone is insufficient; [files and Memory](files-and-memory.md) shows an Asset part. `StartOptions` also exposes revision/session choice, delivery, environment/Memory mounts, MCP headers and typed Run options; `SendOptions` exposes the continuation fields. The SDK does not silently select a model, Agent or successor Run for you.
 
+`Thread.Get(ctx).Value.LastRunId` identifies the most recently sealed Run, including failed or cancelled outcomes. Its nearest checkpoint is the history for the next explicit `Send`: failure/cancellation pauses automatic progress, not history. The same `continueTurn` pattern applies after completed, failed or cancelled Runs; it does not retry the previous execution or choose an earlier successful Run. A waiting last Run instead requires explicit [resume](waiting-and-tools.md) with the complete pending results.
+
 A `RequestKey` belongs to *one logical mutation*. Generating another key retries as a new submission, not an idempotent replay. If an earlier request's outcome is unknown, save its key and reconcile it as described in [errors and recovery](errors-and-recovery.md).
 
 ## Supply one native Run configuration snapshot

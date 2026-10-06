@@ -206,6 +206,8 @@ func offline() {
 	check(errors.Is(err, a13n.ErrProtocol) && errors.As(err, &protocol) && protocol.Kind == "content_type", "bounded protocol errors")
 	streamRecoveryOffline()
 	refreshOffline()
+	pagedDisplayOffline()
+	sealedHistoryOffline()
 	fmt.Println("Installed module: interaction, exact Run, lazy pages, metadata, unions, null and diagnostics passed")
 }
 
@@ -270,6 +272,8 @@ func live() {
 	checkConfiguration(followOutcome.Snapshot.Value, followOptions)
 	fmt.Printf("Verified HTTPS: finite Agent iteration (%d provisional frames), exact Run/Items and continuation passed\n", frames)
 
+	pagedDisplayLive(ctx, outcome.Run)
+	sealedHistoryLive(ctx, client, agent)
 	activeConfigurationConflictLive(ctx, client, agent)
 
 	clientToolAgent := required("A13N_CLIENT_TOOL_AGENT")
@@ -417,6 +421,7 @@ func memory(ctx context.Context, client *a13n.Client, api *generated.ClientWithR
 
 // Only the saved display position claims coverage. A Redis ID is optional.
 func recoveryParams(snapshot generated.RunItems) *generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams {
+	check(snapshot.Baseline, "historical windows cannot claim live coverage")
 	runID, position := snapshot.Run.Id, snapshot.Position.GetOrEmpty()
 	check(position != "", "a committed display position is required before claiming coverage")
 	params := &generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{Run: &runID, Position: &position}
@@ -432,7 +437,7 @@ func streamRecoveryOffline() {
 			w.Header().Set("X-Request-ID", "recovery")
 			if strings.HasSuffix(req.URL.Path, "/items") {
 				w.Header().Set("Content-Type", "application/json")
-				_, _ = fmt.Fprintf(w, `{"run":{"id":"recovered","thread_id":"recovery-thread","status":"running"},"items":[],"position":"2-8","resume_after":%s,"dropped":4,"complete":false}`, hint)
+				_, _ = fmt.Fprintf(w, `{"run":{"id":"recovered","thread_id":"recovery-thread","status":"running"},"items":[],"position":"2-8","resume_after":%s,"baseline":true,"continuation":{"run_id":"recovered","next_ordinal":1,"position":{"attempt":2,"sequence":8}},"complete":false}`, hint)
 				return
 			}
 			check(req.URL.Query().Get("run") == "recovered" && req.URL.Query().Get("position") == "2-8", "installed run/position claims")
@@ -447,7 +452,7 @@ func streamRecoveryOffline() {
 		}))
 		client := must(a13n.NewClient(server.URL, a13n.NewSecret("offline"), nil))
 		snapshot := must(client.Run("recovered").Items(context.Background()))
-		check(snapshot.Value.Dropped == 4 && !snapshot.Value.Complete && snapshot.RequestID() == "recovery", "installed full committed display/metadata")
+		check(snapshot.Value.Baseline && !snapshot.Value.Complete && snapshot.RequestID() == "recovery", "installed committed baseline/metadata")
 		if hint == "null" {
 			check(snapshot.Value.ResumeAfter.IsNull(), "installed null recovery hint")
 		}

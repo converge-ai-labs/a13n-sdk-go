@@ -18,6 +18,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/converge-ai-labs/a13n-sdk-go/generated"
+	"github.com/oapi-codegen/nullable"
 )
 
 var streamCursor = regexp.MustCompile(`^[0-9]{1,20}-[0-9]{1,20}$`)
@@ -37,9 +38,12 @@ func (f frameMeta) Cursor() string    { return f.cursor }
 func (frameMeta) threadFrame()        {}
 
 type ItemRef struct {
-	ID    string `json:"id"`
-	Kind  string `json:"kind"`
-	State string `json:"state"`
+	ID            string                                        `json:"id"`
+	Kind          string                                        `json:"kind"`
+	State         string                                        `json:"state"`
+	Ordinal       nullable.Nullable[int]                        `json:"ordinal,omitempty"`
+	ResponseGroup nullable.Nullable[string]                     `json:"response_group,omitempty"`
+	Failure       nullable.Nullable[map[string]json.RawMessage] `json:"failure,omitempty"`
 }
 type BoundaryFrame struct {
 	frameMeta

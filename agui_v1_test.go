@@ -56,13 +56,13 @@ func TestAGUI1NativeMediaAttributionAndNullPayloadAreLossless(t *testing.T) {
 	}
 	content := `{"messageId":"same","subagentRunId":"child","parentSubagentRunId":"root-child","result_parts":[{"type":"image","source":{"type":"url","value":"https://example.invalid/image.png"}},{"type":"text","text":"{\"payload_omitted\":true,\"size_bytes\":19}"}],"metadata":{"display":false,"media":true},"truncated":true}`
 	client := coverageClient(t, func(req *http.Request) *http.Response {
-		return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"completed"},"items":[{"id":"root-text","kind":"text_message","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"messageId":"same","text":"root-only"}},{"id":"child-tool","kind":"tool_call","state":"completed","first_stream_id":"1-2","last_stream_id":"1-3","content":`+content+`}],"position":"1-3","resume_after":null,"dropped":2,"complete":true}`)
+		return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"completed"},"items":[{"id":"root-text","ordinal":3,"kind":"text_message","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"messageId":"same","text":"root-only"}},{"id":"child-tool","ordinal":4,"kind":"tool_call","state":"completed","first_stream_id":"1-2","last_stream_id":"1-3","content":`+content+`}],"position":"1-3","resume_after":null,"baseline":true,"continuation":null,"complete":true}`)
 	})
 	items, err := client.Run("run").Items(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(items.Value.Items) != 2 || items.Value.Dropped != 2 || !items.Value.Complete || items.Value.Items[0].Content["text"] != "root-only" {
+	if len(items.Value.Items) != 2 || !items.Value.Baseline || items.Value.Items[0].Ordinal != 3 || !items.Value.Complete || items.Value.Items[0].Content["text"] != "root-only" {
 		t.Fatal(items)
 	}
 	encoded, _ := json.Marshal(items.Value.Items[1].Content)

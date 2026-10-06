@@ -21,6 +21,7 @@ VERSION = "v0.0.0"
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--offline", action="store_true")
+    parser.add_argument("--save-zip", type=Path, help="Retain the exact installed module ZIP at this path")
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="a13n-go-consumer-") as directory:
         temp = Path(directory)
@@ -36,6 +37,9 @@ def main() -> None:
         with zipfile.ZipFile(versions / f"{VERSION}.zip", "w", zipfile.ZIP_DEFLATED) as archive:
             for source in sources:
                 archive.write(source, f"{MODULE}@{VERSION}/{source.relative_to(ROOT)}")
+        if args.save_zip is not None:
+            args.save_zip.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(versions / f"{VERSION}.zip", args.save_zip)
         consumer = temp / "consumer"
         consumer.mkdir()
         for source in (ROOT / "scripts" / "acceptance").glob("*.go"):
