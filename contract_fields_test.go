@@ -20,7 +20,7 @@ func TestRunItemsRecoveryHintsAndGeneratedStreamWire(t *testing.T) {
 		t.Run(hint, func(t *testing.T) {
 			client := coverageClient(t, func(req *http.Request) *http.Response {
 				if strings.HasSuffix(req.URL.Path, "/items") {
-					return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"running"},"items":[],"position":"1-8","dropped":3,"complete":false`+hint+`}`)
+					return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"running"},"items":[],"position":"1-8","baseline":true,"continuation":{"run_id":"run","next_ordinal":1,"position":{"attempt":1,"sequence":8}},"complete":false`+hint+`}`)
 				}
 				if req.URL.Query().Get("run") != "run" || req.URL.Query().Get("position") != "1-8" {
 					t.Fatal(req.URL)
@@ -40,7 +40,7 @@ func TestRunItemsRecoveryHintsAndGeneratedStreamWire(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if snapshot.Value.Dropped != 3 || snapshot.Value.Complete || snapshot.Value.Run.Id != "run" {
+			if !snapshot.Value.Baseline || snapshot.Value.Complete || snapshot.Value.Run.Id != "run" {
 				t.Fatal(snapshot)
 			}
 			value := snapshot.Value

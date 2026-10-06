@@ -73,5 +73,9 @@ def test_generated_operations_are_exactly_pinned_contract() -> None:
     for _, _, operation_id in expected:
         assert re.search(rf"func \(c \*Client\) {operation_id}(WithBody)?\(", generated)
     for schema_name in document["components"]["schemas"]:
-        # oapi-codegen removes OpenAPI's input/output name separator.
-        assert re.search(rf"^type {schema_name.replace('-', '')}\b", generated, re.MULTILINE)
+        # oapi-codegen removes input/output separators and exports a leading
+        # underscore as Underscore (the nested display continuation schemas).
+        name = schema_name.replace("-", "")
+        if name.startswith("_"):
+            name = "Underscore" + name[1:]
+        assert re.search(rf"^type {name}\b", generated, re.MULTILINE)

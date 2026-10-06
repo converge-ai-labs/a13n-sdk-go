@@ -146,6 +146,10 @@ Add `errors` and `io` to your imports for that loop. A Run can finish before the
 
 For result-only applications, `Start`/`Send` plus `Result` is enough. `StartOptions.MessageHistory` can import completed Pydantic AI conversation JSON when creating a new Thread; later `Send` calls do not reseed it. A queued submission might wait before it runs; a waiting Run requires a complete, explicit batch of approval decisions and call results. `Run.Resume(ctx, generated.Resume{Approvals: ..., Calls: ..., Input: ...}, key)` may include an *additional* typed message payload atomically in that same successor Run. It does not answer a missing call or approve one implicitly. A timeout or broken connection does **not** prove the remote submission failed, and the SDK does not automatically retry it.
 
+`Run.Items(ctx)` reads a recent committed display **window**, not automatically all history. Its default `Baseline=true` response includes the whole mutable tail even beyond the Service's limit (default 200, maximum 500), native normalization `Continuation`, nullable `Position` and optional covered `ResumeAfter`. Use one optional `a13n.RunItemsOptions{Before: &ordinal, Limit: &limit}` or After for explicit ordinal history windows; these have no live baseline or coverage. `Complete` means sealed, not all history loaded. See [ordinal windows and recovery](docs/streaming-and-readback.md#read-one-ordinal-history-window).
+
+A Thread's `LastRunId` is its latest sealed Run of any outcome. Continue completed, failed or cancelled history with normal explicit `Send`; failed/cancelled outcomes stop automatic advancement but do not discard history. Resume is only for the exact idle waiting last Run with full approvals/calls, not a generic retry.
+
 ## License
 
 Apache License 2.0.

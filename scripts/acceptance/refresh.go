@@ -51,7 +51,7 @@ func refreshOffline() {
 		case req.URL.Path == "/api/v1/runs/refresh-run":
 			_, _ = fmt.Fprintf(w, `{"id":"refresh-run","thread_id":"refresh-thread","status":"completed","options":%s}`, expected)
 		case strings.HasSuffix(req.URL.Path, "/items"):
-			_, _ = fmt.Fprintf(w, `{"run":{"id":"refresh-run","thread_id":"refresh-thread","status":"completed","options":%s},"items":[{"id":"child-result","kind":"tool_call","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"subagentRunId":"child","result_parts":[{"type":"image","source":{"type":"url","value":"https://example.invalid/a.png"}}],"truncated":true}}],"position":"1-1","resume_after":null,"complete":true,"dropped":2}`, expected)
+			_, _ = fmt.Fprintf(w, `{"run":{"id":"refresh-run","thread_id":"refresh-thread","status":"completed","options":%s},"items":[{"id":"child-result","ordinal":3,"kind":"tool_call","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"subagentRunId":"child","result_parts":[{"type":"image","source":{"type":"url","value":"https://example.invalid/a.png"}}],"truncated":true}}],"position":"1-1","resume_after":null,"complete":true,"baseline":true,"continuation":null}`, expected)
 		case strings.HasSuffix(req.URL.Path, "/stream"):
 			w.Header().Set("Content-Type", "text/event-stream")
 			_, _ = fmt.Fprintf(w, "id: 1-1\nevent: delta\ndata: {\"run_id\":\"refresh-run\",\"attempt\":1,\"sequence\":1,\"event\":%s,\"item\":null}\n\n", nativeEvent)
@@ -95,7 +95,7 @@ func refreshOffline() {
 	}
 	expected = string(must(json.Marshal(options)))
 	items := must(outcome.Run.Items(ctx))
-	check(items.Value.Dropped == 2 && items.Value.Items[0].Content["subagentRunId"] == "child" && items.Value.Items[0].Content["truncated"] == true, "installed media/attribution readback")
+	check(items.Value.Baseline && items.Value.Items[0].Ordinal == 3 && items.Value.Items[0].Content["subagentRunId"] == "child" && items.Value.Items[0].Content["truncated"] == true, "installed media/attribution readback")
 	api := must(client.API())
 	stream := must(api.ThreadStreamApiV1ThreadsThreadIdStreamGet(ctx, "refresh-thread", &generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{}))
 	wire := string(must(io.ReadAll(stream.Body)))
@@ -139,7 +139,11 @@ func refreshInteractionOffline() {
 		case strings.HasSuffix(req.URL.Path, "/stream"):
 			w.Header().Set("Content-Type", "text/event-stream")
 			for sequence, event := range []string{native, parts} {
-				_, _ = fmt.Fprintf(w, "id: 10-%d\nevent: delta\ndata: {\"run_id\":\"refresh-run\",\"attempt\":1,\"sequence\":%d,\"event\":%s,\"item\":null}\n\n", sequence+1, sequence+1, event)
+				item := `null`
+				if sequence == 1 {
+					item = `{"id":"child-item","kind":"tool_call","state":"failed","ordinal":3,"response_group":"response","failure":{"details":{"null":null,"enabled":false,"zero":0}}}`
+				}
+				_, _ = fmt.Fprintf(w, "id: 10-%d\nevent: delta\ndata: {\"run_id\":\"refresh-run\",\"attempt\":1,\"sequence\":%d,\"event\":%s,\"item\":%s}\n\n", sequence+1, sequence+1, event, item)
 			}
 			w.(http.Flusher).Flush()
 			<-req.Context().Done()
@@ -158,6 +162,7 @@ func refreshInteractionOffline() {
 	check(frame.RunID == "refresh-run" && string(frame.Event["runId"]) == `"inline-child"`, "installed native child terminal is not Service identity")
 	frame = must(interaction.Next()).(a13n.DeltaFrame)
 	check(string(frame.Event["subagentRunId"]) == `"inline-child"` && strings.Contains(string(frame.Event["content"]), `"type":"image"`), "installed finite parser preserves child multipart content")
+	check(frame.Item != nil && frame.Item.Ordinal.GetOrEmpty() == 3 && frame.Item.ResponseGroup.GetOrEmpty() == "response" && string(must(frame.Item.Failure.Get())["details"]) == `{"null":null,"enabled":false,"zero":0}`, "installed finite ItemRef metadata remains native JSON")
 	canceled, stop := context.WithCancel(ctx)
 	stop()
 	_, err := interaction.Result(canceled)

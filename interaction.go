@@ -250,12 +250,31 @@ func (r Run) Get(ctx context.Context) (Result[generated.RunView], error) {
 	return result, err
 }
 
-// Items reads authoritative committed Run history; stream deltas are not final.
-func (r Run) Items(ctx context.Context) (Result[generated.RunItems], error) {
+// RunItemsOptions selects one ordinal window. Before and After exclude each
+// other. Nil Limit uses the Service default (200); the Service validates bounds.
+// A historical window cannot establish live display coverage.
+type RunItemsOptions struct {
+	Before *int
+	After  *int
+	Limit  *int
+}
+
+// Items reads one committed display window, not necessarily all Run history.
+// With no Before/After it includes the entire mutable tail, even beyond Limit,
+// and can seed live coverage. Complete means sealed, not all history loaded.
+// At most one options value may be supplied; omitting it uses Service defaults.
+func (r Run) Items(ctx context.Context, options ...RunItemsOptions) (Result[generated.RunItems], error) {
 	if err := validateClient(r.client, r.ID); err != nil {
 		return Result[generated.RunItems]{}, err
 	}
-	resp, err := r.client.api.RunItemsApiV1RunsRunIdItemsGet(ctx, r.ID, &generated.RunItemsApiV1RunsRunIdItemsGetParams{XWorkspaceID: r.client.semanticWorkspace()})
+	if len(options) > 1 {
+		return Result[generated.RunItems]{}, errors.New("Items accepts at most one options value")
+	}
+	params := generated.RunItemsApiV1RunsRunIdItemsGetParams{XWorkspaceID: r.client.semanticWorkspace()}
+	if len(options) == 1 {
+		params.Before, params.After, params.Limit = options[0].Before, options[0].After, options[0].Limit
+	}
+	resp, err := r.client.api.RunItemsApiV1RunsRunIdItemsGet(ctx, r.ID, &params)
 	result, err := jsonResult[generated.RunItems](r.client, resp, err, 200)
 	if err == nil && result.Value.Run.Id != r.ID {
 		return result, fmt.Errorf("%w: inconsistent Run Items identity", ErrProtocol)

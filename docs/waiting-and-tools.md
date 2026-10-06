@@ -62,7 +62,9 @@ func displayReviewedResult(ctx context.Context, waiting a13n.RunOutcome, approve
 }
 ```
 
-The SDK passes your complete batch unchanged. Service checks the waiting Run is still the head and all pending IDs are covered; an expired decision conflicts rather than approving a different wait.
+The SDK passes your complete batch unchanged. Service checks the waiting Run is the exact last sealed Run on an idle Thread and all pending IDs are covered; an expired decision conflicts rather than approving a different wait.
+
+`Resume` is not an all-status retry endpoint. After a completed, failed or cancelled Run, use an explicit ordinary `Agent.Send` to continue its checkpoint history instead. The SDK does not automatically resubmit input or fork.
 
 ## Complete a known client tool and add user input atomically
 
