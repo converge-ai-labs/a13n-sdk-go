@@ -682,22 +682,22 @@ func (e InvitationReceiptDelivery) Valid() bool {
 
 // Defines values for ItemKind.
 const (
-	Observation      ItemKind = "observation"
-	ReasoningMessage ItemKind = "reasoning_message"
-	TextMessage      ItemKind = "text_message"
-	ToolCall         ItemKind = "tool_call"
+	ItemKindObservation      ItemKind = "observation"
+	ItemKindReasoningMessage ItemKind = "reasoning_message"
+	ItemKindTextMessage      ItemKind = "text_message"
+	ItemKindToolCall         ItemKind = "tool_call"
 )
 
 // Valid indicates whether the value is a known member of the ItemKind enum.
 func (e ItemKind) Valid() bool {
 	switch e {
-	case Observation:
+	case ItemKindObservation:
 		return true
-	case ReasoningMessage:
+	case ItemKindReasoningMessage:
 		return true
-	case TextMessage:
+	case ItemKindTextMessage:
 		return true
-	case ToolCall:
+	case ItemKindToolCall:
 		return true
 	default:
 		return false
@@ -1228,13 +1228,13 @@ func (e SpanStatus) Valid() bool {
 
 // Defines values for TextPartType.
 const (
-	Text TextPartType = "text"
+	TextPartTypeText TextPartType = "text"
 )
 
 // Valid indicates whether the value is a known member of the TextPartType enum.
 func (e TextPartType) Valid() bool {
 	switch e {
-	case Text:
+	case TextPartTypeText:
 		return true
 	default:
 		return false
@@ -1583,6 +1583,27 @@ func (e WebhookDeliveryStatus) Valid() bool {
 	case WebhookDeliveryStatusDelivered:
 		return true
 	case WebhookDeliveryStatusPending:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PartCursorKind.
+const (
+	PartCursorKindReasoning PartCursorKind = "reasoning"
+	PartCursorKindText      PartCursorKind = "text"
+	PartCursorKindToolCall  PartCursorKind = "tool_call"
+)
+
+// Valid indicates whether the value is a known member of the PartCursorKind enum.
+func (e PartCursorKind) Valid() bool {
+	switch e {
+	case PartCursorKindReasoning:
+		return true
+	case PartCursorKindText:
+		return true
+	case PartCursorKindToolCall:
 		return true
 	default:
 		return false
@@ -2357,6 +2378,22 @@ type Deny struct {
 // DenyAction defines model for Deny.Action.
 type DenyAction string
 
+// DisplayContinuation Parsing state at a semantic cut; Host paging may retire only immutable items.
+type DisplayContinuation struct {
+	Arguments nullable.Nullable[UnderscoreArguments] `json:"arguments,omitempty"`
+
+	// Fragments Incomplete custom payloads, not a journal of completed events.
+	Fragments   *FragmentState `json:"fragments,omitempty"`
+	FullContent *bool          `json:"full_content,omitempty"`
+	NextOrdinal int            `json:"next_ordinal"`
+
+	// Observer Native conversion cursors required to resume mid-part, without raw history.
+	Observer       *ObserverContinuation `json:"observer,omitempty"`
+	Position       StreamPosition        `json:"position"`
+	ResponseGroups *map[string]string    `json:"response_groups,omitempty"`
+	RunId          string                `json:"run_id"`
+}
+
 // EmailChangeConfirm defines model for EmailChangeConfirm.
 type EmailChangeConfirm struct {
 	Token string `json:"token"`
@@ -2523,6 +2560,14 @@ type Fork struct {
 
 // ForkKind defines model for Fork.Kind.
 type ForkKind string
+
+// FragmentState Incomplete custom payloads, not a journal of completed events.
+type FragmentState struct {
+	Gap        *bool                          `json:"gap,omitempty"`
+	MaxBytes   *int                           `json:"max_bytes,omitempty"`
+	MaxPending *int                           `json:"max_pending,omitempty"`
+	Pending    *map[string]UnderscoreAssembly `json:"pending,omitempty"`
+}
 
 // GitHubSource A directory of a public GitHub repository.
 //
@@ -3269,6 +3314,13 @@ type OAuthSettings struct {
 	TokenEndpointAuthMethod *ClientAuthentication     `json:"token_endpoint_auth_method,omitempty"`
 }
 
+// ObserverContinuation Native conversion cursors required to resume mid-part, without raw history.
+type ObserverContinuation struct {
+	RunId    nullable.Nullable[string] `json:"run_id,omitempty"`
+	State    *UnderscoreObserverState  `json:"state,omitempty"`
+	ThreadId nullable.Nullable[string] `json:"thread_id,omitempty"`
+}
+
 // OperationKind defines model for OperationKind.
 type OperationKind string
 
@@ -3612,11 +3664,13 @@ type RunConfigurationOutput struct {
 // RunItems Items of a run's committed display, in ordinal order, with the run they describe. Ordinals are dense from 1,
 // so the first item's ordinal tells whether earlier ones exist. Live output continues after `position`.
 type RunItems struct {
-	Complete    bool                      `json:"complete"`
-	Items       []Item                    `json:"items"`
-	Position    nullable.Nullable[string] `json:"position"`
-	ResumeAfter nullable.Nullable[string] `json:"resume_after,omitempty"`
-	Run         RunView                   `json:"run"`
+	Baseline     bool                                   `json:"baseline"`
+	Complete     bool                                   `json:"complete"`
+	Continuation nullable.Nullable[DisplayContinuation] `json:"continuation,omitempty"`
+	Items        []Item                                 `json:"items"`
+	Position     nullable.Nullable[string]              `json:"position"`
+	ResumeAfter  nullable.Nullable[string]              `json:"resume_after,omitempty"`
+	Run          RunView                                `json:"run"`
 }
 
 // RunLabels defines model for RunLabels.
@@ -3663,6 +3717,7 @@ type RunView struct {
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
 	CreatedAt         time.Time                               `json:"created_at"`
 	CurrentAttemptId  nullable.Nullable[string]               `json:"current_attempt_id"`
+	DisplayPosition   nullable.Nullable[string]               `json:"display_position,omitempty"`
 	EnvironmentMounts []EnvironmentMount                      `json:"environment_mounts"`
 	Failure           nullable.Nullable[Failure]              `json:"failure"`
 	Id                string                                  `json:"id"`
@@ -3966,6 +4021,12 @@ type SpanLink struct {
 type SpanPage struct {
 	Items      []Span                    `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// StreamPosition defines model for StreamPosition.
+type StreamPosition struct {
+	Attempt  int `json:"attempt"`
+	Sequence int `json:"sequence"`
 }
 
 // SubagentOverrideInput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
@@ -4459,6 +4520,43 @@ type WorkspacePage struct {
 type WorkspaceUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
 }
+
+// UnderscoreArguments A tool-call part's streamed arguments so far and the one observation item that holds them.
+type UnderscoreArguments struct {
+	At       time.Time                                 `json:"at"`
+	Event    nullable.Nullable[map[string]interface{}] `json:"event"`
+	Key      string                                    `json:"key"`
+	Sequence int                                       `json:"sequence"`
+	Size     int                                       `json:"size"`
+	Stream   JsonValue                                 `json:"stream"`
+}
+
+// UnderscoreAssembly defines model for _Assembly.
+type UnderscoreAssembly struct {
+	Count int       `json:"count"`
+	Parts *[]string `json:"parts,omitempty"`
+	Size  *int      `json:"size,omitempty"`
+}
+
+// UnderscoreObserverState defines model for _ObserverState.
+type UnderscoreObserverState struct {
+	Children     *map[string]UnderscoreObserverState `json:"children,omitempty"`
+	Parts        *map[string]UnderscorePartCursor    `json:"parts,omitempty"`
+	RequestIndex *int                                `json:"request_index,omitempty"`
+	Threads      *map[string]string                  `json:"threads,omitempty"`
+}
+
+// UnderscorePartCursor defines model for _PartCursor.
+type UnderscorePartCursor struct {
+	EmittedContent   *bool                     `json:"emitted_content,omitempty"`
+	EmittedSignature *bool                     `json:"emitted_signature,omitempty"`
+	Kind             PartCursorKind            `json:"kind"`
+	PartId           string                    `json:"part_id"`
+	ToolName         nullable.Nullable[string] `json:"tool_name,omitempty"`
+}
+
+// PartCursorKind defines model for PartCursor.Kind.
+type PartCursorKind string
 
 // Error How every failure answers, whatever its status.
 type Error = ErrorEnvelope
