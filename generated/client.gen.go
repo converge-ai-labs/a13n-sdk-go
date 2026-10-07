@@ -1043,6 +1043,27 @@ func (e OperationKind) Valid() bool {
 	}
 }
 
+// Defines values for PendingAnswersStatus.
+const (
+	PendingAnswersStatusClosed  PendingAnswersStatus = "closed"
+	PendingAnswersStatusResumed PendingAnswersStatus = "resumed"
+	PendingAnswersStatusWaiting PendingAnswersStatus = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the PendingAnswersStatus enum.
+func (e PendingAnswersStatus) Valid() bool {
+	switch e {
+	case PendingAnswersStatusClosed:
+		return true
+	case PendingAnswersStatusResumed:
+		return true
+	case PendingAnswersStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PricingConstraintKind.
 const (
 	Always    PricingConstraintKind = "always"
@@ -3393,6 +3414,23 @@ type Pending struct {
 	Calls     []PendingCall `json:"calls"`
 }
 
+// PendingAnswer One immutable answer to an exact waiting run; no accompanying input.
+type PendingAnswer struct {
+	Approvals map[string]ApprovalDecision `json:"approvals"`
+	Calls     map[string]CallResult       `json:"calls"`
+}
+
+// PendingAnswers defines model for PendingAnswers.
+type PendingAnswers struct {
+	Answers   []SavedAnswer              `json:"answers"`
+	RunId     string                     `json:"run_id"`
+	Status    PendingAnswersStatus       `json:"status"`
+	Successor nullable.Nullable[RunView] `json:"successor"`
+}
+
+// PendingAnswersStatus defines model for PendingAnswers.Status.
+type PendingAnswersStatus string
+
 // PendingCall defines model for PendingCall.
 type PendingCall struct {
 	Arguments    map[string]JsonValue                    `json:"arguments"`
@@ -3752,6 +3790,14 @@ type RunView struct {
 
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
+
+// SavedAnswer defines model for SavedAnswer.
+type SavedAnswer struct {
+	// Answer One immutable answer to an exact waiting run; no accompanying input.
+	Answer       PendingAnswer `json:"answer"`
+	AnsweredById string        `json:"answered_by_id"`
+	CreatedAt    time.Time     `json:"created_at"`
+}
 
 // ServiceAccount defines model for ServiceAccount.
 type ServiceAccount struct {
@@ -5378,6 +5424,20 @@ type UpdateRunApiV1RunsRunIdPatchParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// PendingAnswersApiV1RunsRunIdAnswersGetParams defines parameters for PendingAnswersApiV1RunsRunIdAnswersGet.
+type PendingAnswersApiV1RunsRunIdAnswersGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// AnswerPendingApiV1RunsRunIdAnswersPostParams defines parameters for AnswerPendingApiV1RunsRunIdAnswersPost.
+type AnswerPendingApiV1RunsRunIdAnswersPostParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // RunAttemptsApiV1RunsRunIdAttemptsGetParams defines parameters for RunAttemptsApiV1RunsRunIdAttemptsGet.
 type RunAttemptsApiV1RunsRunIdAttemptsGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -6213,6 +6273,9 @@ type CreateWorkspaceApiV1OrganizationsOrganizationIdWorkspacesPostJSONRequestBod
 
 // UpdateRunApiV1RunsRunIdPatchJSONRequestBody defines body for UpdateRunApiV1RunsRunIdPatch for application/json ContentType.
 type UpdateRunApiV1RunsRunIdPatchJSONRequestBody = RunLabels
+
+// AnswerPendingApiV1RunsRunIdAnswersPostJSONRequestBody defines body for AnswerPendingApiV1RunsRunIdAnswersPost for application/json ContentType.
+type AnswerPendingApiV1RunsRunIdAnswersPostJSONRequestBody = PendingAnswer
 
 // ForkRunApiV1RunsRunIdForkPostJSONRequestBody defines body for ForkRunApiV1RunsRunIdForkPost for application/json ContentType.
 type ForkRunApiV1RunsRunIdForkPostJSONRequestBody = Fork
@@ -8939,6 +9002,31 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 	UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PendingAnswersApiV1RunsRunIdAnswersGet Pending Answers
+	//
+	// Read saved answers and whether this exact wait is still open or has resumed.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/answers (the `PendingAnswersApiV1RunsRunIdAnswersGet` operationId).
+	PendingAnswersApiV1RunsRunIdAnswersGet(ctx context.Context, runId string, params *PendingAnswersApiV1RunsRunIdAnswersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AnswerPendingApiV1RunsRunIdAnswersPostWithBody Answer Pending
+	//
+	// Save one answer. The last answer atomically starts the existing resume flow.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+	AnswerPendingApiV1RunsRunIdAnswersPostWithBody(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AnswerPendingApiV1RunsRunIdAnswersPost Answer Pending
+	//
+	// Save one answer. The last answer atomically starts the existing resume flow.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+	AnswerPendingApiV1RunsRunIdAnswersPost(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, body AnswerPendingApiV1RunsRunIdAnswersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RunAttemptsApiV1RunsRunIdAttemptsGet Run Attempts
 	//
@@ -12725,6 +12813,61 @@ func (c *Client) UpdateRunApiV1RunsRunIdPatchWithBody(ctx context.Context, runId
 // Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 func (c *Client) UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRunApiV1RunsRunIdPatchRequest(c.Server, runId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PendingAnswersApiV1RunsRunIdAnswersGet Pending Answers
+//
+// Read saved answers and whether this exact wait is still open or has resumed.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/answers (the `PendingAnswersApiV1RunsRunIdAnswersGet` operationId).
+func (c *Client) PendingAnswersApiV1RunsRunIdAnswersGet(ctx context.Context, runId string, params *PendingAnswersApiV1RunsRunIdAnswersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPendingAnswersApiV1RunsRunIdAnswersGetRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AnswerPendingApiV1RunsRunIdAnswersPostWithBody Answer Pending
+//
+// Save one answer. The last answer atomically starts the existing resume flow.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+func (c *Client) AnswerPendingApiV1RunsRunIdAnswersPostWithBody(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAnswerPendingApiV1RunsRunIdAnswersPostRequestWithBody(c.Server, runId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AnswerPendingApiV1RunsRunIdAnswersPost Answer Pending
+//
+// Save one answer. The last answer atomically starts the existing resume flow.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+func (c *Client) AnswerPendingApiV1RunsRunIdAnswersPost(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, body AnswerPendingApiV1RunsRunIdAnswersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAnswerPendingApiV1RunsRunIdAnswersPostRequest(c.Server, runId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -22782,6 +22925,126 @@ func NewUpdateRunApiV1RunsRunIdPatchRequestWithBody(server string, runId string,
 	return req, nil
 }
 
+// NewPendingAnswersApiV1RunsRunIdAnswersGetRequest constructs an http.Request for the PendingAnswersApiV1RunsRunIdAnswersGet method
+func NewPendingAnswersApiV1RunsRunIdAnswersGetRequest(server string, runId string, params *PendingAnswersApiV1RunsRunIdAnswersGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/answers", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewAnswerPendingApiV1RunsRunIdAnswersPostRequest calls the generic AnswerPendingApiV1RunsRunIdAnswersPost builder with application/json body
+func NewAnswerPendingApiV1RunsRunIdAnswersPostRequest(server string, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, body AnswerPendingApiV1RunsRunIdAnswersPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAnswerPendingApiV1RunsRunIdAnswersPostRequestWithBody(server, runId, params, "application/json", bodyReader)
+}
+
+// NewAnswerPendingApiV1RunsRunIdAnswersPostRequestWithBody constructs an http.Request for the AnswerPendingApiV1RunsRunIdAnswersPost method, with any body, and a specified content type
+func NewAnswerPendingApiV1RunsRunIdAnswersPostRequestWithBody(server string, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/answers", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("Idempotency-Key", headerParam0)
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest constructs an http.Request for the RunAttemptsApiV1RunsRunIdAttemptsGet method
 func NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest(server string, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams) (*http.Request, error) {
 	var err error
@@ -31004,6 +31267,33 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 	UpdateRunApiV1RunsRunIdPatchWithResponse(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRunApiV1RunsRunIdPatchResponse, error)
+
+	// PendingAnswersApiV1RunsRunIdAnswersGetWithResponse Pending Answers
+	//
+	// Read saved answers and whether this exact wait is still open or has resumed.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/answers (the `PendingAnswersApiV1RunsRunIdAnswersGet` operationId).
+	PendingAnswersApiV1RunsRunIdAnswersGetWithResponse(ctx context.Context, runId string, params *PendingAnswersApiV1RunsRunIdAnswersGetParams, reqEditors ...RequestEditorFn) (*PendingAnswersApiV1RunsRunIdAnswersGetResponse, error)
+
+	// AnswerPendingApiV1RunsRunIdAnswersPostWithBodyWithResponse Answer Pending
+	//
+	// Save one answer. The last answer atomically starts the existing resume flow.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+	AnswerPendingApiV1RunsRunIdAnswersPostWithBodyWithResponse(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AnswerPendingApiV1RunsRunIdAnswersPostResponse, error)
+
+	// AnswerPendingApiV1RunsRunIdAnswersPostWithResponse Answer Pending
+	//
+	// Save one answer. The last answer atomically starts the existing resume flow.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+	AnswerPendingApiV1RunsRunIdAnswersPostWithResponse(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, body AnswerPendingApiV1RunsRunIdAnswersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*AnswerPendingApiV1RunsRunIdAnswersPostResponse, error)
 
 	// RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse Run Attempts
 	//
@@ -40676,6 +40966,151 @@ func (r UpdateRunApiV1RunsRunIdPatchResponse) ContentType() string {
 	return ""
 }
 
+// PendingAnswersApiV1RunsRunIdAnswersGetResponse400Headers the declared response headers of an HTTP 400 response for PendingAnswersApiV1RunsRunIdAnswersGet
+type PendingAnswersApiV1RunsRunIdAnswersGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// PendingAnswersApiV1RunsRunIdAnswersGetResponseDefaultHeaders the declared response headers of an HTTP default response for PendingAnswersApiV1RunsRunIdAnswersGet
+type PendingAnswersApiV1RunsRunIdAnswersGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type PendingAnswersApiV1RunsRunIdAnswersGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PendingAnswers
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PendingAnswersApiV1RunsRunIdAnswersGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PendingAnswersApiV1RunsRunIdAnswersGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PendingAnswersApiV1RunsRunIdAnswersGetResponse) GetJSON200() *PendingAnswers {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PendingAnswersApiV1RunsRunIdAnswersGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PendingAnswersApiV1RunsRunIdAnswersGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PendingAnswersApiV1RunsRunIdAnswersGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PendingAnswersApiV1RunsRunIdAnswersGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PendingAnswersApiV1RunsRunIdAnswersGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PendingAnswersApiV1RunsRunIdAnswersGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// AnswerPendingApiV1RunsRunIdAnswersPostResponse400Headers the declared response headers of an HTTP 400 response for AnswerPendingApiV1RunsRunIdAnswersPost
+type AnswerPendingApiV1RunsRunIdAnswersPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// AnswerPendingApiV1RunsRunIdAnswersPostResponseDefaultHeaders the declared response headers of an HTTP default response for AnswerPendingApiV1RunsRunIdAnswersPost
+type AnswerPendingApiV1RunsRunIdAnswersPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type AnswerPendingApiV1RunsRunIdAnswersPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PendingAnswers
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *PendingAnswers
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *AnswerPendingApiV1RunsRunIdAnswersPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *AnswerPendingApiV1RunsRunIdAnswersPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) GetJSON200() *PendingAnswers {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) GetJSON201() *PendingAnswers {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AnswerPendingApiV1RunsRunIdAnswersPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // RunAttemptsApiV1RunsRunIdAttemptsGetResponse400Headers the declared response headers of an HTTP 400 response for RunAttemptsApiV1RunsRunIdAttemptsGet
 type RunAttemptsApiV1RunsRunIdAttemptsGetResponse400Headers struct {
 	XRequestId *string
@@ -50212,6 +50647,51 @@ func (c *ClientWithResponses) UpdateRunApiV1RunsRunIdPatchWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseUpdateRunApiV1RunsRunIdPatchResponse(rsp)
+}
+
+// PendingAnswersApiV1RunsRunIdAnswersGetWithResponse Pending Answers
+//
+// Read saved answers and whether this exact wait is still open or has resumed.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/answers (the `PendingAnswersApiV1RunsRunIdAnswersGet` operationId).
+func (c *ClientWithResponses) PendingAnswersApiV1RunsRunIdAnswersGetWithResponse(ctx context.Context, runId string, params *PendingAnswersApiV1RunsRunIdAnswersGetParams, reqEditors ...RequestEditorFn) (*PendingAnswersApiV1RunsRunIdAnswersGetResponse, error) {
+	rsp, err := c.PendingAnswersApiV1RunsRunIdAnswersGet(ctx, runId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePendingAnswersApiV1RunsRunIdAnswersGetResponse(rsp)
+}
+
+// AnswerPendingApiV1RunsRunIdAnswersPostWithBodyWithResponse Answer Pending
+//
+// Save one answer. The last answer atomically starts the existing resume flow.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+func (c *ClientWithResponses) AnswerPendingApiV1RunsRunIdAnswersPostWithBodyWithResponse(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AnswerPendingApiV1RunsRunIdAnswersPostResponse, error) {
+	rsp, err := c.AnswerPendingApiV1RunsRunIdAnswersPostWithBody(ctx, runId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAnswerPendingApiV1RunsRunIdAnswersPostResponse(rsp)
+}
+
+// AnswerPendingApiV1RunsRunIdAnswersPostWithResponse Answer Pending
+//
+// Save one answer. The last answer atomically starts the existing resume flow.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/answers (the `AnswerPendingApiV1RunsRunIdAnswersPost` operationId).
+func (c *ClientWithResponses) AnswerPendingApiV1RunsRunIdAnswersPostWithResponse(ctx context.Context, runId string, params *AnswerPendingApiV1RunsRunIdAnswersPostParams, body AnswerPendingApiV1RunsRunIdAnswersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*AnswerPendingApiV1RunsRunIdAnswersPostResponse, error) {
+	rsp, err := c.AnswerPendingApiV1RunsRunIdAnswersPost(ctx, runId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAnswerPendingApiV1RunsRunIdAnswersPostResponse(rsp)
 }
 
 // RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse Run Attempts
@@ -59946,6 +60426,139 @@ func ParseUpdateRunApiV1RunsRunIdPatchResponse(rsp *http.Response) (*UpdateRunAp
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateRunApiV1RunsRunIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePendingAnswersApiV1RunsRunIdAnswersGetResponse parses an HTTP response from a PendingAnswersApiV1RunsRunIdAnswersGetWithResponse call
+func ParsePendingAnswersApiV1RunsRunIdAnswersGetResponse(rsp *http.Response) (*PendingAnswersApiV1RunsRunIdAnswersGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PendingAnswersApiV1RunsRunIdAnswersGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PendingAnswers
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers PendingAnswersApiV1RunsRunIdAnswersGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PendingAnswersApiV1RunsRunIdAnswersGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseAnswerPendingApiV1RunsRunIdAnswersPostResponse parses an HTTP response from a AnswerPendingApiV1RunsRunIdAnswersPostWithResponse call
+func ParseAnswerPendingApiV1RunsRunIdAnswersPostResponse(rsp *http.Response) (*AnswerPendingApiV1RunsRunIdAnswersPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AnswerPendingApiV1RunsRunIdAnswersPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PendingAnswers
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest PendingAnswers
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers AnswerPendingApiV1RunsRunIdAnswersPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers AnswerPendingApiV1RunsRunIdAnswersPostResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
