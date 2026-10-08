@@ -2152,12 +2152,6 @@ type CatalogRef struct {
 // Certainty defines model for Certainty.
 type Certainty string
 
-// ChatGPTModel defines model for ChatGPTModel.
-type ChatGPTModel struct {
-	DisplayName string `json:"display_name"`
-	Slug        string `json:"slug"`
-}
-
 // ChildEnvironmentPolicy What a child run mounts: no environment, the parent's, or a new one from `template_id`.
 type ChildEnvironmentPolicy struct {
 	Mode       *ChildEnvironmentPolicyMode `json:"mode,omitempty"`
@@ -3531,6 +3525,12 @@ type ProviderCreate struct {
 	Type         string                                  `json:"type"`
 }
 
+// ProviderModel An upstream choice; wire names retain the original account-discovery contract.
+type ProviderModel struct {
+	DisplayName string `json:"display_name"`
+	Slug        string `json:"slug"`
+}
+
 // ProviderPage defines model for ProviderPage.
 type ProviderPage struct {
 	Items      []Provider                `json:"items"`
@@ -3550,24 +3550,25 @@ type ProviderTestStatus string
 
 // ProviderType defines model for ProviderType.
 type ProviderType struct {
-	Authentication      Authentication                                     `json:"authentication"`
-	CatalogProviders    nullable.Nullable[[]string]                        `json:"catalog_providers,omitempty"`
-	ConfigurationSchema map[string]JsonValue                               `json:"configuration_schema"`
-	CredentialSchema    nullable.Nullable[map[string]JsonValue]            `json:"credential_schema"`
-	DefaultModelApi     nullable.Nullable[string]                          `json:"default_model_api,omitempty"`
-	DisplayName         string                                             `json:"display_name"`
-	EnvironmentSchema   nullable.Nullable[map[string]JsonValue]            `json:"environment_schema,omitempty"`
-	ModelApiLabels      nullable.Nullable[map[string]string]               `json:"model_api_labels,omitempty"`
-	ModelApis           nullable.Nullable[[]string]                        `json:"model_apis,omitempty"`
-	OauthScheme         nullable.Nullable[string]                          `json:"oauth_scheme,omitempty"`
-	Operations          nullable.Nullable[[]WebOperation]                  `json:"operations,omitempty"`
-	SettingsSchemas     nullable.Nullable[map[string]map[string]JsonValue] `json:"settings_schemas,omitempty"`
-	SetupLabel          nullable.Nullable[string]                          `json:"setup_label"`
-	SetupUrl            nullable.Nullable[string]                          `json:"setup_url"`
-	SupportsDestroy     nullable.Nullable[bool]                            `json:"supports_destroy,omitempty"`
-	SupportsStop        nullable.Nullable[bool]                            `json:"supports_stop,omitempty"`
-	SupportsTest        bool                                               `json:"supports_test"`
-	Type                string                                             `json:"type"`
+	Authentication         Authentication                                     `json:"authentication"`
+	CatalogProviders       nullable.Nullable[[]string]                        `json:"catalog_providers,omitempty"`
+	ConfigurationSchema    map[string]JsonValue                               `json:"configuration_schema"`
+	CredentialSchema       nullable.Nullable[map[string]JsonValue]            `json:"credential_schema"`
+	DefaultModelApi        nullable.Nullable[string]                          `json:"default_model_api,omitempty"`
+	DisplayName            string                                             `json:"display_name"`
+	EnvironmentSchema      nullable.Nullable[map[string]JsonValue]            `json:"environment_schema,omitempty"`
+	ModelApiLabels         nullable.Nullable[map[string]string]               `json:"model_api_labels,omitempty"`
+	ModelApis              nullable.Nullable[[]string]                        `json:"model_apis,omitempty"`
+	OauthScheme            nullable.Nullable[string]                          `json:"oauth_scheme,omitempty"`
+	Operations             nullable.Nullable[[]WebOperation]                  `json:"operations,omitempty"`
+	SettingsSchemas        nullable.Nullable[map[string]map[string]JsonValue] `json:"settings_schemas,omitempty"`
+	SetupLabel             nullable.Nullable[string]                          `json:"setup_label"`
+	SetupUrl               nullable.Nullable[string]                          `json:"setup_url"`
+	SupportsDestroy        nullable.Nullable[bool]                            `json:"supports_destroy,omitempty"`
+	SupportsModelDiscovery *bool                                              `json:"supports_model_discovery,omitempty"`
+	SupportsStop           nullable.Nullable[bool]                            `json:"supports_stop,omitempty"`
+	SupportsTest           bool                                               `json:"supports_test"`
+	Type                   string                                             `json:"type"`
 }
 
 // ProviderTypePage defines model for ProviderTypePage.
@@ -38841,7 +38842,7 @@ type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse s
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *[]ChatGPTModel
+	JSON200 *[]ProviderModel
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -38853,7 +38854,7 @@ type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse s
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetJSON200() *[]ChatGPTModel {
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetJSON200() *[]ProviderModel {
 	return r.JSON200
 }
 
@@ -58284,7 +58285,7 @@ func ParseDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetRespo
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []ChatGPTModel
+		var dest []ProviderModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
