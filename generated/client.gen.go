@@ -3576,8 +3576,9 @@ type ProviderCreate struct {
 
 // ProviderModel An upstream choice; wire names retain the original account-discovery contract.
 type ProviderModel struct {
-	DisplayName string `json:"display_name"`
-	Slug        string `json:"slug"`
+	Characteristics nullable.Nullable[HarnessModelCharacteristicsOutput] `json:"characteristics,omitempty"`
+	DisplayName     string                                               `json:"display_name"`
+	Slug            string                                               `json:"slug"`
 }
 
 // ProviderPage defines model for ProviderPage.
