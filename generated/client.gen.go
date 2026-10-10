@@ -20,6 +20,24 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for AgentPresetKind.
+const (
+	AgentPresetKindComposer AgentPresetKind = "composer"
+	AgentPresetKindFinding  AgentPresetKind = "finding"
+)
+
+// Valid indicates whether the value is a known member of the AgentPresetKind enum.
+func (e AgentPresetKind) Valid() bool {
+	switch e {
+	case AgentPresetKindComposer:
+		return true
+	case AgentPresetKindFinding:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentConfigInputSubagentMode.
 const (
 	AgentConfigInputSubagentModeAsync  AgentConfigInputSubagentMode = "async"
@@ -128,6 +146,33 @@ func (e ApproveAction) Valid() bool {
 	}
 }
 
+// Defines values for Assessment.
+const (
+	Confirmed     Assessment = "confirmed"
+	Expected      Assessment = "expected"
+	FalsePositive Assessment = "false_positive"
+	Insufficient  Assessment = "insufficient"
+	Unreviewed    Assessment = "unreviewed"
+)
+
+// Valid indicates whether the value is a known member of the Assessment enum.
+func (e Assessment) Valid() bool {
+	switch e {
+	case Confirmed:
+		return true
+	case Expected:
+		return true
+	case FalsePositive:
+		return true
+	case Insufficient:
+		return true
+	case Unreviewed:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AssetPartType.
 const (
 	AssetPartTypeAsset AssetPartType = "asset"
@@ -145,19 +190,19 @@ func (e AssetPartType) Valid() bool {
 
 // Defines values for AttemptViewStartReason.
 const (
-	Handoff  AttemptViewStartReason = "handoff"
-	Initial  AttemptViewStartReason = "initial"
-	Recovery AttemptViewStartReason = "recovery"
+	AttemptViewStartReasonHandoff  AttemptViewStartReason = "handoff"
+	AttemptViewStartReasonInitial  AttemptViewStartReason = "initial"
+	AttemptViewStartReasonRecovery AttemptViewStartReason = "recovery"
 )
 
 // Valid indicates whether the value is a known member of the AttemptViewStartReason enum.
 func (e AttemptViewStartReason) Valid() bool {
 	switch e {
-	case Handoff:
+	case AttemptViewStartReasonHandoff:
 		return true
-	case Initial:
+	case AttemptViewStartReasonInitial:
 		return true
-	case Recovery:
+	case AttemptViewStartReasonRecovery:
 		return true
 	default:
 		return false
@@ -230,6 +275,45 @@ func (e AuthorizationStatusState) Valid() bool {
 	case ReauthenticationRequired:
 		return true
 	case Refreshing:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for Category.
+const (
+	AnswerQuality     Category = "answer_quality"
+	BoundaryViolation Category = "boundary_violation"
+	ContextGap        Category = "context_gap"
+	InstructionIssue  Category = "instruction_issue"
+	ToolDesign        Category = "tool_design"
+	ToolExecution     Category = "tool_execution"
+	ToolUsage         Category = "tool_usage"
+	UnclearRequest    Category = "unclear_request"
+	WorkflowIssue     Category = "workflow_issue"
+)
+
+// Valid indicates whether the value is a known member of the Category enum.
+func (e Category) Valid() bool {
+	switch e {
+	case AnswerQuality:
+		return true
+	case BoundaryViolation:
+		return true
+	case ContextGap:
+		return true
+	case InstructionIssue:
+		return true
+	case ToolDesign:
+		return true
+	case ToolExecution:
+		return true
+	case ToolUsage:
+		return true
+	case UnclearRequest:
+		return true
+	case WorkflowIssue:
 		return true
 	default:
 		return false
@@ -416,6 +500,24 @@ func (e ConnectionTestOutcomeStatus) Valid() bool {
 	case ConnectionTestOutcomeStatusFailed:
 		return true
 	case ConnectionTestOutcomeStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentRefMediaType.
+const (
+	ContentRefMediaTypeApplicationjson ContentRefMediaType = "application/json"
+	ContentRefMediaTypeTextplain       ContentRefMediaType = "text/plain"
+)
+
+// Valid indicates whether the value is a known member of the ContentRefMediaType enum.
+func (e ContentRefMediaType) Valid() bool {
+	switch e {
+	case ContentRefMediaTypeApplicationjson:
+		return true
+	case ContentRefMediaTypeTextplain:
 		return true
 	default:
 		return false
@@ -1043,6 +1145,27 @@ func (e OperationKind) Valid() bool {
 	}
 }
 
+// Defines values for Preset.
+const (
+	PresetAnswer    Preset = "answer"
+	PresetExecution Preset = "execution"
+	PresetRecovery  Preset = "recovery"
+)
+
+// Valid indicates whether the value is a known member of the Preset enum.
+func (e Preset) Valid() bool {
+	switch e {
+	case PresetAnswer:
+		return true
+	case PresetExecution:
+		return true
+	case PresetRecovery:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PricingConstraintKind.
 const (
 	Always    PricingConstraintKind = "always"
@@ -1115,6 +1238,24 @@ func (e RevokedConnectionRemoteRevocation) Valid() bool {
 	case RevokedConnectionRemoteRevocationRevoked:
 		return true
 	case RevokedConnectionRemoteRevocationSkipped:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunContentMediaType.
+const (
+	RunContentMediaTypeApplicationjson RunContentMediaType = "application/json"
+	RunContentMediaTypeTextplain       RunContentMediaType = "text/plain"
+)
+
+// Valid indicates whether the value is a known member of the RunContentMediaType enum.
+func (e RunContentMediaType) Valid() bool {
+	switch e {
+	case RunContentMediaTypeApplicationjson:
+		return true
+	case RunContentMediaTypeTextplain:
 		return true
 	default:
 		return false
@@ -1202,6 +1343,27 @@ func (e ServiceAccountUpdateStatus) Valid() bool {
 	case ServiceAccountUpdateStatusActive:
 		return true
 	case ServiceAccountUpdateStatusDisabled:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for Severity.
+const (
+	Critical   Severity = "critical"
+	Suggestion Severity = "suggestion"
+	Warning    Severity = "warning"
+)
+
+// Valid indicates whether the value is a known member of the Severity enum.
+func (e Severity) Valid() bool {
+	switch e {
+	case Critical:
+		return true
+	case Suggestion:
+		return true
+	case Warning:
 		return true
 	default:
 		return false
@@ -1390,8 +1552,10 @@ const (
 	ToolsetKeyAssets        ToolsetKey = "assets"
 	ToolsetKeyConfiguration ToolsetKey = "configuration"
 	ToolsetKeyFiles         ToolsetKey = "files"
+	ToolsetKeyFindings      ToolsetKey = "findings"
 	ToolsetKeyMemory        ToolsetKey = "memory"
 	ToolsetKeyShell         ToolsetKey = "shell"
+	ToolsetKeyTraces        ToolsetKey = "traces"
 	ToolsetKeyWeb           ToolsetKey = "web"
 )
 
@@ -1404,9 +1568,13 @@ func (e ToolsetKey) Valid() bool {
 		return true
 	case ToolsetKeyFiles:
 		return true
+	case ToolsetKeyFindings:
+		return true
 	case ToolsetKeyMemory:
 		return true
 	case ToolsetKeyShell:
+		return true
+	case ToolsetKeyTraces:
 		return true
 	case ToolsetKeyWeb:
 		return true
@@ -1610,6 +1778,24 @@ func (e PartCursorKind) Valid() bool {
 	}
 }
 
+// Defines values for ListAgentsApiV1AgentsGetParamsPresetKind.
+const (
+	ListAgentsApiV1AgentsGetParamsPresetKindComposer ListAgentsApiV1AgentsGetParamsPresetKind = "composer"
+	ListAgentsApiV1AgentsGetParamsPresetKindFinding  ListAgentsApiV1AgentsGetParamsPresetKind = "finding"
+)
+
+// Valid indicates whether the value is a known member of the ListAgentsApiV1AgentsGetParamsPresetKind enum.
+func (e ListAgentsApiV1AgentsGetParamsPresetKind) Valid() bool {
+	switch e {
+	case ListAgentsApiV1AgentsGetParamsPresetKindComposer:
+		return true
+	case ListAgentsApiV1AgentsGetParamsPresetKindFinding:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind.
 const (
 	ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKindServiceAccount ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind = "service_account"
@@ -1680,22 +1866,26 @@ type AccountDisable struct {
 
 // Agent defines model for Agent.
 type Agent struct {
-	ArchivedAt        nullable.Nullable[time.Time] `json:"archived_at"`
-	CreatedAt         time.Time                    `json:"created_at"`
-	CreatedById       string                       `json:"created_by_id"`
-	DefaultRevisionId nullable.Nullable[string]    `json:"default_revision_id"`
-	Description       string                       `json:"description"`
-	Id                string                       `json:"id"`
-	ImageUrl          nullable.Nullable[string]    `json:"image_url"`
-	Labels            map[string]string            `json:"labels"`
-	Name              string                       `json:"name"`
-	OrganizationId    string                       `json:"organization_id"`
-	Source            AgentSource                  `json:"source"`
-	UpdatedAt         time.Time                    `json:"updated_at"`
-	UpdatedById       string                       `json:"updated_by_id"`
-	Version           int                          `json:"version"`
-	WorkspaceId       string                       `json:"workspace_id"`
+	ArchivedAt        nullable.Nullable[time.Time]       `json:"archived_at"`
+	CreatedAt         time.Time                          `json:"created_at"`
+	CreatedById       string                             `json:"created_by_id"`
+	DefaultRevisionId nullable.Nullable[string]          `json:"default_revision_id"`
+	Description       string                             `json:"description"`
+	Id                string                             `json:"id"`
+	ImageUrl          nullable.Nullable[string]          `json:"image_url"`
+	Labels            map[string]string                  `json:"labels"`
+	Name              string                             `json:"name"`
+	OrganizationId    string                             `json:"organization_id"`
+	PresetKind        nullable.Nullable[AgentPresetKind] `json:"preset_kind,omitempty"`
+	Source            AgentSource                        `json:"source"`
+	UpdatedAt         time.Time                          `json:"updated_at"`
+	UpdatedById       string                             `json:"updated_by_id"`
+	Version           int                                `json:"version"`
+	WorkspaceId       string                             `json:"workspace_id"`
 }
+
+// AgentPresetKind defines model for Agent.PresetKind.
+type AgentPresetKind string
 
 // AgentConfigInput defines model for AgentConfig-Input.
 type AgentConfigInput struct {
@@ -1903,6 +2093,39 @@ type AgentValidate struct {
 	Config  AgentConfigInput          `json:"config"`
 }
 
+// Analysis defines model for Analysis.
+type Analysis struct {
+	AgentId            nullable.Nullable[string] `json:"agent_id"`
+	CitedTraceCount    int                       `json:"cited_trace_count"`
+	CreatedAt          time.Time                 `json:"created_at"`
+	FindingCount       int                       `json:"finding_count"`
+	Id                 string                    `json:"id"`
+	ReadTraceIds       []string                  `json:"read_trace_ids"`
+	RunId              string                    `json:"run_id"`
+	RunStatus          string                    `json:"run_status"`
+	SelectedTraces     []SelectedTrace           `json:"selected_traces"`
+	Selection          AnalysisCreate            `json:"selection"`
+	SelectionTruncated bool                      `json:"selection_truncated"`
+	SessionId          string                    `json:"session_id"`
+	ThreadId           string                    `json:"thread_id"`
+}
+
+// AnalysisCreate defines model for AnalysisCreate.
+type AnalysisCreate struct {
+	AgentId       nullable.Nullable[string]    `json:"agent_id,omitempty"`
+	MaxTraces     *int                         `json:"max_traces,omitempty"`
+	Presets       *[]Preset                    `json:"presets,omitempty"`
+	StartedAfter  nullable.Nullable[time.Time] `json:"started_after,omitempty"`
+	StartedBefore nullable.Nullable[time.Time] `json:"started_before,omitempty"`
+	TraceId       nullable.Nullable[string]    `json:"trace_id,omitempty"`
+}
+
+// AnalysisPage defines model for AnalysisPage.
+type AnalysisPage struct {
+	Items      []Analysis                `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
 // ApiKey defines model for ApiKey.
 type ApiKey struct {
 	CreatedAt      time.Time                    `json:"created_at"`
@@ -1936,6 +2159,9 @@ type Approve struct {
 
 // ApproveAction defines model for Approve.Action.
 type ApproveAction string
+
+// Assessment defines model for Assessment.
+type Assessment string
 
 // Asset defines model for Asset.
 type Asset struct {
@@ -2149,14 +2375,11 @@ type CatalogRef struct {
 	Provider string `json:"provider"`
 }
 
+// Category defines model for Category.
+type Category string
+
 // Certainty defines model for Certainty.
 type Certainty string
-
-// ChatGPTModel defines model for ChatGPTModel.
-type ChatGPTModel struct {
-	DisplayName string `json:"display_name"`
-	Slug        string `json:"slug"`
-}
 
 // ChildEnvironmentPolicy What a child run mounts: no environment, the parent's, or a new one from `template_id`.
 type ChildEnvironmentPolicy struct {
@@ -2318,6 +2541,18 @@ type ConnectorConfig struct {
 	App     string                `json:"app"`
 	Setup   *map[string]JsonValue `json:"setup,omitempty"`
 }
+
+// ContentRef An immutable Host-owned value, loaded through that Host's authorized content API.
+type ContentRef struct {
+	Id        string              `json:"id"`
+	MediaType ContentRefMediaType `json:"media_type"`
+	Preview   string              `json:"preview"`
+	SizeBytes int                 `json:"size_bytes"`
+	Truncated *bool               `json:"truncated,omitempty"`
+}
+
+// ContentRefMediaType defines model for ContentRef.MediaType.
+type ContentRefMediaType string
 
 // CreatedSubscription defines model for CreatedSubscription.
 type CreatedSubscription struct {
@@ -2521,6 +2756,13 @@ type ErrorEnvelope struct {
 	Error ErrorBody `json:"error"`
 }
 
+// Evidence defines model for Evidence.
+type Evidence struct {
+	RunId   string    `json:"run_id"`
+	SpanIds *[]string `json:"span_ids,omitempty"`
+	TraceId string    `json:"trace_id"`
+}
+
 // ExternalTargetCreate An envd daemon someone runs, registered by its endpoint and the token it accepts.
 type ExternalTargetCreate struct {
 	Endpoint string                    `json:"endpoint"`
@@ -2541,6 +2783,62 @@ type FailedStatus string
 type Failure struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+}
+
+// Finding defines model for Finding.
+type Finding struct {
+	AgentId         string                    `json:"agent_id"`
+	AgentRevisionId string                    `json:"agent_revision_id"`
+	AnalysisId      nullable.Nullable[string] `json:"analysis_id"`
+	Assessment      Assessment                `json:"assessment"`
+	AssessmentNote  string                    `json:"assessment_note"`
+
+	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
+	Category    Category                  `json:"category"`
+	Closed      bool                      `json:"closed"`
+	CreatedAt   time.Time                 `json:"created_at"`
+	CreatedById string                    `json:"created_by_id"`
+	Evidence    []Evidence                `json:"evidence"`
+	Explanation string                    `json:"explanation"`
+	Id          string                    `json:"id"`
+	Limitations *string                   `json:"limitations,omitempty"`
+	Severity    *Severity                 `json:"severity,omitempty"`
+	SourceKey   string                    `json:"source_key"`
+	SourceRunId nullable.Nullable[string] `json:"source_run_id"`
+	Suggestion  string                    `json:"suggestion"`
+	Title       string                    `json:"title"`
+	UpdatedAt   time.Time                 `json:"updated_at"`
+	Version     int                       `json:"version"`
+	WorkspaceId string                    `json:"workspace_id"`
+}
+
+// FindingCreate defines model for FindingCreate.
+type FindingCreate struct {
+	AgentId         string `json:"agent_id"`
+	AgentRevisionId string `json:"agent_revision_id"`
+
+	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
+	Category    Category   `json:"category"`
+	Evidence    []Evidence `json:"evidence"`
+	Explanation string     `json:"explanation"`
+	Limitations *string    `json:"limitations,omitempty"`
+	Severity    *Severity  `json:"severity,omitempty"`
+	SourceKey   string     `json:"source_key"`
+	Suggestion  string     `json:"suggestion"`
+	Title       string     `json:"title"`
+}
+
+// FindingPage defines model for FindingPage.
+type FindingPage struct {
+	Items      []Finding                 `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// FindingUpdate defines model for FindingUpdate.
+type FindingUpdate struct {
+	Assessment     nullable.Nullable[Assessment] `json:"assessment,omitempty"`
+	AssessmentNote nullable.Nullable[string]     `json:"assessment_note,omitempty"`
+	Closed         nullable.Nullable[bool]       `json:"closed,omitempty"`
 }
 
 // Fork defines model for Fork.
@@ -2742,6 +3040,7 @@ type IssuedKey struct {
 // Item defines model for Item.
 type Item struct {
 	Content       map[string]JsonValue         `json:"content"`
+	ContentRefs   *map[string]ContentRef       `json:"content_refs,omitempty"`
 	EndedAt       nullable.Nullable[time.Time] `json:"ended_at,omitempty"`
 	FirstStreamId string                       `json:"first_stream_id"`
 	Id            string                       `json:"id"`
@@ -3084,6 +3383,19 @@ type Message struct {
 // MessageKind defines model for Message.Kind.
 type MessageKind string
 
+// MessageAuthor defines model for MessageAuthor.
+type MessageAuthor struct {
+	EntryId     string                              `json:"entry_id"`
+	Principal   nullable.Nullable[PrincipalSummary] `json:"principal"`
+	PrincipalId string                              `json:"principal_id"`
+	SubmittedAt time.Time                           `json:"submitted_at"`
+}
+
+// MessageAuthors defines model for MessageAuthors.
+type MessageAuthors struct {
+	Items []MessageAuthor `json:"items"`
+}
+
 // MessageHistory Pydantic AI ModelMessage JSON objects, validated by the Service. Imports completed user text, model text and closed tool-call/JSON-result exchanges; no instructions, media or suspended execution. At most 256 messages and 256 KiB of normalized JSON.
 type MessageHistory = []map[string]JsonValue
 
@@ -3408,6 +3720,9 @@ type PluginSelection struct {
 	PluginKey    string                `json:"plugin_key"`
 }
 
+// Preset defines model for Preset.
+type Preset string
+
 // PriceComponentInput One genai-prices usage dimension and its USD unit price.
 type PriceComponentInput struct {
 	Price    PriceComponentInput_Price `json:"price"`
@@ -3531,6 +3846,13 @@ type ProviderCreate struct {
 	Type         string                                  `json:"type"`
 }
 
+// ProviderModel An upstream choice; wire names retain the original account-discovery contract.
+type ProviderModel struct {
+	Characteristics nullable.Nullable[HarnessModelCharacteristicsOutput] `json:"characteristics,omitempty"`
+	DisplayName     string                                               `json:"display_name"`
+	Slug            string                                               `json:"slug"`
+}
+
 // ProviderPage defines model for ProviderPage.
 type ProviderPage struct {
 	Items      []Provider                `json:"items"`
@@ -3550,24 +3872,25 @@ type ProviderTestStatus string
 
 // ProviderType defines model for ProviderType.
 type ProviderType struct {
-	Authentication      Authentication                                     `json:"authentication"`
-	CatalogProviders    nullable.Nullable[[]string]                        `json:"catalog_providers,omitempty"`
-	ConfigurationSchema map[string]JsonValue                               `json:"configuration_schema"`
-	CredentialSchema    nullable.Nullable[map[string]JsonValue]            `json:"credential_schema"`
-	DefaultModelApi     nullable.Nullable[string]                          `json:"default_model_api,omitempty"`
-	DisplayName         string                                             `json:"display_name"`
-	EnvironmentSchema   nullable.Nullable[map[string]JsonValue]            `json:"environment_schema,omitempty"`
-	ModelApiLabels      nullable.Nullable[map[string]string]               `json:"model_api_labels,omitempty"`
-	ModelApis           nullable.Nullable[[]string]                        `json:"model_apis,omitempty"`
-	OauthScheme         nullable.Nullable[string]                          `json:"oauth_scheme,omitempty"`
-	Operations          nullable.Nullable[[]WebOperation]                  `json:"operations,omitempty"`
-	SettingsSchemas     nullable.Nullable[map[string]map[string]JsonValue] `json:"settings_schemas,omitempty"`
-	SetupLabel          nullable.Nullable[string]                          `json:"setup_label"`
-	SetupUrl            nullable.Nullable[string]                          `json:"setup_url"`
-	SupportsDestroy     nullable.Nullable[bool]                            `json:"supports_destroy,omitempty"`
-	SupportsStop        nullable.Nullable[bool]                            `json:"supports_stop,omitempty"`
-	SupportsTest        bool                                               `json:"supports_test"`
-	Type                string                                             `json:"type"`
+	Authentication         Authentication                                     `json:"authentication"`
+	CatalogProviders       nullable.Nullable[[]string]                        `json:"catalog_providers,omitempty"`
+	ConfigurationSchema    map[string]JsonValue                               `json:"configuration_schema"`
+	CredentialSchema       nullable.Nullable[map[string]JsonValue]            `json:"credential_schema"`
+	DefaultModelApi        nullable.Nullable[string]                          `json:"default_model_api,omitempty"`
+	DisplayName            string                                             `json:"display_name"`
+	EnvironmentSchema      nullable.Nullable[map[string]JsonValue]            `json:"environment_schema,omitempty"`
+	ModelApiLabels         nullable.Nullable[map[string]string]               `json:"model_api_labels,omitempty"`
+	ModelApis              nullable.Nullable[[]string]                        `json:"model_apis,omitempty"`
+	OauthScheme            nullable.Nullable[string]                          `json:"oauth_scheme,omitempty"`
+	Operations             nullable.Nullable[[]WebOperation]                  `json:"operations,omitempty"`
+	SettingsSchemas        nullable.Nullable[map[string]map[string]JsonValue] `json:"settings_schemas,omitempty"`
+	SetupLabel             nullable.Nullable[string]                          `json:"setup_label"`
+	SetupUrl               nullable.Nullable[string]                          `json:"setup_url"`
+	SupportsDestroy        nullable.Nullable[bool]                            `json:"supports_destroy,omitempty"`
+	SupportsModelDiscovery *bool                                              `json:"supports_model_discovery,omitempty"`
+	SupportsStop           nullable.Nullable[bool]                            `json:"supports_stop,omitempty"`
+	SupportsTest           bool                                               `json:"supports_test"`
+	Type                   string                                             `json:"type"`
 }
 
 // ProviderTypePage defines model for ProviderTypePage.
@@ -3661,6 +3984,17 @@ type RunConfigurationOutput struct {
 	Extensions   *map[string]JsonValue       `json:"extensions,omitempty"`
 }
 
+// RunContent One immutable saved display value, possibly truncated, read under the owning run's authority.
+type RunContent struct {
+	Id        string              `json:"id"`
+	MediaType RunContentMediaType `json:"media_type"`
+	Truncated *bool               `json:"truncated,omitempty"`
+	Value     JsonValue           `json:"value"`
+}
+
+// RunContentMediaType defines model for RunContent.MediaType.
+type RunContentMediaType string
+
 // RunItems Items of a run's committed display, in ordinal order, with the run they describe. Ordinals are dense from 1,
 // so the first item's ordinal tells whether earlier ones exist. Live output continues after `position`.
 type RunItems struct {
@@ -3753,6 +4087,12 @@ type RunView struct {
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
 
+// SelectedTrace defines model for SelectedTrace.
+type SelectedTrace struct {
+	RunId   string `json:"run_id"`
+	TraceId string `json:"trace_id"`
+}
+
 // ServiceAccount defines model for ServiceAccount.
 type ServiceAccount struct {
 	CreatedAt      time.Time                 `json:"created_at"`
@@ -3841,6 +4181,9 @@ type SessionView struct {
 	Version     int                               `json:"version"`
 	WorkspaceId string                            `json:"workspace_id"`
 }
+
+// Severity defines model for Severity.
+type Severity string
 
 // Skill defines model for Skill.
 type Skill struct {
@@ -4569,18 +4912,22 @@ type PrepareComposerApiV1AgentComposerPostParams struct {
 
 // ListAgentsApiV1AgentsGetParams defines parameters for ListAgentsApiV1AgentsGet.
 type ListAgentsApiV1AgentsGetParams struct {
-	Label           *[]string    `form:"label,omitempty" json:"label,omitempty"`
-	Q               *string      `form:"q,omitempty" json:"q,omitempty"`
-	Archived        *bool        `form:"archived,omitempty" json:"archived,omitempty"`
-	Source          *AgentSource `form:"source,omitempty" json:"source,omitempty"`
-	SkillId         *string      `form:"skill_id,omitempty" json:"skill_id,omitempty"`
-	SkillRevisionId *string      `form:"skill_revision_id,omitempty" json:"skill_revision_id,omitempty"`
-	Limit           *int         `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor          *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Label           *[]string                                 `form:"label,omitempty" json:"label,omitempty"`
+	Q               *string                                   `form:"q,omitempty" json:"q,omitempty"`
+	Archived        *bool                                     `form:"archived,omitempty" json:"archived,omitempty"`
+	Source          *AgentSource                              `form:"source,omitempty" json:"source,omitempty"`
+	PresetKind      *ListAgentsApiV1AgentsGetParamsPresetKind `form:"preset_kind,omitempty" json:"preset_kind,omitempty"`
+	SkillId         *string                                   `form:"skill_id,omitempty" json:"skill_id,omitempty"`
+	SkillRevisionId *string                                   `form:"skill_revision_id,omitempty" json:"skill_revision_id,omitempty"`
+	Limit           *int                                      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor          *string                                   `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// ListAgentsApiV1AgentsGetParamsPresetKind defines parameters for ListAgentsApiV1AgentsGet.
+type ListAgentsApiV1AgentsGetParamsPresetKind string
 
 // CreateAgentApiV1AgentsPostParams defines parameters for CreateAgentApiV1AgentsPost.
 type CreateAgentApiV1AgentsPostParams struct {
@@ -4968,6 +5315,64 @@ type UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams struct {
 
 // StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams defines parameters for StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost.
 type StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// PrepareFindingAgentApiV1FindingAgentPostParams defines parameters for PrepareFindingAgentApiV1FindingAgentPost.
+type PrepareFindingAgentApiV1FindingAgentPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListAnalysesApiV1FindingAnalysesGetParams defines parameters for ListAnalysesApiV1FindingAnalysesGet.
+type ListAnalysesApiV1FindingAnalysesGetParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// StartAnalysisApiV1FindingAnalysesPostParams defines parameters for StartAnalysisApiV1FindingAnalysesPost.
+type StartAnalysisApiV1FindingAnalysesPostParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListFindingsApiV1FindingsGetParams defines parameters for ListFindingsApiV1FindingsGet.
+type ListFindingsApiV1FindingsGetParams struct {
+	AgentId    *string     `form:"agent_id,omitempty" json:"agent_id,omitempty"`
+	Category   *Category   `form:"category,omitempty" json:"category,omitempty"`
+	Severity   *Severity   `form:"severity,omitempty" json:"severity,omitempty"`
+	Assessment *Assessment `form:"assessment,omitempty" json:"assessment,omitempty"`
+	Closed     *bool       `form:"closed,omitempty" json:"closed,omitempty"`
+	Limit      *int        `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor     *string     `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateFindingApiV1FindingsPostParams defines parameters for CreateFindingApiV1FindingsPost.
+type CreateFindingApiV1FindingsPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetFindingApiV1FindingsFindingIdGetParams defines parameters for GetFindingApiV1FindingsFindingIdGet.
+type GetFindingApiV1FindingsFindingIdGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateFindingApiV1FindingsFindingIdPatchParams defines parameters for UpdateFindingApiV1FindingsFindingIdPatch.
+type UpdateFindingApiV1FindingsFindingIdPatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
@@ -5393,6 +5798,12 @@ type ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// RunContentApiV1RunsRunIdContentsContentIdGetParams defines parameters for RunContentApiV1RunsRunIdContentsContentIdGet.
+type RunContentApiV1RunsRunIdContentsContentIdGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ForkRunApiV1RunsRunIdForkPostParams defines parameters for ForkRunApiV1RunsRunIdForkPost.
 type ForkRunApiV1RunsRunIdForkPostParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
@@ -5469,6 +5880,14 @@ type GetSessionApiV1SessionsSessionIdGetParams struct {
 type UpdateSessionApiV1SessionsSessionIdPatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams defines parameters for GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet.
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams struct {
+	EntryId []string `form:"entry_id" json:"entry_id"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -6141,6 +6560,15 @@ type CreateEnvironmentApiV1EnvironmentsPostJSONRequestBody CreateEnvironmentApiV
 
 // UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchJSONRequestBody defines body for UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch for application/json ContentType.
 type UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchJSONRequestBody = EnvironmentUpdate
+
+// StartAnalysisApiV1FindingAnalysesPostJSONRequestBody defines body for StartAnalysisApiV1FindingAnalysesPost for application/json ContentType.
+type StartAnalysisApiV1FindingAnalysesPostJSONRequestBody = AnalysisCreate
+
+// CreateFindingApiV1FindingsPostJSONRequestBody defines body for CreateFindingApiV1FindingsPost for application/json ContentType.
+type CreateFindingApiV1FindingsPostJSONRequestBody = FindingCreate
+
+// UpdateFindingApiV1FindingsFindingIdPatchJSONRequestBody defines body for UpdateFindingApiV1FindingsFindingIdPatch for application/json ContentType.
+type UpdateFindingApiV1FindingsFindingIdPatchJSONRequestBody = FindingUpdate
 
 // AcceptApiV1InvitationsInvitationIdAcceptPostJSONRequestBody defines body for AcceptApiV1InvitationsInvitationIdAcceptPost for application/json ContentType.
 type AcceptApiV1InvitationsInvitationIdAcceptPostJSONRequestBody = InvitationAccept
@@ -7798,7 +8226,7 @@ type ClientInterface interface {
 	// ListAgentsApiV1AgentsGet List Agents
 	//
 	// Agents of the workspace. `q` matches the name or description, ignoring case; `archived` keeps only
-	// archived agents, or only open ones; `source=builtin` finds the Agent Composer; the skill filters keep those
+	// archived agents, or only open ones; `source=builtin` finds managed presets; the skill filters keep those
 	// with a revision pinning that skill or that skill revision.
 	//
 	// Corresponds with GET /api/v1/agents (the `ListAgentsApiV1AgentsGet` operationId).
@@ -8344,6 +8772,68 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/stop (the `StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost` operationId).
 	StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost(ctx context.Context, environmentId string, params *StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PrepareFindingAgentApiV1FindingAgentPost Prepare Finding Agent
+	//
+	// Corresponds with POST /api/v1/finding-agent (the `PrepareFindingAgentApiV1FindingAgentPost` operationId).
+	PrepareFindingAgentApiV1FindingAgentPost(ctx context.Context, params *PrepareFindingAgentApiV1FindingAgentPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListAnalysesApiV1FindingAnalysesGet List Analyses
+	//
+	// Corresponds with GET /api/v1/finding-analyses (the `ListAnalysesApiV1FindingAnalysesGet` operationId).
+	ListAnalysesApiV1FindingAnalysesGet(ctx context.Context, params *ListAnalysesApiV1FindingAnalysesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StartAnalysisApiV1FindingAnalysesPostWithBody Start Analysis
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+	StartAnalysisApiV1FindingAnalysesPostWithBody(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StartAnalysisApiV1FindingAnalysesPost Start Analysis
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+	StartAnalysisApiV1FindingAnalysesPost(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, body StartAnalysisApiV1FindingAnalysesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListFindingsApiV1FindingsGet List Findings
+	//
+	// Corresponds with GET /api/v1/findings (the `ListFindingsApiV1FindingsGet` operationId).
+	ListFindingsApiV1FindingsGet(ctx context.Context, params *ListFindingsApiV1FindingsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateFindingApiV1FindingsPostWithBody Create Finding
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+	CreateFindingApiV1FindingsPostWithBody(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateFindingApiV1FindingsPost Create Finding
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+	CreateFindingApiV1FindingsPost(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, body CreateFindingApiV1FindingsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetFindingApiV1FindingsFindingIdGet Get Finding
+	//
+	// Corresponds with GET /api/v1/findings/{finding_id} (the `GetFindingApiV1FindingsFindingIdGet` operationId).
+	GetFindingApiV1FindingsFindingIdGet(ctx context.Context, findingId string, params *GetFindingApiV1FindingsFindingIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateFindingApiV1FindingsFindingIdPatchWithBody Update Finding
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+	UpdateFindingApiV1FindingsFindingIdPatchWithBody(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateFindingApiV1FindingsFindingIdPatch Update Finding
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+	UpdateFindingApiV1FindingsFindingIdPatch(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, body UpdateFindingApiV1FindingsFindingIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AcceptApiV1InvitationsInvitationIdAcceptPostWithBody Accept
 	//
@@ -8952,6 +9442,13 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id}/trace (the `ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet` operationId).
 	ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet(ctx context.Context, runId string, attemptId string, params *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RunContentApiV1RunsRunIdContentsContentIdGet Run Content
+	//
+	// The complete value behind a committed display reference.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `RunContentApiV1RunsRunIdContentsContentIdGet` operationId).
+	RunContentApiV1RunsRunIdContentsContentIdGet(ctx context.Context, runId string, contentId string, params *RunContentApiV1RunsRunIdContentsContentIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ForkRunApiV1RunsRunIdForkPostWithBody Fork Run
 	//
 	// A new thread in the run's session that continues from this run's committed history.
@@ -9045,6 +9542,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/sessions/{session_id} (the `UpdateSessionApiV1SessionsSessionIdPatch` operationId).
 	UpdateSessionApiV1SessionsSessionIdPatch(ctx context.Context, sessionId string, params *UpdateSessionApiV1SessionsSessionIdPatchParams, body UpdateSessionApiV1SessionsSessionIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet Get Message Authors
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+	GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSkillsApiV1SkillsGet List Skills
 	//
@@ -9873,7 +10375,7 @@ func (c *Client) PrepareComposerApiV1AgentComposerPost(ctx context.Context, para
 // ListAgentsApiV1AgentsGet List Agents
 //
 // Agents of the workspace. `q` matches the name or description, ignoring case; `archived` keeps only
-// archived agents, or only open ones; `source=builtin` finds the Agent Composer; the skill filters keep those
+// archived agents, or only open ones; `source=builtin` finds managed presets; the skill filters keep those
 // with a revision pinning that skill or that skill revision.
 //
 // Corresponds with GET /api/v1/agents (the `ListAgentsApiV1AgentsGet` operationId).
@@ -11240,6 +11742,168 @@ func (c *Client) UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch(ctx contex
 // Corresponds with POST /api/v1/environments/{environment_id}/stop (the `StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost` operationId).
 func (c *Client) StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost(ctx context.Context, environmentId string, params *StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewStopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PrepareFindingAgentApiV1FindingAgentPost Prepare Finding Agent
+//
+// Corresponds with POST /api/v1/finding-agent (the `PrepareFindingAgentApiV1FindingAgentPost` operationId).
+func (c *Client) PrepareFindingAgentApiV1FindingAgentPost(ctx context.Context, params *PrepareFindingAgentApiV1FindingAgentPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPrepareFindingAgentApiV1FindingAgentPostRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListAnalysesApiV1FindingAnalysesGet List Analyses
+//
+// Corresponds with GET /api/v1/finding-analyses (the `ListAnalysesApiV1FindingAnalysesGet` operationId).
+func (c *Client) ListAnalysesApiV1FindingAnalysesGet(ctx context.Context, params *ListAnalysesApiV1FindingAnalysesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAnalysesApiV1FindingAnalysesGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// StartAnalysisApiV1FindingAnalysesPostWithBody Start Analysis
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+func (c *Client) StartAnalysisApiV1FindingAnalysesPostWithBody(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartAnalysisApiV1FindingAnalysesPostRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// StartAnalysisApiV1FindingAnalysesPost Start Analysis
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+func (c *Client) StartAnalysisApiV1FindingAnalysesPost(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, body StartAnalysisApiV1FindingAnalysesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartAnalysisApiV1FindingAnalysesPostRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListFindingsApiV1FindingsGet List Findings
+//
+// Corresponds with GET /api/v1/findings (the `ListFindingsApiV1FindingsGet` operationId).
+func (c *Client) ListFindingsApiV1FindingsGet(ctx context.Context, params *ListFindingsApiV1FindingsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListFindingsApiV1FindingsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateFindingApiV1FindingsPostWithBody Create Finding
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+func (c *Client) CreateFindingApiV1FindingsPostWithBody(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateFindingApiV1FindingsPostRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateFindingApiV1FindingsPost Create Finding
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+func (c *Client) CreateFindingApiV1FindingsPost(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, body CreateFindingApiV1FindingsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateFindingApiV1FindingsPostRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetFindingApiV1FindingsFindingIdGet Get Finding
+//
+// Corresponds with GET /api/v1/findings/{finding_id} (the `GetFindingApiV1FindingsFindingIdGet` operationId).
+func (c *Client) GetFindingApiV1FindingsFindingIdGet(ctx context.Context, findingId string, params *GetFindingApiV1FindingsFindingIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetFindingApiV1FindingsFindingIdGetRequest(c.Server, findingId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateFindingApiV1FindingsFindingIdPatchWithBody Update Finding
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+func (c *Client) UpdateFindingApiV1FindingsFindingIdPatchWithBody(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateFindingApiV1FindingsFindingIdPatchRequestWithBody(c.Server, findingId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateFindingApiV1FindingsFindingIdPatch Update Finding
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+func (c *Client) UpdateFindingApiV1FindingsFindingIdPatch(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, body UpdateFindingApiV1FindingsFindingIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateFindingApiV1FindingsFindingIdPatchRequest(c.Server, findingId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -12767,6 +13431,23 @@ func (c *Client) ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet(ctx con
 	return c.Client.Do(req)
 }
 
+// RunContentApiV1RunsRunIdContentsContentIdGet Run Content
+//
+// The complete value behind a committed display reference.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `RunContentApiV1RunsRunIdContentsContentIdGet` operationId).
+func (c *Client) RunContentApiV1RunsRunIdContentsContentIdGet(ctx context.Context, runId string, contentId string, params *RunContentApiV1RunsRunIdContentsContentIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRunContentApiV1RunsRunIdContentsContentIdGetRequest(c.Server, runId, contentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ForkRunApiV1RunsRunIdForkPostWithBody Fork Run
 //
 // A new thread in the run's session that continues from this run's committed history.
@@ -12981,6 +13662,21 @@ func (c *Client) UpdateSessionApiV1SessionsSessionIdPatchWithBody(ctx context.Co
 // Corresponds with PATCH /api/v1/sessions/{session_id} (the `UpdateSessionApiV1SessionsSessionIdPatch` operationId).
 func (c *Client) UpdateSessionApiV1SessionsSessionIdPatch(ctx context.Context, sessionId string, params *UpdateSessionApiV1SessionsSessionIdPatchParams, body UpdateSessionApiV1SessionsSessionIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSessionApiV1SessionsSessionIdPatchRequest(c.Server, sessionId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet Get Message Authors
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+func (c *Client) GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetRequest(c.Server, sessionId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -15124,6 +15820,18 @@ func NewListAgentsApiV1AgentsGetRequest(server string, params *ListAgentsApiV1Ag
 		if params.Source != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "source", *params.Source, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PresetKind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "preset_kind", *params.PresetKind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -18736,6 +19444,511 @@ func NewStopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostRequest(server stri
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewPrepareFindingAgentApiV1FindingAgentPostRequest constructs an http.Request for the PrepareFindingAgentApiV1FindingAgentPost method
+func NewPrepareFindingAgentApiV1FindingAgentPostRequest(server string, params *PrepareFindingAgentApiV1FindingAgentPostParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/finding-agent")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListAnalysesApiV1FindingAnalysesGetRequest constructs an http.Request for the ListAnalysesApiV1FindingAnalysesGet method
+func NewListAnalysesApiV1FindingAnalysesGetRequest(server string, params *ListAnalysesApiV1FindingAnalysesGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/finding-analyses")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewStartAnalysisApiV1FindingAnalysesPostRequest calls the generic StartAnalysisApiV1FindingAnalysesPost builder with application/json body
+func NewStartAnalysisApiV1FindingAnalysesPostRequest(server string, params *StartAnalysisApiV1FindingAnalysesPostParams, body StartAnalysisApiV1FindingAnalysesPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewStartAnalysisApiV1FindingAnalysesPostRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewStartAnalysisApiV1FindingAnalysesPostRequestWithBody constructs an http.Request for the StartAnalysisApiV1FindingAnalysesPost method, with any body, and a specified content type
+func NewStartAnalysisApiV1FindingAnalysesPostRequestWithBody(server string, params *StartAnalysisApiV1FindingAnalysesPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/finding-analyses")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("Idempotency-Key", headerParam0)
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListFindingsApiV1FindingsGetRequest constructs an http.Request for the ListFindingsApiV1FindingsGet method
+func NewListFindingsApiV1FindingsGetRequest(server string, params *ListFindingsApiV1FindingsGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/findings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.AgentId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", *params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Category != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "category", *params.Category, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Severity != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "severity", *params.Severity, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Assessment != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "assessment", *params.Assessment, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Closed != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "closed", *params.Closed, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateFindingApiV1FindingsPostRequest calls the generic CreateFindingApiV1FindingsPost builder with application/json body
+func NewCreateFindingApiV1FindingsPostRequest(server string, params *CreateFindingApiV1FindingsPostParams, body CreateFindingApiV1FindingsPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateFindingApiV1FindingsPostRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateFindingApiV1FindingsPostRequestWithBody constructs an http.Request for the CreateFindingApiV1FindingsPost method, with any body, and a specified content type
+func NewCreateFindingApiV1FindingsPostRequestWithBody(server string, params *CreateFindingApiV1FindingsPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/findings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetFindingApiV1FindingsFindingIdGetRequest constructs an http.Request for the GetFindingApiV1FindingsFindingIdGet method
+func NewGetFindingApiV1FindingsFindingIdGetRequest(server string, findingId string, params *GetFindingApiV1FindingsFindingIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "finding_id", findingId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/findings/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateFindingApiV1FindingsFindingIdPatchRequest calls the generic UpdateFindingApiV1FindingsFindingIdPatch builder with application/json body
+func NewUpdateFindingApiV1FindingsFindingIdPatchRequest(server string, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, body UpdateFindingApiV1FindingsFindingIdPatchJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateFindingApiV1FindingsFindingIdPatchRequestWithBody(server, findingId, params, "application/json", bodyReader)
+}
+
+// NewUpdateFindingApiV1FindingsFindingIdPatchRequestWithBody constructs an http.Request for the UpdateFindingApiV1FindingsFindingIdPatch method, with any body, and a specified content type
+func NewUpdateFindingApiV1FindingsFindingIdPatchRequestWithBody(server string, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "finding_id", findingId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/findings/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -22926,6 +24139,62 @@ func NewListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetRequest(server st
 	return req, nil
 }
 
+// NewRunContentApiV1RunsRunIdContentsContentIdGetRequest constructs an http.Request for the RunContentApiV1RunsRunIdContentsContentIdGet method
+func NewRunContentApiV1RunsRunIdContentsContentIdGetRequest(server string, runId string, contentId string, params *RunContentApiV1RunsRunIdContentsContentIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "content_id", contentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/contents/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewForkRunApiV1RunsRunIdForkPostRequest calls the generic ForkRunApiV1RunsRunIdForkPost builder with application/json body
 func NewForkRunApiV1RunsRunIdForkPostRequest(server string, runId string, params *ForkRunApiV1RunsRunIdForkPostParams, body ForkRunApiV1RunsRunIdForkPostJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -23628,6 +24897,82 @@ func NewUpdateSessionApiV1SessionsSessionIdPatchRequestWithBody(server string, s
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetRequest constructs an http.Request for the GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet method
+func NewGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetRequest(server string, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "session_id", sessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/sessions/%s/message-authors", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.EntryId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "entry_id", params.EntryId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -29707,7 +31052,7 @@ type ClientWithResponsesInterface interface {
 	// ListAgentsApiV1AgentsGetWithResponse List Agents
 	//
 	// Agents of the workspace. `q` matches the name or description, ignoring case; `archived` keeps only
-	// archived agents, or only open ones; `source=builtin` finds the Agent Composer; the skill filters keep those
+	// archived agents, or only open ones; `source=builtin` finds managed presets; the skill filters keep those
 	// with a revision pinning that skill or that skill revision.
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -30329,6 +31674,76 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/stop (the `StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost` operationId).
 	StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostWithResponse(ctx context.Context, environmentId string, params *StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams, reqEditors ...RequestEditorFn) (*StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostResponse, error)
+
+	// PrepareFindingAgentApiV1FindingAgentPostWithResponse Prepare Finding Agent
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/finding-agent (the `PrepareFindingAgentApiV1FindingAgentPost` operationId).
+	PrepareFindingAgentApiV1FindingAgentPostWithResponse(ctx context.Context, params *PrepareFindingAgentApiV1FindingAgentPostParams, reqEditors ...RequestEditorFn) (*PrepareFindingAgentApiV1FindingAgentPostResponse, error)
+
+	// ListAnalysesApiV1FindingAnalysesGetWithResponse List Analyses
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/finding-analyses (the `ListAnalysesApiV1FindingAnalysesGet` operationId).
+	ListAnalysesApiV1FindingAnalysesGetWithResponse(ctx context.Context, params *ListAnalysesApiV1FindingAnalysesGetParams, reqEditors ...RequestEditorFn) (*ListAnalysesApiV1FindingAnalysesGetResponse, error)
+
+	// StartAnalysisApiV1FindingAnalysesPostWithBodyWithResponse Start Analysis
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+	StartAnalysisApiV1FindingAnalysesPostWithBodyWithResponse(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StartAnalysisApiV1FindingAnalysesPostResponse, error)
+
+	// StartAnalysisApiV1FindingAnalysesPostWithResponse Start Analysis
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+	StartAnalysisApiV1FindingAnalysesPostWithResponse(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, body StartAnalysisApiV1FindingAnalysesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*StartAnalysisApiV1FindingAnalysesPostResponse, error)
+
+	// ListFindingsApiV1FindingsGetWithResponse List Findings
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/findings (the `ListFindingsApiV1FindingsGet` operationId).
+	ListFindingsApiV1FindingsGetWithResponse(ctx context.Context, params *ListFindingsApiV1FindingsGetParams, reqEditors ...RequestEditorFn) (*ListFindingsApiV1FindingsGetResponse, error)
+
+	// CreateFindingApiV1FindingsPostWithBodyWithResponse Create Finding
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+	CreateFindingApiV1FindingsPostWithBodyWithResponse(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFindingApiV1FindingsPostResponse, error)
+
+	// CreateFindingApiV1FindingsPostWithResponse Create Finding
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+	CreateFindingApiV1FindingsPostWithResponse(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, body CreateFindingApiV1FindingsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFindingApiV1FindingsPostResponse, error)
+
+	// GetFindingApiV1FindingsFindingIdGetWithResponse Get Finding
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/findings/{finding_id} (the `GetFindingApiV1FindingsFindingIdGet` operationId).
+	GetFindingApiV1FindingsFindingIdGetWithResponse(ctx context.Context, findingId string, params *GetFindingApiV1FindingsFindingIdGetParams, reqEditors ...RequestEditorFn) (*GetFindingApiV1FindingsFindingIdGetResponse, error)
+
+	// UpdateFindingApiV1FindingsFindingIdPatchWithBodyWithResponse Update Finding
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+	UpdateFindingApiV1FindingsFindingIdPatchWithBodyWithResponse(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateFindingApiV1FindingsFindingIdPatchResponse, error)
+
+	// UpdateFindingApiV1FindingsFindingIdPatchWithResponse Update Finding
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+	UpdateFindingApiV1FindingsFindingIdPatchWithResponse(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, body UpdateFindingApiV1FindingsFindingIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateFindingApiV1FindingsFindingIdPatchResponse, error)
 
 	// AcceptApiV1InvitationsInvitationIdAcceptPostWithBodyWithResponse Accept
 	//
@@ -31021,6 +32436,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id}/trace (the `ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet` operationId).
 	ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetWithResponse(ctx context.Context, runId string, attemptId string, params *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParams, reqEditors ...RequestEditorFn) (*ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse, error)
 
+	// RunContentApiV1RunsRunIdContentsContentIdGetWithResponse Run Content
+	//
+	// The complete value behind a committed display reference.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `RunContentApiV1RunsRunIdContentsContentIdGet` operationId).
+	RunContentApiV1RunsRunIdContentsContentIdGetWithResponse(ctx context.Context, runId string, contentId string, params *RunContentApiV1RunsRunIdContentsContentIdGetParams, reqEditors ...RequestEditorFn) (*RunContentApiV1RunsRunIdContentsContentIdGetResponse, error)
+
 	// ForkRunApiV1RunsRunIdForkPostWithBodyWithResponse Fork Run
 	//
 	// A new thread in the run's session that continues from this run's committed history.
@@ -31124,6 +32548,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/sessions/{session_id} (the `UpdateSessionApiV1SessionsSessionIdPatch` operationId).
 	UpdateSessionApiV1SessionsSessionIdPatchWithResponse(ctx context.Context, sessionId string, params *UpdateSessionApiV1SessionsSessionIdPatchParams, body UpdateSessionApiV1SessionsSessionIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSessionApiV1SessionsSessionIdPatchResponse, error)
+
+	// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse Get Message Authors
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+	GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse, error)
 
 	// ListSkillsApiV1SkillsGetWithResponse List Skills
 	//
@@ -36240,6 +37671,489 @@ func (r StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostResponse) ContentTy
 	return ""
 }
 
+// PrepareFindingAgentApiV1FindingAgentPostResponse400Headers the declared response headers of an HTTP 400 response for PrepareFindingAgentApiV1FindingAgentPost
+type PrepareFindingAgentApiV1FindingAgentPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// PrepareFindingAgentApiV1FindingAgentPostResponseDefaultHeaders the declared response headers of an HTTP default response for PrepareFindingAgentApiV1FindingAgentPost
+type PrepareFindingAgentApiV1FindingAgentPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type PrepareFindingAgentApiV1FindingAgentPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Agent
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PrepareFindingAgentApiV1FindingAgentPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PrepareFindingAgentApiV1FindingAgentPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PrepareFindingAgentApiV1FindingAgentPostResponse) GetJSON200() *Agent {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PrepareFindingAgentApiV1FindingAgentPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PrepareFindingAgentApiV1FindingAgentPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PrepareFindingAgentApiV1FindingAgentPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PrepareFindingAgentApiV1FindingAgentPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PrepareFindingAgentApiV1FindingAgentPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PrepareFindingAgentApiV1FindingAgentPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListAnalysesApiV1FindingAnalysesGetResponse400Headers the declared response headers of an HTTP 400 response for ListAnalysesApiV1FindingAnalysesGet
+type ListAnalysesApiV1FindingAnalysesGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListAnalysesApiV1FindingAnalysesGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListAnalysesApiV1FindingAnalysesGet
+type ListAnalysesApiV1FindingAnalysesGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListAnalysesApiV1FindingAnalysesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AnalysisPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListAnalysesApiV1FindingAnalysesGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListAnalysesApiV1FindingAnalysesGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListAnalysesApiV1FindingAnalysesGetResponse) GetJSON200() *AnalysisPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListAnalysesApiV1FindingAnalysesGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListAnalysesApiV1FindingAnalysesGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListAnalysesApiV1FindingAnalysesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListAnalysesApiV1FindingAnalysesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListAnalysesApiV1FindingAnalysesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListAnalysesApiV1FindingAnalysesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// StartAnalysisApiV1FindingAnalysesPostResponse400Headers the declared response headers of an HTTP 400 response for StartAnalysisApiV1FindingAnalysesPost
+type StartAnalysisApiV1FindingAnalysesPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// StartAnalysisApiV1FindingAnalysesPostResponseDefaultHeaders the declared response headers of an HTTP default response for StartAnalysisApiV1FindingAnalysesPost
+type StartAnalysisApiV1FindingAnalysesPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type StartAnalysisApiV1FindingAnalysesPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Analysis
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *StartAnalysisApiV1FindingAnalysesPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *StartAnalysisApiV1FindingAnalysesPostResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r StartAnalysisApiV1FindingAnalysesPostResponse) GetJSON201() *Analysis {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r StartAnalysisApiV1FindingAnalysesPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r StartAnalysisApiV1FindingAnalysesPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r StartAnalysisApiV1FindingAnalysesPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r StartAnalysisApiV1FindingAnalysesPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StartAnalysisApiV1FindingAnalysesPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r StartAnalysisApiV1FindingAnalysesPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListFindingsApiV1FindingsGetResponse400Headers the declared response headers of an HTTP 400 response for ListFindingsApiV1FindingsGet
+type ListFindingsApiV1FindingsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListFindingsApiV1FindingsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListFindingsApiV1FindingsGet
+type ListFindingsApiV1FindingsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListFindingsApiV1FindingsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *FindingPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListFindingsApiV1FindingsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListFindingsApiV1FindingsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListFindingsApiV1FindingsGetResponse) GetJSON200() *FindingPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListFindingsApiV1FindingsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListFindingsApiV1FindingsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListFindingsApiV1FindingsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListFindingsApiV1FindingsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListFindingsApiV1FindingsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListFindingsApiV1FindingsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateFindingApiV1FindingsPostResponse400Headers the declared response headers of an HTTP 400 response for CreateFindingApiV1FindingsPost
+type CreateFindingApiV1FindingsPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateFindingApiV1FindingsPostResponseDefaultHeaders the declared response headers of an HTTP default response for CreateFindingApiV1FindingsPost
+type CreateFindingApiV1FindingsPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateFindingApiV1FindingsPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Finding
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateFindingApiV1FindingsPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateFindingApiV1FindingsPostResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateFindingApiV1FindingsPostResponse) GetJSON201() *Finding {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateFindingApiV1FindingsPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateFindingApiV1FindingsPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateFindingApiV1FindingsPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateFindingApiV1FindingsPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateFindingApiV1FindingsPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateFindingApiV1FindingsPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetFindingApiV1FindingsFindingIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetFindingApiV1FindingsFindingIdGet
+type GetFindingApiV1FindingsFindingIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetFindingApiV1FindingsFindingIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetFindingApiV1FindingsFindingIdGet
+type GetFindingApiV1FindingsFindingIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetFindingApiV1FindingsFindingIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Finding
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetFindingApiV1FindingsFindingIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetFindingApiV1FindingsFindingIdGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetFindingApiV1FindingsFindingIdGetResponse) GetJSON200() *Finding {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetFindingApiV1FindingsFindingIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetFindingApiV1FindingsFindingIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetFindingApiV1FindingsFindingIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetFindingApiV1FindingsFindingIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetFindingApiV1FindingsFindingIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetFindingApiV1FindingsFindingIdGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateFindingApiV1FindingsFindingIdPatchResponse400Headers the declared response headers of an HTTP 400 response for UpdateFindingApiV1FindingsFindingIdPatch
+type UpdateFindingApiV1FindingsFindingIdPatchResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateFindingApiV1FindingsFindingIdPatchResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateFindingApiV1FindingsFindingIdPatch
+type UpdateFindingApiV1FindingsFindingIdPatchResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateFindingApiV1FindingsFindingIdPatchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Finding
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateFindingApiV1FindingsFindingIdPatchResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateFindingApiV1FindingsFindingIdPatchResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateFindingApiV1FindingsFindingIdPatchResponse) GetJSON200() *Finding {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateFindingApiV1FindingsFindingIdPatchResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateFindingApiV1FindingsFindingIdPatchResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateFindingApiV1FindingsFindingIdPatchResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateFindingApiV1FindingsFindingIdPatchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateFindingApiV1FindingsFindingIdPatchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateFindingApiV1FindingsFindingIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // AcceptApiV1InvitationsInvitationIdAcceptPostResponse400Headers the declared response headers of an HTTP 400 response for AcceptApiV1InvitationsInvitationIdAcceptPost
 type AcceptApiV1InvitationsInvitationIdAcceptPostResponse400Headers struct {
 	XRequestId *string
@@ -38841,7 +40755,7 @@ type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse s
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *[]ChatGPTModel
+	JSON200 *[]ProviderModel
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -38853,7 +40767,7 @@ type DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse s
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetJSON200() *[]ChatGPTModel {
+func (r DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetResponse) GetJSON200() *[]ProviderModel {
 	return r.JSON200
 }
 
@@ -40814,6 +42728,75 @@ func (r ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse) Content
 	return ""
 }
 
+// RunContentApiV1RunsRunIdContentsContentIdGetResponse400Headers the declared response headers of an HTTP 400 response for RunContentApiV1RunsRunIdContentsContentIdGet
+type RunContentApiV1RunsRunIdContentsContentIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// RunContentApiV1RunsRunIdContentsContentIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for RunContentApiV1RunsRunIdContentsContentIdGet
+type RunContentApiV1RunsRunIdContentsContentIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RunContentApiV1RunsRunIdContentsContentIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunContent
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RunContentApiV1RunsRunIdContentsContentIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RunContentApiV1RunsRunIdContentsContentIdGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) GetJSON200() *RunContent {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ForkRunApiV1RunsRunIdForkPostResponse400Headers the declared response headers of an HTTP 400 response for ForkRunApiV1RunsRunIdForkPost
 type ForkRunApiV1RunsRunIdForkPostResponse400Headers struct {
 	XRequestId *string
@@ -41443,6 +43426,75 @@ func (r UpdateSessionApiV1SessionsSessionIdPatchResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateSessionApiV1SessionsSessionIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers the declared response headers of an HTTP 400 response for GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MessageAuthors
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetJSON200() *MessageAuthors {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -47884,7 +49936,7 @@ func (c *ClientWithResponses) PrepareComposerApiV1AgentComposerPostWithResponse(
 // ListAgentsApiV1AgentsGetWithResponse List Agents
 //
 // Agents of the workspace. `q` matches the name or description, ignoring case; `archived` keeps only
-// archived agents, or only open ones; `source=builtin` finds the Agent Composer; the skill filters keep those
+// archived agents, or only open ones; `source=builtin` finds managed presets; the skill filters keep those
 // with a revision pinning that skill or that skill revision.
 //
 // Returns a wrapper object for the known response body format(s).
@@ -49003,6 +51055,136 @@ func (c *ClientWithResponses) StopEnvironmentApiV1EnvironmentsEnvironmentIdStopP
 		return nil, err
 	}
 	return ParseStopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostResponse(rsp)
+}
+
+// PrepareFindingAgentApiV1FindingAgentPostWithResponse Prepare Finding Agent
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/finding-agent (the `PrepareFindingAgentApiV1FindingAgentPost` operationId).
+func (c *ClientWithResponses) PrepareFindingAgentApiV1FindingAgentPostWithResponse(ctx context.Context, params *PrepareFindingAgentApiV1FindingAgentPostParams, reqEditors ...RequestEditorFn) (*PrepareFindingAgentApiV1FindingAgentPostResponse, error) {
+	rsp, err := c.PrepareFindingAgentApiV1FindingAgentPost(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePrepareFindingAgentApiV1FindingAgentPostResponse(rsp)
+}
+
+// ListAnalysesApiV1FindingAnalysesGetWithResponse List Analyses
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/finding-analyses (the `ListAnalysesApiV1FindingAnalysesGet` operationId).
+func (c *ClientWithResponses) ListAnalysesApiV1FindingAnalysesGetWithResponse(ctx context.Context, params *ListAnalysesApiV1FindingAnalysesGetParams, reqEditors ...RequestEditorFn) (*ListAnalysesApiV1FindingAnalysesGetResponse, error) {
+	rsp, err := c.ListAnalysesApiV1FindingAnalysesGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListAnalysesApiV1FindingAnalysesGetResponse(rsp)
+}
+
+// StartAnalysisApiV1FindingAnalysesPostWithBodyWithResponse Start Analysis
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+func (c *ClientWithResponses) StartAnalysisApiV1FindingAnalysesPostWithBodyWithResponse(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StartAnalysisApiV1FindingAnalysesPostResponse, error) {
+	rsp, err := c.StartAnalysisApiV1FindingAnalysesPostWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStartAnalysisApiV1FindingAnalysesPostResponse(rsp)
+}
+
+// StartAnalysisApiV1FindingAnalysesPostWithResponse Start Analysis
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/finding-analyses (the `StartAnalysisApiV1FindingAnalysesPost` operationId).
+func (c *ClientWithResponses) StartAnalysisApiV1FindingAnalysesPostWithResponse(ctx context.Context, params *StartAnalysisApiV1FindingAnalysesPostParams, body StartAnalysisApiV1FindingAnalysesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*StartAnalysisApiV1FindingAnalysesPostResponse, error) {
+	rsp, err := c.StartAnalysisApiV1FindingAnalysesPost(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStartAnalysisApiV1FindingAnalysesPostResponse(rsp)
+}
+
+// ListFindingsApiV1FindingsGetWithResponse List Findings
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/findings (the `ListFindingsApiV1FindingsGet` operationId).
+func (c *ClientWithResponses) ListFindingsApiV1FindingsGetWithResponse(ctx context.Context, params *ListFindingsApiV1FindingsGetParams, reqEditors ...RequestEditorFn) (*ListFindingsApiV1FindingsGetResponse, error) {
+	rsp, err := c.ListFindingsApiV1FindingsGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListFindingsApiV1FindingsGetResponse(rsp)
+}
+
+// CreateFindingApiV1FindingsPostWithBodyWithResponse Create Finding
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+func (c *ClientWithResponses) CreateFindingApiV1FindingsPostWithBodyWithResponse(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFindingApiV1FindingsPostResponse, error) {
+	rsp, err := c.CreateFindingApiV1FindingsPostWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateFindingApiV1FindingsPostResponse(rsp)
+}
+
+// CreateFindingApiV1FindingsPostWithResponse Create Finding
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/findings (the `CreateFindingApiV1FindingsPost` operationId).
+func (c *ClientWithResponses) CreateFindingApiV1FindingsPostWithResponse(ctx context.Context, params *CreateFindingApiV1FindingsPostParams, body CreateFindingApiV1FindingsPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFindingApiV1FindingsPostResponse, error) {
+	rsp, err := c.CreateFindingApiV1FindingsPost(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateFindingApiV1FindingsPostResponse(rsp)
+}
+
+// GetFindingApiV1FindingsFindingIdGetWithResponse Get Finding
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/findings/{finding_id} (the `GetFindingApiV1FindingsFindingIdGet` operationId).
+func (c *ClientWithResponses) GetFindingApiV1FindingsFindingIdGetWithResponse(ctx context.Context, findingId string, params *GetFindingApiV1FindingsFindingIdGetParams, reqEditors ...RequestEditorFn) (*GetFindingApiV1FindingsFindingIdGetResponse, error) {
+	rsp, err := c.GetFindingApiV1FindingsFindingIdGet(ctx, findingId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetFindingApiV1FindingsFindingIdGetResponse(rsp)
+}
+
+// UpdateFindingApiV1FindingsFindingIdPatchWithBodyWithResponse Update Finding
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+func (c *ClientWithResponses) UpdateFindingApiV1FindingsFindingIdPatchWithBodyWithResponse(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateFindingApiV1FindingsFindingIdPatchResponse, error) {
+	rsp, err := c.UpdateFindingApiV1FindingsFindingIdPatchWithBody(ctx, findingId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateFindingApiV1FindingsFindingIdPatchResponse(rsp)
+}
+
+// UpdateFindingApiV1FindingsFindingIdPatchWithResponse Update Finding
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/findings/{finding_id} (the `UpdateFindingApiV1FindingsFindingIdPatch` operationId).
+func (c *ClientWithResponses) UpdateFindingApiV1FindingsFindingIdPatchWithResponse(ctx context.Context, findingId string, params *UpdateFindingApiV1FindingsFindingIdPatchParams, body UpdateFindingApiV1FindingsFindingIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateFindingApiV1FindingsFindingIdPatchResponse, error) {
+	rsp, err := c.UpdateFindingApiV1FindingsFindingIdPatch(ctx, findingId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateFindingApiV1FindingsFindingIdPatchResponse(rsp)
 }
 
 // AcceptApiV1InvitationsInvitationIdAcceptPostWithBodyWithResponse Accept
@@ -50242,6 +52424,21 @@ func (c *ClientWithResponses) ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTra
 	return ParseListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse(rsp)
 }
 
+// RunContentApiV1RunsRunIdContentsContentIdGetWithResponse Run Content
+//
+// The complete value behind a committed display reference.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `RunContentApiV1RunsRunIdContentsContentIdGet` operationId).
+func (c *ClientWithResponses) RunContentApiV1RunsRunIdContentsContentIdGetWithResponse(ctx context.Context, runId string, contentId string, params *RunContentApiV1RunsRunIdContentsContentIdGetParams, reqEditors ...RequestEditorFn) (*RunContentApiV1RunsRunIdContentsContentIdGetResponse, error) {
+	rsp, err := c.RunContentApiV1RunsRunIdContentsContentIdGet(ctx, runId, contentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRunContentApiV1RunsRunIdContentsContentIdGetResponse(rsp)
+}
+
 // ForkRunApiV1RunsRunIdForkPostWithBodyWithResponse Fork Run
 //
 // A new thread in the run's session that continues from this run's committed history.
@@ -50422,6 +52619,19 @@ func (c *ClientWithResponses) UpdateSessionApiV1SessionsSessionIdPatchWithRespon
 		return nil, err
 	}
 	return ParseUpdateSessionApiV1SessionsSessionIdPatchResponse(rsp)
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse Get Message Authors
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+func (c *ClientWithResponses) GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse, error) {
+	rsp, err := c.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx, sessionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse(rsp)
 }
 
 // ListSkillsApiV1SkillsGetWithResponse List Skills
@@ -55904,6 +58114,447 @@ func ParseStopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostResponse(rsp *htt
 	return response, nil
 }
 
+// ParsePrepareFindingAgentApiV1FindingAgentPostResponse parses an HTTP response from a PrepareFindingAgentApiV1FindingAgentPostWithResponse call
+func ParsePrepareFindingAgentApiV1FindingAgentPostResponse(rsp *http.Response) (*PrepareFindingAgentApiV1FindingAgentPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PrepareFindingAgentApiV1FindingAgentPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Agent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers PrepareFindingAgentApiV1FindingAgentPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PrepareFindingAgentApiV1FindingAgentPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListAnalysesApiV1FindingAnalysesGetResponse parses an HTTP response from a ListAnalysesApiV1FindingAnalysesGetWithResponse call
+func ParseListAnalysesApiV1FindingAnalysesGetResponse(rsp *http.Response) (*ListAnalysesApiV1FindingAnalysesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListAnalysesApiV1FindingAnalysesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AnalysisPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListAnalysesApiV1FindingAnalysesGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListAnalysesApiV1FindingAnalysesGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseStartAnalysisApiV1FindingAnalysesPostResponse parses an HTTP response from a StartAnalysisApiV1FindingAnalysesPostWithResponse call
+func ParseStartAnalysisApiV1FindingAnalysesPostResponse(rsp *http.Response) (*StartAnalysisApiV1FindingAnalysesPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StartAnalysisApiV1FindingAnalysesPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Analysis
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers StartAnalysisApiV1FindingAnalysesPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers StartAnalysisApiV1FindingAnalysesPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListFindingsApiV1FindingsGetResponse parses an HTTP response from a ListFindingsApiV1FindingsGetWithResponse call
+func ParseListFindingsApiV1FindingsGetResponse(rsp *http.Response) (*ListFindingsApiV1FindingsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListFindingsApiV1FindingsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest FindingPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListFindingsApiV1FindingsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListFindingsApiV1FindingsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateFindingApiV1FindingsPostResponse parses an HTTP response from a CreateFindingApiV1FindingsPostWithResponse call
+func ParseCreateFindingApiV1FindingsPostResponse(rsp *http.Response) (*CreateFindingApiV1FindingsPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateFindingApiV1FindingsPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Finding
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateFindingApiV1FindingsPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateFindingApiV1FindingsPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetFindingApiV1FindingsFindingIdGetResponse parses an HTTP response from a GetFindingApiV1FindingsFindingIdGetWithResponse call
+func ParseGetFindingApiV1FindingsFindingIdGetResponse(rsp *http.Response) (*GetFindingApiV1FindingsFindingIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetFindingApiV1FindingsFindingIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Finding
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetFindingApiV1FindingsFindingIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetFindingApiV1FindingsFindingIdGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateFindingApiV1FindingsFindingIdPatchResponse parses an HTTP response from a UpdateFindingApiV1FindingsFindingIdPatchWithResponse call
+func ParseUpdateFindingApiV1FindingsFindingIdPatchResponse(rsp *http.Response) (*UpdateFindingApiV1FindingsFindingIdPatchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateFindingApiV1FindingsFindingIdPatchResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Finding
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateFindingApiV1FindingsFindingIdPatchResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateFindingApiV1FindingsFindingIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseAcceptApiV1InvitationsInvitationIdAcceptPostResponse parses an HTTP response from a AcceptApiV1InvitationsInvitationIdAcceptPostWithResponse call
 func ParseAcceptApiV1InvitationsInvitationIdAcceptPostResponse(rsp *http.Response) (*AcceptApiV1InvitationsInvitationIdAcceptPostResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -58284,7 +60935,7 @@ func ParseDiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetRespo
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []ChatGPTModel
+		var dest []ProviderModel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -60085,6 +62736,69 @@ func ParseListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse(rsp *h
 	return response, nil
 }
 
+// ParseRunContentApiV1RunsRunIdContentsContentIdGetResponse parses an HTTP response from a RunContentApiV1RunsRunIdContentsContentIdGetWithResponse call
+func ParseRunContentApiV1RunsRunIdContentsContentIdGetResponse(rsp *http.Response) (*RunContentApiV1RunsRunIdContentsContentIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RunContentApiV1RunsRunIdContentsContentIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunContent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RunContentApiV1RunsRunIdContentsContentIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RunContentApiV1RunsRunIdContentsContentIdGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseForkRunApiV1RunsRunIdForkPostResponse parses an HTTP response from a ForkRunApiV1RunsRunIdForkPostWithResponse call
 func ParseForkRunApiV1RunsRunIdForkPostResponse(rsp *http.Response) (*ForkRunApiV1RunsRunIdForkPostResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -60653,6 +63367,69 @@ func ParseUpdateSessionApiV1SessionsSessionIdPatchResponse(rsp *http.Response) (
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateSessionApiV1SessionsSessionIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse parses an HTTP response from a GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse call
+func ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse(rsp *http.Response) (*GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MessageAuthors
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
