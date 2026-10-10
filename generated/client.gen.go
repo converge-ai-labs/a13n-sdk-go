@@ -3127,6 +3127,19 @@ type Message struct {
 // MessageKind defines model for Message.Kind.
 type MessageKind string
 
+// MessageAuthor defines model for MessageAuthor.
+type MessageAuthor struct {
+	EntryId     string                              `json:"entry_id"`
+	Principal   nullable.Nullable[PrincipalSummary] `json:"principal"`
+	PrincipalId string                              `json:"principal_id"`
+	SubmittedAt time.Time                           `json:"submitted_at"`
+}
+
+// MessageAuthors defines model for MessageAuthors.
+type MessageAuthors struct {
+	Items []MessageAuthor `json:"items"`
+}
+
 // MessageHistory Pydantic AI ModelMessage JSON objects, validated by the Service. Imports completed user text, model text and closed tool-call/JSON-result exchanges; no instructions, media or suspended execution. At most 256 messages and 256 KiB of normalized JSON.
 type MessageHistory = []map[string]JsonValue
 
@@ -5537,6 +5550,14 @@ type GetSessionApiV1SessionsSessionIdGetParams struct {
 type UpdateSessionApiV1SessionsSessionIdPatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams defines parameters for GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet.
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams struct {
+	EntryId []string `form:"entry_id" json:"entry_id"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -9120,6 +9141,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/sessions/{session_id} (the `UpdateSessionApiV1SessionsSessionIdPatch` operationId).
 	UpdateSessionApiV1SessionsSessionIdPatch(ctx context.Context, sessionId string, params *UpdateSessionApiV1SessionsSessionIdPatchParams, body UpdateSessionApiV1SessionsSessionIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet Get Message Authors
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+	GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSkillsApiV1SkillsGet List Skills
 	//
@@ -13073,6 +13099,21 @@ func (c *Client) UpdateSessionApiV1SessionsSessionIdPatchWithBody(ctx context.Co
 // Corresponds with PATCH /api/v1/sessions/{session_id} (the `UpdateSessionApiV1SessionsSessionIdPatch` operationId).
 func (c *Client) UpdateSessionApiV1SessionsSessionIdPatch(ctx context.Context, sessionId string, params *UpdateSessionApiV1SessionsSessionIdPatchParams, body UpdateSessionApiV1SessionsSessionIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSessionApiV1SessionsSessionIdPatchRequest(c.Server, sessionId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet Get Message Authors
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+func (c *Client) GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetRequest(c.Server, sessionId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -23783,6 +23824,82 @@ func NewUpdateSessionApiV1SessionsSessionIdPatchRequestWithBody(server string, s
 	return req, nil
 }
 
+// NewGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetRequest constructs an http.Request for the GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet method
+func NewGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetRequest(server string, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "session_id", sessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/sessions/%s/message-authors", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.EntryId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "entry_id", params.EntryId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListSkillsApiV1SkillsGetRequest constructs an http.Request for the ListSkillsApiV1SkillsGet method
 func NewListSkillsApiV1SkillsGetRequest(server string, params *ListSkillsApiV1SkillsGetParams) (*http.Request, error) {
 	var err error
@@ -31281,6 +31398,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/sessions/{session_id} (the `UpdateSessionApiV1SessionsSessionIdPatch` operationId).
 	UpdateSessionApiV1SessionsSessionIdPatchWithResponse(ctx context.Context, sessionId string, params *UpdateSessionApiV1SessionsSessionIdPatchParams, body UpdateSessionApiV1SessionsSessionIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSessionApiV1SessionsSessionIdPatchResponse, error)
+
+	// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse Get Message Authors
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+	GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse, error)
 
 	// ListSkillsApiV1SkillsGetWithResponse List Skills
 	//
@@ -41675,6 +41799,75 @@ func (r UpdateSessionApiV1SessionsSessionIdPatchResponse) ContentType() string {
 	return ""
 }
 
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers the declared response headers of an HTTP 400 response for GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MessageAuthors
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetJSON200() *MessageAuthors {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListSkillsApiV1SkillsGetResponse400Headers the declared response headers of an HTTP 400 response for ListSkillsApiV1SkillsGet
 type ListSkillsApiV1SkillsGetResponse400Headers struct {
 	XRequestId *string
@@ -50663,6 +50856,19 @@ func (c *ClientWithResponses) UpdateSessionApiV1SessionsSessionIdPatchWithRespon
 		return nil, err
 	}
 	return ParseUpdateSessionApiV1SessionsSessionIdPatchResponse(rsp)
+}
+
+// GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse Get Message Authors
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
+func (c *ClientWithResponses) GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse, error) {
+	rsp, err := c.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx, sessionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse(rsp)
 }
 
 // ListSkillsApiV1SkillsGetWithResponse List Skills
@@ -60957,6 +61163,69 @@ func ParseUpdateSessionApiV1SessionsSessionIdPatchResponse(rsp *http.Response) (
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateSessionApiV1SessionsSessionIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse parses an HTTP response from a GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse call
+func ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse(rsp *http.Response) (*GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MessageAuthors
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
