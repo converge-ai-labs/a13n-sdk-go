@@ -42,7 +42,7 @@ func refreshOffline() {
 			var body struct {
 				Options json.RawMessage `json:"options"`
 			}
-			check(json.NewDecoder(req.Body).Decode(&body) == nil && string(body.Options) == expected, "installed StartPayload/SendPayload configuration wire")
+			check(json.NewDecoder(req.Body).Decode(&body) == nil && string(body.Options) == expected, "installed StartInput/SendInput configuration wire")
 			posts++
 			w.WriteHeader(201)
 			_, _ = io.WriteString(w, `{"thread":{"id":"refresh-thread"},"entry":{"id":"refresh-entry","thread_id":"refresh-thread","status":"pending"},"run":null}`)
@@ -75,21 +75,21 @@ func refreshOffline() {
 	client := must(a13n.NewClient(server.URL, a13n.NewSecret("offline"), nil))
 	defer client.Close()
 	ctx := context.Background()
-	payload := a13n.TextPayload("Native configuration")
-	first := must(client.Agent("agent").StartPayload(ctx, payload, a13n.StartOptions{RequestKey: "start-refresh", Options: options}))
-	checkConfiguration(must(first.Result(ctx)).Snapshot.Value, options)
+	payload := a13n.Input{Content: []a13n.Part{a13n.TextPart("Native configuration")}}
+	first := must(client.Agent("agent").StartInput(ctx, payload, a13n.StartOptions{IdempotencyKey: "start-refresh", Options: options}))
+	checkConfiguration(must(first.Result(ctx)).Evidence().Value, options)
 	_ = first.Close()
-	sent := must(client.Agent("agent").SendPayload(ctx, "refresh-thread", payload, a13n.SendOptions{RequestKey: "send-refresh", Options: options}))
+	sent := must(client.Agent("agent").SendInput(ctx, "refresh-thread", payload, a13n.SendOptions{IdempotencyKey: "send-refresh", Options: options}))
 	outcome := must(sent.Result(ctx))
-	checkConfiguration(outcome.Snapshot.Value, options)
+	checkConfiguration(outcome.Evidence().Value, options)
 	_ = sent.Close()
 	check(posts == 2, "installed native configuration submissions")
 	for _, value := range []string{`{}`, `{"configuration":null}`, `{"configuration":{}}`, `{"configuration":{"allowed_hosts":[],"extensions":{}}}`} {
 		var selected generated.RunOptionsInput
 		check(json.Unmarshal([]byte(value), &selected) == nil, "installed native configuration tri-state decode")
 		expected = string(must(json.Marshal(selected)))
-		interaction := must(client.Agent("agent").SendPayload(ctx, "refresh-thread", payload, a13n.SendOptions{RequestKey: key(), Options: &selected}))
-		view := must(interaction.Result(ctx)).Snapshot.Value
+		interaction := must(client.Agent("agent").SendInput(ctx, "refresh-thread", payload, a13n.SendOptions{IdempotencyKey: key(), Options: &selected}))
+		view := must(interaction.Result(ctx)).Evidence().Value
 		check(string(must(json.Marshal(view.Options))) == expected, "installed omitted/null/empty configuration request and readback")
 		_ = interaction.Close()
 	}
@@ -115,7 +115,7 @@ func refreshOffline() {
 	raw, err = api.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx, "provider", &generated.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams{})
 	check(must(a13n.ParseJSON[generated.AuthorizationDisconnect](client, raw, err, 200)).Value.RevocationConfirmed.IsNull(), "installed disconnect operation")
 	refreshInteractionOffline()
-	fmt.Println("Installed module: native configuration StartPayload/SendPayload/readback, AG-UI media/child content and five OAuth/discovery operations passed (local mock)")
+	fmt.Println("Installed module: native configuration StartInput/SendInput/readback, AG-UI media/child content and five OAuth/discovery operations passed (local mock)")
 }
 
 func refreshInteractionOffline() {
@@ -156,7 +156,7 @@ func refreshInteractionOffline() {
 	defer client.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	interaction := must(client.Agent("agent").Start(ctx, "Inline child", a13n.StartOptions{RequestKey: key()}))
+	interaction := must(client.Agent("agent").Start(ctx, "Inline child", a13n.StartOptions{IdempotencyKey: key()}))
 	defer interaction.Close()
 	frame := must(interaction.Next()).(a13n.DeltaFrame)
 	check(frame.RunID == "refresh-run" && string(frame.Event["runId"]) == `"inline-child"`, "installed native child terminal is not Service identity")
@@ -169,7 +169,7 @@ func refreshInteractionOffline() {
 	check(errors.Is(err, context.Canceled), "installed child terminal cannot finish root")
 	sealed.Store(true)
 	result := must(interaction.Result(ctx))
-	check(result.Run.ID == "refresh-run" && result.Status() == generated.RunStatusCompleted, "installed exact authoritative root result")
+	check(result.Run.ID == "refresh-run" && result.Status == generated.RunStatusCompleted, "installed exact authoritative root result")
 	_, err = interaction.Next()
 	check(errors.Is(err, io.EOF), "installed root seal ends finite parser")
 }
@@ -179,9 +179,9 @@ func refreshInteractionOffline() {
 // separate next_run/resume scenario if the assertion fails.
 func activeConfigurationConflictLive(ctx context.Context, client *a13n.Client, agentID string) {
 	options := configurationOptions("active-probe")
-	active := must(client.Agent(agentID).StartPayload(ctx,
-		a13n.TextPayload("[interruptible] [slow] [long] Verify an active configuration snapshot."),
-		a13n.StartOptions{RequestKey: key(), Options: options}))
+	active := must(client.Agent(agentID).StartInput(ctx,
+		a13n.Input{Content: []a13n.Part{a13n.TextPart("[interruptible] [slow] [long] Verify an active configuration snapshot.")}},
+		a13n.StartOptions{IdempotencyKey: key(), Options: options}))
 	defer active.Close()
 	ready, stop := context.WithTimeout(ctx, 15*time.Second)
 	defer stop()
@@ -189,18 +189,18 @@ func activeConfigurationConflictLive(ctx context.Context, client *a13n.Client, a
 	defer ticker.Stop()
 	var exactRun string
 	for {
-		if active.Run != nil {
-			exactRun = active.Run.ID
+		if run, ok := active.Run(); ok {
+			exactRun = run.ID
 		}
 		if exactRun == "" {
-			entry := must(active.Entry.Get(ready))
+			entry := must(active.Entry().Get(ready))
 			if entry.Value.Status == generated.EntryStatusConsumed {
 				exactRun = entry.Value.AssignedRunId.GetOrEmpty()
 			}
 		}
 		if exactRun != "" {
 			run := must(client.Run(exactRun).Get(ready))
-			thread := must(active.Thread.Get(ready))
+			thread := must(active.Thread().Get(ready))
 			if run.Value.Status == generated.RunStatusRunning && thread.Value.CurrentRunId.GetOrEmpty() == exactRun {
 				checkConfiguration(run.Value, options)
 				break
@@ -214,15 +214,15 @@ func activeConfigurationConflictLive(ctx context.Context, client *a13n.Client, a
 		case <-ticker.C:
 		}
 	}
-	_, err := client.Agent(agentID).SendPayload(ctx, active.Thread.ID,
-		a13n.TextPayload("Attempt incompatible steering."),
-		a13n.SendOptions{RequestKey: key(), Options: configurationOptions("different")})
+	_, err := client.Agent(agentID).SendInput(ctx, active.Thread().ID,
+		a13n.Input{Content: []a13n.Part{a13n.TextPart("Attempt incompatible steering.")}},
+		a13n.SendOptions{IdempotencyKey: key(), Options: configurationOptions("different")})
 	var immutable *a13n.ApiError
 	check(errors.As(err, &immutable) && immutable.Status == 409 && string(immutable.Details["reason"]) == `"run_configuration_immutable"`,
 		"Service-owned configuration steering conflict on the exact active Run")
 	outcome := must(active.Result(ctx))
-	check(outcome.Run.ID == exactRun && outcome.Status() == generated.RunStatusCompleted,
+	check(outcome.Run.ID == exactRun && outcome.Status == generated.RunStatusCompleted,
 		"active configuration conflict probe ends on its exact original Run")
-	checkConfiguration(outcome.Snapshot.Value, options)
+	checkConfiguration(outcome.Evidence().Value, options)
 	fmt.Println("Verified HTTPS: exact active Thread/Run configuration steering conflict and unchanged final snapshot passed")
 }

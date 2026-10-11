@@ -1,7 +1,9 @@
 package a13n
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -36,51 +38,73 @@ type Run struct {
 // StartOptions exposes all user-selectable NewThread fields without duplicating
 // AgentId or Payload. Nullable fields preserve omission versus explicit null.
 type StartOptions struct {
-	RequestKey      string
+	IdempotencyKey  string
 	AgentRevisionId nullable.Nullable[string]
-	Delivery        *generated.Delivery
-	Environments    *generated.InitialMounts
-	Kind            *generated.NewThreadKind
-	McpHeaders      *generated.McpHeaders
-	Memories        *[]generated.MemoryMount
-	MessageHistory  *generated.MessageHistory
+	Delivery        *Delivery
+	Environments    *InitialMounts
+	Kind            *NewThreadKind
+	McpHeaders      *McpHeaders
+	Memories        *[]MemoryMount
+	MessageHistory  *MessageHistory
 	// Options includes the complete typed Configuration snapshot, independent
 	// of Agent Overrides. Its nullable fields are forwarded without merging.
-	Options   *generated.RunOptionsInput
+	Options   *RunOptions
 	SessionId nullable.Nullable[string]
 }
 
 // SendOptions exposes all user-selectable Message fields. The Agent and payload
-// come from the binding and Send/SendPayload arguments.
+// come from the binding and Send/SendInput arguments.
 type SendOptions struct {
-	RequestKey      string
+	IdempotencyKey  string
 	AgentRevisionId nullable.Nullable[string]
-	Delivery        *generated.Delivery
-	Kind            *generated.MessageKind
+	Delivery        *Delivery
+	Kind            *MessageKind
 	// Options.Configuration is forwarded as authored; the Service decides
 	// whether it matches an active Run or selects a new next_run snapshot.
-	Options *generated.RunOptionsInput
+	Options *RunOptions
 }
 
 // submission is acceptance, not completion. Run is nil for queued input.
 type submission struct {
-	Receipt Result[generated.Submitted]
-	Thread  Thread
-	Entry   Entry
-	Run     *Run
+	Receipt    Result[generated.Submitted]
+	Thread     Thread
+	Entry      Entry
+	Run        *Run
+	Key        string
+	HasReceipt bool
 }
 
 // RunOutcome projects one authoritative snapshot, not mutable server state.
 // Waiting/failed/cancelled status is not a success promise.
 type RunOutcome struct {
-	Run      Run
-	Snapshot Result[generated.RunView]
+	Run       Run
+	ThreadID  string
+	RunID     string
+	Status    RunStatus
+	Output    any
+	Pending   *Pending
+	Failure   *Failure
+	evidence  Result[generated.RunView]
+	rawOutput json.RawMessage
 }
 
-func (o RunOutcome) Status() generated.RunStatus                    { return o.Snapshot.Value.Status }
-func (o RunOutcome) Output() nullable.Nullable[generated.JsonValue] { return o.Snapshot.Value.Output }
-func (o RunOutcome) Pending() nullable.Nullable[generated.Pending]  { return o.Snapshot.Value.Pending }
-func (o RunOutcome) Failure() nullable.Nullable[generated.Failure]  { return o.Snapshot.Value.Failure }
+// Text returns only a string Run.output; empty strings remain present.
+func (o RunOutcome) Text() (string, bool) { text, ok := o.Output.(string); return text, ok }
+
+// Evidence exposes the original typed HTTP response, including omission/null.
+func (o RunOutcome) Evidence() Result[generated.RunView] { return o.evidence }
+
+// DecodeOutput decodes the original JSON directly, never through float64.
+func DecodeOutput[T any](o RunOutcome) (T, error) {
+	var value T
+	if len(o.rawOutput) == 0 {
+		return value, errors.New("Run output is absent")
+	}
+	decoder := json.NewDecoder(bytes.NewReader(o.rawOutput))
+	decoder.UseNumber()
+	err := decoder.Decode(&value)
+	return value, err
+}
 
 // EntryDispositionError retains the failed or withdrawn Entry and request
 // evidence without echoing its arbitrary payload in an error string.
@@ -119,78 +143,90 @@ func (c *Client) semanticWorkspace() *string {
 	return &c.workspaceID
 }
 
-// TextPayload builds the typed Service message payload for a text greeting.
-func TextPayload(text string) generated.MessagePayload {
-	var part generated.Part
-	_ = part.FromTextPart(generated.TextPart{Text: text, Type: "text"})
-	return generated.MessagePayload{Content: []generated.Part{part}}
+// Start submits text; at most one options value is accepted.
+func (a Agent) Start(ctx context.Context, text string, options ...StartOptions) (*Interaction, error) {
+	return a.StartInput(ctx, Input{Content: []Part{TextPart(text)}}, options...)
 }
 
-// Start submits text and returns one finite, locally cancellable interaction.
-func (a Agent) Start(ctx context.Context, text string, options StartOptions) (*Interaction, error) {
-	return a.StartPayload(ctx, TextPayload(text), options)
-}
-
-// StartPayload accepts the full typed Service MessagePayload. All other
-// NewThread fields remain available through StartOptions.
-func (a Agent) StartPayload(ctx context.Context, payload generated.MessagePayload, options StartOptions) (*Interaction, error) {
+// StartInput submits ordered multipart content and the complete creation options.
+func (a Agent) StartInput(ctx context.Context, input Input, options ...StartOptions) (*Interaction, error) {
 	if err := validateClient(a.client, a.ID); err != nil {
 		return nil, err
 	}
-	if options.RequestKey == "" {
-		return nil, errors.New("Idempotency-Key is required")
+	if len(options) > 1 {
+		return nil, errors.New("Start accepts at most one options value")
 	}
-	body := generated.NewThread{AgentId: a.ID, Payload: payload, AgentRevisionId: options.AgentRevisionId,
-		Delivery: options.Delivery, Environments: options.Environments, Kind: options.Kind,
-		McpHeaders: options.McpHeaders, Memories: options.Memories, MessageHistory: options.MessageHistory,
-		Options: options.Options, SessionId: options.SessionId}
+	var opts StartOptions
+	if len(options) == 1 {
+		opts = options[0]
+	}
+	payload, err := input.Wire()
+	if err != nil {
+		return nil, err
+	}
+	body := generated.NewThread{AgentId: a.ID, Payload: payload, AgentRevisionId: opts.AgentRevisionId,
+		Delivery: opts.Delivery, Environments: opts.Environments, Kind: opts.Kind, McpHeaders: opts.McpHeaders,
+		Memories: opts.Memories, MessageHistory: opts.MessageHistory, Options: opts.Options, SessionId: opts.SessionId}
 	observation, cancel := observationContext(ctx)
-	r, err := a.client.api.CreateThreadApiV1ThreadsPost(observation, &generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: options.RequestKey, XWorkspaceID: a.client.semanticWorkspace()}, body)
-	result, err := jsonResult[generated.Submitted](a.client, r, err, 200, 201)
+	mutation, dispatch, key, err := mutationContext(observation, a.client, opts.IdempotencyKey)
 	if err != nil {
 		cancel()
 		return nil, err
 	}
-	bound, err := bindSubmitted(a.client, result)
+	resp, err := a.client.api.CreateThreadApiV1ThreadsPost(mutation, &generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: key, XWorkspaceID: a.client.semanticWorkspace()}, body)
+	result, err := jsonResult[generated.Submitted](a.client, resp, err, 200, 201)
+	var submitted *submission
+	if err == nil {
+		submitted, err = bindSubmitted(a.client, result)
+	}
 	if err != nil {
 		cancel()
-		return nil, err
+		return nil, mutationError(err, dispatch, key, "start", "", "")
 	}
-	return newInteraction(observation, cancel, bound), nil
+	submitted.Key, submitted.HasReceipt = key, true
+	return newInteraction(observation, cancel, submitted), nil
 }
 
-// Send continues an existing Thread using this explicit Agent, never an Agent
-// inferred from a Thread's previous Run.
-func (a Agent) Send(ctx context.Context, threadID, text string, options SendOptions) (*Interaction, error) {
-	return a.SendPayload(ctx, threadID, TextPayload(text), options)
+// Send names both Agent and Thread explicitly, never an inferred previous Agent.
+func (a Agent) Send(ctx context.Context, threadID, text string, options ...SendOptions) (*Interaction, error) {
+	return a.SendInput(ctx, threadID, Input{Content: []Part{TextPart(text)}}, options...)
 }
-
-// SendPayload keeps the complete Message options, delivery and revision choice.
-func (a Agent) SendPayload(ctx context.Context, threadID string, payload generated.MessagePayload, options SendOptions) (*Interaction, error) {
+func (a Agent) SendInput(ctx context.Context, threadID string, input Input, options ...SendOptions) (*Interaction, error) {
 	if err := validateClient(a.client, a.ID, threadID); err != nil {
 		return nil, err
 	}
-	if options.RequestKey == "" {
-		return nil, errors.New("Idempotency-Key is required")
+	if len(options) > 1 {
+		return nil, errors.New("Send accepts at most one options value")
 	}
-	body := generated.Message{AgentId: a.ID, Payload: payload, AgentRevisionId: options.AgentRevisionId,
-		Delivery: options.Delivery, Kind: options.Kind, Options: options.Options}
+	var opts SendOptions
+	if len(options) == 1 {
+		opts = options[0]
+	}
+	payload, err := input.Wire()
+	if err != nil {
+		return nil, err
+	}
+	body := generated.Message{AgentId: a.ID, Payload: payload, AgentRevisionId: opts.AgentRevisionId, Delivery: opts.Delivery, Kind: opts.Kind, Options: opts.Options}
 	observation, cancel := observationContext(ctx)
-	r, err := a.client.api.SubmitMessageApiV1ThreadsThreadIdInboxPost(observation, threadID, &generated.SubmitMessageApiV1ThreadsThreadIdInboxPostParams{IdempotencyKey: options.RequestKey, XWorkspaceID: a.client.semanticWorkspace()}, body)
-	result, err := jsonResult[generated.Submitted](a.client, r, err, 200, 201)
+	mutation, dispatch, key, err := mutationContext(observation, a.client, opts.IdempotencyKey)
 	if err != nil {
 		cancel()
 		return nil, err
 	}
-	submitted, err := bindSubmitted(a.client, result)
+	resp, err := a.client.api.SubmitMessageApiV1ThreadsThreadIdInboxPost(mutation, threadID, &generated.SubmitMessageApiV1ThreadsThreadIdInboxPostParams{IdempotencyKey: key, XWorkspaceID: a.client.semanticWorkspace()}, body)
+	result, err := jsonResult[generated.Submitted](a.client, resp, err, 200, 201)
+	var submitted *submission
+	if err == nil {
+		submitted, err = bindSubmitted(a.client, result)
+	}
+	if err == nil && submitted.Thread.ID != threadID {
+		err = fmt.Errorf("%w: submitted to another Thread", ErrProtocol)
+	}
 	if err != nil {
 		cancel()
-		return nil, err
+		return nil, mutationError(err, dispatch, key, "send", threadID, "")
 	}
-	if submitted.Thread.ID != threadID {
-		cancel()
-		return nil, fmt.Errorf("%w: submitted to another Thread", ErrProtocol)
-	}
+	submitted.Key, submitted.HasReceipt = key, true
 	return newInteraction(observation, cancel, submitted), nil
 }
 
@@ -283,22 +319,76 @@ func (r Run) Items(ctx context.Context, options ...RunItemsOptions) (Result[gene
 }
 
 func outcome(r Run, snapshot Result[generated.RunView]) RunOutcome {
-	return RunOutcome{Run: r, Snapshot: snapshot}
+	v := snapshot.Value
+	o := RunOutcome{Run: r, RunID: r.ID, ThreadID: v.ThreadId, Status: v.Status, evidence: snapshot}
+	if pending, err := v.Pending.Get(); err == nil {
+		o.Pending = &pending
+	}
+	if failure, err := v.Failure.Get(); err == nil {
+		o.Failure = &failure
+	}
+	var raw struct {
+		Output json.RawMessage `json:"output"`
+	}
+	_ = json.Unmarshal(snapshot.raw, &raw)
+	o.rawOutput = raw.Output
+	if len(raw.Output) != 0 {
+		decoder := json.NewDecoder(bytes.NewReader(raw.Output))
+		decoder.UseNumber()
+		_ = decoder.Decode(&o.Output)
+	}
+	return o
 }
 
-// Wait observes this exact Run until completed, waiting, failed or cancelled.
-// One caller deadline covers every request, response body and polling sleep.
-func (r Run) Wait(ctx context.Context) (RunOutcome, error) {
-	ctx, cancel := observationContext(ctx)
-	defer cancel()
-	snapshot, err := waitFor(ctx, r.client, r.Get, func(v generated.RunView) bool {
-		switch v.Status {
-		case generated.RunStatusCompleted, generated.RunStatusWaiting, generated.RunStatusFailed, generated.RunStatusCancelled:
-			return true
-		default:
-			return false
+// Observe binds this exact Run to a lazy finite Interaction without I/O.
+func (r Run) Observe(ctx context.Context) (*Interaction, error) {
+	if err := validateClient(r.client, r.ID); err != nil {
+		return nil, err
+	}
+	observation, cancel := observationContext(ctx)
+	return newRunInteraction(observation, cancel, r, "", nil, "", "observed_run"), nil
+}
+
+// Result is the result-only convenience over the same exact observer.
+func (r Run) Result(ctx context.Context) (RunOutcome, error) {
+	i, err := r.Observe(ctx)
+	if err != nil {
+		return RunOutcome{}, err
+	}
+	defer i.Close()
+	return i.Result(ctx)
+}
+
+// Observe recovers the exact Entry without a mutation or fabricated receipt.
+func (e Entry) Observe(ctx context.Context) (*Interaction, error) {
+	if err := validateClient(e.client, e.ThreadID, e.ID); err != nil {
+		return nil, err
+	}
+	observation, cancel := observationContext(ctx)
+	return newInteraction(observation, cancel, &submission{Thread: e.client.Thread(e.ThreadID), Entry: e}), nil
+}
+func sealed(v generated.RunView) bool {
+	switch v.Status {
+	case generated.RunStatusCompleted, generated.RunStatusWaiting, generated.RunStatusFailed, generated.RunStatusCancelled:
+		return true
+	}
+	return false
+}
+func (r Run) wait(ctx context.Context, threadID string, incorporated func(Run, string)) (RunOutcome, error) {
+	bound := false
+	snapshot, err := waitFor(ctx, r.client, func(ctx context.Context) (Result[generated.RunView], error) {
+		result, err := r.Get(ctx)
+		if err == nil && (result.Value.ThreadId == "" || (threadID != "" && result.Value.ThreadId != threadID)) {
+			return result, fmt.Errorf("%w: inconsistent Run Thread", ErrProtocol)
 		}
-	})
+		if err == nil && !bound {
+			bound = true
+			if incorporated != nil {
+				incorporated(r, result.Value.ThreadId)
+			}
+		}
+		return result, err
+	}, sealed)
 	if err != nil {
 		return RunOutcome{}, err
 	}
@@ -307,7 +397,7 @@ func (r Run) Wait(ctx context.Context) (RunOutcome, error) {
 
 // Wait first awaits durable incorporation of this Entry, then the *exact* Run
 // that consumed it. An assigned_run_id on a pending Entry is not incorporation.
-func (s submission) wait(ctx context.Context, incorporated func(Run)) (RunOutcome, error) {
+func (s submission) wait(ctx context.Context, incorporated func(Run, string)) (RunOutcome, error) {
 	ctx, cancel := observationContext(ctx)
 	defer cancel()
 	entry, err := waitFor(ctx, s.Entry.client, s.Entry.Get, func(v generated.EntryView) bool {
@@ -328,23 +418,9 @@ func (s submission) wait(ctx context.Context, incorporated func(Run)) (RunOutcom
 	}
 	run := s.Thread.client.Run(id)
 	if incorporated != nil {
-		incorporated(run)
+		incorporated(run, s.Thread.ID)
 	}
-	snapshot, err := waitFor(ctx, run.client, run.Get, func(v generated.RunView) bool {
-		switch v.Status {
-		case generated.RunStatusCompleted, generated.RunStatusWaiting, generated.RunStatusFailed, generated.RunStatusCancelled:
-			return true
-		default:
-			return false
-		}
-	})
-	if err != nil {
-		return RunOutcome{}, err
-	}
-	if snapshot.Value.ThreadId != s.Thread.ID {
-		return RunOutcome{}, fmt.Errorf("%w: entry Run belongs to another Thread", ErrProtocol)
-	}
-	return outcome(run, snapshot), nil
+	return run.wait(ctx, s.Thread.ID, nil)
 }
 
 func observationContext(ctx context.Context) (context.Context, context.CancelFunc) {
@@ -380,25 +456,38 @@ func waitFor[T any](ctx context.Context, c *Client, get func(context.Context) (R
 	}
 }
 
-// Resume requests a distinct successor Run and returns it with original status
-// and headers. It never mutates the bound predecessor's identity.
-func (r Run) Resume(ctx context.Context, request generated.Resume, requestKey string) (Run, Result[generated.RunView], error) {
-	var zero Result[generated.RunView]
+// Resume submits one answer batch and observes the distinct exact successor.
+func (r Run) Resume(ctx context.Context, answers Answers, options ...ResumeOptions) (*Interaction, error) {
 	if err := validateClient(r.client, r.ID); err != nil {
-		return Run{}, zero, err
+		return nil, err
 	}
-	if requestKey == "" {
-		return Run{}, zero, errors.New("Idempotency-Key is required")
+	if len(options) > 1 {
+		return nil, errors.New("Resume accepts at most one options value")
 	}
-	resp, err := r.client.api.ResumeRunApiV1RunsRunIdResumePost(ctx, r.ID, &generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: requestKey, XWorkspaceID: r.client.semanticWorkspace()}, request)
-	result, err := jsonResult[generated.RunView](r.client, resp, err, 200, 201)
+	var opts ResumeOptions
+	if len(options) == 1 {
+		opts = options[0]
+	}
+	request, err := answers.wire(opts)
 	if err != nil {
-		return Run{}, result, err
+		return nil, err
 	}
-	if result.Value.Id == "" || result.Value.Id == r.ID {
-		return Run{}, result, fmt.Errorf("%w: invalid successor Run", ErrProtocol)
+	observation, cancel := observationContext(ctx)
+	mutation, dispatch, key, err := mutationContext(observation, r.client, opts.IdempotencyKey)
+	if err != nil {
+		cancel()
+		return nil, err
 	}
-	return r.client.Run(result.Value.Id), result, nil
+	resp, err := r.client.api.ResumeRunApiV1RunsRunIdResumePost(mutation, r.ID, &generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: key, XWorkspaceID: r.client.semanticWorkspace()}, request)
+	result, err := jsonResult[generated.RunView](r.client, resp, err, 200, 201)
+	if err == nil && (validateID(result.Value.Id) != nil || result.Value.Id == r.ID || validateID(result.Value.ThreadId) != nil) {
+		err = fmt.Errorf("%w: invalid successor Run", ErrProtocol)
+	}
+	if err != nil {
+		cancel()
+		return nil, mutationError(err, dispatch, key, "resume", "", r.ID)
+	}
+	return newRunInteraction(observation, cancel, r.client.Run(result.Value.Id), result.Value.ThreadId, &result, key, "resumed_run"), nil
 }
 
 // Interrupt requests a remote mutation; Close and local cancellation do not.

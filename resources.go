@@ -11,6 +11,8 @@ import (
 	"net/textproto"
 	"slices"
 	"strings"
+
+	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
 // Result is an observed representation, never a live resource mirror.
@@ -18,7 +20,11 @@ type Result[T any] struct {
 	Value      T
 	StatusCode int
 	Header     http.Header
+	raw        []byte
 }
+
+// RawJSON returns independent original response bytes for exact application decoding.
+func (r Result[T]) RawJSON() []byte { return slices.Clone(r.raw) }
 
 func (r Result[T]) ETag() string      { return r.Header.Get("ETag") }
 func (r Result[T]) RequestID() string { return r.Header.Get("X-Request-ID") }
@@ -50,23 +56,28 @@ func apiFailure(response *http.Response, limit int64) error {
 	}
 	var envelope struct {
 		Error struct {
-			Code      string                     `json:"code"`
-			Message   string                     `json:"message"`
+			Code      *string                    `json:"code"`
+			Message   *string                    `json:"message"`
 			Details   map[string]json.RawMessage `json:"details"`
-			RequestID string                     `json:"request_id"`
+			RequestID json.RawMessage            `json:"request_id"`
 		} `json:"error"`
 	}
 	if json.Unmarshal(data, &envelope) != nil {
 		return protocolError(response, "invalid_json")
 	}
-	if envelope.Error.Code == "" {
+	// Only a complete canonical Service ErrorBody proves rejection. Gateway
+	// JSON with a code alone is not reliable acknowledgement of a mutation.
+	if envelope.Error.Code == nil || *envelope.Error.Code == "" || envelope.Error.Message == nil || envelope.Error.Details == nil || len(envelope.Error.RequestID) == 0 {
 		return protocolError(response, "error_envelope")
 	}
-	requestID := envelope.Error.RequestID
+	var requestID string
+	if json.Unmarshal(envelope.Error.RequestID, &requestID) != nil {
+		return protocolError(response, "error_envelope")
+	}
 	if requestID == "" {
 		requestID = response.Header.Get("X-Request-ID")
 	}
-	return &ApiError{Status: response.StatusCode, Code: envelope.Error.Code, Message: envelope.Error.Message,
+	return &ApiError{Status: response.StatusCode, Code: *envelope.Error.Code, Message: *envelope.Error.Message,
 		Details: envelope.Error.Details, RequestID: requestID, RetryAfter: response.Header.Get("Retry-After"), Header: response.Header.Clone()}
 }
 
@@ -103,11 +114,67 @@ func jsonResult[T any](client *Client, response *http.Response, err error, succe
 	if bytes.Equal(bytes.TrimSpace(data), []byte("null")) {
 		return result, protocolError(response, "null_body")
 	}
-	if json.Unmarshal(data, &result.Value) != nil {
+	result.raw = data
+	if decodeResourceJSON(data, &result.Value) != nil {
 		return result, protocolError(response, "invalid_json")
 	}
 	return result, nil
 }
+
+// The canonical nullable decoder uses float64 for arbitrary JSON. Shadow only
+// Run output at this common response owner so valid large numbers reach both
+// the typed evidence and high-level output without forking generated parsers.
+func decodeResourceJSON(data []byte, target any) error {
+	switch value := target.(type) {
+	case *generated.RunView:
+		wire := struct {
+			*generated.RunView
+			Output json.RawMessage `json:"output"`
+		}{RunView: value}
+		if err := json.Unmarshal(data, &wire); err != nil {
+			return err
+		}
+		if len(wire.Output) == 0 {
+			return nil
+		}
+		if bytes.Equal(bytes.TrimSpace(wire.Output), []byte("null")) {
+			value.Output = Null[any]()
+			return nil
+		}
+		var output any
+		decoder := json.NewDecoder(bytes.NewReader(wire.Output))
+		decoder.UseNumber()
+		if err := decoder.Decode(&output); err != nil {
+			return err
+		}
+		value.Output = Value(output)
+		return nil
+	case *generated.Submitted:
+		wire := struct {
+			*generated.Submitted
+			Run json.RawMessage `json:"run"`
+		}{Submitted: value}
+		if err := json.Unmarshal(data, &wire); err != nil {
+			return err
+		}
+		if len(wire.Run) == 0 {
+			return nil
+		}
+		if bytes.Equal(bytes.TrimSpace(wire.Run), []byte("null")) {
+			value.Run = Null[generated.RunView]()
+			return nil
+		}
+		var run generated.RunView
+		if err := decodeResourceJSON(wire.Run, &run); err != nil {
+			return err
+		}
+		value.Run = Value(run)
+		return nil
+	default:
+		return json.Unmarshal(data, target)
+	}
+}
+
 func binaryResult(client *Client, response *http.Response, err error, success ...int) (*BinaryResult, error) {
 	if err != nil {
 		return nil, err
