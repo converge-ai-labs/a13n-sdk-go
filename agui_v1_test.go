@@ -108,7 +108,7 @@ func TestChildRunFinishedCannotCompleteRootInteraction(t *testing.T) {
 	defer client.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	interaction, err := client.Agent("agent").Start(ctx, "Root task", StartOptions{RequestKey: "child"})
+	interaction, err := client.Agent("agent").Start(ctx, "Root task", StartOptions{IdempotencyKey: "child"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -131,7 +131,7 @@ func TestChildRunFinishedCannotCompleteRootInteraction(t *testing.T) {
 	}
 	sealed.Store(true)
 	outcome, err := interaction.Result(ctx)
-	if err != nil || outcome.Run.ID != "run" || outcome.Status() != generated.RunStatusCompleted {
+	if err != nil || outcome.Run.ID != "run" || outcome.Status != generated.RunStatusCompleted {
 		t.Fatal(outcome, err)
 	}
 	if _, err := interaction.Next(); !errors.Is(err, io.EOF) {

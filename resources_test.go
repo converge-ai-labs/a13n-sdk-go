@@ -106,18 +106,18 @@ func TestAgentInvocationUsesFlatRoutesAndTypedOptions(t *testing.T) {
 		var interaction *Interaction
 		var err error
 		if send {
-			interaction, err = client.Agent("agent").Send(context.Background(), "thr", "hello", SendOptions{RequestKey: "send", AgentRevisionId: nullable.NewNullNullable[string]()})
+			interaction, err = client.Agent("agent").Send(context.Background(), "thr", "hello", SendOptions{IdempotencyKey: "send", AgentRevisionId: nullable.NewNullNullable[string]()})
 		} else {
-			interaction, err = client.Agent("agent").Start(context.Background(), "hello", StartOptions{RequestKey: "start", AgentRevisionId: nullable.NewNullNullable[string]()})
+			interaction, err = client.Agent("agent").Start(context.Background(), "hello", StartOptions{IdempotencyKey: "start", AgentRevisionId: nullable.NewNullNullable[string]()})
 		}
 		if err != nil {
 			t.Fatal(err)
 		}
-		if interaction.Run != nil || interaction.Receipt.StatusCode != 201 || interaction.Thread.ID != "thr" {
+		if interaction.receipt.ProvisionalRunID != "" || interaction.ReceiptEvidence().Submission.StatusCode != 201 || interaction.Thread().ID != "thr" {
 			t.Fatal("queued receipt lost")
 		}
 		outcome, err := interaction.Result(context.Background())
-		if err != nil || outcome.Run.ID != "run" || outcome.Status() != generated.RunStatusCompleted || outcome.Snapshot.RequestID() != "req-test" {
+		if err != nil || outcome.Run.ID != "run" || outcome.Status != generated.RunStatusCompleted || outcome.Evidence().RequestID() != "req-test" {
 			t.Fatalf("result: %#v %v", outcome, err)
 		}
 		_ = interaction.Close()
@@ -151,14 +151,14 @@ func TestConsumedOnlyAfterRollbackAndExactRun(t *testing.T) {
 			return coverageResponse(500, `{"error":{"code":"unexpected","message":"wrong run"}}`)
 		}
 	})
-	interaction, err := client.Agent("agent").Start(context.Background(), "wait", StartOptions{RequestKey: "key"})
+	interaction, err := client.Agent("agent").Start(context.Background(), "wait", StartOptions{IdempotencyKey: "key"})
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer interaction.Close()
 	outcome, err := interaction.Result(context.Background())
-	if err != nil || outcome.Status() != generated.RunStatusWaiting || outcome.Run.ID != "exact-run" || entries.Load() != 3 || runs.Load() != 1 {
-		t.Fatalf("incorporation: %v %v reads=%d/%d", outcome.Status(), err, entries.Load(), runs.Load())
+	if err != nil || outcome.Status != generated.RunStatusWaiting || outcome.Run.ID != "exact-run" || entries.Load() != 3 || runs.Load() != 1 {
+		t.Fatalf("incorporation: %v %v reads=%d/%d", outcome.Status, err, entries.Load(), runs.Load())
 	}
 }
 
@@ -171,7 +171,7 @@ func TestFailedAndWithdrawnEntryReturnTypedError(t *testing.T) {
 				}
 				return coverageResponse(200, entryView(status, "null"))
 			})
-			i, err := client.Agent("agent").Start(context.Background(), "x", StartOptions{RequestKey: "k"})
+			i, err := client.Agent("agent").Start(context.Background(), "x", StartOptions{IdempotencyKey: "k"})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -206,7 +206,7 @@ func TestRunWaitDeadlineCoversStalledResponse(t *testing.T) {
 	defer client.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
 	defer cancel()
-	_, err = client.Run("run").Wait(ctx)
+	_, err = client.Run("run").Result(ctx)
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Fatalf("deadline: %v", err)
 	}
@@ -225,10 +225,11 @@ func TestClientCloseCancelsObservation(t *testing.T) {
 		}
 		return coverageResponse(200, entryView("queued", "null"))
 	})
-	i, err := client.Agent("agent").Start(context.Background(), "x", StartOptions{RequestKey: "key"})
+	i, err := client.Agent("agent").Start(context.Background(), "x", StartOptions{IdempotencyKey: "key"})
 	if err != nil {
 		t.Fatal(err)
 	}
+	i.start()
 	<-called
 	_ = client.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -246,7 +247,7 @@ func TestGeneratedCASPreservesStructuredFailure(t *testing.T) {
 		if req.Header.Get("If-Match") != `"v1"` {
 			t.Error("CAS absent")
 		}
-		return coverageResponse(412, `{"error":{"code":"precondition_failed","message":"changed","details":{"current_etag":"v2"}}}`)
+		return coverageResponse(412, `{"error":{"code":"precondition_failed","message":"changed","details":{"current_etag":"v2"},"request_id":null}}`)
 	})
 	api, err := client.API()
 	if err != nil {
@@ -272,7 +273,7 @@ func TestMutationsDoNotReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer client.Close()
-	_, err = client.Agent("agent").Start(context.Background(), "hello", StartOptions{RequestKey: "same-key"})
+	_, err = client.Agent("agent").Start(context.Background(), "hello", StartOptions{IdempotencyKey: "same-key"})
 	if !errors.Is(err, ErrTransport) || calls != 1 || strings.Contains(err.Error(), "sensitive") {
 		t.Fatal(err, calls)
 	}
@@ -318,7 +319,7 @@ func TestSessionScopeOnlyExplicitOnGeneratedCalls(t *testing.T) {
 		t.Fatal(err)
 	}
 	_ = response.Body.Close()
-	i, err := client.Agent("agent").Start(context.Background(), "hi", StartOptions{RequestKey: "k"})
+	i, err := client.Agent("agent").Start(context.Background(), "hi", StartOptions{IdempotencyKey: "k"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -375,7 +376,7 @@ func TestResponseIdentityAndRequestedThreadAreEnforced(t *testing.T) {
 		}
 	})
 	ctx := context.Background()
-	if _, err := client.Agent("agent").Send(ctx, "thr", "x", SendOptions{RequestKey: "key"}); !errors.Is(err, ErrProtocol) {
+	if _, err := client.Agent("agent").Send(ctx, "thr", "x", SendOptions{IdempotencyKey: "key"}); !errors.Is(err, ErrProtocol) {
 		t.Fatal("cross-Thread receipt:", err)
 	}
 	if _, err := client.Entry("thr", "ent").Get(ctx); !errors.Is(err, ErrProtocol) {
@@ -411,7 +412,7 @@ func TestInvocationDeadlineIncludesQueueAndInFlightRead(t *testing.T) {
 	defer client.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Millisecond)
 	defer cancel()
-	i, err := client.Agent("agent").Start(ctx, "x", StartOptions{RequestKey: "k"})
+	i, err := client.Agent("agent").Start(ctx, "x", StartOptions{IdempotencyKey: "k"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -447,11 +448,25 @@ func TestRunResumeReturnsDistinctSuccessor(t *testing.T) {
 		}
 		return coverageResponse(200, runView("run", "cancelled", "thr"))
 	})
-	successor, receipt, err := client.Run("run").Resume(context.Background(), generated.Resume{Approvals: map[string]generated.ApprovalDecision{}, Calls: map[string]generated.CallResult{}}, "answer")
-	if err != nil || successor.ID != "successor" || receipt.StatusCode != 201 {
-		t.Fatal(successor, receipt, err)
+	interaction, err := client.Run("run").Resume(context.Background(), Answers{}, ResumeOptions{IdempotencyKey: "answer"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer interaction.Close()
+	successor, bound := interaction.Run()
+	receipt := interaction.ReceiptEvidence().Resume
+	if !bound || successor.ID != "successor" || receipt.StatusCode != 201 {
+		t.Fatal(successor, receipt)
 	}
 	if successor.ID == "run" {
 		t.Fatal("resume followed predecessor")
 	}
+}
+
+func testTextPayload(text string) generated.MessagePayload {
+	payload, err := (Input{Content: []Part{TextPart(text)}}).Wire()
+	if err != nil {
+		panic(err)
+	}
+	return payload
 }

@@ -65,7 +65,7 @@ func TestImportedHistoryHighAndLowLevelWireAndThreadReadback(t *testing.T) {
 		}
 	})
 	ctx := context.Background()
-	start, err := client.Agent("agent").Start(ctx, "Now answer.", StartOptions{RequestKey: "history-high", MessageHistory: &history})
+	start, err := client.Agent("agent").Start(ctx, "Now answer.", StartOptions{IdempotencyKey: "history-high", MessageHistory: &history})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,7 +73,7 @@ func TestImportedHistoryHighAndLowLevelWireAndThreadReadback(t *testing.T) {
 	if outcome, err := start.Result(ctx); err != nil || outcome.Run.ID != "run" {
 		t.Fatalf("exact initial Run: %v %v", outcome, err)
 	}
-	view, err := start.Thread.Get(ctx)
+	view, err := start.Thread().Get(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -87,12 +87,12 @@ func TestImportedHistoryHighAndLowLevelWireAndThreadReadback(t *testing.T) {
 		t.Fatal(err)
 	}
 	raw, err := api.CreateThreadApiV1ThreadsPost(ctx, &generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: "history-low"},
-		generated.NewThread{AgentId: "agent", Payload: TextPayload("Another new Thread"), MessageHistory: &history})
+		generated.NewThread{AgentId: "agent", Payload: testTextPayload("Another new Thread"), MessageHistory: &history})
 	receipt, err := ParseJSON[generated.Submitted](client, raw, err, 201)
 	if err != nil || receipt.StatusCode != 201 || receipt.ETag() != `"v1"` {
 		t.Fatalf("raw Create metadata: %v %#v", err, receipt)
 	}
-	next, err := client.Agent("agent").Send(ctx, start.Thread.ID, "Continue.", SendOptions{RequestKey: "followup"})
+	next, err := client.Agent("agent").Send(ctx, start.Thread().ID, "Continue.", SendOptions{IdempotencyKey: "followup"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -110,7 +110,7 @@ func TestResumeInputAndResultsUseOneHighLevelMutationAndRawReplay(t *testing.T) 
 	if err := asset.FromAssetPart(generated.AssetPart{Type: generated.AssetPartTypeAsset, AssetId: "asset"}); err != nil {
 		t.Fatal(err)
 	}
-	payload := TextPayload("Please include the attached report.")
+	payload := testTextPayload("Please include the attached report.")
 	payload.Content = append(payload.Content, asset)
 	var approval generated.ApprovalDecision
 	if err := approval.FromApprove(generated.Approve{Action: generated.ApproveActionApprove}); err != nil {
@@ -145,9 +145,15 @@ func TestResumeInputAndResultsUseOneHighLevelMutationAndRawReplay(t *testing.T) 
 		return coverageResponse(200, runView("successor", "completed", "thr"))
 	})
 	ctx := context.Background()
-	successor, result, err := client.Run("wait").Resume(ctx, request, "resume-key")
-	if err != nil || successor.ID != "successor" || result.StatusCode != 201 || result.ETag() != `"v1"` {
-		t.Fatalf("atomic resume: %v %v %v", successor, result, err)
+	interaction, err := client.Run("wait").Resume(ctx, Answers{"approval-1": Approve(), "tool-1": Returned(map[string]any{"summary": "done"})}, ResumeOptions{IdempotencyKey: "resume-key", Input: Value(InputFromWire(payload))})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer interaction.Close()
+	successor, bound := interaction.Run()
+	result := interaction.ReceiptEvidence().Resume
+	if !bound || successor.ID != "successor" || result.StatusCode != 201 || result.ETag() != `"v1"` || interaction.Entry() != nil {
+		t.Fatalf("atomic resume: %v %v", successor, result)
 	}
 	api, err := client.API()
 	if err != nil {

@@ -115,7 +115,7 @@ func TestRunItemsQueryErrorsRemainServiceOwned(t *testing.T) {
 				if req.URL.Query().Encode() != query {
 					t.Fatal(req.URL)
 				}
-				response := coverageResponse(400, `{"error":{"code":"invalid_argument","message":"invalid ordinal window","details":{"field":"before"}}}`)
+				response := coverageResponse(400, `{"error":{"code":"invalid_argument","message":"invalid ordinal window","details":{"field":"before"},"request_id":null}}`)
 				response.Header.Set("X-Request-ID", "invalid-window")
 				return response
 			})
@@ -213,17 +213,17 @@ func TestNormalSendAfterFailedAndCancelledLastRun(t *testing.T) {
 			if err != nil || thread.Value.LastRunId.GetOrEmpty() != status {
 				t.Fatal(thread, err)
 			}
-			predecessor, err := client.Run(status).Wait(ctx)
-			if err != nil || string(predecessor.Status()) != status {
+			predecessor, err := client.Run(status).Result(ctx)
+			if err != nil || string(predecessor.Status) != status {
 				t.Fatal(predecessor, err)
 			}
-			interaction, err := client.Agent("agent").Send(ctx, "thr", "Continue the sealed history.", SendOptions{RequestKey: "explicit-send"})
+			interaction, err := client.Agent("agent").Send(ctx, "thr", "Continue the sealed history.", SendOptions{IdempotencyKey: "explicit-send"})
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer interaction.Close()
 			outcome, err := interaction.Result(ctx)
-			if err != nil || outcome.Snapshot.Value.ParentRunId.GetOrEmpty() != status || outcome.Run.ID != "successor" || posts != 1 {
+			if err != nil || outcome.Evidence().Value.ParentRunId.GetOrEmpty() != status || outcome.Run.ID != "successor" || posts != 1 {
 				t.Fatal(outcome, err, posts)
 			}
 			_, err = interaction.Next()

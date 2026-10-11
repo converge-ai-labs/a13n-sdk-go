@@ -67,7 +67,7 @@ func TestNativeConfigurationForwardingStartSendAndMessage(t *testing.T) {
 				return coverageResponse(500, `{"error":{"code":"unexpected","message":"unexpected read"}}`)
 			})
 			ctx := context.Background()
-			started, err := client.Agent("agent").StartPayload(ctx, payload, StartOptions{RequestKey: "start", Options: &options})
+			started, err := client.Agent("agent").StartInput(ctx, InputFromWire(payload), StartOptions{IdempotencyKey: "start", Options: &options})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -75,7 +75,7 @@ func TestNativeConfigurationForwardingStartSendAndMessage(t *testing.T) {
 				t.Fatal(err)
 			}
 			_ = started.Close()
-			sent, err := client.Agent("agent").SendPayload(ctx, "thr", payload, SendOptions{RequestKey: "send", Options: &options})
+			sent, err := client.Agent("agent").SendInput(ctx, "thr", InputFromWire(payload), SendOptions{IdempotencyKey: "send", Options: &options})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -116,10 +116,10 @@ func TestConfigurationConflictRemainsServiceOwned(t *testing.T) {
 	calls := 0
 	client := coverageClient(t, func(req *http.Request) *http.Response {
 		calls++
-		return coverageResponse(409, `{"error":{"code":"conflict","message":"Run configuration is frozen","details":{"reason":"run_configuration_immutable"}}}`)
+		return coverageResponse(409, `{"error":{"code":"conflict","message":"Run configuration is frozen","details":{"reason":"run_configuration_immutable"},"request_id":null}}`)
 	})
 	options := generated.RunOptionsInput{Configuration: nullable.NewNullableWithValue(generated.RunConfigurationInput{AllowedHosts: nullable.NewNullableWithValue([]string{})})}
-	_, err := client.Agent("agent").Send(context.Background(), "thr", "Different policy", SendOptions{RequestKey: "conflict", Options: &options})
+	_, err := client.Agent("agent").Send(context.Background(), "thr", "Different policy", SendOptions{IdempotencyKey: "conflict", Options: &options})
 	var apiErr *ApiError
 	if !errors.As(err, &apiErr) || apiErr.Status != 409 || apiErr.Code != "conflict" || string(apiErr.Details["reason"]) != `"run_configuration_immutable"` || calls != 1 {
 		t.Fatal(err, calls)

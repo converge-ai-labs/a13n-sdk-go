@@ -123,7 +123,7 @@ func TestStreamAuthorizationIsNotRetried(t *testing.T) {
 	calls := 0
 	client := coverageClient(t, func(req *http.Request) *http.Response {
 		calls++
-		return coverageResponse(403, `{"error":{"code":"forbidden","message":"denied"}}`)
+		return coverageResponse(403, `{"error":{"code":"forbidden","message":"denied","details":{},"request_id":null}}`)
 	})
 	_, err := client.Thread("thr").events(context.Background(), StreamOptions{MaxReconnects: 3, ReconnectDelay: time.Millisecond})
 	var api *ApiError

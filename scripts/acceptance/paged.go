@@ -36,7 +36,7 @@ func pagedDisplayOffline() {
 			first, last, complete = 9, 10, true
 		case "after=0&before=1", "before=0", "after=-1", "limit=501":
 			w.WriteHeader(400)
-			_, _ = io.WriteString(w, `{"error":{"code":"invalid_argument","message":"invalid ordinal window","details":{"field":"before"}}}`)
+			_, _ = io.WriteString(w, `{"error":{"code":"invalid_argument","message":"invalid ordinal window","details":{"field":"before"},"request_id":null}}`)
 			return
 		default:
 			panic("unexpected ordinal query " + query)
@@ -121,13 +121,13 @@ func sealedHistoryLive(ctx context.Context, client *a13n.Client, agentID string)
 	// The fixture must fail only the latest user prompt, not every later Run
 	// whose inherited history contains the marker. Do not use the old [fail].
 	failurePrompt := required("A13N_FAILURE_PROMPT")
-	failed := must(client.Agent(agentID).Start(ctx, failurePrompt, a13n.StartOptions{RequestKey: key()}))
+	failed := must(client.Agent(agentID).Start(ctx, failurePrompt, a13n.StartOptions{IdempotencyKey: key()}))
 	defer failed.Close()
 	failure := must(failed.Result(ctx))
-	check(failure.Status() == generated.RunStatusFailed, "live deterministic failed Run")
-	continueSealedLive(ctx, client, agentID, failed.Thread, failure)
+	check(failure.Status == generated.RunStatusFailed, "live deterministic failed Run")
+	continueSealedLive(ctx, client, agentID, failed.Thread(), failure)
 
-	active := must(client.Agent(agentID).Start(ctx, "[interruptible] [slow] [long] Interrupt then explicitly continue.", a13n.StartOptions{RequestKey: key()}))
+	active := must(client.Agent(agentID).Start(ctx, "[interruptible] [slow] [long] Interrupt then explicitly continue.", a13n.StartOptions{IdempotencyKey: key()}))
 	defer active.Close()
 	ready, stop := context.WithTimeout(ctx, 15*time.Second)
 	defer stop()
@@ -135,11 +135,11 @@ func sealedHistoryLive(ctx context.Context, client *a13n.Client, agentID string)
 	defer ticker.Stop()
 	var run a13n.Run
 	for {
-		entry := must(active.Entry.Get(ready))
+		entry := must(active.Entry().Get(ready))
 		if id := entry.Value.AssignedRunId.GetOrEmpty(); id != "" {
 			run = client.Run(id)
 			view := must(run.Get(ready))
-			thread := must(active.Thread.Get(ready))
+			thread := must(active.Thread().Get(ready))
 			if entry.Value.Status == generated.EntryStatusConsumed && view.Value.Status == generated.RunStatusRunning && thread.Value.CurrentRunId.GetOrEmpty() == run.ID {
 				break
 			}
@@ -153,19 +153,19 @@ func sealedHistoryLive(ctx context.Context, client *a13n.Client, agentID string)
 	}
 	_ = must(run.Interrupt(ctx))
 	cancelled := must(active.Result(ctx))
-	check(cancelled.Run.ID == run.ID && cancelled.Status() == generated.RunStatusCancelled, "live exact cancelled outcome")
-	continueSealedLive(ctx, client, agentID, active.Thread, cancelled)
+	check(cancelled.Run.ID == run.ID && cancelled.Status == generated.RunStatusCancelled, "live exact cancelled outcome")
+	continueSealedLive(ctx, client, agentID, active.Thread(), cancelled)
 	fmt.Println("Verified HTTPS: failed/cancelled latest sealed history, normal explicit Send and exact completed successor parent passed")
 }
 
 func continueSealedLive(ctx context.Context, client *a13n.Client, agentID string, thread a13n.Thread, predecessor a13n.RunOutcome) {
 	before := must(thread.Get(ctx))
 	check(before.Value.CurrentRunId.IsNull() && before.Value.LastRunId.GetOrEmpty() == predecessor.Run.ID, "all sealed outcomes retained as last_run_id")
-	followup := must(client.Agent(agentID).Send(ctx, thread.ID, "Continue normally from the saved history.", a13n.SendOptions{RequestKey: key()}))
+	followup := must(client.Agent(agentID).Send(ctx, thread.ID, "Continue normally from the saved history.", a13n.SendOptions{IdempotencyKey: key()}))
 	defer followup.Close()
 	outcome := must(followup.Result(ctx))
-	check(outcome.Status() == generated.RunStatusCompleted && outcome.Run.ID != predecessor.Run.ID && outcome.Snapshot.Value.ParentRunId.GetOrEmpty() == predecessor.Run.ID, "normal Send continues failed/cancelled checkpoint history")
-	entry := must(followup.Entry.Get(ctx))
+	check(outcome.Status == generated.RunStatusCompleted && outcome.Run.ID != predecessor.Run.ID && outcome.Evidence().Value.ParentRunId.GetOrEmpty() == predecessor.Run.ID, "normal Send continues failed/cancelled checkpoint history")
+	entry := must(followup.Entry().Get(ctx))
 	check(entry.Value.Status == generated.EntryStatusConsumed && entry.Value.AssignedRunId.GetOrEmpty() == outcome.Run.ID, "exact successor consumed Entry")
 }
 
@@ -194,7 +194,7 @@ func sealedHistoryOffline() {
 		}))
 		client := must(a13n.NewClient(server.URL, a13n.NewSecret("offline"), nil))
 		ctx := context.Background()
-		predecessor := must(client.Run(status).Wait(ctx))
+		predecessor := must(client.Run(status).Result(ctx))
 		continueSealedLive(ctx, client, "agent", client.Thread("thr"), predecessor)
 		check(posts == 1, "installed failed/cancelled history sends once, without automatic resubmission")
 		_ = client.Close()
