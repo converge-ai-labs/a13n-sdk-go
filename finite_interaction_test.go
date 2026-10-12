@@ -28,7 +28,7 @@ func TestInteractionImmediateResultNeedsNoStream(t *testing.T) {
 			return coverageResponse(500, `{"error":{"code":"unexpected","message":"stream"}}`)
 		}
 	})
-	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{RequestKey: "k"})
+	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{IdempotencyKey: "k"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -84,7 +84,7 @@ func TestInteractionOwnFramesThenIdleSSETerminates(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer client.Close()
-	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{RequestKey: "k"})
+	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{IdempotencyKey: "k"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +109,7 @@ func TestInteractionOwnFramesThenIdleSSETerminates(t *testing.T) {
 		t.Fatal("idle stream hung after Run sealed")
 	}
 	outcome, err := i.Result(context.Background())
-	if err != nil || outcome.Run.ID != "run" || outcome.Status() != "waiting" || posts.Load() != 1 || streams.Load() != 1 {
+	if err != nil || outcome.Run.ID != "run" || outcome.Status != "waiting" || posts.Load() != 1 || streams.Load() != 1 {
 		t.Fatal(outcome, err)
 	}
 }
@@ -146,7 +146,7 @@ func TestInteractionTerminalCancelsStalledStreamHeaders(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer client.Close()
-	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{RequestKey: "k"})
+	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{IdempotencyKey: "k"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -181,7 +181,7 @@ func TestInteractionCloseStopsQueuedNextWithoutRemoteMutation(t *testing.T) {
 		}
 		return coverageResponse(200, entryView("queued", "null"))
 	})
-	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{RequestKey: "k"})
+	i, err := client.Agent("agent").Start(context.Background(), "hello", StartOptions{IdempotencyKey: "k"})
 	if err != nil {
 		t.Fatal(err)
 	}

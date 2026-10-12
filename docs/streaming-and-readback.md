@@ -1,36 +1,47 @@
 # Streaming and readback
 
-Use `Result(ctx)` alone when you only need the final answer; it does not open an SSE connection. When a UI wants progress, call `Next()` on the **same** interaction, then read its result and committed items. This function accepts a writer for observable progress and final display; import `context`, `encoding/json`, `errors`, `fmt`, `io`, `a13n` and `generated`:
+Use `Result(ctx)` alone for the final answer: it opens no SSE connection and needs no Items request. For optional progress, call `Text()` on the **same** finite Interaction. Import `context`, `errors`, `fmt`, `io` and the root SDK (`a13n`):
 
 ```go
 func streamAndRead(ctx context.Context, interaction *a13n.Interaction, out io.Writer) error {
     defer interaction.Close()
-    for {
-        frame, err := interaction.Next()
-        if errors.Is(err, io.EOF) { break }
-        if err != nil { return err }
-        switch frame.(type) {
-        case a13n.GapFrame, a13n.ResetFrame:
-            fmt.Fprintln(out, "Stream changed; refreshing from committed items below.")
-        default:
-            fmt.Fprintf(out, "Progress: %s\n", frame.EventType())
+    for chunk, err := range interaction.Text() {
+        if err != nil {
+            var interrupted *a13n.PreviewInterruptedError
+            if !errors.As(err, &interrupted) { return err }
+            fmt.Fprintln(out, "Preview interrupted:", interrupted.Reason)
+            break
         }
+        fmt.Fprint(out, chunk)
     }
-
     result, err := interaction.Result(ctx)
     if err != nil { return err }
-    if result.Status() != generated.RunStatusCompleted {
-        return fmt.Errorf("run %s ended %s", result.Run.ID, result.Status())
+    if result.Status != a13n.RunCompleted {
+        return fmt.Errorf("run %s ended %s", result.RunID, result.Status)
     }
-    committed, err := result.Run.Items(ctx)
-    if err != nil { return err }
-    fmt.Fprintf(out, "Run %s recent display (sealed=%t, baseline=%t):\n",
-        result.Run.ID, committed.Value.Complete, committed.Value.Baseline)
-    return json.NewEncoder(out).Encode(committed.Value.Items)
+    fmt.Fprintln(out, "Final output:", result.Output)
+    return nil
 }
 ```
 
-The progress lines can be empty even when a Run completed: it may have sealed before stream attachment. Frames can be replayed within retention, may omit old history, and do not replace `Run.Items` for committed display. `RunItems.Complete` means sealed, not that the returned window contains all history. Items keep stable, dense 1-based ordinals; the first returned ordinal indicates whether earlier items exist. Default readback returns the newest limit plus the entire mutable tail, and can exceed the requested limit. Content may still carry truncation or omission markers, so a display is not an unabridged execution transcript. `Next` filters frames belonging to other Runs; it also excludes Thread-wide `changed` frames. It has one active caller and returns `io.EOF` when this interaction ends, including when the SSE body goes idle after Run completion. Other errors—including a timeout or malformed stream—are returned, not treated as natural EOF.
+Preview emits only string CONTENT with a matching root assistant START, not user, child or `display:false` content. It keeps at most eight active message identities, including suppressed STARTs until END; `display:false` need not repeat on every content frame. It is not a transcript buffer. An initial boundary establishes only an attempt/sequence coordinate, not active message state; following orphan content or a visible unmatched END still interrupts. Later late/equal boundaries are valid and do not move delta coverage; a boundary ahead of received deltas interrupts rather than hiding missing output. Same-attempt duplicate or descending deltas also interrupt rather than being silently discarded. Protocol parsing failures likewise become sticky preview interruptions with their original error cause. Gap/reset, a missing/ambiguous START, discontinuity in the same Run envelope's attempt/sequence, unsupported content or identity-bound exhaustion yields typed `PreviewInterruptedError`. The interruption is sticky for preview and does not cancel the outcome observer. Unknown unframed CUSTOM events are ignored; canonical exact-root `CUSTOM name:"a13n.stream.fragment"` interrupts as conservative **unsupported framing**, not proof of text loss. The helper never parses opaque fragment IDs/data or assembles original custom events; explicitly attributed child fragments and hidden events are excluded first.
+
+One preview may begin, and only one reader may be active. Early break does not drain or close: always defer Close. Deliberate sequential `Next()` after interruption remains available for advanced native frames; concurrent raw/preview reading is rejected, including while a preview yield is paused. Raw frames consumed before preview make its missing start state explicit rather than pretending to reconstruct it.
+
+A Run can seal before SSE attachment, so zero chunks or frames is valid. Final `Output` is authoritative and may be structured rather than a string. Items are advanced committed display windows, not the final reply or automatically complete history. Content can carry truncation/omission markers.
+
+## Advanced: native finite frames
+
+`Next()` returns typed Run-scoped delta/boundary/gap/reset frames, not an assistant transcript. It filters other Runs and Thread-wide changed hints. Its `io.EOF` is normal finite completion; check Result separately. Stream/protocol/deadline errors are not natural EOF. A broken optional reader does not prove Run failure.
+
+```go
+for {
+    frame, err := interaction.Next()
+    if errors.Is(err, io.EOF) { break }
+    if err != nil { return err }
+    if delta, ok := frame.(a13n.DeltaFrame); ok { fmt.Println(delta.Event) }
+}
+```
 
 ## Read one ordinal history window
 
@@ -51,18 +62,17 @@ If the current window's first ordinal exceeds 1, pass that ordinal as Before to 
 
 ## Deadlines and cleanup
 
-Create a context with a deadline *before* calling `Start` or `Send`. The same observation window includes the submission, queue wait, exact Run wait and stream attachment; without a caller deadline the SDK defaults to 300 seconds. For example:
+Create a context with a deadline *before* calling `Start` or `Send`. The same observation window includes submission/resume, queue wait, exact Run reads and stream attachment/body; without a caller deadline the SDK defaults to 300 seconds. For example:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 defer cancel()
-interaction, err := client.Agent(agentID).Start(ctx, "Explain the changes.",
-    a13n.StartOptions{RequestKey: rand.Text()})
+interaction, err := client.Agent(agentID).Start(ctx, "Explain the changes.")
 if err != nil { return err }
 return streamAndRead(ctx, interaction, os.Stdout)
 ```
 
-This snippet also imports `context`, `crypto/rand`, `os` and `time`. `streamAndRead` closes its interaction on every path; if you do not use that helper, `defer interaction.Close()` immediately after successful submission. Close releases local reads without approving work or interrupting the remote Run. To request a *remote* interruption, call `result.Run.Interrupt(ctx)` deliberately. A shorter context passed to `Result` stops only that one caller's wait while the interaction remains open; it does not extend the invocation's original deadline.
+This snippet also imports `context`, `os` and `time`. `streamAndRead` closes its interaction on every path; if you do not use that helper, `defer interaction.Close()` immediately after successful submission. Close releases local reads without approving work or interrupting the remote Run. To request a *remote* interruption, call `result.Run.Interrupt(ctx)` deliberately. A shorter context passed to `Result` stops only that one caller's wait while the interaction remains open; it does not extend the invocation's original deadline.
 
 ## Recover a display after a stream gap
 
@@ -121,7 +131,7 @@ Apply the returned baseline, including its normalization continuation, before ap
 
 Within the default finite interaction, asking for the next frame acknowledges the preceding one. Reconnect uses only its acknowledged Redis ID, never a merely received ID. It does not automatically add Run/position query parameters or claim a display baseline. Exact-Run filtering and the finite lifecycle remain unchanged. Close does not acknowledge the last returned frame. Advanced readers that maintain their own display must opt into coverage explicitly and follow the applied-only rule. Position components are canonical nonnegative decimal integers, at most 20 digits each; a hint alone uses the older `Last-Event-ID` replay behavior and cannot establish complete delivery.
 
-A Run's `Output()` is an optional structured value, not the last text delta; `Items` is one window of persisted display messages and tool activity, not an automatically loaded full transcript. Handle `waiting` outcomes through [waiting and tools](waiting-and-tools.md), and consult [errors and recovery](errors-and-recovery.md) if `Next` fails before a result is available. For long-lived subscriptions to all activity on a Thread, the low-level generated `ThreadStreamApiV1ThreadsThreadIdStreamGet` remains available through `client.API()` with a caller-owned response body; it is not a second high-level Agent interaction.
+A Run outcome's `Output` is an optional structured value, not the last text delta; `Items` is one window of persisted display messages and tool activity, not an automatically loaded full transcript. Handle `waiting` outcomes through [waiting and tools](waiting-and-tools.md), and consult [errors and recovery](errors-and-recovery.md) if `Next` fails before a result is available. For long-lived subscriptions to all activity on a Thread, the low-level generated `ThreadStreamApiV1ThreadsThreadIdStreamGet` remains available through `client.API()` with a caller-owned response body; it is not a second high-level Agent interaction.
 
 ## Native AG-UI 1.0 content and child attribution
 

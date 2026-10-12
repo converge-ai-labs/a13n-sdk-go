@@ -2,6 +2,7 @@ package a13n
 
 import (
 	"context"
+	"errors"
 	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 	"io"
 	"net/http"
@@ -51,7 +52,31 @@ func (t apiTransport) Do(req *http.Request) (*http.Response, error) {
 			}
 		}
 	}
+	if err := ctx.Err(); err != nil {
+		cleanup()
+		return nil, err
+	}
+	// Standard HTTP transports reject control bytes before dialing. Keep this
+	// definite local failure outside mutation dispatch evidence, including
+	// values supplied by authentication and session callbacks.
+	for _, values := range req.Header {
+		for _, value := range values {
+			for j := 0; j < len(value); j++ {
+				if (value[j] < 32 && value[j] != '\t') || value[j] == 127 {
+					cleanup()
+					return nil, errors.New("invalid request header value")
+				}
+			}
+		}
+	}
+	evidence, _ := ctx.Value(dispatchKey{}).(*dispatchEvidence)
+	if evidence != nil {
+		evidence.attempted = true
+	}
 	response, err := c.http.Do(req)
+	if evidence != nil && response != nil {
+		evidence.status, evidence.header = response.StatusCode, response.Header.Clone()
+	}
 	if err != nil {
 		outcome := transportError(ctx, c, err, "request")
 		cleanup()

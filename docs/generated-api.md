@@ -57,15 +57,14 @@ Run Items is not a cursor collection: use `Run.Items(ctx, a13n.RunItemsOptions{B
 
 ## Change model settings for one Run
 
-Run options are typed, but the SDK does not guess provider policy. This example sends an **empty** `extra_body` to clear the inherited object for this Run; import `context`, `crypto/rand`, `a13n`, `generated` and `nullable`:
+Run options are typed, but the SDK does not guess provider policy. This example sends an **empty** `extra_body` to clear the inherited object for this Run; import `context` and the root SDK (`a13n`):
 
 ```go
 func runWithClearedExtraBody(ctx context.Context, client *a13n.Client, agentID string) (a13n.RunOutcome, error) {
-    settings := map[string]generated.JsonValue{"extra_body": map[string]any{}}
-    override := generated.AgentOverrideInput{ModelSettings: nullable.NewNullableWithValue(settings)}
+    settings := map[string]any{"extra_body": map[string]any{}}
+    override := a13n.Overrides{ModelSettings: a13n.Value(settings)}
     interaction, err := client.Agent(agentID).Start(ctx, "Test this configuration.", a13n.StartOptions{
-        RequestKey: rand.Text(),
-        Options: &generated.RunOptionsInput{Overrides: nullable.NewNullableWithValue(override)},
+        Options: &a13n.RunOptions{Overrides: a13n.Value(override)},
     })
     if err != nil { return a13n.RunOutcome{}, err }
     defer interaction.Close()
@@ -73,7 +72,7 @@ func runWithClearedExtraBody(ctx context.Context, client *a13n.Client, agentID s
 }
 ```
 
-`extra_body` and `extra_headers` each replace their inherited object (Run over Agent over Model defaults), not merge nested entries. `{}` clears that object; omission and explicit null remain distinct. Pass only Service-allowed keys/values; do not forward arbitrary user input into provider HTTP headers. Check the outcome's status and `Run.Items(ctx)` before presenting execution as successful.
+`extra_body` and `extra_headers` each replace their inherited object (Run over Agent over Model defaults), not merge nested entries. `{}` clears that object; omission and explicit null remain distinct. Pass only Service-allowed keys/values; do not forward arbitrary user input into provider HTTP headers. Check the outcome's direct Status before presenting Output as a completed reply.
 
 Model, connector and Environment provider catalogues are deployment-discovered through the generated API, not an SDK-owned exhaustive provider whitelist. Service can add model backends (including Cerebras, SambaNova and xAI) and Environment backends (including Vercel) without a new SDK enum or operation. MCP transport, tool discovery and issuer handling remain Service-owned; the SDK forwards native Model/Connection configuration and does not embed an MCP client.
 
@@ -173,4 +172,4 @@ func createMediaModel(ctx context.Context, client *a13n.Client, providerID, mode
 }
 ```
 
-Pointers preserve explicit zero/false. An omitted `ImageInput` uses native defaults; explicit null disables automatic preparation; an explicit object forwards its chosen limits. A zero `MaxImageBytes` disables that image byte limit, but zero `MaxImages` removes all image input. `VideoInput.MaxVideoBytes` bounds Base64-encoded bytes for one video **and** all inline videos in one model request. `UrlInput.Video` identifies transport-native URL subtypes; an empty array is not omission. Select only characteristics supported by the actual provider. Service/Harness owns preparation, downloads, allowed-host checks, TLS and budgets; sending a URL or Asset part with `StartPayload`/`SendPayload` neither processes media locally nor bypasses those checks. Generated content and authored input retain their different display provenance, as explained in [streaming and readback](streaming-and-readback.md#native-ag-ui-10-content-and-child-attribution).
+Pointers preserve explicit zero/false. An omitted `ImageInput` uses native defaults; explicit null disables automatic preparation; an explicit object forwards its chosen limits. A zero `MaxImageBytes` disables that image byte limit, but zero `MaxImages` removes all image input. `VideoInput.MaxVideoBytes` bounds Base64-encoded bytes for one video **and** all inline videos in one model request. `UrlInput.Video` identifies transport-native URL subtypes; an empty array is not omission. Select only characteristics supported by the actual provider. Service/Harness owns preparation, downloads, allowed-host checks, TLS and budgets; sending a URL or Asset part with `StartInput`/`SendInput` neither processes media locally nor bypasses those checks. Generated content and authored input retain their different display provenance, as explained in [streaming and readback](streaming-and-readback.md#native-ag-ui-10-content-and-child-attribution).

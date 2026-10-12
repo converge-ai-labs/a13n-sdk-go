@@ -29,7 +29,7 @@ func TestGeneratedWireModels(t *testing.T) {
 			t.Fatalf("nullable field: %s %v", data, err)
 		}
 	}
-	payload := a13n.TextPayload("hello")
+	payload := testTextPayload("hello")
 	text, err := payload.Content[0].AsTextPart()
 	if err != nil || text.Text != "hello" || text.Type != "text" {
 		t.Fatalf("typed union: %#v %v", text, err)
@@ -152,7 +152,7 @@ func TestModelSettingsExtraObjectsPreserveEmptyAndReplacementWire(t *testing.T) 
 		"extra_body":    map[string]any{},
 		"extra_headers": map[string]any{"X-Trace": "trace-1"},
 	})}
-	body := generated.NewThread{AgentId: "agent", Payload: a13n.TextPayload("hi"), Options: &generated.RunOptionsInput{Overrides: nullable.NewNullableWithValue(override)}}
+	body := generated.NewThread{AgentId: "agent", Payload: testTextPayload("hi"), Options: &generated.RunOptionsInput{Overrides: nullable.NewNullableWithValue(override)}}
 	encoded, err := json.Marshal(body)
 	if err != nil {
 		t.Fatal(err)
@@ -196,4 +196,12 @@ func TestGeneratedMemoryPathEscapesUnicodeAndReservedCharacters(t *testing.T) {
 	if escaped != "/proxy/api/v1/memories/mem/files/projects%2F%E8%AE%A1%E5%88%92%20%231%25.md" {
 		t.Fatalf("path encoding: %s", escaped)
 	}
+}
+
+func testTextPayload(text string) generated.MessagePayload {
+	payload, err := (a13n.Input{Content: []a13n.Part{a13n.TextPart(text)}}).Wire()
+	if err != nil {
+		panic(err)
+	}
+	return payload
 }

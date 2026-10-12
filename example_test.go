@@ -2,14 +2,11 @@ package a13n_test
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"io"
 	"os"
 
 	a13n "github.com/converge-ai-labs/a13n-sdk-go"
 	"github.com/converge-ai-labs/a13n-sdk-go/generated"
-	"github.com/oapi-codegen/nullable"
 )
 
 // ExampleAgent_Start shows one finite interaction. Its context bounds the
@@ -21,32 +18,20 @@ func ExampleAgent_Start() {
 		return
 	}
 	defer client.Close()
-	interaction, err := client.Agent("agt_example").Start(ctx, "Hello", a13n.StartOptions{RequestKey: "hello-001"})
+	interaction, err := client.Agent("agt_example").Start(ctx, "Hello", a13n.StartOptions{IdempotencyKey: "hello-001"})
 	if err != nil {
 		return
 	}
 	defer interaction.Close()
-	for {
-		frame, err := interaction.Next()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			return
-		}
-		if delta, ok := frame.(a13n.DeltaFrame); ok {
-			fmt.Println(delta.Item)
-		}
-	}
 	outcome, err := interaction.Result(ctx)
 	if err != nil {
 		return
 	}
-	if outcome.Status() == generated.RunStatusCompleted {
-		fmt.Println(outcome.Output()) // the full structured output, not the last text delta
+	if outcome.Status == a13n.RunCompleted {
+		fmt.Println(outcome.Output) // the full structured output, not the last text delta
 	}
 	// Continue the same Thread using an explicit Agent; it is not owned by an Agent.
-	followUp, err := client.Agent("agt_example").Send(ctx, interaction.Thread.ID, "Continue", a13n.SendOptions{RequestKey: "hello-002"})
+	followUp, err := client.Agent("agt_example").Send(ctx, interaction.Thread().ID, "Continue", a13n.SendOptions{IdempotencyKey: "hello-002"})
 	if err != nil {
 		return
 	}
@@ -54,18 +39,18 @@ func ExampleAgent_Start() {
 	_, _ = followUp.Result(ctx) // no need to drain frames for authoritative readback
 }
 
-func ExampleAgent_StartPayload() {
+func ExampleAgent_StartInput() {
 	ctx := context.Background()
 	client, err := a13n.NewClient(os.Getenv("A13N_SERVICE_URL"), a13n.NewSecret(os.Getenv("A13N_API_TOKEN")), nil)
 	if err != nil {
 		return
 	}
 	defer client.Close()
-	payload := a13n.TextPayload("Use the mounted memory to answer")
-	mounts := []generated.MemoryMount{}
-	interaction, err := client.Agent("agt_example").StartPayload(ctx, payload, a13n.StartOptions{
-		RequestKey: "memory-001", AgentRevisionId: nullable.NewNullableWithValue("rev_1"), Memories: &mounts,
-		Options: &generated.RunOptionsInput{},
+	input := a13n.Input{Content: []a13n.Part{a13n.TextPart("Use the mounted memory to answer"), a13n.JSONPart(map[string]any{"enabled": false})}}
+	mounts := []a13n.MemoryMount{}
+	interaction, err := client.Agent("agt_example").StartInput(ctx, input, a13n.StartOptions{
+		AgentRevisionId: a13n.Value("rev_1"), Memories: &mounts,
+		Options: &a13n.RunOptions{Configuration: a13n.Value(a13n.Configuration{AllowedHosts: a13n.Value([]string{})})},
 	})
 	if err != nil {
 		return

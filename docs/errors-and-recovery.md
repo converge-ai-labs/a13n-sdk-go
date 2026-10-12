@@ -1,30 +1,66 @@
 # Errors and recovery
 
-A local error is not necessarily a failed Service operation. In particular, a timeout or broken connection **after a POST** cannot tell you whether the Service accepted it. Choose and save a request key *before* submission. If `Start`/`Send` returned an interaction, also save its `Thread.ID` and `Entry.ID` for readback. No SDK method silently retries a mutation or interrupts work just because local observation stopped.
+A local error is not necessarily a failed Service mutation. There are no automatic POST retries. For durable or cancellation-safe reconciliation, choose and persist an `IdempotencyKey` and identical logical request body **before** dispatch. Omitted keys are generated once and exposed on a returned Interaction or unknown-outcome error; this does not make a key recoverable if the process exits before either returns.
 
-## Classify what happened locally
+## Persist the returned identity receipt
 
-Use `errors.Is` / `errors.As`, not error-string matching. This function imports `context`, `errors`, `fmt` and `a13n`:
+The receipt is acceptance evidence, not completion. It is JSON-serializable and independent of raw response envelopes. Import `context`, `encoding/json`, `fmt`, `os` and the root SDK (`a13n`):
+
+```go
+interaction, err := client.Agent(agentID).Start(ctx, "Review the project.",
+    a13n.StartOptions{IdempotencyKey: savedKey})
+if err != nil { return err }
+defer interaction.Close()
+encoded, err := json.Marshal(interaction.Receipt())
+if err != nil { return err }
+if err := os.WriteFile(receiptPath, encoded, 0600); err != nil { return err }
+outcome, err := interaction.Result(ctx)
+if err != nil { return err }
+fmt.Println(outcome.Status, outcome.Output)
+```
+
+A submitted receipt records Thread/Entry IDs, the chosen key and an optional clearly labeled `ProvisionalRunID`. Only the exact **consumed** Entry makes execution binding authoritative; assignment may revert. `interaction.Run()` does not promote a provisional receipt Run into authority.
+
+## Recover saved Thread/Entry IDs
+
+Recovery constructs the same lazy Interaction without I/O, a POST or a fabricated original receipt. It awaits durable consumption, then observes only that exact Run. Import `context` and `a13n`:
+
+```go
+func readSubmitted(ctx context.Context, client *a13n.Client, threadID, entryID string) (a13n.RunOutcome, error) {
+    interaction, err := client.Entry(threadID, entryID).Observe(ctx)
+    if err != nil { return a13n.RunOutcome{}, err }
+    defer interaction.Close()
+    return interaction.Result(ctx)
+}
+```
+
+For a saved exact Run ID, use `client.Run(runID).Result(ctx)` or `Observe(ctx)` if raw/text iteration is wanted. Neither follows latest pointers or successors. Resume receipts identify the exact successor Run and have no invented Entry. Fresh ID recovery begins a new bounded local observation; repeated Result calls on an existing Interaction do not reset its original deadline.
+
+`ReceiptEvidence()` optionally exposes original submitted/resumed HTTP responses. Its fields are nil for recovered identities. A shorter Result caller context only stops that caller's wait, not the Interaction; the original deadline and Close still govern observation.
+
+## Classify local failures
+
+Use `errors.Is` / `errors.As`, not string matching. Import `context`, `errors`, `fmt`, `a13n`:
 
 ```go
 func explain(err error) string {
+    var unknown *a13n.UnknownOutcomeError
     var entry *a13n.EntryDispositionError
     var api *a13n.ApiError
-    var protocol *a13n.ProtocolError
-    var transport *a13n.TransportError
+    var preview *a13n.PreviewInterruptedError
     switch {
     case err == nil:
         return "no local error"
+    case errors.As(err, &unknown):
+        return "dispatch outcome unknown; reconcile the original key and body"
     case errors.As(err, &entry):
-        return fmt.Sprintf("entry %s ended %s", entry.Entry.ID, entry.Snapshot.Value.Status)
+        return fmt.Sprintf("entry ended %s", entry.Snapshot.Value.Status)
     case errors.As(err, &api):
-        return fmt.Sprintf("Service %d: %s (request %s)", api.Status, api.Code, api.RequestID)
-    case errors.As(err, &protocol):
-        return fmt.Sprintf("invalid Service response: %s", protocol.Kind)
-    case errors.As(err, &transport):
-        return fmt.Sprintf("transport: %s", transport.Kind)
-    case errors.Is(err, context.DeadlineExceeded):
-        return "local deadline expired; remote outcome may still be unknown"
+        return fmt.Sprintf("Service %d: %s", api.Status, api.Code)
+    case errors.As(err, &preview):
+        return "preview interrupted; read authoritative Result"
+    case errors.Is(err, context.DeadlineExceeded), errors.Is(err, context.Canceled):
+        return "local observation stopped; remote work is not interrupted"
     case errors.Is(err, a13n.ErrClosed):
         return "client was closed"
     default:
@@ -33,31 +69,14 @@ func explain(err error) string {
 }
 ```
 
-A failed/withdrawn submission produces `*EntryDispositionError` with the Entry snapshot; that is different from a Run whose terminal status is `failed` or `cancelled`. `Result` returns those Run statuses as observations—check `outcome.Status()` and `outcome.Failure()` rather than treating a nil Go error as completed success. `ApiError` also carries bounded details, headers and a retry-after hint. Error messages avoid raw response bodies and transport credentials; do not log secrets separately.
+`UnknownOutcomeError` retains the chosen key, safe operation, known identities, optional HTTP status/headers and native chained cause. It covers attempted dispatch without reliable acknowledgement: transport/cancellation, lost response bodies and malformed accepted receipts. Its diagnostics omit arbitrary keys/IDs/bodies/causes. Pre-dispatch validation, serialization, cancelled context or closed client is not an unknown outcome. Known API rejection remains `ApiError` only for the complete canonical Service error envelope: string code/message, object details and a present string/null request_id. A code-only gateway JSON object remains a protocol failure, wrapped as an unknown mutation outcome after dispatch. Safe `TransportError`, `ProtocolError`, `ErrTransport`, `ErrProtocol`, `ErrClosed` and context identities remain accessible through native chaining.
 
-## Read back a receipt before trying anything again
+If a POST lacks a reliable receipt, the application decides whether to replay with the **same** key, Agent, Thread, options, answers and content. Service may return the original receipt or an idempotency conflict. A fresh key or changed body is not reconciliation. See [pinned idempotency rules](../contract/semantics/api-conventions.md).
 
-If you have a Thread and Entry ID, read that exact Entry. A `consumed` Entry records the Run it entered; a merely `pending` or `assigned` Entry has not yet reached that point. This function imports `context`, `fmt`, `a13n` and `generated`:
+A failed/withdrawn Entry produces `EntryDispositionError`, distinct from an incorporated Run with `Status` failed/cancelled. Those Run states are outcomes: inspect direct `Status` and `Failure` even when Go error is nil.
 
-```go
-func readSubmitted(ctx context.Context, client *a13n.Client, threadID, entryID string) (a13n.RunOutcome, error) {
-    entry, err := client.Entry(threadID, entryID).Get(ctx)
-    if err != nil { return a13n.RunOutcome{}, err }
-    if entry.Value.Status != generated.EntryStatusConsumed {
-        return a13n.RunOutcome{}, fmt.Errorf("entry %s is %s; check again later or inspect its failure", entryID, entry.Value.Status)
-    }
-    runID, err := entry.Value.AssignedRunId.Get()
-    if err != nil { return a13n.RunOutcome{}, err }
-    return client.Run(runID).Wait(ctx)
-}
-```
+## Conditional writes and optional streams
 
-This reads the exact consuming Run, not a mutable "latest" pointer; its status may be `waiting`, `failed` or `cancelled`, so inspect the returned outcome before displaying a result. If `Start` or `Send` returned an interaction, prefer `interaction.Result(ctx)` while it is still open. A shorter `Result` call context only stops that call; the interaction's original deadline and `Close` still control its observation.
+A generated `IfMatch` write returning `412` requires rereading and an application decision, not an unconditional overwrite. [Generated API](generated-api.md#read-and-conditionally-update-a-resource) shows ETag handling.
 
-If the POST failed *before you got a receipt*, reconciliation needs the saved request key and original payload. After deciding to replay, call the same `Start` or `Send` with the **same** key, Agent, Thread (for Send), options and payload, not `rand.Text()` or an altered body. Service idempotency can return the original receipt; an unrelated mutation under a fresh key is not a retry. Keep the saved key outside process memory when recovery must survive a restart. See the [Service's idempotency rules](../contract/semantics/api-conventions.md) for retention/conflict details.
-
-## Conditional writes and streams
-
-For a `412` from a generated `IfMatch` write, reread that resource and decide whether to reapply the change against its new ETag. Do not turn a precondition failure into an unconditional overwrite. [Generated API](generated-api.md#read-and-conditionally-update-a-resource) shows the ETag flow.
-
-If `Next()` fails because a stream is malformed or disconnected, the Run can still finish. While the interaction context is valid, you may call `Result(ctx)` and then `outcome.Run.Items(ctx)` before `Close` to recover committed display. `io.EOF` from a finite interaction is the normal end of its frame iteration, **not** a substitute for checking `Result`. A gap/reset frame likewise calls for readback, not replaying an arbitrary mutation. Closing observation never remotely interrupts the Run; `Run.Interrupt(ctx)` is a separate explicit request.
+`Text` interruption is sticky for preview only. While the Interaction remains open, `Result` and deliberate sequential `Next` remain usable. Raw stream failures likewise do not establish Run failure; authoritative output is still available through Result. Advanced Items readback concerns display windows and baseline coverage, not the final reply. `io.EOF` is normal finite frame completion, not a substitute for checking the outcome. Close cancels and joins local observation only; `Run.Interrupt(ctx)` is a separate explicit remote mutation.

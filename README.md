@@ -24,7 +24,6 @@ package main
 
 import (
     "context"
-    "crypto/rand"
     "encoding/json"
     "fmt"
     "log"
@@ -32,7 +31,6 @@ import (
     "time"
 
     a13n "github.com/converge-ai-labs/a13n-sdk-go"
-    "github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
 func main() {
@@ -55,8 +53,7 @@ func run() error {
 
     ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
     defer cancel()
-    interaction, err := client.Agent(agentID).Start(ctx, "Explain this project in two sentences.",
-        a13n.StartOptions{RequestKey: rand.Text()})
+    interaction, err := client.Agent(agentID).Start(ctx, "Explain this project in two sentences.")
     if err != nil {
         return err
     }
@@ -66,18 +63,13 @@ func run() error {
     if err != nil {
         return err
     }
-    if outcome.Status() != generated.RunStatusCompleted {
-        return fmt.Errorf("run %s ended with status %s", outcome.Run.ID, outcome.Status())
+    if outcome.Status != a13n.RunCompleted {
+        return fmt.Errorf("run %s ended with status %s", outcome.Run.ID, outcome.Status)
     }
-    messages, err := outcome.Run.Items(ctx)
-    if err != nil {
-        return err
-    }
-    encoded, err := json.MarshalIndent(messages.Value, "", "  ")
-    if err != nil {
-        return err
-    }
-    fmt.Printf("Thread: %s\nOutput: %s\n", interaction.Thread.ID, encoded)
+    encoded, err := json.MarshalIndent(outcome.Output, "", "  ")
+    if err != nil { return err }
+    fmt.Printf("Thread: %s\nOutput: %s\n", outcome.ThreadID, encoded)
+    if text, ok := outcome.Text(); ok { fmt.Println(text) }
     return nil
 }
 ```
@@ -94,49 +86,46 @@ read -r -s -p 'Service API key: ' A13N_API_TOKEN; printf '\n'; export A13N_API_T
 go run .
 ```
 
-This example prints saved messages and tool activity as JSON. `outcome.Output()` is an optional Run output value; a completed conversation can have messages without that value.
+This prints the authoritative Run output without a display-items request. `outcome.Text()` returns `(string, bool)` only for string output, including an empty string. Structured output remains JSON; numbers are `json.Number`, not rounded `float64`. Use `a13n.DecodeOutput[T](outcome)` to decode the original output into your application type. Check the direct `Status`, `Pending` and `Failure` fields: waiting, failed and cancelled are outcomes, not successful replies.
 
-This example needs a reachable Service and Agent; `go run` does not start one. `rand.Text()` gives each new submission its own request key. For a *retry of the same logical submission*, reuse its original key and reconcile the response rather than generating a new one.
+This example needs a reachable Service and Agent; `go run` does not start one. Omitting `IdempotencyKey` generates a random key once; `interaction.Receipt().IdempotencyKey` exposes it. For durable recovery, persist your own key and identical body before dispatch. A new omitted-key call is a new submission, and the SDK never retries a mutation automatically.
 
-## Continue or stream
+## Continue the conversation
 
-Save the printed Thread ID. A later request can continue it with an explicitly chosen Agent:
+Save the Thread ID. Continue it with an explicitly chosen Agent and a fresh bounded context:
 
 ```go
-followUp, err := client.Agent(agentID).Send(ctx, threadID, "What are the trade-offs?",
-    a13n.SendOptions{RequestKey: rand.Text()})
+followUp, err := client.Agent(agentID).Send(ctx, threadID, "What are the trade-offs?")
 if err != nil { return err }
 defer followUp.Close()
-followUpOutcome, err := followUp.Result(ctx)
+result, err := followUp.Result(ctx)
 if err != nil { return err }
-if followUpOutcome.Status() != generated.RunStatusCompleted {
-    return fmt.Errorf("run %s ended %s", followUpOutcome.Run.ID, followUpOutcome.Status())
+if result.Status != a13n.RunCompleted {
+    return fmt.Errorf("run %s ended %s", result.RunID, result.Status)
 }
-messages, err := followUpOutcome.Run.Items(ctx)
-if err != nil { return err }
-fmt.Println(messages.Value.Items)
+fmt.Println(result.Output)
 ```
 
-To show **provisional** frames as they arrive, call `Next()` *before* `Result(ctx)` on the same interaction:
+## Preview text, then read the result
+
+Read the same interaction's optional preview before `Result`; add `errors` to your imports:
 
 ```go
-for {
-    frame, err := interaction.Next()
-    if errors.Is(err, io.EOF) { break }
-    if err != nil { return err }
-    if delta, ok := frame.(a13n.DeltaFrame); ok { fmt.Println(delta.Event) }
+for chunk, err := range interaction.Text() {
+    if err != nil {
+        var interrupted *a13n.PreviewInterruptedError
+        if !errors.As(err, &interrupted) { return err }
+        fmt.Println("Preview unavailable:", interrupted.Reason)
+        break // the outcome observer remains usable
+    }
+    fmt.Print(chunk)
 }
-outcome, err := interaction.Result(ctx) // use the final result even if no frames arrived
+outcome, err := interaction.Result(ctx)
 if err != nil { return err }
-if outcome.Status() != generated.RunStatusCompleted {
-    return fmt.Errorf("run %s ended %s", outcome.Run.ID, outcome.Status())
-}
-items, err := outcome.Run.Items(ctx)
-if err != nil { return err }
-fmt.Println(items.Value.Items)
+fmt.Println(outcome.Status, outcome.Output)
 ```
 
-Add `errors` and `io` to your imports for that loop. A Run can finish before the stream attaches, so zero frames is valid. Always `Close()` the interaction, even when you stop reading early; that does not interrupt the remote Run. Reuse a fresh context for a later `Send` if the first request's deadline has passed.
+Preview is not a lossless transcript: a Run may seal before attachment and yield no chunks. Gap/reset, missing message starts, protocol discontinuities and unsupported root CUSTOM fragment framing interrupt it explicitly; it does not reconstruct a baseline or assemble fragments. Only root assistant content is emitted, not child/user or hidden content. Advanced callers use `Next()` for native frames. There is one active reader; after preview interruption, deliberate sequential raw reading is allowed. Always `defer interaction.Close()`, including on early break. Close joins local observation and does not remotely interrupt execution.
 
 ## Go further
 
@@ -144,7 +133,7 @@ Add `errors` and `io` to your imports for that loop. A Run can finish before the
 - [Compiled examples](example_test.go) and [SDK contract](spec/README.md): exact types and lifecycle guarantees.
 - [Pinned Service API](contract/openapi.json) and [provenance](contract/README.md): what this checkout was generated from. `client.API()` exposes its complete generated low-level API; [contribution guide](CONTRIBUTING.md) covers generation and validation.
 
-For result-only applications, `Start`/`Send` plus `Result` is enough. `StartOptions.MessageHistory` can import completed Pydantic AI conversation JSON when creating a new Thread; later `Send` calls do not reseed it. A queued submission might wait before it runs; a waiting Run requires a complete, explicit batch of approval decisions and call results. `Run.Resume(ctx, generated.Resume{Approvals: ..., Calls: ..., Input: ...}, key)` may include an *additional* typed message payload atomically in that same successor Run. It does not answer a missing call or approve one implicitly. A timeout or broken connection does **not** prove the remote submission failed, and the SDK does not automatically retry it.
+For result-only applications, `Start`/`Send` plus `Result` is enough. Public `Input`/`TextPart`/`JSONPart`/`URLPart`/`AssetPart` and `RunOptions`/`Configuration`/`Overrides` support structured submissions without generated imports. Recover saved IDs with `client.Entry(threadID, entryID).Observe(ctx)`; observe an exact Run with `client.Run(runID).Observe(ctx)` or its result-only `Result(ctx)` convenience. `StartOptions.MessageHistory` can import completed Pydantic AI conversation JSON when creating a new Thread; later `Send` calls do not reseed it. A queued submission might wait before it runs; a waiting Run requires a complete, explicit batch of approval decisions and call results. `Run.Resume(ctx, a13n.Answers{callID: a13n.Returned(value)}, a13n.ResumeOptions{Input: a13n.Value(input)})` returns the distinct successor Interaction and may include *additional* user content atomically in that same Run. It does not answer a missing call or approve one implicitly. A timeout or broken connection does **not** prove the remote submission failed, and the SDK does not automatically retry it.
 
 `Run.Items(ctx)` reads a recent committed display **window**, not automatically all history. Its default `Baseline=true` response includes the whole mutable tail even beyond the Service's limit (default 200, maximum 500), native normalization `Continuation`, nullable `Position` and optional covered `ResumeAfter`. Use one optional `a13n.RunItemsOptions{Before: &ordinal, Limit: &limit}` or After for explicit ordinal history windows; these have no live baseline or coverage. `Complete` means sealed, not all history loaded. See [ordinal windows and recovery](docs/streaming-and-readback.md#read-one-ordinal-history-window).
 
