@@ -958,16 +958,16 @@ func (e MemoryAccess) Valid() bool {
 
 // Defines values for MemoryKind.
 const (
-	File   MemoryKind = "file"
-	Record MemoryKind = "record"
+	MemoryKindFile   MemoryKind = "file"
+	MemoryKindRecord MemoryKind = "record"
 )
 
 // Valid indicates whether the value is a known member of the MemoryKind enum.
 func (e MemoryKind) Valid() bool {
 	switch e {
-	case File:
+	case MemoryKindFile:
 		return true
-	case Record:
+	case MemoryKindRecord:
 		return true
 	default:
 		return false
@@ -1022,6 +1022,60 @@ func (e MemoryRevisionDetailOp) Valid() bool {
 	case MemoryRevisionDetailOpMoveOut:
 		return true
 	case MemoryRevisionDetailOpUpdate:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MemorySourceKind.
+const (
+	MemorySourceKindFile   MemorySourceKind = "file"
+	MemorySourceKindRecord MemorySourceKind = "record"
+)
+
+// Valid indicates whether the value is a known member of the MemorySourceKind enum.
+func (e MemorySourceKind) Valid() bool {
+	switch e {
+	case MemorySourceKindFile:
+		return true
+	case MemorySourceKindRecord:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MemorySourceStatus.
+const (
+	MemorySourceStatusChanges     MemorySourceStatus = "changes"
+	MemorySourceStatusFailed      MemorySourceStatus = "failed"
+	MemorySourceStatusFull        MemorySourceStatus = "full"
+	MemorySourceStatusOmitted     MemorySourceStatus = "omitted"
+	MemorySourceStatusRecalled    MemorySourceStatus = "recalled"
+	MemorySourceStatusTimeout     MemorySourceStatus = "timeout"
+	MemorySourceStatusUnavailable MemorySourceStatus = "unavailable"
+	MemorySourceStatusUnchanged   MemorySourceStatus = "unchanged"
+)
+
+// Valid indicates whether the value is a known member of the MemorySourceStatus enum.
+func (e MemorySourceStatus) Valid() bool {
+	switch e {
+	case MemorySourceStatusChanges:
+		return true
+	case MemorySourceStatusFailed:
+		return true
+	case MemorySourceStatusFull:
+		return true
+	case MemorySourceStatusOmitted:
+		return true
+	case MemorySourceStatusRecalled:
+		return true
+	case MemorySourceStatusTimeout:
+		return true
+	case MemorySourceStatusUnavailable:
+		return true
+	case MemorySourceStatusUnchanged:
 		return true
 	default:
 		return false
@@ -2622,9 +2676,10 @@ type DisplayContinuation struct {
 	Arguments nullable.Nullable[UnderscoreArguments] `json:"arguments,omitempty"`
 
 	// Fragments Incomplete custom payloads, not a journal of completed events.
-	Fragments   *FragmentState `json:"fragments,omitempty"`
-	FullContent *bool          `json:"full_content,omitempty"`
-	NextOrdinal int            `json:"next_ordinal"`
+	Fragments     *FragmentState             `json:"fragments,omitempty"`
+	FullContent   *bool                      `json:"full_content,omitempty"`
+	MemorySources *map[string][]MemorySource `json:"memory_sources,omitempty"`
+	NextOrdinal   int                        `json:"next_ordinal"`
 
 	// Observer Native conversion cursors required to resume mid-part, without raw history.
 	Observer       *ObserverContinuation `json:"observer,omitempty"`
@@ -2787,6 +2842,14 @@ type FailedStatus string
 type Failure struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+}
+
+// FileSource defines model for FileSource.
+type FileSource struct {
+	Bytes     int    `json:"bytes"`
+	Path      string `json:"path"`
+	Sha256    string `json:"sha256"`
+	Truncated *bool  `json:"truncated,omitempty"`
 }
 
 // Finding defines model for Finding.
@@ -3383,6 +3446,24 @@ type MemoryRevisionPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// MemorySource One automatic delivery in this Run; content remains in the memory or execution archive.
+type MemorySource struct {
+	Cursor           nullable.Nullable[string] `json:"cursor,omitempty"`
+	Files            *[]FileSource             `json:"files,omitempty"`
+	Kind             MemorySourceKind          `json:"kind"`
+	Memory           string                    `json:"memory"`
+	MemoryId         nullable.Nullable[string] `json:"memory_id,omitempty"`
+	Records          *[]RecordSource           `json:"records,omitempty"`
+	SourcesTruncated *bool                     `json:"sources_truncated,omitempty"`
+	Status           MemorySourceStatus        `json:"status"`
+}
+
+// MemorySourceKind defines model for MemorySource.Kind.
+type MemorySourceKind string
+
+// MemorySourceStatus defines model for MemorySource.Status.
+type MemorySourceStatus string
+
 // MemoryUpdate Fields left out stay unchanged; `description: null` clears it and `guide: null` inherits the default.
 type MemoryUpdate struct {
 	AlwaysLoad  nullable.Nullable[[]string]          `json:"always_load,omitempty"`
@@ -3930,6 +4011,12 @@ type ProviderUpdate struct {
 	Enabled      nullable.Nullable[bool]                 `json:"enabled,omitempty"`
 	ExtraHeaders *map[string]interface{}                 `json:"extra_headers,omitempty"`
 	Name         nullable.Nullable[string]               `json:"name,omitempty"`
+}
+
+// RecordSource defines model for RecordSource.
+type RecordSource struct {
+	Id     string `json:"id"`
+	Sha256 string `json:"sha256"`
 }
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
