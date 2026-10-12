@@ -3305,10 +3305,29 @@ type MemoryRecordPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// MemoryRecordProvenance defines model for MemoryRecordProvenance.
+type MemoryRecordProvenance struct {
+	ContentMatches bool                                  `json:"content_matches"`
+	Created        nullable.Nullable[MemoryRecordSource] `json:"created"`
+
+	// LastWrite A platform-confirmed write, not an asserted source message or complete provider history.
+	LastWrite MemoryRecordSource `json:"last_write"`
+}
+
 // MemoryRecordSearch defines model for MemoryRecordSearch.
 type MemoryRecordSearch struct {
 	Limit *int   `json:"limit,omitempty"`
 	Query string `json:"query"`
+}
+
+// MemoryRecordSource A platform-confirmed write, not an asserted source message or complete provider history.
+type MemoryRecordSource struct {
+	AttemptId     nullable.Nullable[string] `json:"attempt_id"`
+	ConfirmedAt   time.Time                 `json:"confirmed_at"`
+	PrincipalId   nullable.Nullable[string] `json:"principal_id"`
+	PrincipalName nullable.Nullable[string] `json:"principal_name,omitempty"`
+	RunId         nullable.Nullable[string] `json:"run_id"`
+	ToolCallId    nullable.Nullable[string] `json:"tool_call_id"`
 }
 
 // MemoryRecordText defines model for MemoryRecordText.
@@ -3318,10 +3337,11 @@ type MemoryRecordText struct {
 
 // MemoryRecordView A record as the memory's provider returns it; `score` is its similarity to a search query.
 type MemoryRecordView struct {
-	Id        string                       `json:"id"`
-	Score     nullable.Nullable[float32]   `json:"score,omitempty"`
-	Text      string                       `json:"text"`
-	UpdatedAt nullable.Nullable[time.Time] `json:"updated_at,omitempty"`
+	Id         string                                    `json:"id"`
+	Provenance nullable.Nullable[MemoryRecordProvenance] `json:"provenance,omitempty"`
+	Score      nullable.Nullable[float32]                `json:"score,omitempty"`
+	Text       string                                    `json:"text"`
+	UpdatedAt  nullable.Nullable[time.Time]              `json:"updated_at,omitempty"`
 }
 
 // MemoryRevision One change to one path. A move is two: `move_out` at the source and `move_in` at the destination.
