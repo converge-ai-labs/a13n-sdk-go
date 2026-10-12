@@ -1893,6 +1893,7 @@ type AgentConfigInput struct {
 	ConnectionTools              *[]ConnectionSelection    `json:"connection_tools,omitempty"`
 	DefaultEnvironmentTemplateId nullable.Nullable[string] `json:"default_environment_template_id,omitempty"`
 	Instructions                 *string                   `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                     `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
@@ -1922,6 +1923,7 @@ type AgentConfigOutput struct {
 	ConnectionTools              *[]ConnectionSelection    `json:"connection_tools,omitempty"`
 	DefaultEnvironmentTemplateId nullable.Nullable[string] `json:"default_environment_template_id,omitempty"`
 	Instructions                 *string                   `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                     `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
@@ -1976,6 +1978,7 @@ type AgentOverrideInput struct {
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
 	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
 	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
 	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
 	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
 	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
@@ -1997,6 +2000,7 @@ type AgentOverrideOutput struct {
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
 	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
 	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
 	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
 	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
 	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
