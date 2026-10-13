@@ -111,7 +111,7 @@ func refreshOffline() {
 	raw, err = api.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost(ctx, "provider", &generated.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams{}, body)
 	check(must(a13n.ParseJSON[generated.AuthorizationStatus](client, raw, err, 200)).Value.State == "connected", "installed completion operation")
 	raw, err = api.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx, "provider", &generated.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams{})
-	check(must(a13n.ParseJSON[[]generated.ChatGPTModel](client, raw, err, 200)).Value[0].Slug == "native-chat", "installed discovery operation")
+	check(must(a13n.ParseJSON[[]generated.ProviderModel](client, raw, err, 200)).Value[0].Slug == "native-chat", "installed discovery operation")
 	raw, err = api.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx, "provider", &generated.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams{})
 	check(must(a13n.ParseJSON[generated.AuthorizationDisconnect](client, raw, err, 200)).Value.RevocationConfirmed.IsNull(), "installed disconnect operation")
 	refreshInteractionOffline()

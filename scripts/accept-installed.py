@@ -21,6 +21,9 @@ VERSION = "v0.0.0"
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--offline", action="store_true")
+    parser.add_argument(
+        "--race", action="store_true", help="Run the independent installed consumer with the race detector"
+    )
     parser.add_argument("--save-zip", type=Path, help="Retain the exact installed module ZIP at this path")
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="a13n-go-consumer-") as directory:
@@ -57,7 +60,7 @@ def main() -> None:
             "GOMODCACHE": str(temp / "modules"),
         }
         subprocess.run(
-            ["go", "run", "-mod=mod", ".", *(["--offline"] if args.offline else [])],
+            ["go", "run", *(["-race"] if args.race else []), "-mod=mod", ".", *(["--offline"] if args.offline else [])],
             cwd=consumer,
             env=environment,
             check=True,

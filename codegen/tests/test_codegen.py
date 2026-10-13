@@ -56,10 +56,29 @@ def test_changed_http_contract_regenerates_bindings(tmp_path: Path) -> None:
     assert not (target / "resources.gen.go").exists()
 
 
+def test_skill_sync_factoring_keeps_the_wire_schema() -> None:
+    document = json.loads((ROOT / "contract/openapi.json").read_text())
+    original = json.loads(json.dumps(document))
+    codegen.name_skill_sync(document)
+    schemas = document["components"]["schemas"]
+    policy = schemas.pop("SkillSync")
+    for name in ("AgentConfig-Input", "AgentConfig-Output"):
+        assert schemas[name]["properties"]["skill_sync"] == {"$ref": "#/components/schemas/SkillSync"}
+        schemas[name]["properties"]["skill_sync"] = dict(policy, title="Skill Sync")
+    for name in ("AgentOverride-Input", "AgentOverride-Output"):
+        choices = schemas[name]["properties"]["skill_sync"]["anyOf"]
+        assert choices[0] == {"$ref": "#/components/schemas/SkillSync"}
+        choices[0] = policy.copy()
+    assert document == original
+
+
 def test_generated_operations_are_exactly_pinned_contract() -> None:
     """Compare operation identity, method and path, not a count-only inventory."""
     document = json.loads((ROOT / "contract/openapi.json").read_text())
     generated = (ROOT / "generated/client.gen.go").read_text()
+    assert "type MessageHistory = []json.RawMessage" in generated
+    assert "nullable.Nullable[SkillSync]" in generated
+    assert "func (t SkillSync) MarshalJSON()" in generated
     expected = {
         (verb, path, "".join(part[:1].upper() + part[1:] for part in operation_id.split("_")))
         for verb, path, operation_id in operations(document)

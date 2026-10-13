@@ -69,6 +69,8 @@ fmt.Println(result.Status, result.Output)
 `StartOptions.Options` and `SendOptions.Options` share public `RunOptions`. `Configuration` selects Run network rules and namespaced JSON extensions; `Overrides` changes selectable Agent fields. They are distinct and are not locally merged. All existing selectable fields remain available through selected canonical aliases, including uncommon client tools, connections, plugins, skills, subagents, reviewer, retry and model settings.
 
 ```go
+var skillSync a13n.SkillSync
+if err := skillSync.FromSharedSkillSync(a13n.SharedSkillSync{Overwrite: a13n.Ptr(false)}); err != nil { return err }
 options := a13n.StartOptions{
     AgentRevisionId: a13n.Value("revision-id"),
     Options: &a13n.RunOptions{
@@ -81,6 +83,8 @@ options := a13n.StartOptions{
         Overrides: a13n.Value(a13n.Overrides{
             ModelSettings: a13n.Value(map[string]any{"extra_body": map[string]any{}}),
             Plugins: a13n.Value([]a13n.PluginSelection{}),
+            SkillSync: a13n.Value(skillSync),
+            LazyEnvironment: a13n.Value(false),
         }),
         Labels: a13n.Ptr(map[string]string{"application": "review"}),
     },
@@ -90,7 +94,7 @@ if err != nil { return err }
 defer interaction.Close()
 ```
 
-`Optional[T]` is the canonical nullable value. Zero value omits a field; `Null[T]()` sends explicit null; `Value(v)` sends a value, including empty objects/arrays. Pointer-valued fields use nil for omission and `Ptr` for explicit zero/false/empty. Constructors neither fill defaults nor remove empty values.
+`Optional[T]` is the canonical nullable value. Zero value omits a field; `Null[T]()` sends explicit null; `Value(v)` sends a value, including empty objects/arrays. Pointer-valued fields use nil for omission and `Ptr` for explicit zero/false/empty. Constructors neither fill defaults nor remove empty values. `SkillSync` has native `FromSharedSkillSync` and `FromIsolatedSkillSync` union helpers. Service defaults to shared mutable publication (`overwrite=true`, `cleanup=false`); an explicit Run policy replaces the revision's whole block. Isolated `CacheCount: Ptr(0)` disables trimming, not caching. `LazyEnvironment: Value(false)` requests eager preparation; absence/null inherit the revision.
 
 - Omitted/null configuration selects the default for a new Run and retains the snapshot when steering against an active Run (`accepted` or `running`).
 - `Value(Configuration{})` selects a complete empty snapshot, not a merge.
@@ -103,12 +107,12 @@ Start options also expose session, environment/Memory mounts and MCP headers. Se
 
 ## Start from an imported conversation
 
-Only new Thread creation accepts completed Pydantic AI `ModelMessage` JSON objects. This is not a prompt string or Harness checkpoint. Service validates the native format and bounds (256 messages, 256 KiB normalized JSON); the SDK does not invent a second model hierarchy or filter the seed.
+Only new Thread creation accepts completed Pydantic AI `ModelMessage` JSON objects. `MessageHistory` is `[]json.RawMessage`; import `encoding/json` to retain nested key order and number tokens from native exports. Go maps sort keys when marshaled, which can change model-visible tool argument/result strings. Service validates the native format and bounds (256 messages, 256 KiB normalized JSON); the SDK forwards the seed without constructing another message hierarchy.
 
 ```go
 history := a13n.MessageHistory{
-    {"kind": "request", "parts": []map[string]any{{"part_kind": "user-prompt", "content": "What changed?"}}},
-    {"kind": "response", "parts": []map[string]any{{"part_kind": "text", "content": "The API changed."}}},
+    json.RawMessage(`{"kind":"request","parts":[{"part_kind":"user-prompt","content":"What changed?"}]}`),
+    json.RawMessage(`{"kind":"response","parts":[{"part_kind":"text","content":"The API changed."}]}`),
 }
 interaction, err := client.Agent(agentID).Start(ctx, "Continue from this history.",
     a13n.StartOptions{MessageHistory: &history})
