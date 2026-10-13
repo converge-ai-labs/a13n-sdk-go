@@ -782,6 +782,21 @@ func (e InvitationReceiptDelivery) Valid() bool {
 	}
 }
 
+// Defines values for IsolatedSkillSyncMode.
+const (
+	IsolatedSkillSyncModeIsolated IsolatedSkillSyncMode = "isolated"
+)
+
+// Valid indicates whether the value is a known member of the IsolatedSkillSyncMode enum.
+func (e IsolatedSkillSyncMode) Valid() bool {
+	switch e {
+	case IsolatedSkillSyncModeIsolated:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ItemKind.
 const (
 	ItemKindObservation      ItemKind = "observation"
@@ -1424,6 +1439,21 @@ func (e Severity) Valid() bool {
 	}
 }
 
+// Defines values for SharedSkillSyncMode.
+const (
+	SharedSkillSyncModeShared SharedSkillSyncMode = "shared"
+)
+
+// Valid indicates whether the value is a known member of the SharedSkillSyncMode enum.
+func (e SharedSkillSyncMode) Valid() bool {
+	switch e {
+	case SharedSkillSyncModeShared:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SpanStatus.
 const (
 	SpanStatusError SpanStatus = "error"
@@ -1961,11 +1991,17 @@ type AgentConfigInput struct {
 	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
 	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
 	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
+	SkillSync            *AgentConfigInput_SkillSync      `json:"skill_sync,omitempty"`
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
 	SubagentMode         *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
 	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+}
+
+// AgentConfigInput_SkillSync defines model for AgentConfigInput.SkillSync.
+type AgentConfigInput_SkillSync struct {
+	union json.RawMessage
 }
 
 // AgentConfigInputSubagentMode defines model for AgentConfigInput.SubagentMode.
@@ -1991,11 +2027,17 @@ type AgentConfigOutput struct {
 	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
 	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
 	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
+	SkillSync            *AgentConfigOutput_SkillSync     `json:"skill_sync,omitempty"`
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
 	SubagentMode         *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
 	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+}
+
+// AgentConfigOutput_SkillSync defines model for AgentConfigOutput.SkillSync.
+type AgentConfigOutput_SkillSync struct {
+	union json.RawMessage
 }
 
 // AgentConfigOutputSubagentMode defines model for AgentConfigOutput.SubagentMode.
@@ -2041,9 +2083,12 @@ type AgentOverrideInput struct {
 	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
 	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	SkillSync            nullable.Nullable[struct {
+		union json.RawMessage
+	}] `json:"skill_sync,omitempty"`
+	Skills    nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
+	Subagents nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	Toolsets  nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
 
 // AgentOverrideOutput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
@@ -2063,9 +2108,12 @@ type AgentOverrideOutput struct {
 	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
 	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	SkillSync            nullable.Nullable[struct {
+		union json.RawMessage
+	}] `json:"skill_sync,omitempty"`
+	Skills    nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
+	Subagents nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	Toolsets  nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
 
 // AgentPage defines model for AgentPage.
@@ -3097,6 +3145,15 @@ type InvitationReceipt struct {
 
 // InvitationReceiptDelivery defines model for InvitationReceipt.Delivery.
 type InvitationReceiptDelivery string
+
+// IsolatedSkillSync Reuse immutable package directories, with a soft count budget.
+type IsolatedSkillSync struct {
+	CacheCount *int                   `json:"cache_count,omitempty"`
+	Mode       *IsolatedSkillSyncMode `json:"mode,omitempty"`
+}
+
+// IsolatedSkillSyncMode defines model for IsolatedSkillSync.Mode.
+type IsolatedSkillSyncMode string
 
 // IssuedKey defines model for IssuedKey.
 type IssuedKey struct {
@@ -4295,6 +4352,16 @@ type SessionView struct {
 
 // Severity defines model for Severity.
 type Severity string
+
+// SharedSkillSync Publish mutable conventional names; the last completed publication wins.
+type SharedSkillSync struct {
+	Cleanup   *bool                `json:"cleanup,omitempty"`
+	Mode      *SharedSkillSyncMode `json:"mode,omitempty"`
+	Overwrite *bool                `json:"overwrite,omitempty"`
+}
+
+// SharedSkillSyncMode defines model for SharedSkillSync.Mode.
+type SharedSkillSyncMode string
 
 // Skill defines model for Skill.
 type Skill struct {
@@ -6850,6 +6917,208 @@ type UpdateServiceAccountApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdPatch
 
 // CreateServiceAccountKeyApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysPostJSONRequestBody defines body for CreateServiceAccountKeyApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysPost for application/json ContentType.
 type CreateServiceAccountKeyApiV1WorkspacesWorkspaceIdServiceAccountsAccountIdKeysPostJSONRequestBody = KeyCreate
+
+// AsSharedSkillSync returns the union data inside the AgentConfigInput_SkillSync as a SharedSkillSync
+func (t AgentConfigInput_SkillSync) AsSharedSkillSync() (SharedSkillSync, error) {
+	var body SharedSkillSync
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSharedSkillSync overwrites any union data inside the AgentConfigInput_SkillSync as the provided SharedSkillSync
+func (t *AgentConfigInput_SkillSync) FromSharedSkillSync(v SharedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"shared"}`))
+	t.union = b
+	return err
+}
+
+// MergeSharedSkillSync performs a merge with any union data inside the AgentConfigInput_SkillSync, using the provided SharedSkillSync
+func (t *AgentConfigInput_SkillSync) MergeSharedSkillSync(v SharedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"shared"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsIsolatedSkillSync returns the union data inside the AgentConfigInput_SkillSync as a IsolatedSkillSync
+func (t AgentConfigInput_SkillSync) AsIsolatedSkillSync() (IsolatedSkillSync, error) {
+	var body IsolatedSkillSync
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromIsolatedSkillSync overwrites any union data inside the AgentConfigInput_SkillSync as the provided IsolatedSkillSync
+func (t *AgentConfigInput_SkillSync) FromIsolatedSkillSync(v IsolatedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"isolated"}`))
+	t.union = b
+	return err
+}
+
+// MergeIsolatedSkillSync performs a merge with any union data inside the AgentConfigInput_SkillSync, using the provided IsolatedSkillSync
+func (t *AgentConfigInput_SkillSync) MergeIsolatedSkillSync(v IsolatedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"isolated"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentConfigInput_SkillSync) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t AgentConfigInput_SkillSync) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "isolated":
+		return t.AsIsolatedSkillSync()
+	case "shared":
+		return t.AsSharedSkillSync()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t AgentConfigInput_SkillSync) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentConfigInput_SkillSync) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsSharedSkillSync returns the union data inside the AgentConfigOutput_SkillSync as a SharedSkillSync
+func (t AgentConfigOutput_SkillSync) AsSharedSkillSync() (SharedSkillSync, error) {
+	var body SharedSkillSync
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSharedSkillSync overwrites any union data inside the AgentConfigOutput_SkillSync as the provided SharedSkillSync
+func (t *AgentConfigOutput_SkillSync) FromSharedSkillSync(v SharedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"shared"}`))
+	t.union = b
+	return err
+}
+
+// MergeSharedSkillSync performs a merge with any union data inside the AgentConfigOutput_SkillSync, using the provided SharedSkillSync
+func (t *AgentConfigOutput_SkillSync) MergeSharedSkillSync(v SharedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"shared"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsIsolatedSkillSync returns the union data inside the AgentConfigOutput_SkillSync as a IsolatedSkillSync
+func (t AgentConfigOutput_SkillSync) AsIsolatedSkillSync() (IsolatedSkillSync, error) {
+	var body IsolatedSkillSync
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromIsolatedSkillSync overwrites any union data inside the AgentConfigOutput_SkillSync as the provided IsolatedSkillSync
+func (t *AgentConfigOutput_SkillSync) FromIsolatedSkillSync(v IsolatedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"isolated"}`))
+	t.union = b
+	return err
+}
+
+// MergeIsolatedSkillSync performs a merge with any union data inside the AgentConfigOutput_SkillSync, using the provided IsolatedSkillSync
+func (t *AgentConfigOutput_SkillSync) MergeIsolatedSkillSync(v IsolatedSkillSync) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"isolated"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentConfigOutput_SkillSync) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t AgentConfigOutput_SkillSync) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "isolated":
+		return t.AsIsolatedSkillSync()
+	case "shared":
+		return t.AsSharedSkillSync()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t AgentConfigOutput_SkillSync) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentConfigOutput_SkillSync) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // AsApprove returns the union data inside the ApprovalDecision as a Approve
 func (t ApprovalDecision) AsApprove() (Approve, error) {
