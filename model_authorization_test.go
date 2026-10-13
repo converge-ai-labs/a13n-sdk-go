@@ -97,8 +97,8 @@ func TestModelProviderAuthorizationAndDiscoveryNativeWire(t *testing.T) {
 				t.Fatal(completed, err)
 			}
 			raw, err = api.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx, "provider", &generated.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams{XWorkspaceID: &scope})
-			models, err := ParseJSON[[]generated.ChatGPTModel](client, raw, err, 200)
-			if err != nil || !reflect.DeepEqual(models.Value, []generated.ChatGPTModel{{Slug: "native-chat", DisplayName: "Native Chat"}}) {
+			models, err := ParseJSON[[]generated.ProviderModel](client, raw, err, 200)
+			if err != nil || !reflect.DeepEqual(models.Value, []generated.ProviderModel{{Slug: "native-chat", DisplayName: "Native Chat"}}) {
 				t.Fatal(models, err)
 			}
 			raw, err = api.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx, "provider", &generated.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams{XWorkspaceID: &scope})

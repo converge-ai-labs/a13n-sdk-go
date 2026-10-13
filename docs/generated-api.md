@@ -119,13 +119,13 @@ func completeManualModelAuthorization(ctx context.Context, client *a13n.Client, 
 }
 
 func availableProviderModels(ctx context.Context, client *a13n.Client, providerID, workspaceID string) (
-    a13n.Result[[]generated.ChatGPTModel], error,
+    a13n.Result[[]generated.ProviderModel], error,
 ) {
     api, err := client.API()
-    if err != nil { return a13n.Result[[]generated.ChatGPTModel]{}, err }
+    if err != nil { return a13n.Result[[]generated.ProviderModel]{}, err }
     response, err := api.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx, providerID,
         &generated.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams{XWorkspaceID: &workspaceID})
-    return a13n.ParseJSON[[]generated.ChatGPTModel](client, response, err, 200)
+    return a13n.ParseJSON[[]generated.ProviderModel](client, response, err, 200)
 }
 
 func disconnectModelAuthorization(ctx context.Context, client *a13n.Client, providerID, workspaceID string) (
@@ -141,7 +141,7 @@ func disconnectModelAuthorization(ctx context.Context, client *a13n.Client, prov
 
 Show the returned `AuthorizationUrl` only to the initiating authorized person; it may contain flow data. Follow `Method`: `manual_callback` expects a pasted callback URL using the returned attempt, while `browser_callback` completes through the Service's configured browser flow and status polling. Do not log pasted callback codes or manufacture OAuth client IDs, redirect origins, PKCE, browser cookies or a second token store. Hosted callback registration and commercial approval belong to the operator; tokens remain encrypted in the Service. `AuthorizationCallback` is redacted in ordinary diagnostics but its JSON carries the sensitive callback value for submission, so do not log request bodies.
 
-Status may remain pending while an exchange is in progress even if old credentials exist; do not infer success from them. Discovery returns an account-specific array of `ChatGPTModel{Slug, DisplayName}`. Disconnect reports `LocalTokensCleared` separately from nullable `RevocationConfirmed`; a null or false revocation result is not proof of remote revocation. Local mock tests validate serialization only, not external login, account entitlements or paid-model invocation.
+Status may remain pending while an exchange is in progress even if old credentials exist; do not infer success from them. Discovery returns native `ProviderModel{Slug, DisplayName, Characteristics}` values. `Characteristics` preserves absent/null/value; retain it when selecting an upstream model. ChatGPT discovery is account-specific, while other provider catalogues use their own upstream names. Service owns discovery and readiness/staleness; the SDK does not invent eligibility or refresh fallbacks. Disconnect reports `LocalTokensCleared` separately from nullable `RevocationConfirmed`; a null or false revocation result is not proof of remote revocation. Local mock tests validate serialization only, not external login, account entitlements or paid-model invocation.
 
 ## Forward model image and video policy
 
@@ -173,3 +173,27 @@ func createMediaModel(ctx context.Context, client *a13n.Client, providerID, mode
 ```
 
 Pointers preserve explicit zero/false. An omitted `ImageInput` uses native defaults; explicit null disables automatic preparation; an explicit object forwards its chosen limits. A zero `MaxImageBytes` disables that image byte limit, but zero `MaxImages` removes all image input. `VideoInput.MaxVideoBytes` bounds Base64-encoded bytes for one video **and** all inline videos in one model request. `UrlInput.Video` identifies transport-native URL subtypes; an empty array is not omission. Select only characteristics supported by the actual provider. Service/Harness owns preparation, downloads, allowed-host checks, TLS and budgets; sending a URL or Asset part with `StartInput`/`SendInput` neither processes media locally nor bypasses those checks. Generated content and authored input retain their different display provenance, as explained in [streaming and readback](streaming-and-readback.md#native-ag-ui-10-content-and-child-attribution).
+
+## Findings, analyses and message authors
+
+The current native graph adds Findings list/create/get/update, finding-analysis list/start, finding-agent preparation, session message-author lookup and [saved Run content reads](streaming-and-readback.md#explicitly-expand-saved-display-content). All use `client.API()` and the same transport/lifetime as Agent execution. Findings update uses native `IfMatch`; analysis start requires a caller `IdempotencyKey` and shares the message-submission key namespace. These operations remain native administrative/query workflows, not another authored Agent facade.
+
+`generated.FindingCreate` keeps category, evidence, source key and pinned Agent/revision identity. `FindingUpdate` preserves omitted/null/false for assessment, assessment note and closure. Lists use native cursor pages and stable filters; analysis selections retain presets, selected/read trace IDs and truncation. Creating an analysis starts a distinct managed Run; its receipt does not prove completion or Findings creation. Preparing the finding Agent requires Service write permission and configured model prerequisites. External trace access remains authorized by Service.
+
+Message-author reads accept repeated `entry_id` query values. Service may omit unavailable, foreign-session or non-message Entries, so correlate by `EntryId`, not array position. Imports: `context`, `a13n`, `generated`:
+
+```go
+func messageAuthors(ctx context.Context, client *a13n.Client, sessionID string, entryIDs []string, workspaceID *string) (
+    a13n.Result[generated.MessageAuthors], error,
+) {
+    api, err := client.API()
+    if err != nil { return a13n.Result[generated.MessageAuthors]{}, err }
+    response, err := api.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx, sessionID,
+        &generated.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams{
+            EntryId: entryIDs, XWorkspaceID: workspaceID,
+        })
+    return a13n.ParseJSON[generated.MessageAuthors](client, response, err, 200)
+}
+```
+
+`MessageAuthor.Principal` remains nullable independently of the submitted principal ID. Memory record provenance is separately available as optional nullable `MemoryRecordView.Provenance`; confirmed-write evidence and `ContentMatches` do not promise complete provider history or causal attribution.

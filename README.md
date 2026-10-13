@@ -2,6 +2,8 @@
 
 Run an existing a13n Service Agent from a Go application, read its result, and continue the conversation. Go 1.25+; execution and authorization stay in the Service.
 
+The current contract is pinned to Service `350ffa70b886c3493a90b1bd4158f63180dbde12`: 242 native operations and 340 wire schemas. The [generated API guide](docs/generated-api.md) covers advanced resource access, while [saved content readback](docs/streaming-and-readback.md#explicitly-expand-saved-display-content) keeps previews and authoritative values distinct. Imported conversation messages use `[]json.RawMessage` to preserve native nested key order and number tokens.
+
 ## Before you start
 
 1. [Set up a Service](https://github.com/converge-ai-labs/agent-foundation/blob/main/docs/a13n-service/get-started.md) and create an Agent in Console under **Agents → Create agent**. Copy its ID (`ap_…`). The Agent needs a configured model.

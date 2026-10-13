@@ -14,10 +14,10 @@ import (
 
 func importedConversation() generated.MessageHistory {
 	return generated.MessageHistory{
-		{"kind": "request", "parts": []map[string]any{{"part_kind": "user-prompt", "content": "What changed?"}}},
-		{"kind": "response", "parts": []map[string]any{{"part_kind": "text", "content": "The API changed."}}},
-		{"kind": "response", "parts": []map[string]any{{"part_kind": "tool-call", "tool_name": "lookup", "tool_call_id": "call-1", "args": map[string]any{"key": "x"}}}},
-		{"kind": "request", "parts": []map[string]any{{"part_kind": "tool-return", "tool_name": "lookup", "tool_call_id": "call-1", "content": map[string]any{"value": "ok"}}}},
+		json.RawMessage(`{"kind":"request","parts":[{"part_kind":"user-prompt","content":"What changed?"}]}`),
+		json.RawMessage(`{"kind":"response","parts":[{"part_kind":"text","content":"The API changed."}]}`),
+		json.RawMessage(`{"kind":"response","parts":[{"part_kind":"tool-call","tool_name":"lookup","tool_call_id":"call-1","args":{"z":9007199254740993,"a":{"last":false,"first":null}}}]}`),
+		json.RawMessage(`{"kind":"request","parts":[{"part_kind":"tool-return","tool_name":"lookup","tool_call_id":"call-1","content":{"z":1,"a":2}}]}`),
 	}
 }
 

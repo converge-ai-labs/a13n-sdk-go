@@ -44,6 +44,7 @@ type ItemRef struct {
 	Ordinal       nullable.Nullable[int]                        `json:"ordinal,omitempty"`
 	ResponseGroup nullable.Nullable[string]                     `json:"response_group,omitempty"`
 	Failure       nullable.Nullable[map[string]json.RawMessage] `json:"failure,omitempty"`
+	MemorySources nullable.Nullable[[]generated.MemorySource]   `json:"memory_sources,omitempty"`
 }
 type BoundaryFrame struct {
 	frameMeta
@@ -494,6 +495,20 @@ func parseThreadFrame(event, cursor string, hasID bool, data []byte) (ThreadFram
 		if item := delta.Item; item != nil {
 			if item.ID == "" || !contains([]string{"text_message", "reasoning_message", "tool_call", "observation"}, item.Kind) || !contains([]string{"in_progress", "completed", "interrupted", "failed"}, item.State) {
 				return invalid()
+			}
+			if sources, err := item.MemorySources.Get(); err == nil {
+				for _, source := range sources {
+					if !source.Kind.Valid() || !source.Status.Valid() {
+						return invalid()
+					}
+					if source.Files != nil {
+						for _, file := range *source.Files {
+							if file.Bytes < 0 {
+								return invalid()
+							}
+						}
+					}
+				}
 			}
 		}
 		delta.frameMeta = meta

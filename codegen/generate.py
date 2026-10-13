@@ -18,7 +18,35 @@ def run(*args: str, cwd: Path = ROOT) -> None:
     subprocess.run(args, cwd=cwd, check=True)
 
 
+def name_skill_sync(document: dict) -> None:
+    """Name the shared inline union so oapi-codegen emits its JSON methods.
+
+    Anonymous nullable unions otherwise become opaque structs without a JSON
+    codec. This only factors identical schemas; the pinned input stays intact.
+    """
+    schemas = document["components"]["schemas"]
+    if "AgentConfig-Input" not in schemas:
+        return
+    policy = schemas["AgentOverride-Input"]["properties"]["skill_sync"]["anyOf"][0]
+    schemas["SkillSync"] = policy.copy()
+    for name in ("AgentConfig-Input", "AgentConfig-Output"):
+        config_policy = schemas[name]["properties"]["skill_sync"].copy()
+        config_policy.pop("title", None)
+        assert config_policy == policy
+        schemas[name]["properties"]["skill_sync"] = {"$ref": "#/components/schemas/SkillSync"}
+    for name in ("AgentOverride-Input", "AgentOverride-Output"):
+        alternatives = schemas[name]["properties"]["skill_sync"]["anyOf"]
+        assert alternatives[0] == policy
+        alternatives[0] = {"$ref": "#/components/schemas/SkillSync"}
+
+
 def generate(document: dict, work: Path) -> Path:
+    name_skill_sync(document)
+    history = document["components"]["schemas"].get("MessageHistory")
+    if history is not None:
+        # Native provider adapters render nested objects in submitted key order.
+        # RawMessage preserves that order and number tokens in both directions.
+        history["items"]["x-go-type"] = "json.RawMessage"
     source = work / "openapi.json"
     source.write_text(json.dumps(document))
     output = work / "output"

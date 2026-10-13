@@ -44,8 +44,10 @@ func ptr[T any](value T) *T { return &value }
 // prompt transcript. Only the new Thread receives it; later Sends do not reseed.
 func importedHistory() generated.MessageHistory {
 	return generated.MessageHistory{
-		{"kind": "request", "parts": []map[string]any{{"part_kind": "user-prompt", "content": "What changed?"}}},
-		{"kind": "response", "parts": []map[string]any{{"part_kind": "text", "content": "The API changed."}}},
+		json.RawMessage(`{"kind":"request","parts":[{"part_kind":"user-prompt","content":"What changed?"}]}`),
+		json.RawMessage(`{"kind":"response","parts":[{"part_kind":"text","content":"The API changed."}]}`),
+		json.RawMessage(`{"kind":"response","parts":[{"part_kind":"tool-call","tool_name":"lookup","tool_call_id":"history-call","args":{"z":9007199254740993,"a":{"last":false,"first":null}}}]}`),
+		json.RawMessage(`{"kind":"request","parts":[{"part_kind":"tool-return","tool_name":"lookup","tool_call_id":"history-call","content":{"z":1,"a":2}}]}`),
 	}
 }
 
@@ -208,6 +210,7 @@ func offline() {
 	workflowDXOffline()
 	streamRecoveryOffline()
 	refreshOffline()
+	catchupOffline()
 	pagedDisplayOffline()
 	sealedHistoryOffline()
 	fmt.Println("Installed module: interaction, exact Run, lazy pages, metadata, unions, null and diagnostics passed")
@@ -259,7 +262,8 @@ func live() {
 	stopRead()
 	fmt.Println("Verified HTTPS: exact RunItems position/resume_after and paired recovery reader passed")
 	thread := must(first.Thread().Get(ctx))
-	check(len(thread.Value.MessageHistory) == len(history), "immutable imported history readback")
+	check(string(must(json.Marshal(thread.Value.MessageHistory))) == string(must(json.Marshal(history))), "immutable imported history readback preserves nested key order and number tokens")
+	catchupReadback(ctx, client, outcome, first.Entry().ID)
 	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
 		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: firstKey},
 		generated.NewThread{AgentId: agent, Payload: testTextPayload(firstText), MessageHistory: &history, Options: initialOptions})

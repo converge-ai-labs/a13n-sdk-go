@@ -122,7 +122,7 @@ func jsonResult[T any](client *Client, response *http.Response, err error, succe
 }
 
 // The canonical nullable decoder uses float64 for arbitrary JSON. Shadow only
-// Run output at this common response owner so valid large numbers reach both
+// Run output and saved content at this common response owner so large numbers reach both
 // the typed evidence and high-level output without forking generated parsers.
 func decodeResourceJSON(data []byte, target any) error {
 	switch value := target.(type) {
@@ -170,6 +170,13 @@ func decodeResourceJSON(data []byte, target any) error {
 		}
 		value.Run = Value(run)
 		return nil
+	case *generated.RunContent:
+		if !json.Valid(data) {
+			return fmt.Errorf("invalid JSON document")
+		}
+		decoder := json.NewDecoder(bytes.NewReader(data))
+		decoder.UseNumber()
+		return decoder.Decode(value)
 	default:
 		return json.Unmarshal(data, target)
 	}

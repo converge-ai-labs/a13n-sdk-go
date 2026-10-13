@@ -133,6 +133,28 @@ Within the default finite interaction, asking for the next frame acknowledges th
 
 A Run outcome's `Output` is an optional structured value, not the last text delta; `Items` is one window of persisted display messages and tool activity, not an automatically loaded full transcript. Handle `waiting` outcomes through [waiting and tools](waiting-and-tools.md), and consult [errors and recovery](errors-and-recovery.md) if `Next` fails before a result is available. For long-lived subscriptions to all activity on a Thread, the low-level generated `ThreadStreamApiV1ThreadsThreadIdStreamGet` remains available through `client.API()` with a caller-owned response body; it is not a second high-level Agent interaction.
 
+## Explicitly expand saved display content
+
+`Item.ContentRefs` maps field names to immutable saved-value references. Inline text can be only a preview; it does not replace `RunOutcome.Output`. Service keeps up to 32 KiB inline, externalizes larger fields, and caps saved values at 16 MiB. Above the cap it saves a UTF-8 text prefix, including for oversized JSON. Each reference contains media type, saved byte count, a preview of at most 4 KiB and optional `Truncated`. `RunContent.Truncated` must stay visible to the application after expansion.
+
+This explicit read imports `context`, `a13n` and `generated`. Session callers pass their workspace ID; API-key callers pass nil:
+
+```go
+func expandSavedContent(ctx context.Context, client *a13n.Client, runID, contentID string, workspaceID *string) (
+    a13n.Result[generated.RunContent], error,
+) {
+    api, err := client.API()
+    if err != nil { return a13n.Result[generated.RunContent]{}, err }
+    response, err := api.RunContentApiV1RunsRunIdContentsContentIdGet(ctx, runID, contentID,
+        &generated.RunContentApiV1RunsRunIdContentsContentIdGetParams{XWorkspaceID: workspaceID})
+    return a13n.ParseJSON[generated.RunContent](client, response, err, 200)
+}
+```
+
+`ParseJSON` retains native JSON numbers with `json.Number` for `RunContent.Value` and original bytes in `RawJSON`. Inspect `MediaType` before interpreting Value: JSON may be an object, array, scalar or null; text/plain is a string. Only committed references reachable under that exact Run are readable. Expansion is caller-selected; it neither repairs provisional gaps nor adds content to `Interaction.Text()`. The JSON envelope and string escaping can exceed `ParseJSON`'s default 16 MiB response bound even when saved content fits its own cap; configure `WithResponseLimit` for the application's accepted response budget, or consume the caller-owned raw generated response explicitly.
+
+`DeltaFrame.Item.MemorySources` preserves absent/null/array, including an explicit empty array. END metadata and saved `Item.Content["memory_sources"]` identify automatic memory delivery evidence. A provisional END does not prove commit, and a source digest does not prove that a particular answer depended on it. Record write provenance uses the native nullable `MemoryRecordView.Provenance` independently.
+
 ## Native AG-UI 1.0 content and child attribution
 
 The Service's `delta` envelope identifies the authoritative Service Run with `run_id`, attempt and sequence. Inside it, `DeltaFrame.Event` is a raw JSON map of native AG-UI 1.0 fields: `messageId`, `toolCallId`, `threadId`, `runId`, `subagentRunId` and `parentSubagentRunId` use their canonical camelCase names. The SDK does not rename fields, convert media parts to text, invent an event alias or build a UI reducer. New native fields and required `CUSTOM.value: null` are preserved. Treat `RUN_STARTED.protocolVersion` as protocol observation, not an instruction to select another Service Run.
