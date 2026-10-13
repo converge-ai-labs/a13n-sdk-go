@@ -4697,6 +4697,7 @@ type ToolDefinition struct {
 	DefaultEnabled       bool                                    `json:"default_enabled"`
 	DefaultPermission    ToolPermissionMode                      `json:"default_permission"`
 	DeploymentSupported  bool                                    `json:"deployment_supported"`
+	Description          *string                                 `json:"description,omitempty"`
 	DisplayName          string                                  `json:"display_name"`
 	ExecutionId          string                                  `json:"execution_id"`
 	Key                  string                                  `json:"key"`
@@ -4772,6 +4773,7 @@ type ToolsetCatalog struct {
 type ToolsetDefinition struct {
 	ConfigSchema   map[string]JsonValue `json:"config_schema"`
 	DefaultEnabled bool                 `json:"default_enabled"`
+	Description    *string              `json:"description,omitempty"`
 	DisplayName    string               `json:"display_name"`
 	Key            ToolsetKey           `json:"key"`
 	Tools          []ToolDefinition     `json:"tools"`
