@@ -3694,13 +3694,15 @@ type ModelUpdate struct {
 
 // ModelUsage defines model for ModelUsage.
 type ModelUsage struct {
-	CacheReadTokens  int                       `json:"cache_read_tokens"`
-	CacheWriteTokens int                       `json:"cache_write_tokens"`
-	Cost             nullable.Nullable[string] `json:"cost"`
-	InputTokens      int                       `json:"input_tokens"`
-	Model            nullable.Nullable[string] `json:"model"`
-	OutputTokens     int                       `json:"output_tokens"`
-	Requests         int                       `json:"requests"`
+	AverageTimeToFirstChunkSeconds nullable.Nullable[float32] `json:"average_time_to_first_chunk_seconds"`
+	CacheReadTokens                int                        `json:"cache_read_tokens"`
+	CacheWriteTokens               int                        `json:"cache_write_tokens"`
+	Cost                           nullable.Nullable[string]  `json:"cost"`
+	InputTokens                    int                        `json:"input_tokens"`
+	Model                          nullable.Nullable[string]  `json:"model"`
+	OutputTokens                   int                        `json:"output_tokens"`
+	OutputTokensPerSecond          nullable.Nullable[float32] `json:"output_tokens_per_second"`
+	Requests                       int                        `json:"requests"`
 }
 
 // ModelUsageGroup defines model for ModelUsageGroup.
@@ -4196,6 +4198,13 @@ type RunPage struct {
 
 // RunStatus defines model for RunStatus.
 type RunStatus string
+
+// RunUsage defines model for RunUsage.
+type RunUsage struct {
+	Models   []ModelUsage `json:"models"`
+	RunId    string       `json:"run_id"`
+	ThreadId string       `json:"thread_id"`
+}
 
 // RunView defines model for RunView.
 type RunView struct {
@@ -4961,6 +4970,7 @@ type UsageOverview struct {
 // UsageSummary defines model for UsageSummary.
 type UsageSummary struct {
 	Models []ModelUsage `json:"models"`
+	Runs   []RunUsage   `json:"runs"`
 }
 
 // UserKeyCreate defines model for UserKeyCreate.
