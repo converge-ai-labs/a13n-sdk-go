@@ -9322,7 +9322,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9331,7 +9331,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9384,7 +9384,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9393,7 +9393,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9826,7 +9826,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9835,7 +9835,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatch Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9880,7 +9880,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9889,7 +9889,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatch Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -10880,7 +10880,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -10889,7 +10889,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatch Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -12069,7 +12069,7 @@ func (c *Client) GetProviderApiV1ConnectorProvidersProviderIdGet(ctx context.Con
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -12088,7 +12088,7 @@ func (c *Client) UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody(ct
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -12231,7 +12231,7 @@ func (c *Client) GetProviderApiV1EnvironmentProvidersProviderIdGet(ctx context.C
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -12250,7 +12250,7 @@ func (c *Client) UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody(
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -13333,7 +13333,7 @@ func (c *Client) GetProviderApiV1MemoryProvidersProviderIdGet(ctx context.Contex
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -13352,7 +13352,7 @@ func (c *Client) UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody(ctx c
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatch Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -13467,7 +13467,7 @@ func (c *Client) GetProviderApiV1ModelProvidersProviderIdGet(ctx context.Context
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -13486,7 +13486,7 @@ func (c *Client) UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody(ctx co
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatch Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -15967,7 +15967,7 @@ func (c *Client) GetProviderApiV1WebProvidersProviderIdGet(ctx context.Context, 
 
 // UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -15986,7 +15986,7 @@ func (c *Client) UpdateProviderApiV1WebProvidersProviderIdPatchWithBody(ctx cont
 
 // UpdateProviderApiV1WebProvidersProviderIdPatch Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -32740,7 +32740,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32749,7 +32749,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32814,7 +32814,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32823,7 +32823,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -33312,7 +33312,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -33321,7 +33321,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -33374,7 +33374,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -33383,7 +33383,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -34528,7 +34528,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -34537,7 +34537,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -52344,7 +52344,7 @@ func (c *ClientWithResponses) GetProviderApiV1ConnectorProvidersProviderIdGetWit
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -52359,7 +52359,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1ConnectorProvidersProviderIdPat
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -52478,7 +52478,7 @@ func (c *ClientWithResponses) GetProviderApiV1EnvironmentProvidersProviderIdGetW
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -52493,7 +52493,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1EnvironmentProvidersProviderIdP
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -53372,7 +53372,7 @@ func (c *ClientWithResponses) GetProviderApiV1MemoryProvidersProviderIdGetWithRe
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -53387,7 +53387,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1MemoryProvidersProviderIdPatchW
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -53482,7 +53482,7 @@ func (c *ClientWithResponses) GetProviderApiV1ModelProvidersProviderIdGetWithRes
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -53497,7 +53497,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1ModelProvidersProviderIdPatchWi
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -55536,7 +55536,7 @@ func (c *ClientWithResponses) GetProviderApiV1WebProvidersProviderIdGetWithRespo
 
 // UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -55551,7 +55551,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1WebProvidersProviderIdPatchWith
 
 // UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
