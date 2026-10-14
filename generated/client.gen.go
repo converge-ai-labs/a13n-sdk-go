@@ -4511,6 +4511,13 @@ type RevokedConnection struct {
 // RevokedConnectionRemoteRevocation defines model for RevokedConnection.RemoteRevocation.
 type RevokedConnectionRemoteRevocation string
 
+// RunAgent The agent a run executes: its frozen revision, and that revision's configuration with the run's override
+// applied. Models, connections and templates the configuration names stay live.
+type RunAgent struct {
+	Config   AgentConfigOutput `json:"config"`
+	Revision AgentRevision     `json:"revision"`
+}
+
 // RunConfigurationInput An accepted snapshot, independent of Agent definitions and Capability configuration.
 //
 // Consumers explicitly opt into namespaced extensions and own their validation.
@@ -6376,6 +6383,12 @@ type UpdateRunApiV1RunsRunIdPatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RunAgentApiV1RunsRunIdAgentGetParams defines parameters for RunAgentApiV1RunsRunIdAgentGet.
+type RunAgentApiV1RunsRunIdAgentGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -10163,6 +10176,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 	UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RunAgentApiV1RunsRunIdAgentGet Run Agent
+	//
+	// The agent configuration the run executes: its revision with the run's override applied.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+	RunAgentApiV1RunsRunIdAgentGet(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RunAttemptsApiV1RunsRunIdAttemptsGet Run Attempts
 	//
@@ -14181,6 +14201,23 @@ func (c *Client) UpdateRunApiV1RunsRunIdPatchWithBody(ctx context.Context, runId
 // Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 func (c *Client) UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRunApiV1RunsRunIdPatchRequest(c.Server, runId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RunAgentApiV1RunsRunIdAgentGet Run Agent
+//
+// The agent configuration the run executes: its revision with the run's override applied.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+func (c *Client) RunAgentApiV1RunsRunIdAgentGet(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRunAgentApiV1RunsRunIdAgentGetRequest(c.Server, runId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -25067,6 +25104,55 @@ func NewUpdateRunApiV1RunsRunIdPatchRequestWithBody(server string, runId string,
 	return req, nil
 }
 
+// NewRunAgentApiV1RunsRunIdAgentGetRequest constructs an http.Request for the RunAgentApiV1RunsRunIdAgentGet method
+func NewRunAgentApiV1RunsRunIdAgentGetRequest(server string, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/agent", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest constructs an http.Request for the RunAttemptsApiV1RunsRunIdAttemptsGet method
 func NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest(server string, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams) (*http.Request, error) {
 	var err error
@@ -33699,6 +33785,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 	UpdateRunApiV1RunsRunIdPatchWithResponse(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRunApiV1RunsRunIdPatchResponse, error)
+
+	// RunAgentApiV1RunsRunIdAgentGetWithResponse Run Agent
+	//
+	// The agent configuration the run executes: its revision with the run's override applied.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+	RunAgentApiV1RunsRunIdAgentGetWithResponse(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*RunAgentApiV1RunsRunIdAgentGetResponse, error)
 
 	// RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse Run Attempts
 	//
@@ -44038,6 +44133,75 @@ func (r UpdateRunApiV1RunsRunIdPatchResponse) ContentType() string {
 	return ""
 }
 
+// RunAgentApiV1RunsRunIdAgentGetResponse400Headers the declared response headers of an HTTP 400 response for RunAgentApiV1RunsRunIdAgentGet
+type RunAgentApiV1RunsRunIdAgentGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders the declared response headers of an HTTP default response for RunAgentApiV1RunsRunIdAgentGet
+type RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RunAgentApiV1RunsRunIdAgentGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunAgent
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RunAgentApiV1RunsRunIdAgentGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSON200() *RunAgent {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // RunAttemptsApiV1RunsRunIdAttemptsGetResponse400Headers the declared response headers of an HTTP 400 response for RunAttemptsApiV1RunsRunIdAttemptsGet
 type RunAttemptsApiV1RunsRunIdAttemptsGetResponse400Headers struct {
 	XRequestId *string
@@ -54070,6 +54234,21 @@ func (c *ClientWithResponses) UpdateRunApiV1RunsRunIdPatchWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseUpdateRunApiV1RunsRunIdPatchResponse(rsp)
+}
+
+// RunAgentApiV1RunsRunIdAgentGetWithResponse Run Agent
+//
+// The agent configuration the run executes: its revision with the run's override applied.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+func (c *ClientWithResponses) RunAgentApiV1RunsRunIdAgentGetWithResponse(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*RunAgentApiV1RunsRunIdAgentGetResponse, error) {
+	rsp, err := c.RunAgentApiV1RunsRunIdAgentGet(ctx, runId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRunAgentApiV1RunsRunIdAgentGetResponse(rsp)
 }
 
 // RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse Run Attempts
@@ -64453,6 +64632,69 @@ func ParseUpdateRunApiV1RunsRunIdPatchResponse(rsp *http.Response) (*UpdateRunAp
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateRunApiV1RunsRunIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRunAgentApiV1RunsRunIdAgentGetResponse parses an HTTP response from a RunAgentApiV1RunsRunIdAgentGetWithResponse call
+func ParseRunAgentApiV1RunsRunIdAgentGetResponse(rsp *http.Response) (*RunAgentApiV1RunsRunIdAgentGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RunAgentApiV1RunsRunIdAgentGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunAgent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RunAgentApiV1RunsRunIdAgentGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
