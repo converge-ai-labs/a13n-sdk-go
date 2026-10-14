@@ -464,6 +464,27 @@ func (e ClientToolDefinitionPermission) Valid() bool {
 	}
 }
 
+// Defines values for ComputerCheckStatus.
+const (
+	ComputerCheckStatusChecked     ComputerCheckStatus = "checked"
+	ComputerCheckStatusNotReady    ComputerCheckStatus = "not_ready"
+	ComputerCheckStatusUnsupported ComputerCheckStatus = "unsupported"
+)
+
+// Valid indicates whether the value is a known member of the ComputerCheckStatus enum.
+func (e ComputerCheckStatus) Valid() bool {
+	switch e {
+	case ComputerCheckStatusChecked:
+		return true
+	case ComputerCheckStatusNotReady:
+		return true
+	case ComputerCheckStatusUnsupported:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ConnectionAuth.
 const (
 	ConnectionAuthAccount ConnectionAuth = "account"
@@ -716,6 +737,135 @@ func (e EntryViewKind) Valid() bool {
 	case EntryViewKindChildResult:
 		return true
 	case EntryViewKindMessage:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EnvironmentAction.
+const (
+	EnvironmentComputerClick       EnvironmentAction = "environment.computer.click"
+	EnvironmentComputerDescribe    EnvironmentAction = "environment.computer.describe"
+	EnvironmentComputerDrag        EnvironmentAction = "environment.computer.drag"
+	EnvironmentComputerMove        EnvironmentAction = "environment.computer.move"
+	EnvironmentComputerObserve     EnvironmentAction = "environment.computer.observe"
+	EnvironmentComputerPressKeys   EnvironmentAction = "environment.computer.press_keys"
+	EnvironmentComputerScroll      EnvironmentAction = "environment.computer.scroll"
+	EnvironmentComputerTypeText    EnvironmentAction = "environment.computer.type_text"
+	EnvironmentFileCopyDestination EnvironmentAction = "environment.file.copy_destination"
+	EnvironmentFileCopySource      EnvironmentAction = "environment.file.copy_source"
+	EnvironmentFileList            EnvironmentAction = "environment.file.list"
+	EnvironmentFileMkdir           EnvironmentAction = "environment.file.mkdir"
+	EnvironmentFileMove            EnvironmentAction = "environment.file.move"
+	EnvironmentFilePatchText       EnvironmentAction = "environment.file.patch_text"
+	EnvironmentFileQuery           EnvironmentAction = "environment.file.query"
+	EnvironmentFileReadBytes       EnvironmentAction = "environment.file.read_bytes"
+	EnvironmentFileReadText        EnvironmentAction = "environment.file.read_text"
+	EnvironmentFileRemove          EnvironmentAction = "environment.file.remove"
+	EnvironmentFileSearchText      EnvironmentAction = "environment.file.search_text"
+	EnvironmentFileStat            EnvironmentAction = "environment.file.stat"
+	EnvironmentFileWriteBytes      EnvironmentAction = "environment.file.write_bytes"
+	EnvironmentFileWriteText       EnvironmentAction = "environment.file.write_text"
+	EnvironmentOutputRead          EnvironmentAction = "environment.output.read"
+	EnvironmentOutputRelease       EnvironmentAction = "environment.output.release"
+	EnvironmentPortInspect         EnvironmentAction = "environment.port.inspect"
+	EnvironmentPortWait            EnvironmentAction = "environment.port.wait"
+	EnvironmentProcessCloseStdin   EnvironmentAction = "environment.process.close_stdin"
+	EnvironmentProcessInspect      EnvironmentAction = "environment.process.inspect"
+	EnvironmentProcessKill         EnvironmentAction = "environment.process.kill"
+	EnvironmentProcessList         EnvironmentAction = "environment.process.list"
+	EnvironmentProcessReadOutput   EnvironmentAction = "environment.process.read_output"
+	EnvironmentProcessRelease      EnvironmentAction = "environment.process.release"
+	EnvironmentProcessSignal       EnvironmentAction = "environment.process.signal"
+	EnvironmentProcessStart        EnvironmentAction = "environment.process.start"
+	EnvironmentProcessWait         EnvironmentAction = "environment.process.wait"
+	EnvironmentProcessWriteStdin   EnvironmentAction = "environment.process.write_stdin"
+	EnvironmentShellExec           EnvironmentAction = "environment.shell.exec"
+	EnvironmentStateExport         EnvironmentAction = "environment.state.export"
+	EnvironmentStateRestore        EnvironmentAction = "environment.state.restore"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentAction enum.
+func (e EnvironmentAction) Valid() bool {
+	switch e {
+	case EnvironmentComputerClick:
+		return true
+	case EnvironmentComputerDescribe:
+		return true
+	case EnvironmentComputerDrag:
+		return true
+	case EnvironmentComputerMove:
+		return true
+	case EnvironmentComputerObserve:
+		return true
+	case EnvironmentComputerPressKeys:
+		return true
+	case EnvironmentComputerScroll:
+		return true
+	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentFileCopyDestination:
+		return true
+	case EnvironmentFileCopySource:
+		return true
+	case EnvironmentFileList:
+		return true
+	case EnvironmentFileMkdir:
+		return true
+	case EnvironmentFileMove:
+		return true
+	case EnvironmentFilePatchText:
+		return true
+	case EnvironmentFileQuery:
+		return true
+	case EnvironmentFileReadBytes:
+		return true
+	case EnvironmentFileReadText:
+		return true
+	case EnvironmentFileRemove:
+		return true
+	case EnvironmentFileSearchText:
+		return true
+	case EnvironmentFileStat:
+		return true
+	case EnvironmentFileWriteBytes:
+		return true
+	case EnvironmentFileWriteText:
+		return true
+	case EnvironmentOutputRead:
+		return true
+	case EnvironmentOutputRelease:
+		return true
+	case EnvironmentPortInspect:
+		return true
+	case EnvironmentPortWait:
+		return true
+	case EnvironmentProcessCloseStdin:
+		return true
+	case EnvironmentProcessInspect:
+		return true
+	case EnvironmentProcessKill:
+		return true
+	case EnvironmentProcessList:
+		return true
+	case EnvironmentProcessReadOutput:
+		return true
+	case EnvironmentProcessRelease:
+		return true
+	case EnvironmentProcessSignal:
+		return true
+	case EnvironmentProcessStart:
+		return true
+	case EnvironmentProcessWait:
+		return true
+	case EnvironmentProcessWriteStdin:
+		return true
+	case EnvironmentShellExec:
+		return true
+	case EnvironmentStateExport:
+		return true
+	case EnvironmentStateRestore:
 		return true
 	default:
 		return false
@@ -1769,6 +1919,7 @@ func (e ToolRiskLevel) Valid() bool {
 // Defines values for ToolsetKey.
 const (
 	ToolsetKeyAssets        ToolsetKey = "assets"
+	ToolsetKeyComputer      ToolsetKey = "computer"
 	ToolsetKeyConfiguration ToolsetKey = "configuration"
 	ToolsetKeyFiles         ToolsetKey = "files"
 	ToolsetKeyFindings      ToolsetKey = "findings"
@@ -1782,6 +1933,8 @@ const (
 func (e ToolsetKey) Valid() bool {
 	switch e {
 	case ToolsetKeyAssets:
+		return true
+	case ToolsetKeyComputer:
 		return true
 	case ToolsetKeyConfiguration:
 		return true
@@ -2687,6 +2840,18 @@ type ClientToolDefinition struct {
 // ClientToolDefinitionPermission defines model for ClientToolDefinition.Permission.
 type ClientToolDefinitionPermission string
 
+// ComputerCheck A point-in-time capability probe, not an Agent or mount permission grant.
+type ComputerCheck struct {
+	DisplayCount *int                 `json:"display_count,omitempty"`
+	InputReady   *bool                `json:"input_ready,omitempty"`
+	ObserveReady *bool                `json:"observe_ready,omitempty"`
+	Operations   *[]EnvironmentAction `json:"operations,omitempty"`
+	Status       ComputerCheckStatus  `json:"status"`
+}
+
+// ComputerCheckStatus defines model for ComputerCheck.Status.
+type ComputerCheckStatus string
+
 // Connection defines model for Connection.
 type Connection struct {
 	Auth                   ConnectionAuth                           `json:"auth"`
@@ -2965,6 +3130,9 @@ type EntryView struct {
 // EntryViewKind defines model for EntryView.Kind.
 type EntryViewKind string
 
+// EnvironmentAction Exact authorization values in the locked first-party catalog.
+type EnvironmentAction string
+
 // EnvironmentFailure The last error of the outstanding operation or, on a ready instance, of its last renewal.
 //
 // `unknown` means the call may have taken effect: only the same operation may continue. `permanent` failures
@@ -2981,15 +3149,26 @@ type EnvironmentFailure struct {
 
 // EnvironmentMount defines model for EnvironmentMount.
 type EnvironmentMount struct {
-	EnvironmentId    string                    `json:"environment_id"`
-	Name             string                    `json:"name"`
-	WorkingDirectory nullable.Nullable[string] `json:"working_directory,omitempty"`
+	EnvironmentId     string                          `json:"environment_id"`
+	Name              string                          `json:"name"`
+	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
 }
 
 // EnvironmentPage defines model for EnvironmentPage.
 type EnvironmentPage struct {
 	Items      []EnvironmentView         `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// EnvironmentPermissionSetInput defines model for EnvironmentPermissionSet-Input.
+type EnvironmentPermissionSetInput struct {
+	Operations *[]EnvironmentAction `json:"operations,omitempty"`
+}
+
+// EnvironmentPermissionSetOutput defines model for EnvironmentPermissionSet-Output.
+type EnvironmentPermissionSetOutput struct {
+	Operations *[]EnvironmentAction `json:"operations,omitempty"`
 }
 
 // EnvironmentUpdate Fields left out stay unchanged. Only an external target has an endpoint and token; a new endpoint comes with
@@ -3909,9 +4088,10 @@ type ModelUsagePage struct {
 
 // MountCreate defines model for MountCreate.
 type MountCreate struct {
-	EnvironmentId    string                    `json:"environment_id"`
-	Name             string                    `json:"name"`
-	WorkingDirectory nullable.Nullable[string] `json:"working_directory,omitempty"`
+	EnvironmentId     string                         `json:"environment_id"`
+	Name              string                         `json:"name"`
+	PermissionCeiling *EnvironmentPermissionSetInput `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]      `json:"working_directory,omitempty"`
 }
 
 // MountPage defines model for MountPage.
@@ -3920,11 +4100,17 @@ type MountPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
 }
 
+// MountUpdate defines model for MountUpdate.
+type MountUpdate struct {
+	PermissionCeiling EnvironmentPermissionSetInput `json:"permission_ceiling"`
+}
+
 // MountView defines model for MountView.
 type MountView struct {
-	EnvironmentId    string                    `json:"environment_id"`
-	Name             string                    `json:"name"`
-	WorkingDirectory nullable.Nullable[string] `json:"working_directory"`
+	EnvironmentId     string                          `json:"environment_id"`
+	Name              string                          `json:"name"`
+	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory"`
 }
 
 // NewThread defines model for NewThread.
@@ -5699,6 +5885,12 @@ type UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams defines parameters for CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost.
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams defines parameters for StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost.
 type StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
@@ -6223,6 +6415,12 @@ type ForkRunApiV1RunsRunIdForkPostParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// RunImageApiV1RunsRunIdImagesImageIdGetParams defines parameters for RunImageApiV1RunsRunIdImagesImageIdGet.
+type RunImageApiV1RunsRunIdImagesImageIdGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // InterruptRunApiV1RunsRunIdInterruptPostParams defines parameters for InterruptRunApiV1RunsRunIdInterruptPost.
 type InterruptRunApiV1RunsRunIdInterruptPostParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -6524,6 +6722,15 @@ type AddMountApiV1ThreadsThreadIdEnvironmentsPostParams struct {
 
 // RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams defines parameters for RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete.
 type RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams defines parameters for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch.
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
@@ -7091,6 +7298,9 @@ type UpdateThreadApiV1ThreadsThreadIdPatchJSONRequestBody = ThreadUpdate
 
 // AddMountApiV1ThreadsThreadIdEnvironmentsPostJSONRequestBody defines body for AddMountApiV1ThreadsThreadIdEnvironmentsPost for application/json ContentType.
 type AddMountApiV1ThreadsThreadIdEnvironmentsPostJSONRequestBody = MountCreate
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody defines body for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch for application/json ContentType.
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody = MountUpdate
 
 // SubmitMessageApiV1ThreadsThreadIdInboxPostJSONRequestBody defines body for SubmitMessageApiV1ThreadsThreadIdInboxPost for application/json ContentType.
 type SubmitMessageApiV1ThreadsThreadIdInboxPostJSONRequestBody = Message
@@ -9280,6 +9490,13 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/environments/{environment_id} (the `UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch` operationId).
 	UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch(ctx context.Context, environmentId string, params *UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams, body UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost Check Computer
+	//
+	// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+	CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost Stop Environment
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/stop (the `StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost` operationId).
@@ -9989,6 +10206,13 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/runs/{run_id}/fork (the `ForkRunApiV1RunsRunIdForkPost` operationId).
 	ForkRunApiV1RunsRunIdForkPost(ctx context.Context, runId string, params *ForkRunApiV1RunsRunIdForkPostParams, body ForkRunApiV1RunsRunIdForkPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RunImageApiV1RunsRunIdImagesImageIdGet Run Image
+	//
+	// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+	RunImageApiV1RunsRunIdImagesImageIdGet(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// InterruptRunApiV1RunsRunIdInterruptPost Interrupt Run
 	//
 	// Corresponds with POST /api/v1/runs/{run_id}/interrupt (the `InterruptRunApiV1RunsRunIdInterruptPost` operationId).
@@ -10321,6 +10545,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with DELETE /api/v1/threads/{thread_id}/environments/{name} (the `RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete` operationId).
 	RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete(ctx context.Context, threadId string, name string, params *RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody Update Mount
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch Update Mount
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListInboxApiV1ThreadsThreadIdInboxGet List Inbox
 	//
@@ -12259,6 +12497,23 @@ func (c *Client) UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch(ctx contex
 	return c.Client.Do(req)
 }
 
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost Check Computer
+//
+// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+func (c *Client) CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost Stop Environment
 //
 // Corresponds with POST /api/v1/environments/{environment_id}/stop (the `StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost` operationId).
@@ -14038,6 +14293,23 @@ func (c *Client) ForkRunApiV1RunsRunIdForkPost(ctx context.Context, runId string
 	return c.Client.Do(req)
 }
 
+// RunImageApiV1RunsRunIdImagesImageIdGet Run Image
+//
+// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+func (c *Client) RunImageApiV1RunsRunIdImagesImageIdGet(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRunImageApiV1RunsRunIdImagesImageIdGetRequest(c.Server, runId, imageId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // InterruptRunApiV1RunsRunIdInterruptPost Interrupt Run
 //
 // Corresponds with POST /api/v1/runs/{run_id}/interrupt (the `InterruptRunApiV1RunsRunIdInterruptPost` operationId).
@@ -14851,6 +15123,40 @@ func (c *Client) AddMountApiV1ThreadsThreadIdEnvironmentsPost(ctx context.Contex
 // Corresponds with DELETE /api/v1/threads/{thread_id}/environments/{name} (the `RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete` operationId).
 func (c *Client) RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete(ctx context.Context, threadId string, name string, params *RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteRequest(c.Server, threadId, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody Update Mount
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *Client) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody(c.Server, threadId, name, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch Update Mount
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *Client) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequest(c.Server, threadId, name, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -19966,6 +20272,55 @@ func NewUpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchRequestWithBody(serv
 	return req, nil
 }
 
+// NewCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostRequest constructs an http.Request for the CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost method
+func NewCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostRequest(server string, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/computer/check", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewStopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostRequest constructs an http.Request for the StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost method
 func NewStopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostRequest(server string, environmentId string, params *StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostParams) (*http.Request, error) {
 	var err error
@@ -25039,6 +25394,62 @@ func NewForkRunApiV1RunsRunIdForkPostRequestWithBody(server string, runId string
 	return req, nil
 }
 
+// NewRunImageApiV1RunsRunIdImagesImageIdGetRequest constructs an http.Request for the RunImageApiV1RunsRunIdImagesImageIdGet method
+func NewRunImageApiV1RunsRunIdImagesImageIdGetRequest(server string, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "image_id", imageId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/images/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewInterruptRunApiV1RunsRunIdInterruptPostRequest constructs an http.Request for the InterruptRunApiV1RunsRunIdInterruptPost method
 func NewInterruptRunApiV1RunsRunIdInterruptPostRequest(server string, runId string, params *InterruptRunApiV1RunsRunIdInterruptPostParams) (*http.Request, error) {
 	var err error
@@ -27609,6 +28020,86 @@ func NewRemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteRequest(server stri
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequest calls the generic UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch builder with application/json body
+func NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequest(server string, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody(server, threadId, name, params, "application/json", bodyReader)
+}
+
+// NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody constructs an http.Request for the UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch method, with any body, and a specified content type
+func NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody(server string, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/threads/%s/environments/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -32441,6 +32932,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/environments/{environment_id} (the `UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch` operationId).
 	UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchWithResponse(ctx context.Context, environmentId string, params *UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams, body UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse, error)
 
+	// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse Check Computer
+	//
+	// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+	CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse, error)
+
 	// StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostWithResponse Stop Environment
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -33250,6 +33750,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/runs/{run_id}/fork (the `ForkRunApiV1RunsRunIdForkPost` operationId).
 	ForkRunApiV1RunsRunIdForkPostWithResponse(ctx context.Context, runId string, params *ForkRunApiV1RunsRunIdForkPostParams, body ForkRunApiV1RunsRunIdForkPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ForkRunApiV1RunsRunIdForkPostResponse, error)
 
+	// RunImageApiV1RunsRunIdImagesImageIdGetWithResponse Run Image
+	//
+	// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+	RunImageApiV1RunsRunIdImagesImageIdGetWithResponse(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*RunImageApiV1RunsRunIdImagesImageIdGetResponse, error)
+
 	// InterruptRunApiV1RunsRunIdInterruptPostWithResponse Interrupt Run
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -33632,6 +34141,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with DELETE /api/v1/threads/{thread_id}/environments/{name} (the `RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete` operationId).
 	RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteWithResponse(ctx context.Context, threadId string, name string, params *RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams, reqEditors ...RequestEditorFn) (*RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse, error)
+
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse Update Mount
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error)
+
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse Update Mount
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error)
 
 	// ListInboxApiV1ThreadsThreadIdInboxGetWithResponse List Inbox
 	//
@@ -38383,6 +38906,75 @@ func (r UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse) StatusCode
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers the declared response headers of an HTTP 400 response for CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders the declared response headers of an HTTP default response for CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ComputerCheck
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetJSON200() *ComputerCheck {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -43798,6 +44390,68 @@ func (r ForkRunApiV1RunsRunIdForkPostResponse) ContentType() string {
 	return ""
 }
 
+// RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers the declared response headers of an HTTP 400 response for RunImageApiV1RunsRunIdImagesImageIdGet
+type RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for RunImageApiV1RunsRunIdImagesImageIdGet
+type RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RunImageApiV1RunsRunIdImagesImageIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // InterruptRunApiV1RunsRunIdInterruptPostResponse400Headers the declared response headers of an HTTP 400 response for InterruptRunApiV1RunsRunIdInterruptPost
 type InterruptRunApiV1RunsRunIdInterruptPostResponse400Headers struct {
 	XRequestId *string
@@ -46331,6 +46985,75 @@ func (r RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse) StatusCod
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers the declared response headers of an HTTP 400 response for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MountView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetJSON200() *MountView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -51969,6 +52692,21 @@ func (c *ClientWithResponses) UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPat
 	return ParseUpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse(rsp)
 }
 
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse Check Computer
+//
+// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+func (c *ClientWithResponses) CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse, error) {
+	rsp, err := c.CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse(rsp)
+}
+
 // StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostWithResponse Stop Environment
 //
 // Returns a wrapper object for the known response body format(s).
@@ -53420,6 +54158,21 @@ func (c *ClientWithResponses) ForkRunApiV1RunsRunIdForkPostWithResponse(ctx cont
 	return ParseForkRunApiV1RunsRunIdForkPostResponse(rsp)
 }
 
+// RunImageApiV1RunsRunIdImagesImageIdGetWithResponse Run Image
+//
+// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+func (c *ClientWithResponses) RunImageApiV1RunsRunIdImagesImageIdGetWithResponse(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*RunImageApiV1RunsRunIdImagesImageIdGetResponse, error) {
+	rsp, err := c.RunImageApiV1RunsRunIdImagesImageIdGet(ctx, runId, imageId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRunImageApiV1RunsRunIdImagesImageIdGetResponse(rsp)
+}
+
 // InterruptRunApiV1RunsRunIdInterruptPostWithResponse Interrupt Run
 //
 // Returns a wrapper object for the known response body format(s).
@@ -54095,6 +54848,32 @@ func (c *ClientWithResponses) RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDel
 		return nil, err
 	}
 	return ParseRemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse(rsp)
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse Update Mount
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *ClientWithResponses) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error) {
+	rsp, err := c.UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody(ctx, threadId, name, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse(rsp)
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse Update Mount
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *ClientWithResponses) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error) {
+	rsp, err := c.UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch(ctx, threadId, name, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse(rsp)
 }
 
 // ListInboxApiV1ThreadsThreadIdInboxGetWithResponse List Inbox
@@ -58989,6 +59768,69 @@ func ParseUpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse(rsp *http
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse parses an HTTP response from a CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse call
+func ParseCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse(rsp *http.Response) (*CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ComputerCheck
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -63946,6 +64788,62 @@ func ParseForkRunApiV1RunsRunIdForkPostResponse(rsp *http.Response) (*ForkRunApi
 	return response, nil
 }
 
+// ParseRunImageApiV1RunsRunIdImagesImageIdGetResponse parses an HTTP response from a RunImageApiV1RunsRunIdImagesImageIdGetWithResponse call
+func ParseRunImageApiV1RunsRunIdImagesImageIdGetResponse(rsp *http.Response) (*RunImageApiV1RunsRunIdImagesImageIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RunImageApiV1RunsRunIdImagesImageIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseInterruptRunApiV1RunsRunIdInterruptPostResponse parses an HTTP response from a InterruptRunApiV1RunsRunIdInterruptPostWithResponse call
 func ParseInterruptRunApiV1RunsRunIdInterruptPostResponse(rsp *http.Response) (*InterruptRunApiV1RunsRunIdInterruptPostResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -66256,6 +67154,69 @@ func ParseRemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse(rsp *htt
 		response.Headers400 = &headers
 	case true:
 		var headers RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse parses an HTTP response from a UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse call
+func ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse(rsp *http.Response) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MountView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
