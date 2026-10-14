@@ -38,6 +38,21 @@ func (e AgentPresetKind) Valid() bool {
 	}
 }
 
+// Defines values for AgentConfigInputBuiltinSkills.
+const (
+	AgentConfigInputBuiltinSkillsPlatformOperations AgentConfigInputBuiltinSkills = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the AgentConfigInputBuiltinSkills enum.
+func (e AgentConfigInputBuiltinSkills) Valid() bool {
+	switch e {
+	case AgentConfigInputBuiltinSkillsPlatformOperations:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentConfigInputSubagentMode.
 const (
 	AgentConfigInputSubagentModeAsync  AgentConfigInputSubagentMode = "async"
@@ -56,6 +71,21 @@ func (e AgentConfigInputSubagentMode) Valid() bool {
 	}
 }
 
+// Defines values for AgentConfigOutputBuiltinSkills.
+const (
+	AgentConfigOutputBuiltinSkillsPlatformOperations AgentConfigOutputBuiltinSkills = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the AgentConfigOutputBuiltinSkills enum.
+func (e AgentConfigOutputBuiltinSkills) Valid() bool {
+	switch e {
+	case AgentConfigOutputBuiltinSkillsPlatformOperations:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentConfigOutputSubagentMode.
 const (
 	AgentConfigOutputSubagentModeAsync  AgentConfigOutputSubagentMode = "async"
@@ -68,6 +98,36 @@ func (e AgentConfigOutputSubagentMode) Valid() bool {
 	case AgentConfigOutputSubagentModeAsync:
 		return true
 	case AgentConfigOutputSubagentModeInline:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentOverrideInputBuiltinSkills.
+const (
+	AgentOverrideInputBuiltinSkillsPlatformOperations AgentOverrideInputBuiltinSkills = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the AgentOverrideInputBuiltinSkills enum.
+func (e AgentOverrideInputBuiltinSkills) Valid() bool {
+	switch e {
+	case AgentOverrideInputBuiltinSkillsPlatformOperations:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentOverrideOutputBuiltinSkills.
+const (
+	AgentOverrideOutputBuiltinSkillsPlatformOperations AgentOverrideOutputBuiltinSkills = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the AgentOverrideOutputBuiltinSkills enum.
+func (e AgentOverrideOutputBuiltinSkills) Valid() bool {
+	switch e {
+	case AgentOverrideOutputBuiltinSkillsPlatformOperations:
 		return true
 	default:
 		return false
@@ -1214,6 +1274,81 @@ func (e OperationKind) Valid() bool {
 	}
 }
 
+// Defines values for PlatformGroup.
+const (
+	PlatformGroupAgents               PlatformGroup = "agents"
+	PlatformGroupConnections          PlatformGroup = "connections"
+	PlatformGroupEnvironmentTemplates PlatformGroup = "environment_templates"
+	PlatformGroupExecution            PlatformGroup = "execution"
+	PlatformGroupModels               PlatformGroup = "models"
+	PlatformGroupProviders            PlatformGroup = "providers"
+	PlatformGroupSkills               PlatformGroup = "skills"
+)
+
+// Valid indicates whether the value is a known member of the PlatformGroup enum.
+func (e PlatformGroup) Valid() bool {
+	switch e {
+	case PlatformGroupAgents:
+		return true
+	case PlatformGroupConnections:
+		return true
+	case PlatformGroupEnvironmentTemplates:
+		return true
+	case PlatformGroupExecution:
+		return true
+	case PlatformGroupModels:
+		return true
+	case PlatformGroupProviders:
+		return true
+	case PlatformGroupSkills:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PlatformSelectionReadPermission.
+const (
+	PlatformSelectionReadPermissionAllow PlatformSelectionReadPermission = "allow"
+	PlatformSelectionReadPermissionAsk   PlatformSelectionReadPermission = "ask"
+	PlatformSelectionReadPermissionDeny  PlatformSelectionReadPermission = "deny"
+)
+
+// Valid indicates whether the value is a known member of the PlatformSelectionReadPermission enum.
+func (e PlatformSelectionReadPermission) Valid() bool {
+	switch e {
+	case PlatformSelectionReadPermissionAllow:
+		return true
+	case PlatformSelectionReadPermissionAsk:
+		return true
+	case PlatformSelectionReadPermissionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PlatformSelectionWritePermission.
+const (
+	PlatformSelectionWritePermissionAllow PlatformSelectionWritePermission = "allow"
+	PlatformSelectionWritePermissionAsk   PlatformSelectionWritePermission = "ask"
+	PlatformSelectionWritePermissionDeny  PlatformSelectionWritePermission = "deny"
+)
+
+// Valid indicates whether the value is a known member of the PlatformSelectionWritePermission enum.
+func (e PlatformSelectionWritePermission) Valid() bool {
+	switch e {
+	case PlatformSelectionWritePermissionAllow:
+		return true
+	case PlatformSelectionWritePermissionAsk:
+		return true
+	case PlatformSelectionWritePermissionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Preset.
 const (
 	PresetAnswer    Preset = "answer"
@@ -1925,6 +2060,36 @@ func (e ListProviderTypesApiV1ProviderTypesKindGetParamsKind) Valid() bool {
 	}
 }
 
+// Defines values for ListRunsApiV1RunsGetParamsStatus.
+const (
+	ListRunsApiV1RunsGetParamsStatusAccepted  ListRunsApiV1RunsGetParamsStatus = "accepted"
+	ListRunsApiV1RunsGetParamsStatusCancelled ListRunsApiV1RunsGetParamsStatus = "cancelled"
+	ListRunsApiV1RunsGetParamsStatusCompleted ListRunsApiV1RunsGetParamsStatus = "completed"
+	ListRunsApiV1RunsGetParamsStatusFailed    ListRunsApiV1RunsGetParamsStatus = "failed"
+	ListRunsApiV1RunsGetParamsStatusRunning   ListRunsApiV1RunsGetParamsStatus = "running"
+	ListRunsApiV1RunsGetParamsStatusWaiting   ListRunsApiV1RunsGetParamsStatus = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the ListRunsApiV1RunsGetParamsStatus enum.
+func (e ListRunsApiV1RunsGetParamsStatus) Valid() bool {
+	switch e {
+	case ListRunsApiV1RunsGetParamsStatusAccepted:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusCancelled:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusCompleted:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusFailed:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusRunning:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListSkillsApiV1SkillsGetParamsSource.
 const (
 	ListSkillsApiV1SkillsGetParamsSourceGithub ListSkillsApiV1SkillsGetParamsSource = "github"
@@ -1973,11 +2138,12 @@ type AgentPresetKind string
 
 // AgentConfigInput defines model for AgentConfig-Input.
 type AgentConfigInput struct {
-	ClientTools                  *[]ClientToolDefinition   `json:"client_tools,omitempty"`
-	ConnectionTools              *[]ConnectionSelection    `json:"connection_tools,omitempty"`
-	DefaultEnvironmentTemplateId nullable.Nullable[string] `json:"default_environment_template_id,omitempty"`
-	Instructions                 *string                   `json:"instructions,omitempty"`
-	LazyEnvironment              *bool                     `json:"lazy_environment,omitempty"`
+	BuiltinSkills                *[]AgentConfigInputBuiltinSkills `json:"builtin_skills,omitempty"`
+	ClientTools                  *[]ClientToolDefinition          `json:"client_tools,omitempty"`
+	ConnectionTools              *[]ConnectionSelection           `json:"connection_tools,omitempty"`
+	DefaultEnvironmentTemplateId nullable.Nullable[string]        `json:"default_environment_template_id,omitempty"`
+	Instructions                 *string                          `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                            `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
@@ -1985,30 +2151,37 @@ type AgentConfigInput struct {
 	Model              string                       `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics       `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue            `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]    `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
-	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
-	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+	ModelCharacteristics *AgentModelCharacteristics    `json:"model_characteristics,omitempty"`
+	ModelSettings        *map[string]JsonValue         `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec] `json:"output_spec,omitempty"`
+
+	// PlatformTools Platform MCP groups selected independently of local operating instructions.
+	PlatformTools *PlatformSelection               `json:"platform_tools,omitempty"`
+	Plugins       *[]PluginSelection               `json:"plugins,omitempty"`
+	Retries       nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
+	Reviewer      nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
+	SkillSync     *SkillSync                       `json:"skill_sync,omitempty"`
+	Skills        *[]SkillSelection                `json:"skills,omitempty"`
+	SubagentMode  *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
+	Subagents     *map[string]interface{}          `json:"subagents,omitempty"`
+	Toolsets      *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
+	UserQuestions *bool                            `json:"user_questions,omitempty"`
 }
+
+// AgentConfigInputBuiltinSkills defines model for AgentConfigInput.BuiltinSkills.
+type AgentConfigInputBuiltinSkills string
 
 // AgentConfigInputSubagentMode defines model for AgentConfigInput.SubagentMode.
 type AgentConfigInputSubagentMode string
 
 // AgentConfigOutput defines model for AgentConfig-Output.
 type AgentConfigOutput struct {
-	ClientTools                  *[]ClientToolDefinition   `json:"client_tools,omitempty"`
-	ConnectionTools              *[]ConnectionSelection    `json:"connection_tools,omitempty"`
-	DefaultEnvironmentTemplateId nullable.Nullable[string] `json:"default_environment_template_id,omitempty"`
-	Instructions                 *string                   `json:"instructions,omitempty"`
-	LazyEnvironment              *bool                     `json:"lazy_environment,omitempty"`
+	BuiltinSkills                *[]AgentConfigOutputBuiltinSkills `json:"builtin_skills,omitempty"`
+	ClientTools                  *[]ClientToolDefinition           `json:"client_tools,omitempty"`
+	ConnectionTools              *[]ConnectionSelection            `json:"connection_tools,omitempty"`
+	DefaultEnvironmentTemplateId nullable.Nullable[string]         `json:"default_environment_template_id,omitempty"`
+	Instructions                 *string                           `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                             `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
@@ -2016,19 +2189,25 @@ type AgentConfigOutput struct {
 	Model              string                       `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics       `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue            `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]    `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
-	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
-	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+	ModelCharacteristics *AgentModelCharacteristics    `json:"model_characteristics,omitempty"`
+	ModelSettings        *map[string]JsonValue         `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec] `json:"output_spec,omitempty"`
+
+	// PlatformTools Platform MCP groups selected independently of local operating instructions.
+	PlatformTools *PlatformSelection               `json:"platform_tools,omitempty"`
+	Plugins       *[]PluginSelection               `json:"plugins,omitempty"`
+	Retries       nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
+	Reviewer      nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
+	SkillSync     *SkillSync                       `json:"skill_sync,omitempty"`
+	Skills        *[]SkillSelection                `json:"skills,omitempty"`
+	SubagentMode  *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
+	Subagents     *map[string]interface{}          `json:"subagents,omitempty"`
+	Toolsets      *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
+	UserQuestions *bool                            `json:"user_questions,omitempty"`
 }
+
+// AgentConfigOutputBuiltinSkills defines model for AgentConfigOutput.BuiltinSkills.
+type AgentConfigOutputBuiltinSkills string
 
 // AgentConfigOutputSubagentMode defines model for AgentConfigOutput.SubagentMode.
 type AgentConfigOutputSubagentMode string
@@ -2061,46 +2240,56 @@ type AgentModelCharacteristics struct {
 // `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
 // edge removes it; every other field replaces the revision's value.
 type AgentOverrideInput struct {
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]AgentOverrideInputBuiltinSkills] `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]            `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]             `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                            `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                              `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]       `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                            `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]         `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]              `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                        `json:"output_spec,omitempty"`
+	PlatformTools        nullable.Nullable[PlatformSelection]                 `json:"platform_tools,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]                 `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]                     `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                     `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                         `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]                  `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[map[string]interface{}]            `json:"subagents,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection]       `json:"toolsets,omitempty"`
 }
+
+// AgentOverrideInputBuiltinSkills defines model for AgentOverrideInput.BuiltinSkills.
+type AgentOverrideInputBuiltinSkills string
 
 // AgentOverrideOutput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
 // `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
 // edge removes it; every other field replaces the revision's value.
 type AgentOverrideOutput struct {
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]AgentOverrideOutputBuiltinSkills] `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]             `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]              `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                             `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                               `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]        `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                             `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]          `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]               `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                         `json:"output_spec,omitempty"`
+	PlatformTools        nullable.Nullable[PlatformSelection]                  `json:"platform_tools,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]                  `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]                      `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                      `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                          `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]                   `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[map[string]interface{}]             `json:"subagents,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection]        `json:"toolsets,omitempty"`
 }
+
+// AgentOverrideOutputBuiltinSkills defines model for AgentOverrideOutput.BuiltinSkills.
+type AgentOverrideOutputBuiltinSkills string
 
 // AgentPage defines model for AgentPage.
 type AgentPage struct {
@@ -3862,6 +4051,22 @@ type PendingCall struct {
 	ToolCallId   ToolCallId                              `json:"tool_call_id"`
 	ToolName     string                                  `json:"tool_name"`
 }
+
+// PlatformGroup defines model for PlatformGroup.
+type PlatformGroup string
+
+// PlatformSelection Platform MCP groups selected independently of local operating instructions.
+type PlatformSelection struct {
+	Groups          *[]PlatformGroup                  `json:"groups,omitempty"`
+	ReadPermission  *PlatformSelectionReadPermission  `json:"read_permission,omitempty"`
+	WritePermission *PlatformSelectionWritePermission `json:"write_permission,omitempty"`
+}
+
+// PlatformSelectionReadPermission defines model for PlatformSelection.ReadPermission.
+type PlatformSelectionReadPermission string
+
+// PlatformSelectionWritePermission defines model for PlatformSelection.WritePermission.
+type PlatformSelectionWritePermission string
 
 // PluginSelection One instance of a Harness plugin factory the deployment installed.
 type PluginSelection struct {
@@ -5949,6 +6154,25 @@ type ListOrganizationWorkspacesApiV1OrganizationsOrganizationIdWorkspacesGetPara
 // ListProviderTypesApiV1ProviderTypesKindGetParamsKind defines parameters for ListProviderTypesApiV1ProviderTypesKindGet.
 type ListProviderTypesApiV1ProviderTypesKindGetParamsKind string
 
+// ListRunsApiV1RunsGetParams defines parameters for ListRunsApiV1RunsGet.
+type ListRunsApiV1RunsGetParams struct {
+	AgentId       *string                           `form:"agent_id,omitempty" json:"agent_id,omitempty"`
+	SessionId     *string                           `form:"session_id,omitempty" json:"session_id,omitempty"`
+	ThreadId      *string                           `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	PrincipalId   *string                           `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Status        *ListRunsApiV1RunsGetParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	CreatedAfter  *time.Time                        `form:"created_after,omitempty" json:"created_after,omitempty"`
+	CreatedBefore *time.Time                        `form:"created_before,omitempty" json:"created_before,omitempty"`
+	Limit         *int                              `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor        *string                           `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListRunsApiV1RunsGetParamsStatus defines parameters for ListRunsApiV1RunsGet.
+type ListRunsApiV1RunsGetParamsStatus string
+
 // GetRunApiV1RunsRunIdGetParams defines parameters for GetRunApiV1RunsRunIdGet.
 type GetRunApiV1RunsRunIdGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -5966,6 +6190,12 @@ type UpdateRunApiV1RunsRunIdPatchParams struct {
 
 // RunAttemptsApiV1RunsRunIdAttemptsGetParams defines parameters for RunAttemptsApiV1RunsRunIdAttemptsGet.
 type RunAttemptsApiV1RunsRunIdAttemptsGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams defines parameters for GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet.
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -9689,6 +9919,11 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypesApiV1ProviderTypesKindGet` operationId).
 	ListProviderTypesApiV1ProviderTypesKindGet(ctx context.Context, kind ListProviderTypesApiV1ProviderTypesKindGetParamsKind, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListRunsApiV1RunsGet List Runs
+	//
+	// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+	ListRunsApiV1RunsGet(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetRunApiV1RunsRunIdGet Get Run
 	//
 	// Corresponds with GET /api/v1/runs/{run_id} (the `GetRunApiV1RunsRunIdGet` operationId).
@@ -9716,6 +9951,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/attempts (the `RunAttemptsApiV1RunsRunIdAttemptsGet` operationId).
 	RunAttemptsApiV1RunsRunIdAttemptsGet(ctx context.Context, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet Get Attempt
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+	GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet List Attempt Spans
 	//
@@ -13628,6 +13868,21 @@ func (c *Client) ListProviderTypesApiV1ProviderTypesKindGet(ctx context.Context,
 	return c.Client.Do(req)
 }
 
+// ListRunsApiV1RunsGet List Runs
+//
+// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+func (c *Client) ListRunsApiV1RunsGet(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRunsApiV1RunsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetRunApiV1RunsRunIdGet Get Run
 //
 // Corresponds with GET /api/v1/runs/{run_id} (the `GetRunApiV1RunsRunIdGet` operationId).
@@ -13686,6 +13941,21 @@ func (c *Client) UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string,
 // Corresponds with GET /api/v1/runs/{run_id}/attempts (the `RunAttemptsApiV1RunsRunIdAttemptsGet` operationId).
 func (c *Client) RunAttemptsApiV1RunsRunIdAttemptsGet(ctx context.Context, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet Get Attempt
+//
+// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+func (c *Client) GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetRequest(c.Server, runId, attemptId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -24155,6 +24425,171 @@ func NewListProviderTypesApiV1ProviderTypesKindGetRequest(server string, kind Li
 	return req, nil
 }
 
+// NewListRunsApiV1RunsGetRequest constructs an http.Request for the ListRunsApiV1RunsGet method
+func NewListRunsApiV1RunsGetRequest(server string, params *ListRunsApiV1RunsGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.AgentId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", *params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SessionId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "session_id", *params.SessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ThreadId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "thread_id", *params.ThreadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CreatedAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_after", *params.CreatedAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CreatedBefore != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_before", *params.CreatedBefore, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetRunApiV1RunsRunIdGetRequest constructs an http.Request for the GetRunApiV1RunsRunIdGet method
 func NewGetRunApiV1RunsRunIdGetRequest(server string, runId string, params *GetRunApiV1RunsRunIdGetParams) (*http.Request, error) {
 	var err error
@@ -24294,6 +24729,62 @@ func NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest(server string, runId string,
 	}
 
 	operationPath := fmt.Sprintf("/api/v1/runs/%s/attempts", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetRequest constructs an http.Request for the GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet method
+func NewGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetRequest(server string, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "attempt_id", attemptId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/attempts/%s", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -32677,6 +33168,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypesApiV1ProviderTypesKindGet` operationId).
 	ListProviderTypesApiV1ProviderTypesKindGetWithResponse(ctx context.Context, kind ListProviderTypesApiV1ProviderTypesKindGetParamsKind, reqEditors ...RequestEditorFn) (*ListProviderTypesApiV1ProviderTypesKindGetResponse, error)
 
+	// ListRunsApiV1RunsGetWithResponse List Runs
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+	ListRunsApiV1RunsGetWithResponse(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*ListRunsApiV1RunsGetResponse, error)
+
 	// GetRunApiV1RunsRunIdGetWithResponse Get Run
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -32708,6 +33206,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/attempts (the `RunAttemptsApiV1RunsRunIdAttemptsGet` operationId).
 	RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse(ctx context.Context, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams, reqEditors ...RequestEditorFn) (*RunAttemptsApiV1RunsRunIdAttemptsGetResponse, error)
+
+	// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse Get Attempt
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+	GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse, error)
 
 	// ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetWithResponse List Attempt Spans
 	//
@@ -42734,6 +43239,75 @@ func (r ListProviderTypesApiV1ProviderTypesKindGetResponse) ContentType() string
 	return ""
 }
 
+// ListRunsApiV1RunsGetResponse400Headers the declared response headers of an HTTP 400 response for ListRunsApiV1RunsGet
+type ListRunsApiV1RunsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListRunsApiV1RunsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListRunsApiV1RunsGet
+type ListRunsApiV1RunsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListRunsApiV1RunsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListRunsApiV1RunsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListRunsApiV1RunsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListRunsApiV1RunsGetResponse) GetJSON200() *RunPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListRunsApiV1RunsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListRunsApiV1RunsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListRunsApiV1RunsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListRunsApiV1RunsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListRunsApiV1RunsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListRunsApiV1RunsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetRunApiV1RunsRunIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetRunApiV1RunsRunIdGet
 type GetRunApiV1RunsRunIdGetResponse400Headers struct {
 	XRequestId *string
@@ -42935,6 +43509,75 @@ func (r RunAttemptsApiV1RunsRunIdAttemptsGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r RunAttemptsApiV1RunsRunIdAttemptsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AttemptView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetJSON200() *AttemptView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -52635,6 +53278,19 @@ func (c *ClientWithResponses) ListProviderTypesApiV1ProviderTypesKindGetWithResp
 	return ParseListProviderTypesApiV1ProviderTypesKindGetResponse(rsp)
 }
 
+// ListRunsApiV1RunsGetWithResponse List Runs
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+func (c *ClientWithResponses) ListRunsApiV1RunsGetWithResponse(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*ListRunsApiV1RunsGetResponse, error) {
+	rsp, err := c.ListRunsApiV1RunsGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListRunsApiV1RunsGetResponse(rsp)
+}
+
 // GetRunApiV1RunsRunIdGetWithResponse Get Run
 //
 // Returns a wrapper object for the known response body format(s).
@@ -52689,6 +53345,19 @@ func (c *ClientWithResponses) RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse(c
 		return nil, err
 	}
 	return ParseRunAttemptsApiV1RunsRunIdAttemptsGetResponse(rsp)
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse Get Attempt
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+func (c *ClientWithResponses) GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse, error) {
+	rsp, err := c.GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx, runId, attemptId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse(rsp)
 }
 
 // ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetWithResponse List Attempt Spans
@@ -62766,6 +63435,69 @@ func ParseListProviderTypesApiV1ProviderTypesKindGetResponse(rsp *http.Response)
 	return response, nil
 }
 
+// ParseListRunsApiV1RunsGetResponse parses an HTTP response from a ListRunsApiV1RunsGetWithResponse call
+func ParseListRunsApiV1RunsGetResponse(rsp *http.Response) (*ListRunsApiV1RunsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListRunsApiV1RunsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListRunsApiV1RunsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListRunsApiV1RunsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetRunApiV1RunsRunIdGetResponse parses an HTTP response from a GetRunApiV1RunsRunIdGetWithResponse call
 func ParseGetRunApiV1RunsRunIdGetResponse(rsp *http.Response) (*GetRunApiV1RunsRunIdGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -62942,6 +63674,69 @@ func ParseRunAttemptsApiV1RunsRunIdAttemptsGetResponse(rsp *http.Response) (*Run
 		response.Headers400 = &headers
 	case true:
 		var headers RunAttemptsApiV1RunsRunIdAttemptsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse parses an HTTP response from a GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse call
+func ParseGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse(rsp *http.Response) (*GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AttemptView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
