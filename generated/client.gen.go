@@ -3171,6 +3171,14 @@ type EnvironmentPermissionSetOutput struct {
 	Operations *[]EnvironmentAction `json:"operations,omitempty"`
 }
 
+// EnvironmentProviderReferences defines model for EnvironmentProviderReferences.
+type EnvironmentProviderReferences struct {
+	EnvironmentCount int                 `json:"environment_count"`
+	Environments     []ProviderReference `json:"environments"`
+	TemplateCount    int                 `json:"template_count"`
+	Templates        []ProviderReference `json:"templates"`
+}
+
 // EnvironmentUpdate Fields left out stay unchanged. Only an external target has an endpoint and token; a new endpoint comes with
 // its token, so a stored token never reaches an endpoint it was not entered for.
 type EnvironmentUpdate struct {
@@ -4398,6 +4406,13 @@ type ProviderModel struct {
 type ProviderPage struct {
 	Items      []Provider                `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// ProviderReference defines model for ProviderReference.
+type ProviderReference struct {
+	Id     string `json:"id"`
+	Name   string `json:"name"`
+	Status string `json:"status"`
 }
 
 // ProviderTest defines model for ProviderTest.
@@ -5795,6 +5810,15 @@ type CreateProviderApiV1EnvironmentProvidersPostParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams defines parameters for DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete.
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGetParams defines parameters for GetProviderApiV1EnvironmentProvidersProviderIdGet.
 type GetProviderApiV1EnvironmentProvidersProviderIdGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -5806,6 +5830,12 @@ type UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams defines parameters for EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet.
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -9390,6 +9420,11 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPost(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, body CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete Delete Environment Provider
+	//
+	// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+	DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetProviderApiV1EnvironmentProvidersProviderIdGet Get environment provider
 	//
 	// Corresponds with GET /api/v1/environment-providers/{provider_id} (the `GetProviderApiV1EnvironmentProvidersProviderIdGet` operationId).
@@ -9412,6 +9447,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet Environment Provider References
+	//
+	// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+	EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// TestProviderApiV1EnvironmentProvidersProviderIdTestPost Test environment provider
 	//
@@ -12234,6 +12274,21 @@ func (c *Client) CreateProviderApiV1EnvironmentProvidersPost(ctx context.Context
 	return c.Client.Do(req)
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete Delete Environment Provider
+//
+// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+func (c *Client) DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGet Get environment provider
 //
 // Corresponds with GET /api/v1/environment-providers/{provider_id} (the `GetProviderApiV1EnvironmentProvidersProviderIdGet` operationId).
@@ -12277,6 +12332,21 @@ func (c *Client) UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody(
 // Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 func (c *Client) UpdateProviderApiV1EnvironmentProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateProviderApiV1EnvironmentProvidersProviderIdPatchRequest(c.Server, providerId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet Environment Provider References
+//
+// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+func (c *Client) EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetRequest(c.Server, providerId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -19538,6 +19608,66 @@ func NewCreateProviderApiV1EnvironmentProvidersPostRequestWithBody(server string
 	return req, nil
 }
 
+// NewDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteRequest constructs an http.Request for the DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete method
+func NewDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteRequest(server string, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetProviderApiV1EnvironmentProvidersProviderIdGetRequest constructs an http.Request for the GetProviderApiV1EnvironmentProvidersProviderIdGet method
 func NewGetProviderApiV1EnvironmentProvidersProviderIdGetRequest(server string, providerId string, params *GetProviderApiV1EnvironmentProvidersProviderIdGetParams) (*http.Request, error) {
 	var err error
@@ -19653,6 +19783,55 @@ func NewUpdateProviderApiV1EnvironmentProvidersProviderIdPatchRequestWithBody(se
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetRequest constructs an http.Request for the EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet method
+func NewEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetRequest(server string, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-providers/%s/references", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -32891,6 +33070,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPostWithResponse(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, body CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProviderApiV1EnvironmentProvidersPostResponse, error)
 
+	// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse Delete Environment Provider
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+	DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse, error)
+
 	// GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get environment provider
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -32915,6 +33101,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse, error)
+
+	// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse Environment Provider References
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+	EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse, error)
 
 	// TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test environment provider
 	//
@@ -38179,6 +38372,68 @@ func (r CreateProviderApiV1EnvironmentProvidersPostResponse) ContentType() strin
 	return ""
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers the declared response headers of an HTTP 400 response for DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetProviderApiV1EnvironmentProvidersProviderIdGet
 type GetProviderApiV1EnvironmentProvidersProviderIdGetResponse400Headers struct {
 	XRequestId *string
@@ -38311,6 +38566,75 @@ func (r UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse) StatusCo
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers the declared response headers of an HTTP 400 response for EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders the declared response headers of an HTTP default response for EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EnvironmentProviderReferences
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetJSON200() *EnvironmentProviderReferences {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -52627,6 +52951,19 @@ func (c *ClientWithResponses) CreateProviderApiV1EnvironmentProvidersPostWithRes
 	return ParseCreateProviderApiV1EnvironmentProvidersPostResponse(rsp)
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse Delete Environment Provider
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+func (c *ClientWithResponses) DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse, error) {
+	rsp, err := c.DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse(rsp)
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get environment provider
 //
 // Returns a wrapper object for the known response body format(s).
@@ -52668,6 +53005,19 @@ func (c *ClientWithResponses) UpdateProviderApiV1EnvironmentProvidersProviderIdP
 		return nil, err
 	}
 	return ParseUpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse(rsp)
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse Environment Provider References
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+func (c *ClientWithResponses) EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse, error) {
+	rsp, err := c.EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse(rsp)
 }
 
 // TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test environment provider
@@ -59204,6 +59554,65 @@ func ParseCreateProviderApiV1EnvironmentProvidersPostResponse(rsp *http.Response
 	return response, nil
 }
 
+// ParseDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse parses an HTTP response from a DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse call
+func ParseDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse(rsp *http.Response) (*DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetProviderApiV1EnvironmentProvidersProviderIdGetResponse parses an HTTP response from a GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse call
 func ParseGetProviderApiV1EnvironmentProvidersProviderIdGetResponse(rsp *http.Response) (*GetProviderApiV1EnvironmentProvidersProviderIdGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -59317,6 +59726,69 @@ func ParseUpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse(rsp *ht
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse parses an HTTP response from a EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse call
+func ParseEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse(rsp *http.Response) (*EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EnvironmentProviderReferences
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
