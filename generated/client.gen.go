@@ -2996,6 +2996,15 @@ type ContentRef struct {
 // ContentRefMediaType defines model for ContentRef.MediaType.
 type ContentRefMediaType string
 
+// ContextUsage One reported generation, compared with its currently configured window.
+type ContextUsage struct {
+	ContextWindowTokens nullable.Nullable[int] `json:"context_window_tokens"`
+	InputTokens         nullable.Nullable[int] `json:"input_tokens"`
+	OutputTokens        nullable.Nullable[int] `json:"output_tokens"`
+	RecordId            string                 `json:"record_id"`
+	RunId               string                 `json:"run_id"`
+}
+
 // CreatedSubscription defines model for CreatedSubscription.
 type CreatedSubscription struct {
 	CreatedAt   time.Time `json:"created_at"`
@@ -7046,6 +7055,16 @@ type UsageAgentsApiV1UsageAgentsGetParams struct {
 	End    time.Time `form:"end" json:"end"`
 	Limit  *int      `form:"limit,omitempty" json:"limit,omitempty"`
 	Cursor *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ContextUsageApiV1UsageContextGetParams defines parameters for ContextUsageApiV1UsageContextGet.
+type ContextUsageApiV1UsageContextGetParams struct {
+	ThreadId *string `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	RunId    *string `form:"run_id,omitempty" json:"run_id,omitempty"`
+	RecordId *string `form:"record_id,omitempty" json:"record_id,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -11133,6 +11152,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
 	UsageAgentsApiV1UsageAgentsGet(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ContextUsageApiV1UsageContextGet Context Usage
+	//
+	// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+	ContextUsageApiV1UsageContextGet(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UsageModelsApiV1UsageModelsGet Usage Models
 	//
@@ -16229,6 +16253,21 @@ func (c *Client) SummarizeUsageApiV1UsageGet(ctx context.Context, params *Summar
 // Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
 func (c *Client) UsageAgentsApiV1UsageAgentsGet(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUsageAgentsApiV1UsageAgentsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ContextUsageApiV1UsageContextGet Context Usage
+//
+// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+func (c *Client) ContextUsageApiV1UsageContextGet(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewContextUsageApiV1UsageContextGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -31202,6 +31241,99 @@ func NewUsageAgentsApiV1UsageAgentsGetRequest(server string, params *UsageAgents
 	return req, nil
 }
 
+// NewContextUsageApiV1UsageContextGetRequest constructs an http.Request for the ContextUsageApiV1UsageContextGet method
+func NewContextUsageApiV1UsageContextGetRequest(server string, params *ContextUsageApiV1UsageContextGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/context")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ThreadId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "thread_id", *params.ThreadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.RunId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "run_id", *params.RunId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.RecordId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "record_id", *params.RecordId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewUsageModelsApiV1UsageModelsGetRequest constructs an http.Request for the UsageModelsApiV1UsageModelsGet method
 func NewUsageModelsApiV1UsageModelsGetRequest(server string, params *UsageModelsApiV1UsageModelsGetParams) (*http.Request, error) {
 	var err error
@@ -36046,6 +36178,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
 	UsageAgentsApiV1UsageAgentsGetWithResponse(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*UsageAgentsApiV1UsageAgentsGetResponse, error)
+
+	// ContextUsageApiV1UsageContextGetWithResponse Context Usage
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+	ContextUsageApiV1UsageContextGetWithResponse(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*ContextUsageApiV1UsageContextGetResponse, error)
 
 	// UsageModelsApiV1UsageModelsGetWithResponse Usage Models
 	//
@@ -51022,6 +51161,75 @@ func (r UsageAgentsApiV1UsageAgentsGetResponse) ContentType() string {
 	return ""
 }
 
+// ContextUsageApiV1UsageContextGetResponse400Headers the declared response headers of an HTTP 400 response for ContextUsageApiV1UsageContextGet
+type ContextUsageApiV1UsageContextGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ContextUsageApiV1UsageContextGetResponseDefaultHeaders the declared response headers of an HTTP default response for ContextUsageApiV1UsageContextGet
+type ContextUsageApiV1UsageContextGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ContextUsageApiV1UsageContextGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ContextUsage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ContextUsageApiV1UsageContextGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ContextUsageApiV1UsageContextGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ContextUsageApiV1UsageContextGetResponse) GetJSON200() *ContextUsage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ContextUsageApiV1UsageContextGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ContextUsageApiV1UsageContextGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ContextUsageApiV1UsageContextGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ContextUsageApiV1UsageContextGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ContextUsageApiV1UsageContextGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ContextUsageApiV1UsageContextGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // UsageModelsApiV1UsageModelsGetResponse400Headers the declared response headers of an HTTP 400 response for UsageModelsApiV1UsageModelsGet
 type UsageModelsApiV1UsageModelsGetResponse400Headers struct {
 	XRequestId *string
@@ -58086,6 +58294,19 @@ func (c *ClientWithResponses) UsageAgentsApiV1UsageAgentsGetWithResponse(ctx con
 		return nil, err
 	}
 	return ParseUsageAgentsApiV1UsageAgentsGetResponse(rsp)
+}
+
+// ContextUsageApiV1UsageContextGetWithResponse Context Usage
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+func (c *ClientWithResponses) ContextUsageApiV1UsageContextGetWithResponse(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*ContextUsageApiV1UsageContextGetResponse, error) {
+	rsp, err := c.ContextUsageApiV1UsageContextGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseContextUsageApiV1UsageContextGetResponse(rsp)
 }
 
 // UsageModelsApiV1UsageModelsGetWithResponse Usage Models
@@ -72170,6 +72391,69 @@ func ParseUsageAgentsApiV1UsageAgentsGetResponse(rsp *http.Response) (*UsageAgen
 		response.Headers400 = &headers
 	case true:
 		var headers UsageAgentsApiV1UsageAgentsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseContextUsageApiV1UsageContextGetResponse parses an HTTP response from a ContextUsageApiV1UsageContextGetWithResponse call
+func ParseContextUsageApiV1UsageContextGetResponse(rsp *http.Response) (*ContextUsageApiV1UsageContextGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ContextUsageApiV1UsageContextGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ContextUsage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ContextUsageApiV1UsageContextGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ContextUsageApiV1UsageContextGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
