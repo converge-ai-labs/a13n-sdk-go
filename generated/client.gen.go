@@ -4190,6 +4190,13 @@ type ModelPricingEntryOutput struct {
 	SourceUrl      nullable.Nullable[string] `json:"source_url,omitempty"`
 }
 
+// ModelRequestMetrics Derived from the current model contribution.
+type ModelRequestMetrics struct {
+	OutputTokensPerSecond   nullable.Nullable[float32] `json:"output_tokens_per_second"`
+	RequestDurationSeconds  nullable.Nullable[float32] `json:"request_duration_seconds"`
+	TimeToFirstChunkSeconds nullable.Nullable[float32] `json:"time_to_first_chunk_seconds"`
+}
+
 // ModelUpdate defines model for ModelUpdate.
 type ModelUpdate struct {
 	CatalogRef  nullable.Nullable[CatalogRef]             `json:"catalog_ref,omitempty"`
@@ -7245,6 +7252,12 @@ type UsageOverviewApiV1UsageOverviewGetParams struct {
 	End      time.Time `form:"end" json:"end"`
 	Timezone *string   `form:"timezone,omitempty" json:"timezone,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams defines parameters for ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet.
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -11305,6 +11318,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
 	UsageOverviewApiV1UsageOverviewGet(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet Model Request Metrics
+	//
+	// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+	ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetProfileApiV1UsersMeGet Get Profile
 	//
@@ -16397,6 +16415,21 @@ func (c *Client) UsageModelsApiV1UsageModelsGet(ctx context.Context, params *Usa
 // Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
 func (c *Client) UsageOverviewApiV1UsageOverviewGet(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUsageOverviewApiV1UsageOverviewGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet Model Request Metrics
+//
+// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+func (c *Client) ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetRequest(c.Server, recordId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -31458,6 +31491,55 @@ func NewUsageOverviewApiV1UsageOverviewGetRequest(server string, params *UsageOv
 	return req, nil
 }
 
+// NewModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetRequest constructs an http.Request for the ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet method
+func NewModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetRequest(server string, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "record_id", recordId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/records/%s/metrics", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetProfileApiV1UsersMeGetRequest constructs an http.Request for the GetProfileApiV1UsersMeGet method
 func NewGetProfileApiV1UsersMeGetRequest(server string) (*http.Request, error) {
 	var err error
@@ -36074,6 +36156,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
 	UsageOverviewApiV1UsageOverviewGetWithResponse(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*UsageOverviewApiV1UsageOverviewGetResponse, error)
+
+	// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse Model Request Metrics
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+	ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse, error)
 
 	// GetProfileApiV1UsersMeGetWithResponse Get Profile
 	//
@@ -51105,6 +51194,75 @@ func (r UsageOverviewApiV1UsageOverviewGetResponse) ContentType() string {
 	return ""
 }
 
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers the declared response headers of an HTTP 400 response for ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ModelRequestMetrics
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetJSON200() *ModelRequestMetrics {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetProfileApiV1UsersMeGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetProfileApiV1UsersMeGet
 type GetProfileApiV1UsersMeGetResponseDefaultHeaders struct {
 	XRequestId *string
@@ -57971,6 +58129,19 @@ func (c *ClientWithResponses) UsageOverviewApiV1UsageOverviewGetWithResponse(ctx
 		return nil, err
 	}
 	return ParseUsageOverviewApiV1UsageOverviewGetResponse(rsp)
+}
+
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse Model Request Metrics
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+func (c *ClientWithResponses) ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse, error) {
+	rsp, err := c.ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx, recordId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse(rsp)
 }
 
 // GetProfileApiV1UsersMeGetWithResponse Get Profile
@@ -72086,6 +72257,69 @@ func ParseUsageOverviewApiV1UsageOverviewGetResponse(rsp *http.Response) (*Usage
 		response.Headers400 = &headers
 	case true:
 		var headers UsageOverviewApiV1UsageOverviewGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse parses an HTTP response from a ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse call
+func ParseModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse(rsp *http.Response) (*ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ModelRequestMetrics
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
