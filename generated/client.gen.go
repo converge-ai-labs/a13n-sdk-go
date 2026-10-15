@@ -20,18 +20,15 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-// Defines values for AgentPresetKind.
+// Defines values for AgentConfigInputBuiltinSkills.
 const (
-	AgentPresetKindComposer AgentPresetKind = "composer"
-	AgentPresetKindFinding  AgentPresetKind = "finding"
+	AgentConfigInputBuiltinSkillsPlatformOperations AgentConfigInputBuiltinSkills = "platform-operations"
 )
 
-// Valid indicates whether the value is a known member of the AgentPresetKind enum.
-func (e AgentPresetKind) Valid() bool {
+// Valid indicates whether the value is a known member of the AgentConfigInputBuiltinSkills enum.
+func (e AgentConfigInputBuiltinSkills) Valid() bool {
 	switch e {
-	case AgentPresetKindComposer:
-		return true
-	case AgentPresetKindFinding:
+	case AgentConfigInputBuiltinSkillsPlatformOperations:
 		return true
 	default:
 		return false
@@ -56,6 +53,21 @@ func (e AgentConfigInputSubagentMode) Valid() bool {
 	}
 }
 
+// Defines values for AgentConfigOutputBuiltinSkills.
+const (
+	AgentConfigOutputBuiltinSkillsPlatformOperations AgentConfigOutputBuiltinSkills = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the AgentConfigOutputBuiltinSkills enum.
+func (e AgentConfigOutputBuiltinSkills) Valid() bool {
+	switch e {
+	case AgentConfigOutputBuiltinSkillsPlatformOperations:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentConfigOutputSubagentMode.
 const (
 	AgentConfigOutputSubagentModeAsync  AgentConfigOutputSubagentMode = "async"
@@ -68,6 +80,36 @@ func (e AgentConfigOutputSubagentMode) Valid() bool {
 	case AgentConfigOutputSubagentModeAsync:
 		return true
 	case AgentConfigOutputSubagentModeInline:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentOverrideInputBuiltinSkills.
+const (
+	AgentOverrideInputBuiltinSkillsPlatformOperations AgentOverrideInputBuiltinSkills = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the AgentOverrideInputBuiltinSkills enum.
+func (e AgentOverrideInputBuiltinSkills) Valid() bool {
+	switch e {
+	case AgentOverrideInputBuiltinSkillsPlatformOperations:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AgentOverrideOutputBuiltinSkills.
+const (
+	AgentOverrideOutputBuiltinSkillsPlatformOperations AgentOverrideOutputBuiltinSkills = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the AgentOverrideOutputBuiltinSkills enum.
+func (e AgentOverrideOutputBuiltinSkills) Valid() bool {
+	switch e {
+	case AgentOverrideOutputBuiltinSkillsPlatformOperations:
 		return true
 	default:
 		return false
@@ -125,6 +167,21 @@ func (e AgentSource) Valid() bool {
 	case Builtin:
 		return true
 	case Custom:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AnyChangeTriggerType.
+const (
+	AnyChange AnyChangeTriggerType = "any_change"
+)
+
+// Valid indicates whether the value is a known member of the AnyChangeTriggerType enum.
+func (e AnyChangeTriggerType) Valid() bool {
+	switch e {
+	case AnyChange:
 		return true
 	default:
 		return false
@@ -341,6 +398,21 @@ func (e Certainty) Valid() bool {
 	}
 }
 
+// Defines values for ChangeCountTriggerType.
+const (
+	ChangeCount ChangeCountTriggerType = "change_count"
+)
+
+// Valid indicates whether the value is a known member of the ChangeCountTriggerType enum.
+func (e ChangeCountTriggerType) Valid() bool {
+	switch e {
+	case ChangeCount:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ChildEnvironmentPolicyMode.
 const (
 	ChildEnvironmentPolicyModeDedicated ChildEnvironmentPolicyMode = "dedicated"
@@ -398,6 +470,27 @@ func (e ClientToolDefinitionPermission) Valid() bool {
 	case ClientToolDefinitionPermissionDeny:
 		return true
 	case ClientToolDefinitionPermissionInherit:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ComputerCheckStatus.
+const (
+	ComputerCheckStatusChecked     ComputerCheckStatus = "checked"
+	ComputerCheckStatusNotReady    ComputerCheckStatus = "not_ready"
+	ComputerCheckStatusUnsupported ComputerCheckStatus = "unsupported"
+)
+
+// Valid indicates whether the value is a known member of the ComputerCheckStatus enum.
+func (e ComputerCheckStatus) Valid() bool {
+	switch e {
+	case ComputerCheckStatusChecked:
+		return true
+	case ComputerCheckStatusNotReady:
+		return true
+	case ComputerCheckStatusUnsupported:
 		return true
 	default:
 		return false
@@ -656,6 +749,135 @@ func (e EntryViewKind) Valid() bool {
 	case EntryViewKindChildResult:
 		return true
 	case EntryViewKindMessage:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EnvironmentAction.
+const (
+	EnvironmentComputerClick       EnvironmentAction = "environment.computer.click"
+	EnvironmentComputerDescribe    EnvironmentAction = "environment.computer.describe"
+	EnvironmentComputerDrag        EnvironmentAction = "environment.computer.drag"
+	EnvironmentComputerMove        EnvironmentAction = "environment.computer.move"
+	EnvironmentComputerObserve     EnvironmentAction = "environment.computer.observe"
+	EnvironmentComputerPressKeys   EnvironmentAction = "environment.computer.press_keys"
+	EnvironmentComputerScroll      EnvironmentAction = "environment.computer.scroll"
+	EnvironmentComputerTypeText    EnvironmentAction = "environment.computer.type_text"
+	EnvironmentFileCopyDestination EnvironmentAction = "environment.file.copy_destination"
+	EnvironmentFileCopySource      EnvironmentAction = "environment.file.copy_source"
+	EnvironmentFileList            EnvironmentAction = "environment.file.list"
+	EnvironmentFileMkdir           EnvironmentAction = "environment.file.mkdir"
+	EnvironmentFileMove            EnvironmentAction = "environment.file.move"
+	EnvironmentFilePatchText       EnvironmentAction = "environment.file.patch_text"
+	EnvironmentFileQuery           EnvironmentAction = "environment.file.query"
+	EnvironmentFileReadBytes       EnvironmentAction = "environment.file.read_bytes"
+	EnvironmentFileReadText        EnvironmentAction = "environment.file.read_text"
+	EnvironmentFileRemove          EnvironmentAction = "environment.file.remove"
+	EnvironmentFileSearchText      EnvironmentAction = "environment.file.search_text"
+	EnvironmentFileStat            EnvironmentAction = "environment.file.stat"
+	EnvironmentFileWriteBytes      EnvironmentAction = "environment.file.write_bytes"
+	EnvironmentFileWriteText       EnvironmentAction = "environment.file.write_text"
+	EnvironmentOutputRead          EnvironmentAction = "environment.output.read"
+	EnvironmentOutputRelease       EnvironmentAction = "environment.output.release"
+	EnvironmentPortInspect         EnvironmentAction = "environment.port.inspect"
+	EnvironmentPortWait            EnvironmentAction = "environment.port.wait"
+	EnvironmentProcessCloseStdin   EnvironmentAction = "environment.process.close_stdin"
+	EnvironmentProcessInspect      EnvironmentAction = "environment.process.inspect"
+	EnvironmentProcessKill         EnvironmentAction = "environment.process.kill"
+	EnvironmentProcessList         EnvironmentAction = "environment.process.list"
+	EnvironmentProcessReadOutput   EnvironmentAction = "environment.process.read_output"
+	EnvironmentProcessRelease      EnvironmentAction = "environment.process.release"
+	EnvironmentProcessSignal       EnvironmentAction = "environment.process.signal"
+	EnvironmentProcessStart        EnvironmentAction = "environment.process.start"
+	EnvironmentProcessWait         EnvironmentAction = "environment.process.wait"
+	EnvironmentProcessWriteStdin   EnvironmentAction = "environment.process.write_stdin"
+	EnvironmentShellExec           EnvironmentAction = "environment.shell.exec"
+	EnvironmentStateExport         EnvironmentAction = "environment.state.export"
+	EnvironmentStateRestore        EnvironmentAction = "environment.state.restore"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentAction enum.
+func (e EnvironmentAction) Valid() bool {
+	switch e {
+	case EnvironmentComputerClick:
+		return true
+	case EnvironmentComputerDescribe:
+		return true
+	case EnvironmentComputerDrag:
+		return true
+	case EnvironmentComputerMove:
+		return true
+	case EnvironmentComputerObserve:
+		return true
+	case EnvironmentComputerPressKeys:
+		return true
+	case EnvironmentComputerScroll:
+		return true
+	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentFileCopyDestination:
+		return true
+	case EnvironmentFileCopySource:
+		return true
+	case EnvironmentFileList:
+		return true
+	case EnvironmentFileMkdir:
+		return true
+	case EnvironmentFileMove:
+		return true
+	case EnvironmentFilePatchText:
+		return true
+	case EnvironmentFileQuery:
+		return true
+	case EnvironmentFileReadBytes:
+		return true
+	case EnvironmentFileReadText:
+		return true
+	case EnvironmentFileRemove:
+		return true
+	case EnvironmentFileSearchText:
+		return true
+	case EnvironmentFileStat:
+		return true
+	case EnvironmentFileWriteBytes:
+		return true
+	case EnvironmentFileWriteText:
+		return true
+	case EnvironmentOutputRead:
+		return true
+	case EnvironmentOutputRelease:
+		return true
+	case EnvironmentPortInspect:
+		return true
+	case EnvironmentPortWait:
+		return true
+	case EnvironmentProcessCloseStdin:
+		return true
+	case EnvironmentProcessInspect:
+		return true
+	case EnvironmentProcessKill:
+		return true
+	case EnvironmentProcessList:
+		return true
+	case EnvironmentProcessReadOutput:
+		return true
+	case EnvironmentProcessRelease:
+		return true
+	case EnvironmentProcessSignal:
+		return true
+	case EnvironmentProcessStart:
+		return true
+	case EnvironmentProcessWait:
+		return true
+	case EnvironmentProcessWriteStdin:
+		return true
+	case EnvironmentShellExec:
+		return true
+	case EnvironmentStateExport:
+		return true
+	case EnvironmentStateRestore:
 		return true
 	default:
 		return false
@@ -1214,6 +1436,81 @@ func (e OperationKind) Valid() bool {
 	}
 }
 
+// Defines values for PlatformGroup.
+const (
+	PlatformGroupAgents               PlatformGroup = "agents"
+	PlatformGroupConnections          PlatformGroup = "connections"
+	PlatformGroupEnvironmentTemplates PlatformGroup = "environment_templates"
+	PlatformGroupExecution            PlatformGroup = "execution"
+	PlatformGroupModels               PlatformGroup = "models"
+	PlatformGroupProviders            PlatformGroup = "providers"
+	PlatformGroupSkills               PlatformGroup = "skills"
+)
+
+// Valid indicates whether the value is a known member of the PlatformGroup enum.
+func (e PlatformGroup) Valid() bool {
+	switch e {
+	case PlatformGroupAgents:
+		return true
+	case PlatformGroupConnections:
+		return true
+	case PlatformGroupEnvironmentTemplates:
+		return true
+	case PlatformGroupExecution:
+		return true
+	case PlatformGroupModels:
+		return true
+	case PlatformGroupProviders:
+		return true
+	case PlatformGroupSkills:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PlatformSelectionReadPermission.
+const (
+	PlatformSelectionReadPermissionAllow PlatformSelectionReadPermission = "allow"
+	PlatformSelectionReadPermissionAsk   PlatformSelectionReadPermission = "ask"
+	PlatformSelectionReadPermissionDeny  PlatformSelectionReadPermission = "deny"
+)
+
+// Valid indicates whether the value is a known member of the PlatformSelectionReadPermission enum.
+func (e PlatformSelectionReadPermission) Valid() bool {
+	switch e {
+	case PlatformSelectionReadPermissionAllow:
+		return true
+	case PlatformSelectionReadPermissionAsk:
+		return true
+	case PlatformSelectionReadPermissionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PlatformSelectionWritePermission.
+const (
+	PlatformSelectionWritePermissionAllow PlatformSelectionWritePermission = "allow"
+	PlatformSelectionWritePermissionAsk   PlatformSelectionWritePermission = "ask"
+	PlatformSelectionWritePermissionDeny  PlatformSelectionWritePermission = "deny"
+)
+
+// Valid indicates whether the value is a known member of the PlatformSelectionWritePermission enum.
+func (e PlatformSelectionWritePermission) Valid() bool {
+	switch e {
+	case PlatformSelectionWritePermissionAllow:
+		return true
+	case PlatformSelectionWritePermissionAsk:
+		return true
+	case PlatformSelectionWritePermissionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Preset.
 const (
 	PresetAnswer    Preset = "answer"
@@ -1229,6 +1526,27 @@ func (e Preset) Valid() bool {
 	case PresetExecution:
 		return true
 	case PresetRecovery:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PresetKind.
+const (
+	PresetKindComposer        PresetKind = "composer"
+	PresetKindFinding         PresetKind = "finding"
+	PresetKindMemoryOrganizer PresetKind = "memory_organizer"
+)
+
+// Valid indicates whether the value is a known member of the PresetKind enum.
+func (e PresetKind) Valid() bool {
+	switch e {
+	case PresetKindComposer:
+		return true
+	case PresetKindFinding:
+		return true
+	case PresetKindMemoryOrganizer:
 		return true
 	default:
 		return false
@@ -1418,6 +1736,24 @@ func (e ServiceAccountUpdateStatus) Valid() bool {
 	}
 }
 
+// Defines values for SessionViewPurpose.
+const (
+	SessionViewPurposeConversation       SessionViewPurpose = "conversation"
+	SessionViewPurposeMemoryOrganization SessionViewPurpose = "memory_organization"
+)
+
+// Valid indicates whether the value is a known member of the SessionViewPurpose enum.
+func (e SessionViewPurpose) Valid() bool {
+	switch e {
+	case SessionViewPurposeConversation:
+		return true
+	case SessionViewPurposeMemoryOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Severity.
 const (
 	Critical   Severity = "critical"
@@ -1502,6 +1838,24 @@ func (e ThreadViewOrigin) Valid() bool {
 	case ThreadViewOriginFork:
 		return true
 	case ThreadViewOriginNew:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ThreadViewPurpose.
+const (
+	ThreadViewPurposeConversation       ThreadViewPurpose = "conversation"
+	ThreadViewPurposeMemoryOrganization ThreadViewPurpose = "memory_organization"
+)
+
+// Valid indicates whether the value is a known member of the ThreadViewPurpose enum.
+func (e ThreadViewPurpose) Valid() bool {
+	switch e {
+	case ThreadViewPurposeConversation:
+		return true
+	case ThreadViewPurposeMemoryOrganization:
 		return true
 	default:
 		return false
@@ -1634,6 +1988,7 @@ func (e ToolRiskLevel) Valid() bool {
 // Defines values for ToolsetKey.
 const (
 	ToolsetKeyAssets        ToolsetKey = "assets"
+	ToolsetKeyComputer      ToolsetKey = "computer"
 	ToolsetKeyConfiguration ToolsetKey = "configuration"
 	ToolsetKeyFiles         ToolsetKey = "files"
 	ToolsetKeyFindings      ToolsetKey = "findings"
@@ -1647,6 +2002,8 @@ const (
 func (e ToolsetKey) Valid() bool {
 	switch e {
 	case ToolsetKeyAssets:
+		return true
+	case ToolsetKeyComputer:
 		return true
 	case ToolsetKeyConfiguration:
 		return true
@@ -1862,24 +2219,6 @@ func (e PartCursorKind) Valid() bool {
 	}
 }
 
-// Defines values for ListAgentsApiV1AgentsGetParamsPresetKind.
-const (
-	ListAgentsApiV1AgentsGetParamsPresetKindComposer ListAgentsApiV1AgentsGetParamsPresetKind = "composer"
-	ListAgentsApiV1AgentsGetParamsPresetKindFinding  ListAgentsApiV1AgentsGetParamsPresetKind = "finding"
-)
-
-// Valid indicates whether the value is a known member of the ListAgentsApiV1AgentsGetParamsPresetKind enum.
-func (e ListAgentsApiV1AgentsGetParamsPresetKind) Valid() bool {
-	switch e {
-	case ListAgentsApiV1AgentsGetParamsPresetKindComposer:
-		return true
-	case ListAgentsApiV1AgentsGetParamsPresetKindFinding:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind.
 const (
 	ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKindServiceAccount ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind = "service_account"
@@ -1925,6 +2264,36 @@ func (e ListProviderTypesApiV1ProviderTypesKindGetParamsKind) Valid() bool {
 	}
 }
 
+// Defines values for ListRunsApiV1RunsGetParamsStatus.
+const (
+	ListRunsApiV1RunsGetParamsStatusAccepted  ListRunsApiV1RunsGetParamsStatus = "accepted"
+	ListRunsApiV1RunsGetParamsStatusCancelled ListRunsApiV1RunsGetParamsStatus = "cancelled"
+	ListRunsApiV1RunsGetParamsStatusCompleted ListRunsApiV1RunsGetParamsStatus = "completed"
+	ListRunsApiV1RunsGetParamsStatusFailed    ListRunsApiV1RunsGetParamsStatus = "failed"
+	ListRunsApiV1RunsGetParamsStatusRunning   ListRunsApiV1RunsGetParamsStatus = "running"
+	ListRunsApiV1RunsGetParamsStatusWaiting   ListRunsApiV1RunsGetParamsStatus = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the ListRunsApiV1RunsGetParamsStatus enum.
+func (e ListRunsApiV1RunsGetParamsStatus) Valid() bool {
+	switch e {
+	case ListRunsApiV1RunsGetParamsStatusAccepted:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusCancelled:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusCompleted:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusFailed:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusRunning:
+		return true
+	case ListRunsApiV1RunsGetParamsStatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListSkillsApiV1SkillsGetParamsSource.
 const (
 	ListSkillsApiV1SkillsGetParamsSourceGithub ListSkillsApiV1SkillsGetParamsSource = "github"
@@ -1950,85 +2319,102 @@ type AccountDisable struct {
 
 // Agent defines model for Agent.
 type Agent struct {
-	ArchivedAt        nullable.Nullable[time.Time]       `json:"archived_at"`
-	CreatedAt         time.Time                          `json:"created_at"`
-	CreatedById       string                             `json:"created_by_id"`
-	DefaultRevisionId nullable.Nullable[string]          `json:"default_revision_id"`
-	Description       string                             `json:"description"`
-	Id                string                             `json:"id"`
-	ImageUrl          nullable.Nullable[string]          `json:"image_url"`
-	Labels            map[string]string                  `json:"labels"`
-	Name              string                             `json:"name"`
-	OrganizationId    string                             `json:"organization_id"`
-	PresetKind        nullable.Nullable[AgentPresetKind] `json:"preset_kind,omitempty"`
-	Source            AgentSource                        `json:"source"`
-	UpdatedAt         time.Time                          `json:"updated_at"`
-	UpdatedById       string                             `json:"updated_by_id"`
-	Version           int                                `json:"version"`
-	WorkspaceId       string                             `json:"workspace_id"`
+	ArchivedAt        nullable.Nullable[time.Time]  `json:"archived_at"`
+	CreatedAt         time.Time                     `json:"created_at"`
+	CreatedById       string                        `json:"created_by_id"`
+	DefaultRevisionId nullable.Nullable[string]     `json:"default_revision_id"`
+	Description       string                        `json:"description"`
+	Id                string                        `json:"id"`
+	ImageUrl          nullable.Nullable[string]     `json:"image_url"`
+	Labels            map[string]string             `json:"labels"`
+	Name              string                        `json:"name"`
+	OrganizationId    string                        `json:"organization_id"`
+	PresetKind        nullable.Nullable[PresetKind] `json:"preset_kind,omitempty"`
+	Source            AgentSource                   `json:"source"`
+	UpdatedAt         time.Time                     `json:"updated_at"`
+	UpdatedById       string                        `json:"updated_by_id"`
+	Version           int                           `json:"version"`
+	WorkspaceId       string                        `json:"workspace_id"`
 }
-
-// AgentPresetKind defines model for Agent.PresetKind.
-type AgentPresetKind string
 
 // AgentConfigInput defines model for AgentConfig-Input.
 type AgentConfigInput struct {
-	ClientTools                  *[]ClientToolDefinition   `json:"client_tools,omitempty"`
-	ConnectionTools              *[]ConnectionSelection    `json:"connection_tools,omitempty"`
-	DefaultEnvironmentTemplateId nullable.Nullable[string] `json:"default_environment_template_id,omitempty"`
-	Instructions                 *string                   `json:"instructions,omitempty"`
-	LazyEnvironment              *bool                     `json:"lazy_environment,omitempty"`
+	BuiltinSkills                *[]AgentConfigInputBuiltinSkills `json:"builtin_skills,omitempty"`
+	ClientTools                  *[]ClientToolDefinition          `json:"client_tools,omitempty"`
+	ConnectionTools              *[]ConnectionSelection           `json:"connection_tools,omitempty"`
+	DefaultEnvironmentTemplateId nullable.Nullable[string]        `json:"default_environment_template_id,omitempty"`
+	Instructions                 *string                          `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                            `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
-	MemoryMounts       *[]MemoryMount               `json:"memory_mounts,omitempty"`
-	Model              string                       `json:"model"`
+
+	// Memory Participation and complete Space selection; policy belongs to each Space.
+	Memory       *SessionMemorySettings `json:"memory,omitempty"`
+	MemoryMounts *[]MemoryMount         `json:"memory_mounts,omitempty"`
+	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics       `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue            `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]    `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
-	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
-	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+	ModelCharacteristics *AgentModelCharacteristics    `json:"model_characteristics,omitempty"`
+	ModelSettings        *map[string]JsonValue         `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec] `json:"output_spec,omitempty"`
+
+	// PlatformTools Platform MCP groups selected independently of local operating instructions.
+	PlatformTools *PlatformSelection               `json:"platform_tools,omitempty"`
+	Plugins       *[]PluginSelection               `json:"plugins,omitempty"`
+	Retries       nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
+	Reviewer      nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
+	SkillSync     *SkillSync                       `json:"skill_sync,omitempty"`
+	Skills        *[]SkillSelection                `json:"skills,omitempty"`
+	SubagentMode  *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
+	Subagents     *map[string]interface{}          `json:"subagents,omitempty"`
+	Toolsets      *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
+	UserQuestions *bool                            `json:"user_questions,omitempty"`
 }
+
+// AgentConfigInputBuiltinSkills defines model for AgentConfigInput.BuiltinSkills.
+type AgentConfigInputBuiltinSkills string
 
 // AgentConfigInputSubagentMode defines model for AgentConfigInput.SubagentMode.
 type AgentConfigInputSubagentMode string
 
 // AgentConfigOutput defines model for AgentConfig-Output.
 type AgentConfigOutput struct {
-	ClientTools                  *[]ClientToolDefinition   `json:"client_tools,omitempty"`
-	ConnectionTools              *[]ConnectionSelection    `json:"connection_tools,omitempty"`
-	DefaultEnvironmentTemplateId nullable.Nullable[string] `json:"default_environment_template_id,omitempty"`
-	Instructions                 *string                   `json:"instructions,omitempty"`
-	LazyEnvironment              *bool                     `json:"lazy_environment,omitempty"`
+	BuiltinSkills                *[]AgentConfigOutputBuiltinSkills `json:"builtin_skills,omitempty"`
+	ClientTools                  *[]ClientToolDefinition           `json:"client_tools,omitempty"`
+	ConnectionTools              *[]ConnectionSelection            `json:"connection_tools,omitempty"`
+	DefaultEnvironmentTemplateId nullable.Nullable[string]         `json:"default_environment_template_id,omitempty"`
+	Instructions                 *string                           `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                             `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
-	MemoryMounts       *[]MemoryMount               `json:"memory_mounts,omitempty"`
-	Model              string                       `json:"model"`
+
+	// Memory Participation and complete Space selection; policy belongs to each Space.
+	Memory       *SessionMemorySettings `json:"memory,omitempty"`
+	MemoryMounts *[]MemoryMount         `json:"memory_mounts,omitempty"`
+	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics       `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue            `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]    `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
-	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
-	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+	ModelCharacteristics *AgentModelCharacteristics    `json:"model_characteristics,omitempty"`
+	ModelSettings        *map[string]JsonValue         `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec] `json:"output_spec,omitempty"`
+
+	// PlatformTools Platform MCP groups selected independently of local operating instructions.
+	PlatformTools *PlatformSelection               `json:"platform_tools,omitempty"`
+	Plugins       *[]PluginSelection               `json:"plugins,omitempty"`
+	Retries       nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
+	Reviewer      nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
+	SkillSync     *SkillSync                       `json:"skill_sync,omitempty"`
+	Skills        *[]SkillSelection                `json:"skills,omitempty"`
+	SubagentMode  *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
+	Subagents     *map[string]interface{}          `json:"subagents,omitempty"`
+	Toolsets      *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
+	UserQuestions *bool                            `json:"user_questions,omitempty"`
 }
+
+// AgentConfigOutputBuiltinSkills defines model for AgentConfigOutput.BuiltinSkills.
+type AgentConfigOutputBuiltinSkills string
 
 // AgentConfigOutputSubagentMode defines model for AgentConfigOutput.SubagentMode.
 type AgentConfigOutputSubagentMode string
@@ -2061,46 +2447,56 @@ type AgentModelCharacteristics struct {
 // `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
 // edge removes it; every other field replaces the revision's value.
 type AgentOverrideInput struct {
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]AgentOverrideInputBuiltinSkills] `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]            `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]             `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                            `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                              `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]       `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                            `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]         `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]              `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                        `json:"output_spec,omitempty"`
+	PlatformTools        nullable.Nullable[PlatformSelection]                 `json:"platform_tools,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]                 `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]                     `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                     `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                         `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]                  `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[map[string]interface{}]            `json:"subagents,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection]       `json:"toolsets,omitempty"`
 }
+
+// AgentOverrideInputBuiltinSkills defines model for AgentOverrideInput.BuiltinSkills.
+type AgentOverrideInputBuiltinSkills string
 
 // AgentOverrideOutput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
 // `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
 // edge removes it; every other field replaces the revision's value.
 type AgentOverrideOutput struct {
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]AgentOverrideOutputBuiltinSkills] `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]             `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]              `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                             `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                               `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]        `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                             `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]          `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]               `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                         `json:"output_spec,omitempty"`
+	PlatformTools        nullable.Nullable[PlatformSelection]                  `json:"platform_tools,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]                  `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]                      `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                      `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                          `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]                   `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[map[string]interface{}]             `json:"subagents,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection]        `json:"toolsets,omitempty"`
 }
+
+// AgentOverrideOutputBuiltinSkills defines model for AgentOverrideOutput.BuiltinSkills.
+type AgentOverrideOutputBuiltinSkills string
 
 // AgentPage defines model for AgentPage.
 type AgentPage struct {
@@ -2217,6 +2613,14 @@ type AnalysisPage struct {
 	Items      []Analysis                `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
+
+// AnyChangeTrigger defines model for AnyChangeTrigger.
+type AnyChangeTrigger struct {
+	Type *AnyChangeTriggerType `json:"type,omitempty"`
+}
+
+// AnyChangeTriggerType defines model for AnyChangeTrigger.Type.
+type AnyChangeTriggerType string
 
 // ApiKey defines model for ApiKey.
 type ApiKey struct {
@@ -2473,6 +2877,15 @@ type Category string
 // Certainty defines model for Certainty.
 type Certainty string
 
+// ChangeCountTrigger defines model for ChangeCountTrigger.
+type ChangeCountTrigger struct {
+	Count int                     `json:"count"`
+	Type  *ChangeCountTriggerType `json:"type,omitempty"`
+}
+
+// ChangeCountTriggerType defines model for ChangeCountTrigger.Type.
+type ChangeCountTriggerType string
+
 // ChildEnvironmentPolicy What a child run mounts: no environment, the parent's, or a new one from `template_id`.
 type ChildEnvironmentPolicy struct {
 	Mode       *ChildEnvironmentPolicyMode `json:"mode,omitempty"`
@@ -2497,6 +2910,18 @@ type ClientToolDefinition struct {
 
 // ClientToolDefinitionPermission defines model for ClientToolDefinition.Permission.
 type ClientToolDefinitionPermission string
+
+// ComputerCheck A point-in-time capability probe, not an Agent or mount permission grant.
+type ComputerCheck struct {
+	DisplayCount *int                 `json:"display_count,omitempty"`
+	InputReady   *bool                `json:"input_ready,omitempty"`
+	ObserveReady *bool                `json:"observe_ready,omitempty"`
+	Operations   *[]EnvironmentAction `json:"operations,omitempty"`
+	Status       ComputerCheckStatus  `json:"status"`
+}
+
+// ComputerCheckStatus defines model for ComputerCheck.Status.
+type ComputerCheckStatus string
 
 // Connection defines model for Connection.
 type Connection struct {
@@ -2776,6 +3201,9 @@ type EntryView struct {
 // EntryViewKind defines model for EntryView.Kind.
 type EntryViewKind string
 
+// EnvironmentAction Exact authorization values in the locked first-party catalog.
+type EnvironmentAction string
+
 // EnvironmentFailure The last error of the outstanding operation or, on a ready instance, of its last renewal.
 //
 // `unknown` means the call may have taken effect: only the same operation may continue. `permanent` failures
@@ -2792,15 +3220,34 @@ type EnvironmentFailure struct {
 
 // EnvironmentMount defines model for EnvironmentMount.
 type EnvironmentMount struct {
-	EnvironmentId    string                    `json:"environment_id"`
-	Name             string                    `json:"name"`
-	WorkingDirectory nullable.Nullable[string] `json:"working_directory,omitempty"`
+	EnvironmentId     string                          `json:"environment_id"`
+	Name              string                          `json:"name"`
+	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
 }
 
 // EnvironmentPage defines model for EnvironmentPage.
 type EnvironmentPage struct {
 	Items      []EnvironmentView         `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// EnvironmentPermissionSetInput defines model for EnvironmentPermissionSet-Input.
+type EnvironmentPermissionSetInput struct {
+	Operations *[]EnvironmentAction `json:"operations,omitempty"`
+}
+
+// EnvironmentPermissionSetOutput defines model for EnvironmentPermissionSet-Output.
+type EnvironmentPermissionSetOutput struct {
+	Operations *[]EnvironmentAction `json:"operations,omitempty"`
+}
+
+// EnvironmentProviderReferences defines model for EnvironmentProviderReferences.
+type EnvironmentProviderReferences struct {
+	EnvironmentCount int                 `json:"environment_count"`
+	Environments     []ProviderReference `json:"environments"`
+	TemplateCount    int                 `json:"template_count"`
+	Templates        []ProviderReference `json:"templates"`
 }
 
 // EnvironmentUpdate Fields left out stay unchanged. Only an external target has an endpoint and token; a new endpoint comes with
@@ -2966,6 +3413,16 @@ type FragmentState struct {
 	MaxBytes   *int                           `json:"max_bytes,omitempty"`
 	MaxPending *int                           `json:"max_pending,omitempty"`
 	Pending    *map[string]UnderscoreAssembly `json:"pending,omitempty"`
+}
+
+// FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
+type FrozenMemoryMount struct {
+	Access   MemoryAccess              `json:"access"`
+	MemoryId string                    `json:"memory_id"`
+	Name     string                    `json:"name"`
+	Recall   *bool                     `json:"recall,omitempty"`
+	Roots    *[]string                 `json:"roots,omitempty"`
+	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
 }
 
 // GitHubSource A directory of a public GitHub repository.
@@ -3507,6 +3964,57 @@ type MemorySourceKind string
 // MemorySourceStatus defines model for MemorySource.Status.
 type MemorySourceStatus string
 
+// MemorySpace defines model for MemorySpace.
+type MemorySpace struct {
+	AlwaysLoad     []string                  `json:"always_load"`
+	ContentBytes   int                       `json:"content_bytes"`
+	CreatedAt      time.Time                 `json:"created_at"`
+	CreatedById    string                    `json:"created_by_id"`
+	Description    nullable.Nullable[string] `json:"description"`
+	Enabled        bool                      `json:"enabled"`
+	FileCount      int                       `json:"file_count"`
+	Guide          nullable.Nullable[string] `json:"guide"`
+	HistoryBytes   int                       `json:"history_bytes"`
+	Id             string                    `json:"id"`
+	Labels         map[string]string         `json:"labels"`
+	MemoryId       string                    `json:"memory_id"`
+	Name           string                    `json:"name"`
+	Organization   OrganizationPolicy        `json:"organization"`
+	OrganizationId string                    `json:"organization_id"`
+	UpdatedAt      time.Time                 `json:"updated_at"`
+	UpdatedById    string                    `json:"updated_by_id"`
+	Version        int                       `json:"version"`
+	WorkspaceId    string                    `json:"workspace_id"`
+}
+
+// MemorySpaceCreate defines model for MemorySpaceCreate.
+type MemorySpaceCreate struct {
+	AlwaysLoad   *[]string                 `json:"always_load,omitempty"`
+	Description  nullable.Nullable[string] `json:"description,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	Guide        nullable.Nullable[string] `json:"guide,omitempty"`
+	Labels       *map[string]string        `json:"labels,omitempty"`
+	Name         string                    `json:"name"`
+	Organization *OrganizationPolicy       `json:"organization,omitempty"`
+}
+
+// MemorySpacePage defines model for MemorySpacePage.
+type MemorySpacePage struct {
+	Items      []MemorySpace             `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// MemorySpaceUpdate defines model for MemorySpaceUpdate.
+type MemorySpaceUpdate struct {
+	AlwaysLoad   nullable.Nullable[[]string]           `json:"always_load,omitempty"`
+	Description  nullable.Nullable[string]             `json:"description,omitempty"`
+	Enabled      nullable.Nullable[bool]               `json:"enabled,omitempty"`
+	Guide        nullable.Nullable[string]             `json:"guide,omitempty"`
+	Labels       nullable.Nullable[map[string]string]  `json:"labels,omitempty"`
+	Name         nullable.Nullable[string]             `json:"name,omitempty"`
+	Organization nullable.Nullable[OrganizationPolicy] `json:"organization,omitempty"`
+}
+
 // MemoryUpdate Fields left out stay unchanged; `description: null` clears it and `guide: null` inherits the default.
 type MemoryUpdate struct {
 	AlwaysLoad  nullable.Nullable[[]string]          `json:"always_load,omitempty"`
@@ -3682,6 +4190,13 @@ type ModelPricingEntryOutput struct {
 	SourceUrl      nullable.Nullable[string] `json:"source_url,omitempty"`
 }
 
+// ModelRequestMetrics Derived from the current model contribution.
+type ModelRequestMetrics struct {
+	OutputTokensPerSecond   nullable.Nullable[float32] `json:"output_tokens_per_second"`
+	RequestDurationSeconds  nullable.Nullable[float32] `json:"request_duration_seconds"`
+	TimeToFirstChunkSeconds nullable.Nullable[float32] `json:"time_to_first_chunk_seconds"`
+}
+
 // ModelUpdate defines model for ModelUpdate.
 type ModelUpdate struct {
 	CatalogRef  nullable.Nullable[CatalogRef]             `json:"catalog_ref,omitempty"`
@@ -3694,13 +4209,15 @@ type ModelUpdate struct {
 
 // ModelUsage defines model for ModelUsage.
 type ModelUsage struct {
-	CacheReadTokens  int                       `json:"cache_read_tokens"`
-	CacheWriteTokens int                       `json:"cache_write_tokens"`
-	Cost             nullable.Nullable[string] `json:"cost"`
-	InputTokens      int                       `json:"input_tokens"`
-	Model            nullable.Nullable[string] `json:"model"`
-	OutputTokens     int                       `json:"output_tokens"`
-	Requests         int                       `json:"requests"`
+	AverageTimeToFirstChunkSeconds nullable.Nullable[float32] `json:"average_time_to_first_chunk_seconds"`
+	CacheReadTokens                int                        `json:"cache_read_tokens"`
+	CacheWriteTokens               int                        `json:"cache_write_tokens"`
+	Cost                           nullable.Nullable[string]  `json:"cost"`
+	InputTokens                    int                        `json:"input_tokens"`
+	Model                          nullable.Nullable[string]  `json:"model"`
+	OutputTokens                   int                        `json:"output_tokens"`
+	OutputTokensPerSecond          nullable.Nullable[float32] `json:"output_tokens_per_second"`
+	Requests                       int                        `json:"requests"`
 }
 
 // ModelUsageGroup defines model for ModelUsageGroup.
@@ -3718,9 +4235,10 @@ type ModelUsagePage struct {
 
 // MountCreate defines model for MountCreate.
 type MountCreate struct {
-	EnvironmentId    string                    `json:"environment_id"`
-	Name             string                    `json:"name"`
-	WorkingDirectory nullable.Nullable[string] `json:"working_directory,omitempty"`
+	EnvironmentId     string                         `json:"environment_id"`
+	Name              string                         `json:"name"`
+	PermissionCeiling *EnvironmentPermissionSetInput `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]      `json:"working_directory,omitempty"`
 }
 
 // MountPage defines model for MountPage.
@@ -3729,11 +4247,17 @@ type MountPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
 }
 
+// MountUpdate defines model for MountUpdate.
+type MountUpdate struct {
+	PermissionCeiling EnvironmentPermissionSetInput `json:"permission_ceiling"`
+}
+
 // MountView defines model for MountView.
 type MountView struct {
-	EnvironmentId    string                    `json:"environment_id"`
-	Name             string                    `json:"name"`
-	WorkingDirectory nullable.Nullable[string] `json:"working_directory"`
+	EnvironmentId     string                          `json:"environment_id"`
+	Name              string                          `json:"name"`
+	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory"`
 }
 
 // NewThread defines model for NewThread.
@@ -3801,6 +4325,20 @@ type OrganizationPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// OrganizationPolicy defines model for OrganizationPolicy.
+type OrganizationPolicy struct {
+	CheckIntervalSeconds *int                        `json:"check_interval_seconds,omitempty"`
+	CooldownSeconds      *int                        `json:"cooldown_seconds,omitempty"`
+	Enabled              *bool                       `json:"enabled,omitempty"`
+	Model                nullable.Nullable[string]   `json:"model,omitempty"`
+	Trigger              *OrganizationPolicy_Trigger `json:"trigger,omitempty"`
+}
+
+// OrganizationPolicy_Trigger defines model for OrganizationPolicy.Trigger.
+type OrganizationPolicy_Trigger struct {
+	union json.RawMessage
+}
+
 // OrganizationUpdate defines model for OrganizationUpdate.
 type OrganizationUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
@@ -3861,6 +4399,22 @@ type PendingCall struct {
 	ToolName     string                                  `json:"tool_name"`
 }
 
+// PlatformGroup defines model for PlatformGroup.
+type PlatformGroup string
+
+// PlatformSelection Platform MCP groups selected independently of local operating instructions.
+type PlatformSelection struct {
+	Groups          *[]PlatformGroup                  `json:"groups,omitempty"`
+	ReadPermission  *PlatformSelectionReadPermission  `json:"read_permission,omitempty"`
+	WritePermission *PlatformSelectionWritePermission `json:"write_permission,omitempty"`
+}
+
+// PlatformSelectionReadPermission defines model for PlatformSelection.ReadPermission.
+type PlatformSelectionReadPermission string
+
+// PlatformSelectionWritePermission defines model for PlatformSelection.WritePermission.
+type PlatformSelectionWritePermission string
+
 // PluginSelection One instance of a Harness plugin factory the deployment installed.
 type PluginSelection struct {
 	Config       *map[string]JsonValue `json:"config,omitempty"`
@@ -3870,6 +4424,9 @@ type PluginSelection struct {
 
 // Preset defines model for Preset.
 type Preset string
+
+// PresetKind defines model for PresetKind.
+type PresetKind string
 
 // PriceComponentInput One genai-prices usage dimension and its USD unit price.
 type PriceComponentInput struct {
@@ -4007,6 +4564,13 @@ type ProviderPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// ProviderReference defines model for ProviderReference.
+type ProviderReference struct {
+	Id     string `json:"id"`
+	Name   string `json:"name"`
+	Status string `json:"status"`
+}
+
 // ProviderTest defines model for ProviderTest.
 type ProviderTest struct {
 	Message         nullable.Nullable[string] `json:"message"`
@@ -4118,6 +4682,13 @@ type RevokedConnection struct {
 // RevokedConnectionRemoteRevocation defines model for RevokedConnection.RemoteRevocation.
 type RevokedConnectionRemoteRevocation string
 
+// RunAgent The agent a run executes: its frozen revision, and that revision's configuration with the run's override
+// applied. Models, connections and templates the configuration names stay live.
+type RunAgent struct {
+	Config   AgentConfigOutput `json:"config"`
+	Revision AgentRevision     `json:"revision"`
+}
+
 // RunConfigurationInput An accepted snapshot, independent of Agent definitions and Capability configuration.
 //
 // Consumers explicitly opt into namespaced extensions and own their validation.
@@ -4197,6 +4768,13 @@ type RunPage struct {
 // RunStatus defines model for RunStatus.
 type RunStatus string
 
+// RunUsage defines model for RunUsage.
+type RunUsage struct {
+	Models   []ModelUsage `json:"models"`
+	RunId    string       `json:"run_id"`
+	ThreadId string       `json:"thread_id"`
+}
+
 // RunView defines model for RunView.
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
@@ -4213,7 +4791,7 @@ type RunView struct {
 	Labels            map[string]string                       `json:"labels"`
 	Lineage           Lineage                                 `json:"lineage"`
 	MaxAttempts       int                                     `json:"max_attempts"`
-	MemoryMounts      []MemoryMount                           `json:"memory_mounts"`
+	MemoryMounts      []RunView_MemoryMounts_Item             `json:"memory_mounts"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 	Options           RunOptionsOutput                        `json:"options"`
@@ -4236,6 +4814,11 @@ type RunView struct {
 	Version           int                                     `json:"version"`
 	WaitReason        nullable.Nullable[WaitReason]           `json:"wait_reason"`
 	WorkspaceId       string                                  `json:"workspace_id"`
+}
+
+// RunView_MemoryMounts_Item defines model for RunView.memory_mounts.Item.
+type RunView_MemoryMounts_Item struct {
+	union json.RawMessage
 }
 
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
@@ -4290,7 +4873,14 @@ type ServiceAccountUpdateStatus string
 
 // SessionCreate defines model for SessionCreate.
 type SessionCreate struct {
-	Labels *map[string]string `json:"labels,omitempty"`
+	Labels *map[string]string                       `json:"labels,omitempty"`
+	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+}
+
+// SessionMemorySettings Participation and complete Space selection; policy belongs to each Space.
+type SessionMemorySettings struct {
+	Enabled *bool           `json:"enabled,omitempty"`
+	Spaces  *[]SpaceBinding `json:"spaces,omitempty"`
 }
 
 // SessionPage defines model for SessionPage.
@@ -4319,22 +4909,30 @@ type SessionProfile struct {
 
 // SessionUpdate defines model for SessionUpdate.
 type SessionUpdate struct {
-	Labels map[string]string `json:"labels"`
+	Labels nullable.Nullable[map[string]string]     `json:"labels,omitempty"`
+	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
 }
 
 // SessionView defines model for SessionView.
 type SessionView struct {
-	CreatedAt   time.Time                         `json:"created_at"`
-	CreatedById string                            `json:"created_by_id"`
-	Id          string                            `json:"id"`
-	Labels      map[string]string                 `json:"labels"`
-	LastRunId   nullable.Nullable[string]         `json:"last_run_id"`
+	CreatedAt   time.Time                 `json:"created_at"`
+	CreatedById string                    `json:"created_by_id"`
+	Id          string                    `json:"id"`
+	Labels      map[string]string         `json:"labels"`
+	LastRunId   nullable.Nullable[string] `json:"last_run_id"`
+
+	// Memory Participation and complete Space selection; policy belongs to each Space.
+	Memory      *SessionMemorySettings            `json:"memory,omitempty"`
 	Preview     nullable.Nullable[SessionPreview] `json:"preview,omitempty"`
+	Purpose     *SessionViewPurpose               `json:"purpose,omitempty"`
 	RunCount    *int                              `json:"run_count,omitempty"`
 	UpdatedAt   time.Time                         `json:"updated_at"`
 	Version     int                               `json:"version"`
 	WorkspaceId string                            `json:"workspace_id"`
 }
+
+// SessionViewPurpose defines model for SessionView.Purpose.
+type SessionViewPurpose string
 
 // Severity defines model for Severity.
 type Severity string
@@ -4483,6 +5081,25 @@ type SkillValidate struct {
 // SkillValidate_Source defines model for SkillValidate.Source.
 type SkillValidate_Source struct {
 	union json.RawMessage
+}
+
+// SpaceBinding A named Space selected by the App or inherited from Agent defaults.
+type SpaceBinding struct {
+	Access  *MemoryAccess `json:"access,omitempty"`
+	Name    string        `json:"name"`
+	SpaceId string        `json:"space_id"`
+}
+
+// SpaceOrganizationStatus defines model for SpaceOrganizationStatus.
+type SpaceOrganizationStatus struct {
+	ActiveRunId  nullable.Nullable[string]    `json:"active_run_id,omitempty"`
+	DueAt        nullable.Nullable[time.Time] `json:"due_at,omitempty"`
+	Failure      nullable.Nullable[Failure]   `json:"failure,omitempty"`
+	HistoryGap   *bool                        `json:"history_gap,omitempty"`
+	LastRunId    nullable.Nullable[string]    `json:"last_run_id,omitempty"`
+	Pending      *bool                        `json:"pending,omitempty"`
+	ProcessedSeq *int                         `json:"processed_seq,omitempty"`
+	SessionId    nullable.Nullable[string]    `json:"session_id,omitempty"`
 }
 
 // Span One span as the backend stored it; `attributes` are its OpenTelemetry attributes.
@@ -4736,6 +5353,7 @@ type ThreadView struct {
 	OriginRunId      nullable.Nullable[string] `json:"origin_run_id"`
 	OriginThreadId   nullable.Nullable[string] `json:"origin_thread_id"`
 	OriginToolCallId nullable.Nullable[string] `json:"origin_tool_call_id"`
+	Purpose          *ThreadViewPurpose        `json:"purpose,omitempty"`
 	SessionId        string                    `json:"session_id"`
 	Subagent         nullable.Nullable[string] `json:"subagent"`
 	UpdatedAt        time.Time                 `json:"updated_at"`
@@ -4745,6 +5363,9 @@ type ThreadView struct {
 
 // ThreadViewOrigin defines model for ThreadView.Origin.
 type ThreadViewOrigin string
+
+// ThreadViewPurpose defines model for ThreadView.Purpose.
+type ThreadViewPurpose string
 
 // ToolCallId defines model for ToolCallId.
 type ToolCallId = string
@@ -4961,6 +5582,7 @@ type UsageOverview struct {
 // UsageSummary defines model for UsageSummary.
 type UsageSummary struct {
 	Models []ModelUsage `json:"models"`
+	Runs   []RunUsage   `json:"runs"`
 }
 
 // UserKeyCreate defines model for UserKeyCreate.
@@ -5083,22 +5705,19 @@ type PrepareComposerApiV1AgentComposerPostParams struct {
 
 // ListAgentsApiV1AgentsGetParams defines parameters for ListAgentsApiV1AgentsGet.
 type ListAgentsApiV1AgentsGetParams struct {
-	Label           *[]string                                 `form:"label,omitempty" json:"label,omitempty"`
-	Q               *string                                   `form:"q,omitempty" json:"q,omitempty"`
-	Archived        *bool                                     `form:"archived,omitempty" json:"archived,omitempty"`
-	Source          *AgentSource                              `form:"source,omitempty" json:"source,omitempty"`
-	PresetKind      *ListAgentsApiV1AgentsGetParamsPresetKind `form:"preset_kind,omitempty" json:"preset_kind,omitempty"`
-	SkillId         *string                                   `form:"skill_id,omitempty" json:"skill_id,omitempty"`
-	SkillRevisionId *string                                   `form:"skill_revision_id,omitempty" json:"skill_revision_id,omitempty"`
-	Limit           *int                                      `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor          *string                                   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Label           *[]string    `form:"label,omitempty" json:"label,omitempty"`
+	Q               *string      `form:"q,omitempty" json:"q,omitempty"`
+	Archived        *bool        `form:"archived,omitempty" json:"archived,omitempty"`
+	Source          *AgentSource `form:"source,omitempty" json:"source,omitempty"`
+	PresetKind      *PresetKind  `form:"preset_kind,omitempty" json:"preset_kind,omitempty"`
+	SkillId         *string      `form:"skill_id,omitempty" json:"skill_id,omitempty"`
+	SkillRevisionId *string      `form:"skill_revision_id,omitempty" json:"skill_revision_id,omitempty"`
+	Limit           *int         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor          *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
-
-// ListAgentsApiV1AgentsGetParamsPresetKind defines parameters for ListAgentsApiV1AgentsGet.
-type ListAgentsApiV1AgentsGetParamsPresetKind string
 
 // CreateAgentApiV1AgentsPostParams defines parameters for CreateAgentApiV1AgentsPost.
 type CreateAgentApiV1AgentsPostParams struct {
@@ -5387,6 +6006,15 @@ type CreateProviderApiV1EnvironmentProvidersPostParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams defines parameters for DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete.
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGetParams defines parameters for GetProviderApiV1EnvironmentProvidersProviderIdGet.
 type GetProviderApiV1EnvironmentProvidersProviderIdGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -5398,6 +6026,12 @@ type UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams defines parameters for EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet.
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -5480,6 +6114,12 @@ type UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams defines parameters for CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost.
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -5770,6 +6410,86 @@ type TestProviderApiV1MemoryProvidersProviderIdTestPostParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListSpacesApiV1MemorySpacesGetParams defines parameters for ListSpacesApiV1MemorySpacesGet.
+type ListSpacesApiV1MemorySpacesGetParams struct {
+	Label   *[]string `form:"label,omitempty" json:"label,omitempty"`
+	Enabled *bool     `form:"enabled,omitempty" json:"enabled,omitempty"`
+	Limit   *int      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor  *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateSpaceApiV1MemorySpacesPostParams defines parameters for CreateSpaceApiV1MemorySpacesPost.
+type CreateSpaceApiV1MemorySpacesPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams defines parameters for DeleteSpaceApiV1MemorySpacesSpaceIdDelete.
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetParams defines parameters for GetSpaceApiV1MemorySpacesSpaceIdGet.
+type GetSpaceApiV1MemorySpacesSpaceIdGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams defines parameters for UpdateSpaceApiV1MemorySpacesSpaceIdPatch.
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams defines parameters for GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet.
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams defines parameters for ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet.
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams defines parameters for OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost.
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams defines parameters for ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet.
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetModelCatalogApiV1ModelCatalogGetParams defines parameters for GetModelCatalogApiV1ModelCatalogGet.
+type GetModelCatalogApiV1ModelCatalogGetParams struct {
+	// Provider Exact catalog channel ID, such as openrouter.
+	Provider *string `form:"provider,omitempty" json:"provider,omitempty"`
+
+	// Model Exact, case-sensitive model ID within the catalog channel.
+	Model *string `form:"model,omitempty" json:"model,omitempty"`
+}
+
 // ListProvidersApiV1ModelProvidersGetParams defines parameters for ListProvidersApiV1ModelProvidersGet.
 type ListProvidersApiV1ModelProvidersGetParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -5939,6 +6659,25 @@ type ListOrganizationWorkspacesApiV1OrganizationsOrganizationIdWorkspacesGetPara
 // ListProviderTypesApiV1ProviderTypesKindGetParamsKind defines parameters for ListProviderTypesApiV1ProviderTypesKindGet.
 type ListProviderTypesApiV1ProviderTypesKindGetParamsKind string
 
+// ListRunsApiV1RunsGetParams defines parameters for ListRunsApiV1RunsGet.
+type ListRunsApiV1RunsGetParams struct {
+	AgentId       *string                           `form:"agent_id,omitempty" json:"agent_id,omitempty"`
+	SessionId     *string                           `form:"session_id,omitempty" json:"session_id,omitempty"`
+	ThreadId      *string                           `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	PrincipalId   *string                           `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Status        *ListRunsApiV1RunsGetParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	CreatedAfter  *time.Time                        `form:"created_after,omitempty" json:"created_after,omitempty"`
+	CreatedBefore *time.Time                        `form:"created_before,omitempty" json:"created_before,omitempty"`
+	Limit         *int                              `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor        *string                           `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListRunsApiV1RunsGetParamsStatus defines parameters for ListRunsApiV1RunsGet.
+type ListRunsApiV1RunsGetParamsStatus string
+
 // GetRunApiV1RunsRunIdGetParams defines parameters for GetRunApiV1RunsRunIdGet.
 type GetRunApiV1RunsRunIdGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -5954,8 +6693,20 @@ type UpdateRunApiV1RunsRunIdPatchParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// RunAgentApiV1RunsRunIdAgentGetParams defines parameters for RunAgentApiV1RunsRunIdAgentGet.
+type RunAgentApiV1RunsRunIdAgentGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // RunAttemptsApiV1RunsRunIdAttemptsGetParams defines parameters for RunAttemptsApiV1RunsRunIdAttemptsGet.
 type RunAttemptsApiV1RunsRunIdAttemptsGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams defines parameters for GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet.
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -5979,6 +6730,12 @@ type RunContentApiV1RunsRunIdContentsContentIdGetParams struct {
 type ForkRunApiV1RunsRunIdForkPostParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RunImageApiV1RunsRunIdImagesImageIdGetParams defines parameters for RunImageApiV1RunsRunIdImagesImageIdGet.
+type RunImageApiV1RunsRunIdImagesImageIdGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -6291,6 +7048,15 @@ type RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams defines parameters for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch.
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListInboxApiV1ThreadsThreadIdInboxGetParams defines parameters for ListInboxApiV1ThreadsThreadIdInboxGet.
 type ListInboxApiV1ThreadsThreadIdInboxGetParams struct {
 	Status *[]EntryStatus `form:"status,omitempty" json:"status,omitempty"`
@@ -6486,6 +7252,12 @@ type UsageOverviewApiV1UsageOverviewGetParams struct {
 	End      time.Time `form:"end" json:"end"`
 	Timezone *string   `form:"timezone,omitempty" json:"timezone,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams defines parameters for ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet.
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -6777,6 +7549,12 @@ type CreateProviderApiV1MemoryProvidersPostJSONRequestBody = ProviderCreate
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchJSONRequestBody defines body for UpdateProviderApiV1MemoryProvidersProviderIdPatch for application/json ContentType.
 type UpdateProviderApiV1MemoryProvidersProviderIdPatchJSONRequestBody = ProviderUpdate
 
+// CreateSpaceApiV1MemorySpacesPostJSONRequestBody defines body for CreateSpaceApiV1MemorySpacesPost for application/json ContentType.
+type CreateSpaceApiV1MemorySpacesPostJSONRequestBody = MemorySpaceCreate
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody defines body for UpdateSpaceApiV1MemorySpacesSpaceIdPatch for application/json ContentType.
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody = MemorySpaceUpdate
+
 // CreateProviderApiV1ModelProvidersPostJSONRequestBody defines body for CreateProviderApiV1ModelProvidersPost for application/json ContentType.
 type CreateProviderApiV1ModelProvidersPostJSONRequestBody = ProviderCreate
 
@@ -6851,6 +7629,9 @@ type UpdateThreadApiV1ThreadsThreadIdPatchJSONRequestBody = ThreadUpdate
 
 // AddMountApiV1ThreadsThreadIdEnvironmentsPostJSONRequestBody defines body for AddMountApiV1ThreadsThreadIdEnvironmentsPost for application/json ContentType.
 type AddMountApiV1ThreadsThreadIdEnvironmentsPostJSONRequestBody = MountCreate
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody defines body for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch for application/json ContentType.
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody = MountUpdate
 
 // SubmitMessageApiV1ThreadsThreadIdInboxPostJSONRequestBody defines body for SubmitMessageApiV1ThreadsThreadIdInboxPost for application/json ContentType.
 type SubmitMessageApiV1ThreadsThreadIdInboxPostJSONRequestBody = Message
@@ -7323,6 +8104,107 @@ func (t *EnteredCredential) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsAnyChangeTrigger returns the union data inside the OrganizationPolicy_Trigger as a AnyChangeTrigger
+func (t OrganizationPolicy_Trigger) AsAnyChangeTrigger() (AnyChangeTrigger, error) {
+	var body AnyChangeTrigger
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAnyChangeTrigger overwrites any union data inside the OrganizationPolicy_Trigger as the provided AnyChangeTrigger
+func (t *OrganizationPolicy_Trigger) FromAnyChangeTrigger(v AnyChangeTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"any_change"}`))
+	t.union = b
+	return err
+}
+
+// MergeAnyChangeTrigger performs a merge with any union data inside the OrganizationPolicy_Trigger, using the provided AnyChangeTrigger
+func (t *OrganizationPolicy_Trigger) MergeAnyChangeTrigger(v AnyChangeTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"any_change"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsChangeCountTrigger returns the union data inside the OrganizationPolicy_Trigger as a ChangeCountTrigger
+func (t OrganizationPolicy_Trigger) AsChangeCountTrigger() (ChangeCountTrigger, error) {
+	var body ChangeCountTrigger
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromChangeCountTrigger overwrites any union data inside the OrganizationPolicy_Trigger as the provided ChangeCountTrigger
+func (t *OrganizationPolicy_Trigger) FromChangeCountTrigger(v ChangeCountTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"change_count"}`))
+	t.union = b
+	return err
+}
+
+// MergeChangeCountTrigger performs a merge with any union data inside the OrganizationPolicy_Trigger, using the provided ChangeCountTrigger
+func (t *OrganizationPolicy_Trigger) MergeChangeCountTrigger(v ChangeCountTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"change_count"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t OrganizationPolicy_Trigger) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"type"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t OrganizationPolicy_Trigger) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "any_change":
+		return t.AsAnyChangeTrigger()
+	case "change_count":
+		return t.AsChangeCountTrigger()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t OrganizationPolicy_Trigger) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *OrganizationPolicy_Trigger) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsTextPart returns the union data inside the Part as a TextPart
 func (t Part) AsTextPart() (TextPart, error) {
 	var body TextPart
@@ -7616,6 +8498,68 @@ func (t PriceTierInput_Price) MarshalJSON() ([]byte, error) {
 }
 
 func (t *PriceTierInput_Price) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a MemoryMount
+func (t RunView_MemoryMounts_Item) AsMemoryMount() (MemoryMount, error) {
+	var body MemoryMount
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided MemoryMount
+func (t *RunView_MemoryMounts_Item) FromMemoryMount(v MemoryMount) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided MemoryMount
+func (t *RunView_MemoryMounts_Item) MergeMemoryMount(v MemoryMount) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsFrozenMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a FrozenMemoryMount
+func (t RunView_MemoryMounts_Item) AsFrozenMemoryMount() (FrozenMemoryMount, error) {
+	var body FrozenMemoryMount
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFrozenMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided FrozenMemoryMount
+func (t *RunView_MemoryMounts_Item) FromFrozenMemoryMount(v FrozenMemoryMount) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeFrozenMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided FrozenMemoryMount
+func (t *RunView_MemoryMounts_Item) MergeFrozenMemoryMount(v FrozenMemoryMount) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunView_MemoryMounts_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunView_MemoryMounts_Item) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -8872,7 +9816,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8881,7 +9825,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -8927,6 +9871,11 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPost(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, body CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete Delete Environment Provider
+	//
+	// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+	DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetProviderApiV1EnvironmentProvidersProviderIdGet Get environment provider
 	//
 	// Corresponds with GET /api/v1/environment-providers/{provider_id} (the `GetProviderApiV1EnvironmentProvidersProviderIdGet` operationId).
@@ -8934,7 +9883,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8943,12 +9892,17 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet Environment Provider References
+	//
+	// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+	EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// TestProviderApiV1EnvironmentProvidersProviderIdTestPost Test environment provider
 	//
@@ -9039,6 +9993,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/environments/{environment_id} (the `UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch` operationId).
 	UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch(ctx context.Context, environmentId string, params *UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams, body UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost Check Computer
+	//
+	// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+	CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPost Stop Environment
 	//
@@ -9369,7 +10330,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9378,7 +10339,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatch Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9390,12 +10351,79 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/memory-providers/{provider_id}/test (the `TestProviderApiV1MemoryProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1MemoryProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1MemoryProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListSpacesApiV1MemorySpacesGet List Spaces
+	//
+	// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+	ListSpacesApiV1MemorySpacesGet(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSpaceApiV1MemorySpacesPostWithBody Create Space
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPostWithBody(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSpaceApiV1MemorySpacesPost Create Space
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPost(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteSpaceApiV1MemorySpacesSpaceIdDelete Delete Space
+	//
+	// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+	DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSpaceApiV1MemorySpacesSpaceIdGet Get Space
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+	GetSpaceApiV1MemorySpacesSpaceIdGet(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody Update Space
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatch Update Space
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet Get Space Organization
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+	GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet List Space Organizations
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+	ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost Organize Space
+	//
+	// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+	OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet List Space Sessions
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+	ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetModelCatalogApiV1ModelCatalogGet Get Model Catalog
 	//
-	// The models.dev models the registered model provider types serve, for any signed-in principal.
+	// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+	//
+	// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+	// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+	// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 	//
 	// Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-	GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListProvidersApiV1ModelProvidersGet List model providers
 	//
@@ -9423,7 +10451,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9432,7 +10460,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatch Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9679,6 +10707,11 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypesApiV1ProviderTypesKindGet` operationId).
 	ListProviderTypesApiV1ProviderTypesKindGet(ctx context.Context, kind ListProviderTypesApiV1ProviderTypesKindGetParamsKind, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListRunsApiV1RunsGet List Runs
+	//
+	// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+	ListRunsApiV1RunsGet(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetRunApiV1RunsRunIdGet Get Run
 	//
 	// Corresponds with GET /api/v1/runs/{run_id} (the `GetRunApiV1RunsRunIdGet` operationId).
@@ -9702,10 +10735,22 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 	UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RunAgentApiV1RunsRunIdAgentGet Run Agent
+	//
+	// The agent configuration the run executes: its revision with the run's override applied.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+	RunAgentApiV1RunsRunIdAgentGet(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// RunAttemptsApiV1RunsRunIdAttemptsGet Run Attempts
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/attempts (the `RunAttemptsApiV1RunsRunIdAttemptsGet` operationId).
 	RunAttemptsApiV1RunsRunIdAttemptsGet(ctx context.Context, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet Get Attempt
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+	GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet List Attempt Spans
 	//
@@ -9738,6 +10783,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/runs/{run_id}/fork (the `ForkRunApiV1RunsRunIdForkPost` operationId).
 	ForkRunApiV1RunsRunIdForkPost(ctx context.Context, runId string, params *ForkRunApiV1RunsRunIdForkPostParams, body ForkRunApiV1RunsRunIdForkPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RunImageApiV1RunsRunIdImagesImageIdGet Run Image
+	//
+	// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+	RunImageApiV1RunsRunIdImagesImageIdGet(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// InterruptRunApiV1RunsRunIdInterruptPost Interrupt Run
 	//
@@ -10072,6 +11124,20 @@ type ClientInterface interface {
 	// Corresponds with DELETE /api/v1/threads/{thread_id}/environments/{name} (the `RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete` operationId).
 	RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete(ctx context.Context, threadId string, name string, params *RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody Update Mount
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch Update Mount
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListInboxApiV1ThreadsThreadIdInboxGet List Inbox
 	//
 	// In inbox order.
@@ -10253,6 +11319,11 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
 	UsageOverviewApiV1UsageOverviewGet(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet Model Request Metrics
+	//
+	// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+	ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetProfileApiV1UsersMeGet Get Profile
 	//
 	// Corresponds with GET /api/v1/users/me (the `GetProfileApiV1UsersMeGet` operationId).
@@ -10392,7 +11463,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -10401,7 +11472,7 @@ type ClientInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatch Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -11581,7 +12652,7 @@ func (c *Client) GetProviderApiV1ConnectorProvidersProviderIdGet(ctx context.Con
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -11600,7 +12671,7 @@ func (c *Client) UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBody(ct
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatch Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -11726,6 +12797,21 @@ func (c *Client) CreateProviderApiV1EnvironmentProvidersPost(ctx context.Context
 	return c.Client.Do(req)
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete Delete Environment Provider
+//
+// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+func (c *Client) DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGet Get environment provider
 //
 // Corresponds with GET /api/v1/environment-providers/{provider_id} (the `GetProviderApiV1EnvironmentProvidersProviderIdGet` operationId).
@@ -11743,7 +12829,7 @@ func (c *Client) GetProviderApiV1EnvironmentProvidersProviderIdGet(ctx context.C
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -11762,13 +12848,28 @@ func (c *Client) UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBody(
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatch Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
 // Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 func (c *Client) UpdateProviderApiV1EnvironmentProvidersProviderIdPatch(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateProviderApiV1EnvironmentProvidersProviderIdPatchRequest(c.Server, providerId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet Environment Provider References
+//
+// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+func (c *Client) EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetRequest(c.Server, providerId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -11999,6 +13100,23 @@ func (c *Client) UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchWithBody(ct
 // Corresponds with PATCH /api/v1/environments/{environment_id} (the `UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch` operationId).
 func (c *Client) UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch(ctx context.Context, environmentId string, params *UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams, body UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost Check Computer
+//
+// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+func (c *Client) CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostRequest(c.Server, environmentId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -12828,7 +13946,7 @@ func (c *Client) GetProviderApiV1MemoryProvidersProviderIdGet(ctx context.Contex
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -12847,7 +13965,7 @@ func (c *Client) UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBody(ctx c
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatch Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -12879,13 +13997,190 @@ func (c *Client) TestProviderApiV1MemoryProvidersProviderIdTestPost(ctx context.
 	return c.Client.Do(req)
 }
 
+// ListSpacesApiV1MemorySpacesGet List Spaces
+//
+// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+func (c *Client) ListSpacesApiV1MemorySpacesGet(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSpacesApiV1MemorySpacesGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateSpaceApiV1MemorySpacesPostWithBody Create Space
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *Client) CreateSpaceApiV1MemorySpacesPostWithBody(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSpaceApiV1MemorySpacesPostRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateSpaceApiV1MemorySpacesPost Create Space
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *Client) CreateSpaceApiV1MemorySpacesPost(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSpaceApiV1MemorySpacesPostRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDelete Delete Space
+//
+// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+func (c *Client) DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSpaceApiV1MemorySpacesSpaceIdDeleteRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGet Get Space
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+func (c *Client) GetSpaceApiV1MemorySpacesSpaceIdGet(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSpaceApiV1MemorySpacesSpaceIdGetRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody Update Space
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *Client) UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody(c.Server, spaceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatch Update Space
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *Client) UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequest(c.Server, spaceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet Get Space Organization
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+func (c *Client) GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet List Space Organizations
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+func (c *Client) ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost Organize Space
+//
+// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+func (c *Client) OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet List Space Sessions
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+func (c *Client) ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetModelCatalogApiV1ModelCatalogGet Get Model Catalog
 //
-// The models.dev models the registered model provider types serve, for any signed-in principal.
+// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+//
+// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 //
 // Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-func (c *Client) GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetModelCatalogApiV1ModelCatalogGetRequest(c.Server)
+func (c *Client) GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetModelCatalogApiV1ModelCatalogGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -12962,7 +14257,7 @@ func (c *Client) GetProviderApiV1ModelProvidersProviderIdGet(ctx context.Context
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -12981,7 +14276,7 @@ func (c *Client) UpdateProviderApiV1ModelProvidersProviderIdPatchWithBody(ctx co
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatch Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -13618,6 +14913,21 @@ func (c *Client) ListProviderTypesApiV1ProviderTypesKindGet(ctx context.Context,
 	return c.Client.Do(req)
 }
 
+// ListRunsApiV1RunsGet List Runs
+//
+// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+func (c *Client) ListRunsApiV1RunsGet(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRunsApiV1RunsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetRunApiV1RunsRunIdGet Get Run
 //
 // Corresponds with GET /api/v1/runs/{run_id} (the `GetRunApiV1RunsRunIdGet` operationId).
@@ -13671,11 +14981,43 @@ func (c *Client) UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string,
 	return c.Client.Do(req)
 }
 
+// RunAgentApiV1RunsRunIdAgentGet Run Agent
+//
+// The agent configuration the run executes: its revision with the run's override applied.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+func (c *Client) RunAgentApiV1RunsRunIdAgentGet(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRunAgentApiV1RunsRunIdAgentGetRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // RunAttemptsApiV1RunsRunIdAttemptsGet Run Attempts
 //
 // Corresponds with GET /api/v1/runs/{run_id}/attempts (the `RunAttemptsApiV1RunsRunIdAttemptsGet` operationId).
 func (c *Client) RunAttemptsApiV1RunsRunIdAttemptsGet(ctx context.Context, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet Get Attempt
+//
+// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+func (c *Client) GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetRequest(c.Server, runId, attemptId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -13748,6 +15090,23 @@ func (c *Client) ForkRunApiV1RunsRunIdForkPostWithBody(ctx context.Context, runI
 // Corresponds with POST /api/v1/runs/{run_id}/fork (the `ForkRunApiV1RunsRunIdForkPost` operationId).
 func (c *Client) ForkRunApiV1RunsRunIdForkPost(ctx context.Context, runId string, params *ForkRunApiV1RunsRunIdForkPostParams, body ForkRunApiV1RunsRunIdForkPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewForkRunApiV1RunsRunIdForkPostRequest(c.Server, runId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RunImageApiV1RunsRunIdImagesImageIdGet Run Image
+//
+// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+func (c *Client) RunImageApiV1RunsRunIdImagesImageIdGet(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRunImageApiV1RunsRunIdImagesImageIdGetRequest(c.Server, runId, imageId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -14581,6 +15940,40 @@ func (c *Client) RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete(ctx conte
 	return c.Client.Do(req)
 }
 
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody Update Mount
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *Client) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody(c.Server, threadId, name, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch Update Mount
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *Client) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequest(c.Server, threadId, name, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListInboxApiV1ThreadsThreadIdInboxGet List Inbox
 //
 // In inbox order.
@@ -15032,6 +16425,21 @@ func (c *Client) UsageOverviewApiV1UsageOverviewGet(ctx context.Context, params 
 	return c.Client.Do(req)
 }
 
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet Model Request Metrics
+//
+// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+func (c *Client) ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetRequest(c.Server, recordId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetProfileApiV1UsersMeGet Get Profile
 //
 // Corresponds with GET /api/v1/users/me (the `GetProfileApiV1UsersMeGet` operationId).
@@ -15381,7 +16789,7 @@ func (c *Client) GetProviderApiV1WebProvidersProviderIdGet(ctx context.Context, 
 
 // UpdateProviderApiV1WebProvidersProviderIdPatchWithBody Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type.
 //
@@ -15400,7 +16808,7 @@ func (c *Client) UpdateProviderApiV1WebProvidersProviderIdPatchWithBody(ctx cont
 
 // UpdateProviderApiV1WebProvidersProviderIdPatch Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -18915,6 +20323,66 @@ func NewCreateProviderApiV1EnvironmentProvidersPostRequestWithBody(server string
 	return req, nil
 }
 
+// NewDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteRequest constructs an http.Request for the DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete method
+func NewDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteRequest(server string, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetProviderApiV1EnvironmentProvidersProviderIdGetRequest constructs an http.Request for the GetProviderApiV1EnvironmentProvidersProviderIdGet method
 func NewGetProviderApiV1EnvironmentProvidersProviderIdGetRequest(server string, providerId string, params *GetProviderApiV1EnvironmentProvidersProviderIdGetParams) (*http.Request, error) {
 	var err error
@@ -19030,6 +20498,55 @@ func NewUpdateProviderApiV1EnvironmentProvidersProviderIdPatchRequestWithBody(se
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetRequest constructs an http.Request for the EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet method
+func NewEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetRequest(server string, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-providers/%s/references", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -19679,6 +21196,55 @@ func NewUpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchRequestWithBody(serv
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostRequest constructs an http.Request for the CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost method
+func NewCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostRequest(server string, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/computer/check", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -22227,8 +23793,624 @@ func NewTestProviderApiV1MemoryProvidersProviderIdTestPostRequest(server string,
 	return req, nil
 }
 
+// NewListSpacesApiV1MemorySpacesGetRequest constructs an http.Request for the ListSpacesApiV1MemorySpacesGet method
+func NewListSpacesApiV1MemorySpacesGetRequest(server string, params *ListSpacesApiV1MemorySpacesGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Label != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "label", *params.Label, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Enabled != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "enabled", *params.Enabled, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateSpaceApiV1MemorySpacesPostRequest calls the generic CreateSpaceApiV1MemorySpacesPost builder with application/json body
+func NewCreateSpaceApiV1MemorySpacesPostRequest(server string, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSpaceApiV1MemorySpacesPostRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateSpaceApiV1MemorySpacesPostRequestWithBody constructs an http.Request for the CreateSpaceApiV1MemorySpacesPost method, with any body, and a specified content type
+func NewCreateSpaceApiV1MemorySpacesPostRequestWithBody(server string, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteSpaceApiV1MemorySpacesSpaceIdDeleteRequest constructs an http.Request for the DeleteSpaceApiV1MemorySpacesSpaceIdDelete method
+func NewDeleteSpaceApiV1MemorySpacesSpaceIdDeleteRequest(server string, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetSpaceApiV1MemorySpacesSpaceIdGetRequest constructs an http.Request for the GetSpaceApiV1MemorySpacesSpaceIdGet method
+func NewGetSpaceApiV1MemorySpacesSpaceIdGetRequest(server string, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequest calls the generic UpdateSpaceApiV1MemorySpacesSpaceIdPatch builder with application/json body
+func NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequest(server string, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody(server, spaceId, params, "application/json", bodyReader)
+}
+
+// NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody constructs an http.Request for the UpdateSpaceApiV1MemorySpacesSpaceIdPatch method, with any body, and a specified content type
+func NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody(server string, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetRequest constructs an http.Request for the GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet method
+func NewGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetRequest(server string, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/organization", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetRequest constructs an http.Request for the ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet method
+func NewListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetRequest(server string, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/organizations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostRequest constructs an http.Request for the OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost method
+func NewOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostRequest(server string, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/organizations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetRequest constructs an http.Request for the ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet method
+func NewListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetRequest(server string, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/sessions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetModelCatalogApiV1ModelCatalogGetRequest constructs an http.Request for the GetModelCatalogApiV1ModelCatalogGet method
-func NewGetModelCatalogApiV1ModelCatalogGetRequest(server string) (*http.Request, error) {
+func NewGetModelCatalogApiV1ModelCatalogGetRequest(server string, params *GetModelCatalogApiV1ModelCatalogGetParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -22244,6 +24426,45 @@ func NewGetModelCatalogApiV1ModelCatalogGetRequest(server string) (*http.Request
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Provider != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "provider", *params.Provider, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Model != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "model", *params.Model, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -24145,6 +26366,171 @@ func NewListProviderTypesApiV1ProviderTypesKindGetRequest(server string, kind Li
 	return req, nil
 }
 
+// NewListRunsApiV1RunsGetRequest constructs an http.Request for the ListRunsApiV1RunsGet method
+func NewListRunsApiV1RunsGetRequest(server string, params *ListRunsApiV1RunsGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.AgentId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", *params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SessionId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "session_id", *params.SessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ThreadId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "thread_id", *params.ThreadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CreatedAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_after", *params.CreatedAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CreatedBefore != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_before", *params.CreatedBefore, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetRunApiV1RunsRunIdGetRequest constructs an http.Request for the GetRunApiV1RunsRunIdGet method
 func NewGetRunApiV1RunsRunIdGetRequest(server string, runId string, params *GetRunApiV1RunsRunIdGetParams) (*http.Request, error) {
 	var err error
@@ -24267,6 +26653,55 @@ func NewUpdateRunApiV1RunsRunIdPatchRequestWithBody(server string, runId string,
 	return req, nil
 }
 
+// NewRunAgentApiV1RunsRunIdAgentGetRequest constructs an http.Request for the RunAgentApiV1RunsRunIdAgentGet method
+func NewRunAgentApiV1RunsRunIdAgentGetRequest(server string, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/agent", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest constructs an http.Request for the RunAttemptsApiV1RunsRunIdAttemptsGet method
 func NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest(server string, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams) (*http.Request, error) {
 	var err error
@@ -24284,6 +26719,62 @@ func NewRunAttemptsApiV1RunsRunIdAttemptsGetRequest(server string, runId string,
 	}
 
 	operationPath := fmt.Sprintf("/api/v1/runs/%s/attempts", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetRequest constructs an http.Request for the GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet method
+func NewGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetRequest(server string, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "attempt_id", attemptId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/attempts/%s", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -24531,6 +27022,62 @@ func NewForkRunApiV1RunsRunIdForkPostRequestWithBody(server string, runId string
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRunImageApiV1RunsRunIdImagesImageIdGetRequest constructs an http.Request for the RunImageApiV1RunsRunIdImagesImageIdGet method
+func NewRunImageApiV1RunsRunIdImagesImageIdGetRequest(server string, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "image_id", imageId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/images/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -27138,6 +29685,86 @@ func NewRemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteRequest(server stri
 	return req, nil
 }
 
+// NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequest calls the generic UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch builder with application/json body
+func NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequest(server string, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody(server, threadId, name, params, "application/json", bodyReader)
+}
+
+// NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody constructs an http.Request for the UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch method, with any body, and a specified content type
+func NewUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchRequestWithBody(server string, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/threads/%s/environments/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListInboxApiV1ThreadsThreadIdInboxGetRequest constructs an http.Request for the ListInboxApiV1ThreadsThreadIdInboxGet method
 func NewListInboxApiV1ThreadsThreadIdInboxGetRequest(server string, threadId string, params *ListInboxApiV1ThreadsThreadIdInboxGetParams) (*http.Request, error) {
 	var err error
@@ -28839,6 +31466,55 @@ func NewUsageOverviewApiV1UsageOverviewGetRequest(server string, params *UsageOv
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
 		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetRequest constructs an http.Request for the ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet method
+func NewModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetRequest(server string, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "record_id", recordId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/records/%s/metrics", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -31748,7 +34424,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -31757,7 +34433,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update connector provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -31813,6 +34489,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/environment-providers (the `CreateProviderApiV1EnvironmentProvidersPost` operationId).
 	CreateProviderApiV1EnvironmentProvidersPostWithResponse(ctx context.Context, params *CreateProviderApiV1EnvironmentProvidersPostParams, body CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProviderApiV1EnvironmentProvidersPostResponse, error)
 
+	// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse Delete Environment Provider
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+	DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse, error)
+
 	// GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get environment provider
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -31822,7 +34505,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -31831,12 +34514,19 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update environment provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with PATCH /api/v1/environment-providers/{provider_id} (the `UpdateProviderApiV1EnvironmentProvidersProviderIdPatch` operationId).
 	UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse(ctx context.Context, providerId string, params *UpdateProviderApiV1EnvironmentProvidersProviderIdPatchParams, body UpdateProviderApiV1EnvironmentProvidersProviderIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse, error)
+
+	// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse Environment Provider References
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+	EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse, error)
 
 	// TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test environment provider
 	//
@@ -31939,6 +34629,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/environments/{environment_id} (the `UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatch` operationId).
 	UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchWithResponse(ctx context.Context, environmentId string, params *UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchParams, body UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse, error)
+
+	// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse Check Computer
+	//
+	// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+	CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse, error)
 
 	// StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostWithResponse Stop Environment
 	//
@@ -32311,7 +35010,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32320,7 +35019,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update memory provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32334,14 +35033,95 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/memory-providers/{provider_id}/test (the `TestProviderApiV1MemoryProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1MemoryProvidersProviderIdTestPostWithResponse(ctx context.Context, providerId string, params *TestProviderApiV1MemoryProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*TestProviderApiV1MemoryProvidersProviderIdTestPostResponse, error)
 
+	// ListSpacesApiV1MemorySpacesGetWithResponse List Spaces
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+	ListSpacesApiV1MemorySpacesGetWithResponse(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*ListSpacesApiV1MemorySpacesGetResponse, error)
+
+	// CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse Create Space
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error)
+
+	// CreateSpaceApiV1MemorySpacesPostWithResponse Create Space
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPostWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error)
+
+	// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse Delete Space
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+	DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse, error)
+
+	// GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse Get Space
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+	GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*GetSpaceApiV1MemorySpacesSpaceIdGetResponse, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse Update Space
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse Update Space
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error)
+
+	// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse Get Space Organization
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+	GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse, error)
+
+	// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse List Space Organizations
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+	ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse, error)
+
+	// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse Organize Space
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+	OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse, error)
+
+	// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse List Space Sessions
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+	ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse, error)
+
 	// GetModelCatalogApiV1ModelCatalogGetWithResponse Get Model Catalog
 	//
-	// The models.dev models the registered model provider types serve, for any signed-in principal.
+	// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+	//
+	// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+	// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+	// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-	GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error)
+	GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error)
 
 	// ListProvidersApiV1ModelProvidersGetWithResponse List model providers
 	//
@@ -32373,7 +35153,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32382,7 +35162,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update model provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32667,6 +35447,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypesApiV1ProviderTypesKindGet` operationId).
 	ListProviderTypesApiV1ProviderTypesKindGetWithResponse(ctx context.Context, kind ListProviderTypesApiV1ProviderTypesKindGetParamsKind, reqEditors ...RequestEditorFn) (*ListProviderTypesApiV1ProviderTypesKindGetResponse, error)
 
+	// ListRunsApiV1RunsGetWithResponse List Runs
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+	ListRunsApiV1RunsGetWithResponse(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*ListRunsApiV1RunsGetResponse, error)
+
 	// GetRunApiV1RunsRunIdGetWithResponse Get Run
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -32692,12 +35479,28 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/runs/{run_id} (the `UpdateRunApiV1RunsRunIdPatch` operationId).
 	UpdateRunApiV1RunsRunIdPatchWithResponse(ctx context.Context, runId string, params *UpdateRunApiV1RunsRunIdPatchParams, body UpdateRunApiV1RunsRunIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRunApiV1RunsRunIdPatchResponse, error)
 
+	// RunAgentApiV1RunsRunIdAgentGetWithResponse Run Agent
+	//
+	// The agent configuration the run executes: its revision with the run's override applied.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+	RunAgentApiV1RunsRunIdAgentGetWithResponse(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*RunAgentApiV1RunsRunIdAgentGetResponse, error)
+
 	// RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse Run Attempts
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/attempts (the `RunAttemptsApiV1RunsRunIdAttemptsGet` operationId).
 	RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse(ctx context.Context, runId string, params *RunAttemptsApiV1RunsRunIdAttemptsGetParams, reqEditors ...RequestEditorFn) (*RunAttemptsApiV1RunsRunIdAttemptsGetResponse, error)
+
+	// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse Get Attempt
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+	GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse, error)
 
 	// ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetWithResponse List Attempt Spans
 	//
@@ -32734,6 +35537,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/runs/{run_id}/fork (the `ForkRunApiV1RunsRunIdForkPost` operationId).
 	ForkRunApiV1RunsRunIdForkPostWithResponse(ctx context.Context, runId string, params *ForkRunApiV1RunsRunIdForkPostParams, body ForkRunApiV1RunsRunIdForkPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ForkRunApiV1RunsRunIdForkPostResponse, error)
+
+	// RunImageApiV1RunsRunIdImagesImageIdGetWithResponse Run Image
+	//
+	// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+	RunImageApiV1RunsRunIdImagesImageIdGetWithResponse(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*RunImageApiV1RunsRunIdImagesImageIdGetResponse, error)
 
 	// InterruptRunApiV1RunsRunIdInterruptPostWithResponse Interrupt Run
 	//
@@ -33118,6 +35930,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with DELETE /api/v1/threads/{thread_id}/environments/{name} (the `RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDelete` operationId).
 	RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteWithResponse(ctx context.Context, threadId string, name string, params *RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteParams, reqEditors ...RequestEditorFn) (*RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse, error)
 
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse Update Mount
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error)
+
+	// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse Update Mount
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+	UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error)
+
 	// ListInboxApiV1ThreadsThreadIdInboxGetWithResponse List Inbox
 	//
 	// In inbox order.
@@ -33331,6 +36157,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/usage/overview (the `UsageOverviewApiV1UsageOverviewGet` operationId).
 	UsageOverviewApiV1UsageOverviewGetWithResponse(ctx context.Context, params *UsageOverviewApiV1UsageOverviewGetParams, reqEditors ...RequestEditorFn) (*UsageOverviewApiV1UsageOverviewGetResponse, error)
 
+	// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse Model Request Metrics
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+	ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse, error)
+
 	// GetProfileApiV1UsersMeGetWithResponse Get Profile
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -33490,7 +36323,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -33499,7 +36332,7 @@ type ClientWithResponsesInterface interface {
 
 	// UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update web provider
 	//
-	// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+	// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -37046,6 +39879,68 @@ func (r CreateProviderApiV1EnvironmentProvidersPostResponse) ContentType() strin
 	return ""
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers the declared response headers of an HTTP 400 response for DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetProviderApiV1EnvironmentProvidersProviderIdGet
 type GetProviderApiV1EnvironmentProvidersProviderIdGetResponse400Headers struct {
 	XRequestId *string
@@ -37178,6 +40073,75 @@ func (r UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse) StatusCo
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers the declared response headers of an HTTP 400 response for EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders the declared response headers of an HTTP default response for EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EnvironmentProviderReferences
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetJSON200() *EnvironmentProviderReferences {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -37868,6 +40832,75 @@ func (r UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse) StatusCode
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers the declared response headers of an HTTP 400 response for CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders the declared response headers of an HTTP default response for CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ComputerCheck
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetJSON200() *ComputerCheck {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -40406,6 +43439,625 @@ func (r TestProviderApiV1MemoryProvidersProviderIdTestPostResponse) ContentType(
 	return ""
 }
 
+// ListSpacesApiV1MemorySpacesGetResponse400Headers the declared response headers of an HTTP 400 response for ListSpacesApiV1MemorySpacesGet
+type ListSpacesApiV1MemorySpacesGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListSpacesApiV1MemorySpacesGet
+type ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSpacesApiV1MemorySpacesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemorySpacePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSpacesApiV1MemorySpacesGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetJSON200() *MemorySpacePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSpacesApiV1MemorySpacesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSpacesApiV1MemorySpacesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSpacesApiV1MemorySpacesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateSpaceApiV1MemorySpacesPostResponse400Headers the declared response headers of an HTTP 400 response for CreateSpaceApiV1MemorySpacesPost
+type CreateSpaceApiV1MemorySpacesPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders the declared response headers of an HTTP default response for CreateSpaceApiV1MemorySpacesPost
+type CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateSpaceApiV1MemorySpacesPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *MemorySpace
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateSpaceApiV1MemorySpacesPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetJSON201() *MemorySpace {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateSpaceApiV1MemorySpacesPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSpaceApiV1MemorySpacesPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateSpaceApiV1MemorySpacesPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers the declared response headers of an HTTP 400 response for DeleteSpaceApiV1MemorySpacesSpaceIdDelete
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteSpaceApiV1MemorySpacesSpaceIdDelete
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetSpaceApiV1MemorySpacesSpaceIdGet
+type GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetSpaceApiV1MemorySpacesSpaceIdGet
+type GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetSpaceApiV1MemorySpacesSpaceIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemorySpace
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetJSON200() *MemorySpace {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers the declared response headers of an HTTP 400 response for UpdateSpaceApiV1MemorySpacesSpaceIdPatch
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateSpaceApiV1MemorySpacesSpaceIdPatch
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemorySpace
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetJSON200() *MemorySpace {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers the declared response headers of an HTTP 400 response for GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SpaceOrganizationStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetJSON200() *SpaceOrganizationStatus {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers the declared response headers of an HTTP 400 response for ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetJSON200() *RunPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers the declared response headers of an HTTP 400 response for OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders the declared response headers of an HTTP default response for OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *SpaceOrganizationStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetJSON202() *SpaceOrganizationStatus {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers the declared response headers of an HTTP 400 response for ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetJSON200() *SessionPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetModelCatalogApiV1ModelCatalogGetResponse400Headers the declared response headers of an HTTP 400 response for GetModelCatalogApiV1ModelCatalogGet
+type GetModelCatalogApiV1ModelCatalogGetResponse400Headers struct {
+	XRequestId *string
+}
+
 // GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetModelCatalogApiV1ModelCatalogGet
 type GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders struct {
 	XRequestId *string
@@ -40416,8 +44068,12 @@ type GetModelCatalogApiV1ModelCatalogGetResponse struct {
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *ModelCatalog
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
 	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetModelCatalogApiV1ModelCatalogGetResponse400Headers
 	// HeadersDefault the parsed response headers for an HTTP default response
 	HeadersDefault *GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders
 }
@@ -40425,6 +44081,11 @@ type GetModelCatalogApiV1ModelCatalogGetResponse struct {
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r GetModelCatalogApiV1ModelCatalogGetResponse) GetJSON200() *ModelCatalog {
 	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetModelCatalogApiV1ModelCatalogGetResponse) GetJSON400() *Error {
+	return r.JSON400
 }
 
 // GetJSONDefault returns the response for an HTTP default `application/json` response
@@ -42724,6 +46385,75 @@ func (r ListProviderTypesApiV1ProviderTypesKindGetResponse) ContentType() string
 	return ""
 }
 
+// ListRunsApiV1RunsGetResponse400Headers the declared response headers of an HTTP 400 response for ListRunsApiV1RunsGet
+type ListRunsApiV1RunsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListRunsApiV1RunsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListRunsApiV1RunsGet
+type ListRunsApiV1RunsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListRunsApiV1RunsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListRunsApiV1RunsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListRunsApiV1RunsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListRunsApiV1RunsGetResponse) GetJSON200() *RunPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListRunsApiV1RunsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListRunsApiV1RunsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListRunsApiV1RunsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListRunsApiV1RunsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListRunsApiV1RunsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListRunsApiV1RunsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetRunApiV1RunsRunIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetRunApiV1RunsRunIdGet
 type GetRunApiV1RunsRunIdGetResponse400Headers struct {
 	XRequestId *string
@@ -42862,6 +46592,75 @@ func (r UpdateRunApiV1RunsRunIdPatchResponse) ContentType() string {
 	return ""
 }
 
+// RunAgentApiV1RunsRunIdAgentGetResponse400Headers the declared response headers of an HTTP 400 response for RunAgentApiV1RunsRunIdAgentGet
+type RunAgentApiV1RunsRunIdAgentGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders the declared response headers of an HTTP default response for RunAgentApiV1RunsRunIdAgentGet
+type RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RunAgentApiV1RunsRunIdAgentGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunAgent
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RunAgentApiV1RunsRunIdAgentGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSON200() *RunAgent {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // RunAttemptsApiV1RunsRunIdAttemptsGetResponse400Headers the declared response headers of an HTTP 400 response for RunAttemptsApiV1RunsRunIdAttemptsGet
 type RunAttemptsApiV1RunsRunIdAttemptsGetResponse400Headers struct {
 	XRequestId *string
@@ -42925,6 +46724,75 @@ func (r RunAttemptsApiV1RunsRunIdAttemptsGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r RunAttemptsApiV1RunsRunIdAttemptsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AttemptView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetJSON200() *AttemptView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -43139,6 +47007,68 @@ func (r ForkRunApiV1RunsRunIdForkPostResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ForkRunApiV1RunsRunIdForkPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers the declared response headers of an HTTP 400 response for RunImageApiV1RunsRunIdImagesImageIdGet
+type RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for RunImageApiV1RunsRunIdImagesImageIdGet
+type RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RunImageApiV1RunsRunIdImagesImageIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RunImageApiV1RunsRunIdImagesImageIdGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -45684,6 +49614,75 @@ func (r RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse) ContentTy
 	return ""
 }
 
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers the declared response headers of an HTTP 400 response for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MountView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetJSON200() *MountView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListInboxApiV1ThreadsThreadIdInboxGetResponse400Headers the declared response headers of an HTTP 400 response for ListInboxApiV1ThreadsThreadIdInboxGet
 type ListInboxApiV1ThreadsThreadIdInboxGetResponse400Headers struct {
 	XRequestId *string
@@ -47189,6 +51188,75 @@ func (r UsageOverviewApiV1UsageOverviewGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UsageOverviewApiV1UsageOverviewGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers the declared response headers of an HTTP 400 response for ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ModelRequestMetrics
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetJSON200() *ModelRequestMetrics {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -50968,7 +55036,7 @@ func (c *ClientWithResponses) GetProviderApiV1ConnectorProvidersProviderIdGetWit
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithBodyWithResponse Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -50983,7 +55051,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1ConnectorProvidersProviderIdPat
 
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatchWithResponse Update connector provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -51087,6 +55155,19 @@ func (c *ClientWithResponses) CreateProviderApiV1EnvironmentProvidersPostWithRes
 	return ParseCreateProviderApiV1EnvironmentProvidersPostResponse(rsp)
 }
 
+// DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse Delete Environment Provider
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/environment-providers/{provider_id} (the `DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete` operationId).
+func (c *ClientWithResponses) DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse(ctx context.Context, providerId string, params *DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse, error) {
+	rsp, err := c.DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse(rsp)
+}
+
 // GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse Get environment provider
 //
 // Returns a wrapper object for the known response body format(s).
@@ -51102,7 +55183,7 @@ func (c *ClientWithResponses) GetProviderApiV1EnvironmentProvidersProviderIdGetW
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithBodyWithResponse Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -51117,7 +55198,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1EnvironmentProvidersProviderIdP
 
 // UpdateProviderApiV1EnvironmentProvidersProviderIdPatchWithResponse Update environment provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -51128,6 +55209,19 @@ func (c *ClientWithResponses) UpdateProviderApiV1EnvironmentProvidersProviderIdP
 		return nil, err
 	}
 	return ParseUpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse(rsp)
+}
+
+// EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse Environment Provider References
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environment-providers/{provider_id}/references (the `EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet` operationId).
+func (c *ClientWithResponses) EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse(ctx context.Context, providerId string, params *EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams, reqEditors ...RequestEditorFn) (*EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse, error) {
+	rsp, err := c.EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse(rsp)
 }
 
 // TestProviderApiV1EnvironmentProvidersProviderIdTestPostWithResponse Test environment provider
@@ -51314,6 +55408,21 @@ func (c *ClientWithResponses) UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPat
 		return nil, err
 	}
 	return ParseUpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse(rsp)
+}
+
+// CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse Check Computer
+//
+// Probe desktop readiness without capturing the screen, sending input or starting the instance.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` operationId).
+func (c *ClientWithResponses) CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse(ctx context.Context, environmentId string, params *CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams, reqEditors ...RequestEditorFn) (*CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse, error) {
+	rsp, err := c.CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse(rsp)
 }
 
 // StopEnvironmentApiV1EnvironmentsEnvironmentIdStopPostWithResponse Stop Environment
@@ -51981,7 +56090,7 @@ func (c *ClientWithResponses) GetProviderApiV1MemoryProvidersProviderIdGetWithRe
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchWithBodyWithResponse Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -51996,7 +56105,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1MemoryProvidersProviderIdPatchW
 
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchWithResponse Update memory provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -52022,15 +56131,162 @@ func (c *ClientWithResponses) TestProviderApiV1MemoryProvidersProviderIdTestPost
 	return ParseTestProviderApiV1MemoryProvidersProviderIdTestPostResponse(rsp)
 }
 
+// ListSpacesApiV1MemorySpacesGetWithResponse List Spaces
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+func (c *ClientWithResponses) ListSpacesApiV1MemorySpacesGetWithResponse(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*ListSpacesApiV1MemorySpacesGetResponse, error) {
+	rsp, err := c.ListSpacesApiV1MemorySpacesGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSpacesApiV1MemorySpacesGetResponse(rsp)
+}
+
+// CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse Create Space
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *ClientWithResponses) CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error) {
+	rsp, err := c.CreateSpaceApiV1MemorySpacesPostWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSpaceApiV1MemorySpacesPostResponse(rsp)
+}
+
+// CreateSpaceApiV1MemorySpacesPostWithResponse Create Space
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *ClientWithResponses) CreateSpaceApiV1MemorySpacesPostWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error) {
+	rsp, err := c.CreateSpaceApiV1MemorySpacesPost(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSpaceApiV1MemorySpacesPostResponse(rsp)
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse Delete Space
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+func (c *ClientWithResponses) DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse, error) {
+	rsp, err := c.DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse(rsp)
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse Get Space
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+func (c *ClientWithResponses) GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*GetSpaceApiV1MemorySpacesSpaceIdGetResponse, error) {
+	rsp, err := c.GetSpaceApiV1MemorySpacesSpaceIdGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSpaceApiV1MemorySpacesSpaceIdGetResponse(rsp)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse Update Space
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *ClientWithResponses) UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error) {
+	rsp, err := c.UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody(ctx, spaceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse(rsp)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse Update Space
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *ClientWithResponses) UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error) {
+	rsp, err := c.UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx, spaceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse(rsp)
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse Get Space Organization
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+func (c *ClientWithResponses) GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse, error) {
+	rsp, err := c.GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse(rsp)
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse List Space Organizations
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+func (c *ClientWithResponses) ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse, error) {
+	rsp, err := c.ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse(rsp)
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse Organize Space
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+func (c *ClientWithResponses) OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse, error) {
+	rsp, err := c.OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse(rsp)
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse List Space Sessions
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+func (c *ClientWithResponses) ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse, error) {
+	rsp, err := c.ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse(rsp)
+}
+
 // GetModelCatalogApiV1ModelCatalogGetWithResponse Get Model Catalog
 //
-// The models.dev models the registered model provider types serve, for any signed-in principal.
+// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+//
+// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 //
 // Returns a wrapper object for the known response body format(s).
 //
 // Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-func (c *ClientWithResponses) GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error) {
-	rsp, err := c.GetModelCatalogApiV1ModelCatalogGet(ctx, reqEditors...)
+func (c *ClientWithResponses) GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error) {
+	rsp, err := c.GetModelCatalogApiV1ModelCatalogGet(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -52091,7 +56347,7 @@ func (c *ClientWithResponses) GetProviderApiV1ModelProvidersProviderIdGetWithRes
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatchWithBodyWithResponse Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -52106,7 +56362,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1ModelProvidersProviderIdPatchWi
 
 // UpdateProviderApiV1ModelProvidersProviderIdPatchWithResponse Update model provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -52625,6 +56881,19 @@ func (c *ClientWithResponses) ListProviderTypesApiV1ProviderTypesKindGetWithResp
 	return ParseListProviderTypesApiV1ProviderTypesKindGetResponse(rsp)
 }
 
+// ListRunsApiV1RunsGetWithResponse List Runs
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs (the `ListRunsApiV1RunsGet` operationId).
+func (c *ClientWithResponses) ListRunsApiV1RunsGetWithResponse(ctx context.Context, params *ListRunsApiV1RunsGetParams, reqEditors ...RequestEditorFn) (*ListRunsApiV1RunsGetResponse, error) {
+	rsp, err := c.ListRunsApiV1RunsGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListRunsApiV1RunsGetResponse(rsp)
+}
+
 // GetRunApiV1RunsRunIdGetWithResponse Get Run
 //
 // Returns a wrapper object for the known response body format(s).
@@ -52668,6 +56937,21 @@ func (c *ClientWithResponses) UpdateRunApiV1RunsRunIdPatchWithResponse(ctx conte
 	return ParseUpdateRunApiV1RunsRunIdPatchResponse(rsp)
 }
 
+// RunAgentApiV1RunsRunIdAgentGetWithResponse Run Agent
+//
+// The agent configuration the run executes: its revision with the run's override applied.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
+func (c *ClientWithResponses) RunAgentApiV1RunsRunIdAgentGetWithResponse(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*RunAgentApiV1RunsRunIdAgentGetResponse, error) {
+	rsp, err := c.RunAgentApiV1RunsRunIdAgentGet(ctx, runId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRunAgentApiV1RunsRunIdAgentGetResponse(rsp)
+}
+
 // RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse Run Attempts
 //
 // Returns a wrapper object for the known response body format(s).
@@ -52679,6 +56963,19 @@ func (c *ClientWithResponses) RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse(c
 		return nil, err
 	}
 	return ParseRunAttemptsApiV1RunsRunIdAttemptsGetResponse(rsp)
+}
+
+// GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse Get Attempt
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/attempts/{attempt_id} (the `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet` operationId).
+func (c *ClientWithResponses) GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse(ctx context.Context, runId string, attemptId string, params *GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams, reqEditors ...RequestEditorFn) (*GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse, error) {
+	rsp, err := c.GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx, runId, attemptId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse(rsp)
 }
 
 // ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetWithResponse List Attempt Spans
@@ -52739,6 +57036,21 @@ func (c *ClientWithResponses) ForkRunApiV1RunsRunIdForkPostWithResponse(ctx cont
 		return nil, err
 	}
 	return ParseForkRunApiV1RunsRunIdForkPostResponse(rsp)
+}
+
+// RunImageApiV1RunsRunIdImagesImageIdGetWithResponse Run Image
+//
+// Read a retained screenshot from committed Run history. Binary media is not an MCP query endpoint.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/images/{image_id} (the `RunImageApiV1RunsRunIdImagesImageIdGet` operationId).
+func (c *ClientWithResponses) RunImageApiV1RunsRunIdImagesImageIdGetWithResponse(ctx context.Context, runId string, imageId string, params *RunImageApiV1RunsRunIdImagesImageIdGetParams, reqEditors ...RequestEditorFn) (*RunImageApiV1RunsRunIdImagesImageIdGetResponse, error) {
+	rsp, err := c.RunImageApiV1RunsRunIdImagesImageIdGet(ctx, runId, imageId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRunImageApiV1RunsRunIdImagesImageIdGetResponse(rsp)
 }
 
 // InterruptRunApiV1RunsRunIdInterruptPostWithResponse Interrupt Run
@@ -53418,6 +57730,32 @@ func (c *ClientWithResponses) RemoveMountApiV1ThreadsThreadIdEnvironmentsNameDel
 	return ParseRemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse(rsp)
 }
 
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse Update Mount
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *ClientWithResponses) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBodyWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error) {
+	rsp, err := c.UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithBody(ctx, threadId, name, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse(rsp)
+}
+
+// UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse Update Mount
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/threads/{thread_id}/environments/{name} (the `UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch` operationId).
+func (c *ClientWithResponses) UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse(ctx context.Context, threadId string, name string, params *UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams, body UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error) {
+	rsp, err := c.UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch(ctx, threadId, name, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse(rsp)
+}
+
 // ListInboxApiV1ThreadsThreadIdInboxGetWithResponse List Inbox
 //
 // In inbox order.
@@ -53793,6 +58131,19 @@ func (c *ClientWithResponses) UsageOverviewApiV1UsageOverviewGetWithResponse(ctx
 	return ParseUsageOverviewApiV1UsageOverviewGetResponse(rsp)
 }
 
+// ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse Model Request Metrics
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` operationId).
+func (c *ClientWithResponses) ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse(ctx context.Context, recordId string, params *ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams, reqEditors ...RequestEditorFn) (*ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse, error) {
+	rsp, err := c.ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx, recordId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse(rsp)
+}
+
 // GetProfileApiV1UsersMeGetWithResponse Get Profile
 //
 // Returns a wrapper object for the known response body format(s).
@@ -54078,7 +58429,7 @@ func (c *ClientWithResponses) GetProviderApiV1WebProvidersProviderIdGetWithRespo
 
 // UpdateProviderApiV1WebProvidersProviderIdPatchWithBodyWithResponse Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -54093,7 +58444,7 @@ func (c *ClientWithResponses) UpdateProviderApiV1WebProvidersProviderIdPatchWith
 
 // UpdateProviderApiV1WebProvidersProviderIdPatchWithResponse Update web provider
 //
-// A `config` change must also replace or remove a stored credential: it never follows a new endpoint.
+// Omitted credentials and extra headers keep their saved values, including when `config` changes.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -57567,6 +61918,65 @@ func ParseCreateProviderApiV1EnvironmentProvidersPostResponse(rsp *http.Response
 	return response, nil
 }
 
+// ParseDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse parses an HTTP response from a DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteWithResponse call
+func ParseDeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse(rsp *http.Response) (*DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetProviderApiV1EnvironmentProvidersProviderIdGetResponse parses an HTTP response from a GetProviderApiV1EnvironmentProvidersProviderIdGetWithResponse call
 func ParseGetProviderApiV1EnvironmentProvidersProviderIdGetResponse(rsp *http.Response) (*GetProviderApiV1EnvironmentProvidersProviderIdGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -57680,6 +62090,69 @@ func ParseUpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponse(rsp *ht
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateProviderApiV1EnvironmentProvidersProviderIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse parses an HTTP response from a EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetWithResponse call
+func ParseEnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse(rsp *http.Response) (*EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EnvironmentProviderReferences
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -58310,6 +62783,69 @@ func ParseUpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponse(rsp *http
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateEnvironmentApiV1EnvironmentsEnvironmentIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse parses an HTTP response from a CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostWithResponse call
+func ParseCheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse(rsp *http.Response) (*CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ComputerCheck
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -60642,6 +65178,569 @@ func ParseTestProviderApiV1MemoryProvidersProviderIdTestPostResponse(rsp *http.R
 	return response, nil
 }
 
+// ParseListSpacesApiV1MemorySpacesGetResponse parses an HTTP response from a ListSpacesApiV1MemorySpacesGetWithResponse call
+func ParseListSpacesApiV1MemorySpacesGetResponse(rsp *http.Response) (*ListSpacesApiV1MemorySpacesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSpacesApiV1MemorySpacesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemorySpacePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSpacesApiV1MemorySpacesGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateSpaceApiV1MemorySpacesPostResponse parses an HTTP response from a CreateSpaceApiV1MemorySpacesPostWithResponse call
+func ParseCreateSpaceApiV1MemorySpacesPostResponse(rsp *http.Response) (*CreateSpaceApiV1MemorySpacesPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSpaceApiV1MemorySpacesPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest MemorySpace
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateSpaceApiV1MemorySpacesPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse parses an HTTP response from a DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse call
+func ParseDeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse(rsp *http.Response) (*DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetSpaceApiV1MemorySpacesSpaceIdGetResponse parses an HTTP response from a GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse call
+func ParseGetSpaceApiV1MemorySpacesSpaceIdGetResponse(rsp *http.Response) (*GetSpaceApiV1MemorySpacesSpaceIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSpaceApiV1MemorySpacesSpaceIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemorySpace
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse parses an HTTP response from a UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse call
+func ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse(rsp *http.Response) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemorySpace
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse parses an HTTP response from a GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse call
+func ParseGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse(rsp *http.Response) (*GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SpaceOrganizationStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse parses an HTTP response from a ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse call
+func ParseListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse(rsp *http.Response) (*ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse parses an HTTP response from a OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse call
+func ParseOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse(rsp *http.Response) (*OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest SpaceOrganizationStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse parses an HTTP response from a ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse call
+func ParseListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse(rsp *http.Response) (*ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetModelCatalogApiV1ModelCatalogGetResponse parses an HTTP response from a GetModelCatalogApiV1ModelCatalogGetWithResponse call
 func ParseGetModelCatalogApiV1ModelCatalogGetResponse(rsp *http.Response) (*GetModelCatalogApiV1ModelCatalogGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -60663,6 +65762,13 @@ func ParseGetModelCatalogApiV1ModelCatalogGetResponse(rsp *http.Response) (*GetM
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
 		var dest Error
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -60673,6 +65779,16 @@ func ParseGetModelCatalogApiV1ModelCatalogGetResponse(rsp *http.Response) (*GetM
 	}
 
 	switch {
+	case rsp.StatusCode == 400:
+		var headers GetModelCatalogApiV1ModelCatalogGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
 	case true:
 		var headers GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
@@ -62756,6 +67872,69 @@ func ParseListProviderTypesApiV1ProviderTypesKindGetResponse(rsp *http.Response)
 	return response, nil
 }
 
+// ParseListRunsApiV1RunsGetResponse parses an HTTP response from a ListRunsApiV1RunsGetWithResponse call
+func ParseListRunsApiV1RunsGetResponse(rsp *http.Response) (*ListRunsApiV1RunsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListRunsApiV1RunsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListRunsApiV1RunsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListRunsApiV1RunsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetRunApiV1RunsRunIdGetResponse parses an HTTP response from a GetRunApiV1RunsRunIdGetWithResponse call
 func ParseGetRunApiV1RunsRunIdGetResponse(rsp *http.Response) (*GetRunApiV1RunsRunIdGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -62882,6 +68061,69 @@ func ParseUpdateRunApiV1RunsRunIdPatchResponse(rsp *http.Response) (*UpdateRunAp
 	return response, nil
 }
 
+// ParseRunAgentApiV1RunsRunIdAgentGetResponse parses an HTTP response from a RunAgentApiV1RunsRunIdAgentGetWithResponse call
+func ParseRunAgentApiV1RunsRunIdAgentGetResponse(rsp *http.Response) (*RunAgentApiV1RunsRunIdAgentGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RunAgentApiV1RunsRunIdAgentGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunAgent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RunAgentApiV1RunsRunIdAgentGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RunAgentApiV1RunsRunIdAgentGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseRunAttemptsApiV1RunsRunIdAttemptsGetResponse parses an HTTP response from a RunAttemptsApiV1RunsRunIdAttemptsGetWithResponse call
 func ParseRunAttemptsApiV1RunsRunIdAttemptsGetResponse(rsp *http.Response) (*RunAttemptsApiV1RunsRunIdAttemptsGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -62932,6 +68174,69 @@ func ParseRunAttemptsApiV1RunsRunIdAttemptsGetResponse(rsp *http.Response) (*Run
 		response.Headers400 = &headers
 	case true:
 		var headers RunAttemptsApiV1RunsRunIdAttemptsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse parses an HTTP response from a GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetWithResponse call
+func ParseGetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse(rsp *http.Response) (*GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AttemptView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -63128,6 +68433,62 @@ func ParseForkRunApiV1RunsRunIdForkPostResponse(rsp *http.Response) (*ForkRunApi
 		response.Headers400 = &headers
 	case true:
 		var headers ForkRunApiV1RunsRunIdForkPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRunImageApiV1RunsRunIdImagesImageIdGetResponse parses an HTTP response from a RunImageApiV1RunsRunIdImagesImageIdGetWithResponse call
+func ParseRunImageApiV1RunsRunIdImagesImageIdGetResponse(rsp *http.Response) (*RunImageApiV1RunsRunIdImagesImageIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RunImageApiV1RunsRunIdImagesImageIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RunImageApiV1RunsRunIdImagesImageIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RunImageApiV1RunsRunIdImagesImageIdGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -65464,6 +70825,69 @@ func ParseRemoveMountApiV1ThreadsThreadIdEnvironmentsNameDeleteResponse(rsp *htt
 	return response, nil
 }
 
+// ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse parses an HTTP response from a UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchWithResponse call
+func ParseUpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse(rsp *http.Response) (*UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MountView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListInboxApiV1ThreadsThreadIdInboxGetResponse parses an HTTP response from a ListInboxApiV1ThreadsThreadIdInboxGetWithResponse call
 func ParseListInboxApiV1ThreadsThreadIdInboxGetResponse(rsp *http.Response) (*ListInboxApiV1ThreadsThreadIdInboxGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -66833,6 +72257,69 @@ func ParseUsageOverviewApiV1UsageOverviewGetResponse(rsp *http.Response) (*Usage
 		response.Headers400 = &headers
 	case true:
 		var headers UsageOverviewApiV1UsageOverviewGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse parses an HTTP response from a ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetWithResponse call
+func ParseModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse(rsp *http.Response) (*ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ModelRequestMetrics
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

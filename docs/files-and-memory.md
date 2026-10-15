@@ -108,3 +108,32 @@ fmt.Println(updated.Value.Path, updated.Value.Content)
 ```
 
 This last snippet assumes the `api`, `client`, `ctx` and `memoryID` from above; imports also include `fmt`. To inspect changes, use `ListRevisionsApiV1MemoriesMemoryIdRevisionsGet` with `a13n.Pages` (see [pagination](generated-api.md#page-through-a-list)). Its revisions carry numeric `Seq`; `RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost` takes that `int` and a conditional ETag when replacing an existing file. A restore can yield `MemoryFileState.File` as **null** (for example restoring a creation operation that removes the file). Check the nullable value before accessing its content; see the [installed consumer](../scripts/acceptance/main.go) for an end-to-end Unicode/history/restore example.
+
+## Select shared Memory Spaces for a Session
+
+A Memory Space owns a managed file Memory and an organization policy. Create/read/update/delete it through the generated `/memory-spaces` operations; its `MemoryId` works with the existing files and revisions API. List filters accept repeated labels and an explicit `Enabled: a13n.Ptr(false)`. Updates and deletes use the Space ETag. The `Organization` update supplies a replacement policy; it is not a recursive patch. `OrganizationPolicy.Trigger` is a native union with `FromAnyChangeTrigger` and `FromChangeCountTrigger` helpers. Preserve zero cooldown and explicit false rather than expanding defaults in the client.
+
+Select Spaces with `SessionMemorySettings` on a Session, or use Agent configuration `Memory` for initial defaults. This helper imports `context`, `a13n` and `generated`:
+
+```go
+func createSessionWithSpace(ctx context.Context, client *a13n.Client, spaceID string) (
+    a13n.Result[generated.SessionView], error,
+) {
+    api, err := client.API()
+    if err != nil { return a13n.Result[generated.SessionView]{}, err }
+    memory := generated.SessionMemorySettings{
+        Enabled: a13n.Ptr(true),
+        Spaces: a13n.Ptr([]generated.SpaceBinding{{Name: "team", SpaceId: spaceID}}),
+    }
+    response, err := api.CreateSessionApiV1SessionsPost(ctx,
+        &generated.CreateSessionApiV1SessionsPostParams{},
+        generated.SessionCreate{Memory: a13n.Value(memory)})
+    return a13n.ParseJSON[generated.SessionView](client, response, err, 201)
+}
+```
+
+Omitted settings inherit or preserve their Service-owned value; explicit `spaces:[]` replaces the selection with no Spaces, and `enabled:false` disables participation. Agent defaults are settled on the first accepted business Run; later Agent edits do not reset that Session. Existing direct Memory mounts remain available independently.
+
+`RunView.MemoryMounts` is now a generated union: use `AsMemoryMount()` for a legacy request mount or `AsFrozenMemoryMount()` for host-resolved Space evidence. Frozen mounts can include nullable `SpaceId` and optional non-null `Roots`. Keep the native union when reserializing readback so those fields survive. Roots and Space identity are host evidence, not fields to copy into a request `MemoryMount`.
+
+Organization status and history are separate reads. `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` takes no body and returns `202` with `SpaceOrganizationStatus`; `Pending`/`ActiveRunId` are asynchronous observations. Service owns scheduling, thresholds, captured authority and background execution. Ordinary Session/Thread lists exclude `memory_organization` maintenance purpose; Space organization history and attached-Session endpoints provide the corresponding explicit views.

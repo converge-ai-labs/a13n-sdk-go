@@ -164,3 +164,31 @@ Inline children may reuse a parent's message/tool IDs. Keep `subagentRunId` attr
 Authored input appears as correlated `CUSTOM` observations such as `a13n.input.user`, `a13n.input.steering` and `a13n.input.media`, not assistant `TEXT_MESSAGE_*`. Media descriptors can carry a native kind, URL or uploaded-file identity; binary data is represented by size/media type and `payload_omitted`, not raw bytes. Generated input remains system-origin content. Preserve event `metadata`, including `display`, `media` and application references. A normal UI should omit `display: false` content, without using metadata as an access grant.
 
 Readback Items can contain `messageId`, `subagentRunId`, structured `result_parts`, custom observation `name`/`value`, and truncation or omission markers. `Content map[string]generated.JsonValue` keeps them intact; it is not a plain last-delta text field. Persist or return these values as structured JSON when your application needs media or child attribution. Window selection, content limits and transport gaps still prevent a promise of an unabridged transcript. `DeltaFrame.Item` is required nullable on the wire; when present, its optional nullable `Ordinal`, `ResponseGroup` and JSON-map `Failure` retain native metadata independently of the raw event.
+
+## Read a retained Computer image explicitly
+
+Computer observations can carry `CUSTOM name:"a13n.tool_images"` with opaque image references and an unavailable flag; child observations retain `subagentRunId`. Saved tool-call Items expose `tool_images` and `tool_image_unavailable` in their native content map. Keep these structured fields separate from the text preview.
+
+Use the owning Run and committed image reference for an explicit binary read. This helper imports `context`, `fmt`, `io`, `a13n` and `generated`:
+
+```go
+func copyRetainedImage(ctx context.Context, client *a13n.Client, runID, imageID string, destination io.Writer) (int64, error) {
+    api, err := client.API()
+    if err != nil { return 0, err }
+    response, err := api.RunImageApiV1RunsRunIdImagesImageIdGet(ctx, runID, imageID,
+        &generated.RunImageApiV1RunsRunIdImagesImageIdGetParams{})
+    if err != nil { return 0, err }
+    if response.StatusCode != 200 {
+        _, err := a13n.ParseJSON[map[string]any](client, response, nil, 200)
+        return 0, err
+    }
+    defer response.Body.Close()
+    mediaType := response.Header.Get("Content-Type")
+    if mediaType != "image/png" && mediaType != "image/jpeg" {
+        return 0, fmt.Errorf("unexpected image media type %q", mediaType)
+    }
+    return io.Copy(destination, response.Body)
+}
+```
+
+The raw success response is caller-owned and retains image bytes, content type and `no-store`/`nosniff` headers. Images are readable only through references reachable from the Run's committed tail/pages; a live reference may precede that boundary and receive `not_found`. Wrong-Run, unknown or private references are also unavailable. Fetch explicitly after committed readback; the SDK performs no automatic image expansion, retry or display reduction.
