@@ -20,24 +20,6 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-// Defines values for AgentPresetKind.
-const (
-	AgentPresetKindComposer AgentPresetKind = "composer"
-	AgentPresetKindFinding  AgentPresetKind = "finding"
-)
-
-// Valid indicates whether the value is a known member of the AgentPresetKind enum.
-func (e AgentPresetKind) Valid() bool {
-	switch e {
-	case AgentPresetKindComposer:
-		return true
-	case AgentPresetKindFinding:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AgentConfigInputBuiltinSkills.
 const (
 	AgentConfigInputBuiltinSkillsPlatformOperations AgentConfigInputBuiltinSkills = "platform-operations"
@@ -1520,6 +1502,27 @@ func (e Preset) Valid() bool {
 	}
 }
 
+// Defines values for PresetKind.
+const (
+	PresetKindComposer        PresetKind = "composer"
+	PresetKindFinding         PresetKind = "finding"
+	PresetKindMemoryOrganizer PresetKind = "memory_organizer"
+)
+
+// Valid indicates whether the value is a known member of the PresetKind enum.
+func (e PresetKind) Valid() bool {
+	switch e {
+	case PresetKindComposer:
+		return true
+	case PresetKindFinding:
+		return true
+	case PresetKindMemoryOrganizer:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PricingConstraintKind.
 const (
 	Always    PricingConstraintKind = "always"
@@ -1703,6 +1706,24 @@ func (e ServiceAccountUpdateStatus) Valid() bool {
 	}
 }
 
+// Defines values for SessionViewPurpose.
+const (
+	SessionViewPurposeConversation       SessionViewPurpose = "conversation"
+	SessionViewPurposeMemoryOrganization SessionViewPurpose = "memory_organization"
+)
+
+// Valid indicates whether the value is a known member of the SessionViewPurpose enum.
+func (e SessionViewPurpose) Valid() bool {
+	switch e {
+	case SessionViewPurposeConversation:
+		return true
+	case SessionViewPurposeMemoryOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Severity.
 const (
 	Critical   Severity = "critical"
@@ -1787,6 +1808,24 @@ func (e ThreadViewOrigin) Valid() bool {
 	case ThreadViewOriginFork:
 		return true
 	case ThreadViewOriginNew:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ThreadViewPurpose.
+const (
+	ThreadViewPurposeConversation       ThreadViewPurpose = "conversation"
+	ThreadViewPurposeMemoryOrganization ThreadViewPurpose = "memory_organization"
+)
+
+// Valid indicates whether the value is a known member of the ThreadViewPurpose enum.
+func (e ThreadViewPurpose) Valid() bool {
+	switch e {
+	case ThreadViewPurposeConversation:
+		return true
+	case ThreadViewPurposeMemoryOrganization:
 		return true
 	default:
 		return false
@@ -2150,24 +2189,6 @@ func (e PartCursorKind) Valid() bool {
 	}
 }
 
-// Defines values for ListAgentsApiV1AgentsGetParamsPresetKind.
-const (
-	ListAgentsApiV1AgentsGetParamsPresetKindComposer ListAgentsApiV1AgentsGetParamsPresetKind = "composer"
-	ListAgentsApiV1AgentsGetParamsPresetKindFinding  ListAgentsApiV1AgentsGetParamsPresetKind = "finding"
-)
-
-// Valid indicates whether the value is a known member of the ListAgentsApiV1AgentsGetParamsPresetKind enum.
-func (e ListAgentsApiV1AgentsGetParamsPresetKind) Valid() bool {
-	switch e {
-	case ListAgentsApiV1AgentsGetParamsPresetKindComposer:
-		return true
-	case ListAgentsApiV1AgentsGetParamsPresetKindFinding:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind.
 const (
 	ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKindServiceAccount ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind = "service_account"
@@ -2268,26 +2289,23 @@ type AccountDisable struct {
 
 // Agent defines model for Agent.
 type Agent struct {
-	ArchivedAt        nullable.Nullable[time.Time]       `json:"archived_at"`
-	CreatedAt         time.Time                          `json:"created_at"`
-	CreatedById       string                             `json:"created_by_id"`
-	DefaultRevisionId nullable.Nullable[string]          `json:"default_revision_id"`
-	Description       string                             `json:"description"`
-	Id                string                             `json:"id"`
-	ImageUrl          nullable.Nullable[string]          `json:"image_url"`
-	Labels            map[string]string                  `json:"labels"`
-	Name              string                             `json:"name"`
-	OrganizationId    string                             `json:"organization_id"`
-	PresetKind        nullable.Nullable[AgentPresetKind] `json:"preset_kind,omitempty"`
-	Source            AgentSource                        `json:"source"`
-	UpdatedAt         time.Time                          `json:"updated_at"`
-	UpdatedById       string                             `json:"updated_by_id"`
-	Version           int                                `json:"version"`
-	WorkspaceId       string                             `json:"workspace_id"`
+	ArchivedAt        nullable.Nullable[time.Time]  `json:"archived_at"`
+	CreatedAt         time.Time                     `json:"created_at"`
+	CreatedById       string                        `json:"created_by_id"`
+	DefaultRevisionId nullable.Nullable[string]     `json:"default_revision_id"`
+	Description       string                        `json:"description"`
+	Id                string                        `json:"id"`
+	ImageUrl          nullable.Nullable[string]     `json:"image_url"`
+	Labels            map[string]string             `json:"labels"`
+	Name              string                        `json:"name"`
+	OrganizationId    string                        `json:"organization_id"`
+	PresetKind        nullable.Nullable[PresetKind] `json:"preset_kind,omitempty"`
+	Source            AgentSource                   `json:"source"`
+	UpdatedAt         time.Time                     `json:"updated_at"`
+	UpdatedById       string                        `json:"updated_by_id"`
+	Version           int                           `json:"version"`
+	WorkspaceId       string                        `json:"workspace_id"`
 }
-
-// AgentPresetKind defines model for Agent.PresetKind.
-type AgentPresetKind string
 
 // AgentConfigInput defines model for AgentConfig-Input.
 type AgentConfigInput struct {
@@ -2300,8 +2318,11 @@ type AgentConfigInput struct {
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
-	MemoryMounts       *[]MemoryMount               `json:"memory_mounts,omitempty"`
-	Model              string                       `json:"model"`
+
+	// Memory Participation and complete Space selection; policy belongs to each Space.
+	Memory       *SessionMemorySettings `json:"memory,omitempty"`
+	MemoryMounts *[]MemoryMount         `json:"memory_mounts,omitempty"`
+	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
 	ModelCharacteristics *AgentModelCharacteristics    `json:"model_characteristics,omitempty"`
@@ -2338,8 +2359,11 @@ type AgentConfigOutput struct {
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
-	MemoryMounts       *[]MemoryMount               `json:"memory_mounts,omitempty"`
-	Model              string                       `json:"model"`
+
+	// Memory Participation and complete Space selection; policy belongs to each Space.
+	Memory       *SessionMemorySettings `json:"memory,omitempty"`
+	MemoryMounts *[]MemoryMount         `json:"memory_mounts,omitempty"`
+	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
 	ModelCharacteristics *AgentModelCharacteristics    `json:"model_characteristics,omitempty"`
@@ -3344,6 +3368,16 @@ type FragmentState struct {
 	Pending    *map[string]UnderscoreAssembly `json:"pending,omitempty"`
 }
 
+// FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
+type FrozenMemoryMount struct {
+	Access   MemoryAccess              `json:"access"`
+	MemoryId string                    `json:"memory_id"`
+	Name     string                    `json:"name"`
+	Recall   *bool                     `json:"recall,omitempty"`
+	Roots    *[]string                 `json:"roots,omitempty"`
+	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
+}
+
 // GitHubSource A directory of a public GitHub repository.
 //
 // `ref` defaults to the default branch. On a request `commit` is an optional expectation the resolved ref
@@ -3883,6 +3917,57 @@ type MemorySourceKind string
 // MemorySourceStatus defines model for MemorySource.Status.
 type MemorySourceStatus string
 
+// MemorySpace defines model for MemorySpace.
+type MemorySpace struct {
+	AlwaysLoad     []string                  `json:"always_load"`
+	ContentBytes   int                       `json:"content_bytes"`
+	CreatedAt      time.Time                 `json:"created_at"`
+	CreatedById    string                    `json:"created_by_id"`
+	Description    nullable.Nullable[string] `json:"description"`
+	Enabled        bool                      `json:"enabled"`
+	FileCount      int                       `json:"file_count"`
+	Guide          nullable.Nullable[string] `json:"guide"`
+	HistoryBytes   int                       `json:"history_bytes"`
+	Id             string                    `json:"id"`
+	Labels         map[string]string         `json:"labels"`
+	MemoryId       string                    `json:"memory_id"`
+	Name           string                    `json:"name"`
+	Organization   OrganizationPolicy        `json:"organization"`
+	OrganizationId string                    `json:"organization_id"`
+	UpdatedAt      time.Time                 `json:"updated_at"`
+	UpdatedById    string                    `json:"updated_by_id"`
+	Version        int                       `json:"version"`
+	WorkspaceId    string                    `json:"workspace_id"`
+}
+
+// MemorySpaceCreate defines model for MemorySpaceCreate.
+type MemorySpaceCreate struct {
+	AlwaysLoad   *[]string                 `json:"always_load,omitempty"`
+	Description  nullable.Nullable[string] `json:"description,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	Guide        nullable.Nullable[string] `json:"guide,omitempty"`
+	Labels       *map[string]string        `json:"labels,omitempty"`
+	Name         string                    `json:"name"`
+	Organization *OrganizationPolicy       `json:"organization,omitempty"`
+}
+
+// MemorySpacePage defines model for MemorySpacePage.
+type MemorySpacePage struct {
+	Items      []MemorySpace             `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// MemorySpaceUpdate defines model for MemorySpaceUpdate.
+type MemorySpaceUpdate struct {
+	AlwaysLoad   nullable.Nullable[[]string]           `json:"always_load,omitempty"`
+	Description  nullable.Nullable[string]             `json:"description,omitempty"`
+	Enabled      nullable.Nullable[bool]               `json:"enabled,omitempty"`
+	Guide        nullable.Nullable[string]             `json:"guide,omitempty"`
+	Labels       nullable.Nullable[map[string]string]  `json:"labels,omitempty"`
+	Name         nullable.Nullable[string]             `json:"name,omitempty"`
+	Organization nullable.Nullable[OrganizationPolicy] `json:"organization,omitempty"`
+}
+
 // MemoryUpdate Fields left out stay unchanged; `description: null` clears it and `guide: null` inherits the default.
 type MemoryUpdate struct {
 	AlwaysLoad  nullable.Nullable[[]string]          `json:"always_load,omitempty"`
@@ -4186,6 +4271,12 @@ type OrganizationPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// OrganizationPolicy defines model for OrganizationPolicy.
+type OrganizationPolicy struct {
+	Enabled *bool                     `json:"enabled,omitempty"`
+	Model   nullable.Nullable[string] `json:"model,omitempty"`
+}
+
 // OrganizationUpdate defines model for OrganizationUpdate.
 type OrganizationUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
@@ -4271,6 +4362,9 @@ type PluginSelection struct {
 
 // Preset defines model for Preset.
 type Preset string
+
+// PresetKind defines model for PresetKind.
+type PresetKind string
 
 // PriceComponentInput One genai-prices usage dimension and its USD unit price.
 type PriceComponentInput struct {
@@ -4635,7 +4729,7 @@ type RunView struct {
 	Labels            map[string]string                       `json:"labels"`
 	Lineage           Lineage                                 `json:"lineage"`
 	MaxAttempts       int                                     `json:"max_attempts"`
-	MemoryMounts      []MemoryMount                           `json:"memory_mounts"`
+	MemoryMounts      []RunView_MemoryMounts_Item             `json:"memory_mounts"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 	Options           RunOptionsOutput                        `json:"options"`
@@ -4658,6 +4752,11 @@ type RunView struct {
 	Version           int                                     `json:"version"`
 	WaitReason        nullable.Nullable[WaitReason]           `json:"wait_reason"`
 	WorkspaceId       string                                  `json:"workspace_id"`
+}
+
+// RunView_MemoryMounts_Item defines model for RunView.memory_mounts.Item.
+type RunView_MemoryMounts_Item struct {
+	union json.RawMessage
 }
 
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
@@ -4712,7 +4811,14 @@ type ServiceAccountUpdateStatus string
 
 // SessionCreate defines model for SessionCreate.
 type SessionCreate struct {
-	Labels *map[string]string `json:"labels,omitempty"`
+	Labels *map[string]string                       `json:"labels,omitempty"`
+	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+}
+
+// SessionMemorySettings Participation and complete Space selection; policy belongs to each Space.
+type SessionMemorySettings struct {
+	Enabled *bool           `json:"enabled,omitempty"`
+	Spaces  *[]SpaceBinding `json:"spaces,omitempty"`
 }
 
 // SessionPage defines model for SessionPage.
@@ -4741,22 +4847,30 @@ type SessionProfile struct {
 
 // SessionUpdate defines model for SessionUpdate.
 type SessionUpdate struct {
-	Labels map[string]string `json:"labels"`
+	Labels nullable.Nullable[map[string]string]     `json:"labels,omitempty"`
+	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
 }
 
 // SessionView defines model for SessionView.
 type SessionView struct {
-	CreatedAt   time.Time                         `json:"created_at"`
-	CreatedById string                            `json:"created_by_id"`
-	Id          string                            `json:"id"`
-	Labels      map[string]string                 `json:"labels"`
-	LastRunId   nullable.Nullable[string]         `json:"last_run_id"`
+	CreatedAt   time.Time                 `json:"created_at"`
+	CreatedById string                    `json:"created_by_id"`
+	Id          string                    `json:"id"`
+	Labels      map[string]string         `json:"labels"`
+	LastRunId   nullable.Nullable[string] `json:"last_run_id"`
+
+	// Memory Participation and complete Space selection; policy belongs to each Space.
+	Memory      *SessionMemorySettings            `json:"memory,omitempty"`
 	Preview     nullable.Nullable[SessionPreview] `json:"preview,omitempty"`
+	Purpose     *SessionViewPurpose               `json:"purpose,omitempty"`
 	RunCount    *int                              `json:"run_count,omitempty"`
 	UpdatedAt   time.Time                         `json:"updated_at"`
 	Version     int                               `json:"version"`
 	WorkspaceId string                            `json:"workspace_id"`
 }
+
+// SessionViewPurpose defines model for SessionView.Purpose.
+type SessionViewPurpose string
 
 // Severity defines model for Severity.
 type Severity string
@@ -4905,6 +5019,25 @@ type SkillValidate struct {
 // SkillValidate_Source defines model for SkillValidate.Source.
 type SkillValidate_Source struct {
 	union json.RawMessage
+}
+
+// SpaceBinding A named Space selected by the App or inherited from Agent defaults.
+type SpaceBinding struct {
+	Access  *MemoryAccess `json:"access,omitempty"`
+	Name    string        `json:"name"`
+	SpaceId string        `json:"space_id"`
+}
+
+// SpaceOrganizationStatus defines model for SpaceOrganizationStatus.
+type SpaceOrganizationStatus struct {
+	ActiveRunId  nullable.Nullable[string]    `json:"active_run_id,omitempty"`
+	DueAt        nullable.Nullable[time.Time] `json:"due_at,omitempty"`
+	Failure      nullable.Nullable[Failure]   `json:"failure,omitempty"`
+	HistoryGap   *bool                        `json:"history_gap,omitempty"`
+	LastRunId    nullable.Nullable[string]    `json:"last_run_id,omitempty"`
+	Pending      *bool                        `json:"pending,omitempty"`
+	ProcessedSeq *int                         `json:"processed_seq,omitempty"`
+	SessionId    nullable.Nullable[string]    `json:"session_id,omitempty"`
 }
 
 // Span One span as the backend stored it; `attributes` are its OpenTelemetry attributes.
@@ -5158,6 +5291,7 @@ type ThreadView struct {
 	OriginRunId      nullable.Nullable[string] `json:"origin_run_id"`
 	OriginThreadId   nullable.Nullable[string] `json:"origin_thread_id"`
 	OriginToolCallId nullable.Nullable[string] `json:"origin_tool_call_id"`
+	Purpose          *ThreadViewPurpose        `json:"purpose,omitempty"`
 	SessionId        string                    `json:"session_id"`
 	Subagent         nullable.Nullable[string] `json:"subagent"`
 	UpdatedAt        time.Time                 `json:"updated_at"`
@@ -5167,6 +5301,9 @@ type ThreadView struct {
 
 // ThreadViewOrigin defines model for ThreadView.Origin.
 type ThreadViewOrigin string
+
+// ThreadViewPurpose defines model for ThreadView.Purpose.
+type ThreadViewPurpose string
 
 // ToolCallId defines model for ToolCallId.
 type ToolCallId = string
@@ -5506,22 +5643,19 @@ type PrepareComposerApiV1AgentComposerPostParams struct {
 
 // ListAgentsApiV1AgentsGetParams defines parameters for ListAgentsApiV1AgentsGet.
 type ListAgentsApiV1AgentsGetParams struct {
-	Label           *[]string                                 `form:"label,omitempty" json:"label,omitempty"`
-	Q               *string                                   `form:"q,omitempty" json:"q,omitempty"`
-	Archived        *bool                                     `form:"archived,omitempty" json:"archived,omitempty"`
-	Source          *AgentSource                              `form:"source,omitempty" json:"source,omitempty"`
-	PresetKind      *ListAgentsApiV1AgentsGetParamsPresetKind `form:"preset_kind,omitempty" json:"preset_kind,omitempty"`
-	SkillId         *string                                   `form:"skill_id,omitempty" json:"skill_id,omitempty"`
-	SkillRevisionId *string                                   `form:"skill_revision_id,omitempty" json:"skill_revision_id,omitempty"`
-	Limit           *int                                      `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor          *string                                   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Label           *[]string    `form:"label,omitempty" json:"label,omitempty"`
+	Q               *string      `form:"q,omitempty" json:"q,omitempty"`
+	Archived        *bool        `form:"archived,omitempty" json:"archived,omitempty"`
+	Source          *AgentSource `form:"source,omitempty" json:"source,omitempty"`
+	PresetKind      *PresetKind  `form:"preset_kind,omitempty" json:"preset_kind,omitempty"`
+	SkillId         *string      `form:"skill_id,omitempty" json:"skill_id,omitempty"`
+	SkillRevisionId *string      `form:"skill_revision_id,omitempty" json:"skill_revision_id,omitempty"`
+	Limit           *int         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor          *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
-
-// ListAgentsApiV1AgentsGetParamsPresetKind defines parameters for ListAgentsApiV1AgentsGet.
-type ListAgentsApiV1AgentsGetParamsPresetKind string
 
 // CreateAgentApiV1AgentsPostParams defines parameters for CreateAgentApiV1AgentsPost.
 type CreateAgentApiV1AgentsPostParams struct {
@@ -6210,6 +6344,77 @@ type UpdateProviderApiV1MemoryProvidersProviderIdPatchParams struct {
 
 // TestProviderApiV1MemoryProvidersProviderIdTestPostParams defines parameters for TestProviderApiV1MemoryProvidersProviderIdTestPost.
 type TestProviderApiV1MemoryProvidersProviderIdTestPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListSpacesApiV1MemorySpacesGetParams defines parameters for ListSpacesApiV1MemorySpacesGet.
+type ListSpacesApiV1MemorySpacesGetParams struct {
+	Label   *[]string `form:"label,omitempty" json:"label,omitempty"`
+	Enabled *bool     `form:"enabled,omitempty" json:"enabled,omitempty"`
+	Limit   *int      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor  *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateSpaceApiV1MemorySpacesPostParams defines parameters for CreateSpaceApiV1MemorySpacesPost.
+type CreateSpaceApiV1MemorySpacesPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams defines parameters for DeleteSpaceApiV1MemorySpacesSpaceIdDelete.
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetParams defines parameters for GetSpaceApiV1MemorySpacesSpaceIdGet.
+type GetSpaceApiV1MemorySpacesSpaceIdGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams defines parameters for UpdateSpaceApiV1MemorySpacesSpaceIdPatch.
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams defines parameters for GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet.
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams defines parameters for ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet.
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams defines parameters for OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost.
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams defines parameters for ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet.
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -7267,6 +7472,12 @@ type CreateProviderApiV1MemoryProvidersPostJSONRequestBody = ProviderCreate
 // UpdateProviderApiV1MemoryProvidersProviderIdPatchJSONRequestBody defines body for UpdateProviderApiV1MemoryProvidersProviderIdPatch for application/json ContentType.
 type UpdateProviderApiV1MemoryProvidersProviderIdPatchJSONRequestBody = ProviderUpdate
 
+// CreateSpaceApiV1MemorySpacesPostJSONRequestBody defines body for CreateSpaceApiV1MemorySpacesPost for application/json ContentType.
+type CreateSpaceApiV1MemorySpacesPostJSONRequestBody = MemorySpaceCreate
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody defines body for UpdateSpaceApiV1MemorySpacesSpaceIdPatch for application/json ContentType.
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody = MemorySpaceUpdate
+
 // CreateProviderApiV1ModelProvidersPostJSONRequestBody defines body for CreateProviderApiV1ModelProvidersPost for application/json ContentType.
 type CreateProviderApiV1ModelProvidersPostJSONRequestBody = ProviderCreate
 
@@ -8109,6 +8320,68 @@ func (t PriceTierInput_Price) MarshalJSON() ([]byte, error) {
 }
 
 func (t *PriceTierInput_Price) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a MemoryMount
+func (t RunView_MemoryMounts_Item) AsMemoryMount() (MemoryMount, error) {
+	var body MemoryMount
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided MemoryMount
+func (t *RunView_MemoryMounts_Item) FromMemoryMount(v MemoryMount) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided MemoryMount
+func (t *RunView_MemoryMounts_Item) MergeMemoryMount(v MemoryMount) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsFrozenMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a FrozenMemoryMount
+func (t RunView_MemoryMounts_Item) AsFrozenMemoryMount() (FrozenMemoryMount, error) {
+	var body FrozenMemoryMount
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFrozenMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided FrozenMemoryMount
+func (t *RunView_MemoryMounts_Item) FromFrozenMemoryMount(v FrozenMemoryMount) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeFrozenMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided FrozenMemoryMount
+func (t *RunView_MemoryMounts_Item) MergeFrozenMemoryMount(v FrozenMemoryMount) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunView_MemoryMounts_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunView_MemoryMounts_Item) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -9899,6 +10172,69 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/memory-providers/{provider_id}/test (the `TestProviderApiV1MemoryProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1MemoryProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1MemoryProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSpacesApiV1MemorySpacesGet List Spaces
+	//
+	// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+	ListSpacesApiV1MemorySpacesGet(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSpaceApiV1MemorySpacesPostWithBody Create Space
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPostWithBody(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSpaceApiV1MemorySpacesPost Create Space
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPost(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteSpaceApiV1MemorySpacesSpaceIdDelete Delete Space
+	//
+	// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+	DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSpaceApiV1MemorySpacesSpaceIdGet Get Space
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+	GetSpaceApiV1MemorySpacesSpaceIdGet(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody Update Space
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatch Update Space
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet Get Space Organization
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+	GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet List Space Organizations
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+	ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost Organize Space
+	//
+	// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+	OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet List Space Sessions
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+	ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetModelCatalogApiV1ModelCatalogGet Get Model Catalog
 	//
@@ -13464,6 +13800,179 @@ func (c *Client) UpdateProviderApiV1MemoryProvidersProviderIdPatch(ctx context.C
 // Corresponds with POST /api/v1/memory-providers/{provider_id}/test (the `TestProviderApiV1MemoryProvidersProviderIdTestPost` operationId).
 func (c *Client) TestProviderApiV1MemoryProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1MemoryProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewTestProviderApiV1MemoryProvidersProviderIdTestPostRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListSpacesApiV1MemorySpacesGet List Spaces
+//
+// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+func (c *Client) ListSpacesApiV1MemorySpacesGet(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSpacesApiV1MemorySpacesGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateSpaceApiV1MemorySpacesPostWithBody Create Space
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *Client) CreateSpaceApiV1MemorySpacesPostWithBody(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSpaceApiV1MemorySpacesPostRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateSpaceApiV1MemorySpacesPost Create Space
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *Client) CreateSpaceApiV1MemorySpacesPost(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSpaceApiV1MemorySpacesPostRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDelete Delete Space
+//
+// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+func (c *Client) DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSpaceApiV1MemorySpacesSpaceIdDeleteRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGet Get Space
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+func (c *Client) GetSpaceApiV1MemorySpacesSpaceIdGet(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSpaceApiV1MemorySpacesSpaceIdGetRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody Update Space
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *Client) UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody(c.Server, spaceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatch Update Space
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *Client) UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequest(c.Server, spaceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet Get Space Organization
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+func (c *Client) GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet List Space Organizations
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+func (c *Client) ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost Organize Space
+//
+// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+func (c *Client) OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet List Space Sessions
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+func (c *Client) ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetRequest(c.Server, spaceId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -23056,6 +23565,622 @@ func NewTestProviderApiV1MemoryProvidersProviderIdTestPostRequest(server string,
 	}
 
 	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListSpacesApiV1MemorySpacesGetRequest constructs an http.Request for the ListSpacesApiV1MemorySpacesGet method
+func NewListSpacesApiV1MemorySpacesGetRequest(server string, params *ListSpacesApiV1MemorySpacesGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Label != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "label", *params.Label, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Enabled != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "enabled", *params.Enabled, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateSpaceApiV1MemorySpacesPostRequest calls the generic CreateSpaceApiV1MemorySpacesPost builder with application/json body
+func NewCreateSpaceApiV1MemorySpacesPostRequest(server string, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSpaceApiV1MemorySpacesPostRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateSpaceApiV1MemorySpacesPostRequestWithBody constructs an http.Request for the CreateSpaceApiV1MemorySpacesPost method, with any body, and a specified content type
+func NewCreateSpaceApiV1MemorySpacesPostRequestWithBody(server string, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteSpaceApiV1MemorySpacesSpaceIdDeleteRequest constructs an http.Request for the DeleteSpaceApiV1MemorySpacesSpaceIdDelete method
+func NewDeleteSpaceApiV1MemorySpacesSpaceIdDeleteRequest(server string, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetSpaceApiV1MemorySpacesSpaceIdGetRequest constructs an http.Request for the GetSpaceApiV1MemorySpacesSpaceIdGet method
+func NewGetSpaceApiV1MemorySpacesSpaceIdGetRequest(server string, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequest calls the generic UpdateSpaceApiV1MemorySpacesSpaceIdPatch builder with application/json body
+func NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequest(server string, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody(server, spaceId, params, "application/json", bodyReader)
+}
+
+// NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody constructs an http.Request for the UpdateSpaceApiV1MemorySpacesSpaceIdPatch method, with any body, and a specified content type
+func NewUpdateSpaceApiV1MemorySpacesSpaceIdPatchRequestWithBody(server string, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetRequest constructs an http.Request for the GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet method
+func NewGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetRequest(server string, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/organization", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetRequest constructs an http.Request for the ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet method
+func NewListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetRequest(server string, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/organizations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostRequest constructs an http.Request for the OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost method
+func NewOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostRequest(server string, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/organizations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetRequest constructs an http.Request for the ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet method
+func NewListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetRequest(server string, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "space_id", spaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-spaces/%s/sessions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -33614,6 +34739,83 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/memory-providers/{provider_id}/test (the `TestProviderApiV1MemoryProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1MemoryProvidersProviderIdTestPostWithResponse(ctx context.Context, providerId string, params *TestProviderApiV1MemoryProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*TestProviderApiV1MemoryProvidersProviderIdTestPostResponse, error)
 
+	// ListSpacesApiV1MemorySpacesGetWithResponse List Spaces
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+	ListSpacesApiV1MemorySpacesGetWithResponse(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*ListSpacesApiV1MemorySpacesGetResponse, error)
+
+	// CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse Create Space
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error)
+
+	// CreateSpaceApiV1MemorySpacesPostWithResponse Create Space
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+	CreateSpaceApiV1MemorySpacesPostWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error)
+
+	// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse Delete Space
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+	DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse, error)
+
+	// GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse Get Space
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+	GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*GetSpaceApiV1MemorySpacesSpaceIdGetResponse, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse Update Space
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error)
+
+	// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse Update Space
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+	UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error)
+
+	// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse Get Space Organization
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+	GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse, error)
+
+	// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse List Space Organizations
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+	ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse, error)
+
+	// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse Organize Space
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+	OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse, error)
+
+	// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse List Space Sessions
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+	ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse, error)
+
 	// GetModelCatalogApiV1ModelCatalogGetWithResponse Get Model Catalog
 	//
 	// The models.dev models the registered model provider types serve, for any signed-in principal.
@@ -41926,6 +43128,620 @@ func (r TestProviderApiV1MemoryProvidersProviderIdTestPostResponse) StatusCode()
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r TestProviderApiV1MemoryProvidersProviderIdTestPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListSpacesApiV1MemorySpacesGetResponse400Headers the declared response headers of an HTTP 400 response for ListSpacesApiV1MemorySpacesGet
+type ListSpacesApiV1MemorySpacesGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListSpacesApiV1MemorySpacesGet
+type ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSpacesApiV1MemorySpacesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemorySpacePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSpacesApiV1MemorySpacesGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetJSON200() *MemorySpacePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSpacesApiV1MemorySpacesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSpacesApiV1MemorySpacesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSpacesApiV1MemorySpacesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSpacesApiV1MemorySpacesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateSpaceApiV1MemorySpacesPostResponse400Headers the declared response headers of an HTTP 400 response for CreateSpaceApiV1MemorySpacesPost
+type CreateSpaceApiV1MemorySpacesPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders the declared response headers of an HTTP default response for CreateSpaceApiV1MemorySpacesPost
+type CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateSpaceApiV1MemorySpacesPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *MemorySpace
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateSpaceApiV1MemorySpacesPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetJSON201() *MemorySpace {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateSpaceApiV1MemorySpacesPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateSpaceApiV1MemorySpacesPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSpaceApiV1MemorySpacesPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateSpaceApiV1MemorySpacesPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers the declared response headers of an HTTP 400 response for DeleteSpaceApiV1MemorySpacesSpaceIdDelete
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteSpaceApiV1MemorySpacesSpaceIdDelete
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetSpaceApiV1MemorySpacesSpaceIdGet
+type GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetSpaceApiV1MemorySpacesSpaceIdGet
+type GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetSpaceApiV1MemorySpacesSpaceIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemorySpace
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetJSON200() *MemorySpace {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSpaceApiV1MemorySpacesSpaceIdGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers the declared response headers of an HTTP 400 response for UpdateSpaceApiV1MemorySpacesSpaceIdPatch
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateSpaceApiV1MemorySpacesSpaceIdPatch
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemorySpace
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetJSON200() *MemorySpace {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers the declared response headers of an HTTP 400 response for GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SpaceOrganizationStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetJSON200() *SpaceOrganizationStatus {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers the declared response headers of an HTTP 400 response for ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetJSON200() *RunPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers the declared response headers of an HTTP 400 response for OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders the declared response headers of an HTTP default response for OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *SpaceOrganizationStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetJSON202() *SpaceOrganizationStatus {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers the declared response headers of an HTTP 400 response for ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetJSON200() *SessionPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -53927,6 +55743,149 @@ func (c *ClientWithResponses) TestProviderApiV1MemoryProvidersProviderIdTestPost
 	return ParseTestProviderApiV1MemoryProvidersProviderIdTestPostResponse(rsp)
 }
 
+// ListSpacesApiV1MemorySpacesGetWithResponse List Spaces
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces (the `ListSpacesApiV1MemorySpacesGet` operationId).
+func (c *ClientWithResponses) ListSpacesApiV1MemorySpacesGetWithResponse(ctx context.Context, params *ListSpacesApiV1MemorySpacesGetParams, reqEditors ...RequestEditorFn) (*ListSpacesApiV1MemorySpacesGetResponse, error) {
+	rsp, err := c.ListSpacesApiV1MemorySpacesGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSpacesApiV1MemorySpacesGetResponse(rsp)
+}
+
+// CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse Create Space
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *ClientWithResponses) CreateSpaceApiV1MemorySpacesPostWithBodyWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error) {
+	rsp, err := c.CreateSpaceApiV1MemorySpacesPostWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSpaceApiV1MemorySpacesPostResponse(rsp)
+}
+
+// CreateSpaceApiV1MemorySpacesPostWithResponse Create Space
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-spaces (the `CreateSpaceApiV1MemorySpacesPost` operationId).
+func (c *ClientWithResponses) CreateSpaceApiV1MemorySpacesPostWithResponse(ctx context.Context, params *CreateSpaceApiV1MemorySpacesPostParams, body CreateSpaceApiV1MemorySpacesPostJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSpaceApiV1MemorySpacesPostResponse, error) {
+	rsp, err := c.CreateSpaceApiV1MemorySpacesPost(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSpaceApiV1MemorySpacesPostResponse(rsp)
+}
+
+// DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse Delete Space
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/memory-spaces/{space_id} (the `DeleteSpaceApiV1MemorySpacesSpaceIdDelete` operationId).
+func (c *ClientWithResponses) DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse(ctx context.Context, spaceId string, params *DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams, reqEditors ...RequestEditorFn) (*DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse, error) {
+	rsp, err := c.DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse(rsp)
+}
+
+// GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse Get Space
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id} (the `GetSpaceApiV1MemorySpacesSpaceIdGet` operationId).
+func (c *ClientWithResponses) GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceApiV1MemorySpacesSpaceIdGetParams, reqEditors ...RequestEditorFn) (*GetSpaceApiV1MemorySpacesSpaceIdGetResponse, error) {
+	rsp, err := c.GetSpaceApiV1MemorySpacesSpaceIdGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSpaceApiV1MemorySpacesSpaceIdGetResponse(rsp)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse Update Space
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *ClientWithResponses) UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBodyWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error) {
+	rsp, err := c.UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithBody(ctx, spaceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse(rsp)
+}
+
+// UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse Update Space
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/memory-spaces/{space_id} (the `UpdateSpaceApiV1MemorySpacesSpaceIdPatch` operationId).
+func (c *ClientWithResponses) UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse(ctx context.Context, spaceId string, params *UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams, body UpdateSpaceApiV1MemorySpacesSpaceIdPatchJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error) {
+	rsp, err := c.UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx, spaceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse(rsp)
+}
+
+// GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse Get Space Organization
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organization (the `GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet` operationId).
+func (c *ClientWithResponses) GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse(ctx context.Context, spaceId string, params *GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams, reqEditors ...RequestEditorFn) (*GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse, error) {
+	rsp, err := c.GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse(rsp)
+}
+
+// ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse List Space Organizations
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/organizations (the `ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet` operationId).
+func (c *ClientWithResponses) ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse, error) {
+	rsp, err := c.ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse(rsp)
+}
+
+// OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse Organize Space
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-spaces/{space_id}/organizations (the `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` operationId).
+func (c *ClientWithResponses) OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse(ctx context.Context, spaceId string, params *OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams, reqEditors ...RequestEditorFn) (*OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse, error) {
+	rsp, err := c.OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse(rsp)
+}
+
+// ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse List Space Sessions
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet` operationId).
+func (c *ClientWithResponses) ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse(ctx context.Context, spaceId string, params *ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams, reqEditors ...RequestEditorFn) (*ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse, error) {
+	rsp, err := c.ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx, spaceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse(rsp)
+}
+
 // GetModelCatalogApiV1ModelCatalogGetWithResponse Get Model Catalog
 //
 // The models.dev models the registered model provider types serve, for any signed-in principal.
@@ -62801,6 +64760,569 @@ func ParseTestProviderApiV1MemoryProvidersProviderIdTestPostResponse(rsp *http.R
 		response.Headers400 = &headers
 	case true:
 		var headers TestProviderApiV1MemoryProvidersProviderIdTestPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSpacesApiV1MemorySpacesGetResponse parses an HTTP response from a ListSpacesApiV1MemorySpacesGetWithResponse call
+func ParseListSpacesApiV1MemorySpacesGetResponse(rsp *http.Response) (*ListSpacesApiV1MemorySpacesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSpacesApiV1MemorySpacesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemorySpacePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSpacesApiV1MemorySpacesGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSpacesApiV1MemorySpacesGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateSpaceApiV1MemorySpacesPostResponse parses an HTTP response from a CreateSpaceApiV1MemorySpacesPostWithResponse call
+func ParseCreateSpaceApiV1MemorySpacesPostResponse(rsp *http.Response) (*CreateSpaceApiV1MemorySpacesPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSpaceApiV1MemorySpacesPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest MemorySpace
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateSpaceApiV1MemorySpacesPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateSpaceApiV1MemorySpacesPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse parses an HTTP response from a DeleteSpaceApiV1MemorySpacesSpaceIdDeleteWithResponse call
+func ParseDeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse(rsp *http.Response) (*DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteSpaceApiV1MemorySpacesSpaceIdDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetSpaceApiV1MemorySpacesSpaceIdGetResponse parses an HTTP response from a GetSpaceApiV1MemorySpacesSpaceIdGetWithResponse call
+func ParseGetSpaceApiV1MemorySpacesSpaceIdGetResponse(rsp *http.Response) (*GetSpaceApiV1MemorySpacesSpaceIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSpaceApiV1MemorySpacesSpaceIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemorySpace
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetSpaceApiV1MemorySpacesSpaceIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetSpaceApiV1MemorySpacesSpaceIdGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse parses an HTTP response from a UpdateSpaceApiV1MemorySpacesSpaceIdPatchWithResponse call
+func ParseUpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse(rsp *http.Response) (*UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemorySpace
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateSpaceApiV1MemorySpacesSpaceIdPatchResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse parses an HTTP response from a GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetWithResponse call
+func ParseGetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse(rsp *http.Response) (*GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SpaceOrganizationStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse parses an HTTP response from a ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetWithResponse call
+func ParseListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse(rsp *http.Response) (*ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse parses an HTTP response from a OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostWithResponse call
+func ParseOrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse(rsp *http.Response) (*OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest SpaceOrganizationStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse parses an HTTP response from a ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetWithResponse call
+func ParseListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse(rsp *http.Response) (*ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
