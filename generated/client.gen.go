@@ -173,6 +173,21 @@ func (e AgentSource) Valid() bool {
 	}
 }
 
+// Defines values for AnyChangeTriggerType.
+const (
+	AnyChange AnyChangeTriggerType = "any_change"
+)
+
+// Valid indicates whether the value is a known member of the AnyChangeTriggerType enum.
+func (e AnyChangeTriggerType) Valid() bool {
+	switch e {
+	case AnyChange:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ApproveAction.
 const (
 	ApproveActionApprove ApproveAction = "approve"
@@ -377,6 +392,21 @@ func (e Certainty) Valid() bool {
 	case NotDispatched:
 		return true
 	case Unknown:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ChangeCountTriggerType.
+const (
+	ChangeCount ChangeCountTriggerType = "change_count"
+)
+
+// Valid indicates whether the value is a known member of the ChangeCountTriggerType enum.
+func (e ChangeCountTriggerType) Valid() bool {
+	switch e {
+	case ChangeCount:
 		return true
 	default:
 		return false
@@ -2584,6 +2614,14 @@ type AnalysisPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// AnyChangeTrigger defines model for AnyChangeTrigger.
+type AnyChangeTrigger struct {
+	Type *AnyChangeTriggerType `json:"type,omitempty"`
+}
+
+// AnyChangeTriggerType defines model for AnyChangeTrigger.Type.
+type AnyChangeTriggerType string
+
 // ApiKey defines model for ApiKey.
 type ApiKey struct {
 	CreatedAt      time.Time                    `json:"created_at"`
@@ -2838,6 +2876,15 @@ type Category string
 
 // Certainty defines model for Certainty.
 type Certainty string
+
+// ChangeCountTrigger defines model for ChangeCountTrigger.
+type ChangeCountTrigger struct {
+	Count int                     `json:"count"`
+	Type  *ChangeCountTriggerType `json:"type,omitempty"`
+}
+
+// ChangeCountTriggerType defines model for ChangeCountTrigger.Type.
+type ChangeCountTriggerType string
 
 // ChildEnvironmentPolicy What a child run mounts: no environment, the parent's, or a new one from `template_id`.
 type ChildEnvironmentPolicy struct {
@@ -4273,8 +4320,16 @@ type OrganizationPage struct {
 
 // OrganizationPolicy defines model for OrganizationPolicy.
 type OrganizationPolicy struct {
-	Enabled *bool                     `json:"enabled,omitempty"`
-	Model   nullable.Nullable[string] `json:"model,omitempty"`
+	CheckIntervalSeconds *int                        `json:"check_interval_seconds,omitempty"`
+	CooldownSeconds      *int                        `json:"cooldown_seconds,omitempty"`
+	Enabled              *bool                       `json:"enabled,omitempty"`
+	Model                nullable.Nullable[string]   `json:"model,omitempty"`
+	Trigger              *OrganizationPolicy_Trigger `json:"trigger,omitempty"`
+}
+
+// OrganizationPolicy_Trigger defines model for OrganizationPolicy.Trigger.
+type OrganizationPolicy_Trigger struct {
+	union json.RawMessage
 }
 
 // OrganizationUpdate defines model for OrganizationUpdate.
@@ -8023,6 +8078,107 @@ func (t EnteredCredential) MarshalJSON() ([]byte, error) {
 }
 
 func (t *EnteredCredential) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsAnyChangeTrigger returns the union data inside the OrganizationPolicy_Trigger as a AnyChangeTrigger
+func (t OrganizationPolicy_Trigger) AsAnyChangeTrigger() (AnyChangeTrigger, error) {
+	var body AnyChangeTrigger
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAnyChangeTrigger overwrites any union data inside the OrganizationPolicy_Trigger as the provided AnyChangeTrigger
+func (t *OrganizationPolicy_Trigger) FromAnyChangeTrigger(v AnyChangeTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"any_change"}`))
+	t.union = b
+	return err
+}
+
+// MergeAnyChangeTrigger performs a merge with any union data inside the OrganizationPolicy_Trigger, using the provided AnyChangeTrigger
+func (t *OrganizationPolicy_Trigger) MergeAnyChangeTrigger(v AnyChangeTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"any_change"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsChangeCountTrigger returns the union data inside the OrganizationPolicy_Trigger as a ChangeCountTrigger
+func (t OrganizationPolicy_Trigger) AsChangeCountTrigger() (ChangeCountTrigger, error) {
+	var body ChangeCountTrigger
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromChangeCountTrigger overwrites any union data inside the OrganizationPolicy_Trigger as the provided ChangeCountTrigger
+func (t *OrganizationPolicy_Trigger) FromChangeCountTrigger(v ChangeCountTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"change_count"}`))
+	t.union = b
+	return err
+}
+
+// MergeChangeCountTrigger performs a merge with any union data inside the OrganizationPolicy_Trigger, using the provided ChangeCountTrigger
+func (t *OrganizationPolicy_Trigger) MergeChangeCountTrigger(v ChangeCountTrigger) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"type":"change_count"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t OrganizationPolicy_Trigger) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"type"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t OrganizationPolicy_Trigger) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "any_change":
+		return t.AsAnyChangeTrigger()
+	case "change_count":
+		return t.AsChangeCountTrigger()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t OrganizationPolicy_Trigger) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *OrganizationPolicy_Trigger) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
