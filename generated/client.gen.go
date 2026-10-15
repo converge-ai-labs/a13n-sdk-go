@@ -6474,6 +6474,15 @@ type ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// GetModelCatalogApiV1ModelCatalogGetParams defines parameters for GetModelCatalogApiV1ModelCatalogGet.
+type GetModelCatalogApiV1ModelCatalogGetParams struct {
+	// Provider Exact catalog channel ID, such as openrouter.
+	Provider *string `form:"provider,omitempty" json:"provider,omitempty"`
+
+	// Model Exact, case-sensitive model ID within the catalog channel.
+	Model *string `form:"model,omitempty" json:"model,omitempty"`
+}
+
 // ListProvidersApiV1ModelProvidersGetParams defines parameters for ListProvidersApiV1ModelProvidersGet.
 type ListProvidersApiV1ModelProvidersGetParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -10394,10 +10403,14 @@ type ClientInterface interface {
 
 	// GetModelCatalogApiV1ModelCatalogGet Get Model Catalog
 	//
-	// The models.dev models the registered model provider types serve, for any signed-in principal.
+	// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+	//
+	// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+	// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+	// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 	//
 	// Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-	GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListProvidersApiV1ModelProvidersGet List model providers
 	//
@@ -14141,11 +14154,15 @@ func (c *Client) ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx contex
 
 // GetModelCatalogApiV1ModelCatalogGet Get Model Catalog
 //
-// The models.dev models the registered model provider types serve, for any signed-in principal.
+// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+//
+// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 //
 // Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-func (c *Client) GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetModelCatalogApiV1ModelCatalogGetRequest(c.Server)
+func (c *Client) GetModelCatalogApiV1ModelCatalogGet(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetModelCatalogApiV1ModelCatalogGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -24360,7 +24377,7 @@ func NewListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetRequest(server strin
 }
 
 // NewGetModelCatalogApiV1ModelCatalogGetRequest constructs an http.Request for the GetModelCatalogApiV1ModelCatalogGet method
-func NewGetModelCatalogApiV1ModelCatalogGetRequest(server string) (*http.Request, error) {
+func NewGetModelCatalogApiV1ModelCatalogGetRequest(server string, params *GetModelCatalogApiV1ModelCatalogGetParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -24376,6 +24393,45 @@ func NewGetModelCatalogApiV1ModelCatalogGetRequest(server string) (*http.Request
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Provider != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "provider", *params.Provider, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Model != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "model", *params.Model, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -34974,12 +35030,16 @@ type ClientWithResponsesInterface interface {
 
 	// GetModelCatalogApiV1ModelCatalogGetWithResponse Get Model Catalog
 	//
-	// The models.dev models the registered model provider types serve, for any signed-in principal.
+	// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+	//
+	// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+	// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+	// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-	GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error)
+	GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error)
 
 	// ListProvidersApiV1ModelProvidersGetWithResponse List model providers
 	//
@@ -43904,6 +43964,11 @@ func (r ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetResponse) ContentTyp
 	return ""
 }
 
+// GetModelCatalogApiV1ModelCatalogGetResponse400Headers the declared response headers of an HTTP 400 response for GetModelCatalogApiV1ModelCatalogGet
+type GetModelCatalogApiV1ModelCatalogGetResponse400Headers struct {
+	XRequestId *string
+}
+
 // GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetModelCatalogApiV1ModelCatalogGet
 type GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders struct {
 	XRequestId *string
@@ -43914,8 +43979,12 @@ type GetModelCatalogApiV1ModelCatalogGetResponse struct {
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *ModelCatalog
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
 	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetModelCatalogApiV1ModelCatalogGetResponse400Headers
 	// HeadersDefault the parsed response headers for an HTTP default response
 	HeadersDefault *GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders
 }
@@ -43923,6 +43992,11 @@ type GetModelCatalogApiV1ModelCatalogGetResponse struct {
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r GetModelCatalogApiV1ModelCatalogGetResponse) GetJSON200() *ModelCatalog {
 	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetModelCatalogApiV1ModelCatalogGetResponse) GetJSON400() *Error {
+	return r.JSON400
 }
 
 // GetJSONDefault returns the response for an HTTP default `application/json` response
@@ -56044,13 +56118,17 @@ func (c *ClientWithResponses) ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsG
 
 // GetModelCatalogApiV1ModelCatalogGetWithResponse Get Model Catalog
 //
-// The models.dev models the registered model provider types serve, for any signed-in principal.
+// Read public model metadata and prices. Filter by provider and model to avoid a large full-catalog response.
+//
+// Both filters match exactly and combine with AND; omitted filters leave that dimension unrestricted.
+// No match returns empty items with the catalog status. Refreshes always fetch the full catalog when due.
+// Copy the selected item's characteristics, pricing and ref into model config, pricing and catalog_ref when saving.
 //
 // Returns a wrapper object for the known response body format(s).
 //
 // Corresponds with GET /api/v1/model-catalog (the `GetModelCatalogApiV1ModelCatalogGet` operationId).
-func (c *ClientWithResponses) GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error) {
-	rsp, err := c.GetModelCatalogApiV1ModelCatalogGet(ctx, reqEditors...)
+func (c *ClientWithResponses) GetModelCatalogApiV1ModelCatalogGetWithResponse(ctx context.Context, params *GetModelCatalogApiV1ModelCatalogGetParams, reqEditors ...RequestEditorFn) (*GetModelCatalogApiV1ModelCatalogGetResponse, error) {
+	rsp, err := c.GetModelCatalogApiV1ModelCatalogGet(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -65513,6 +65591,13 @@ func ParseGetModelCatalogApiV1ModelCatalogGetResponse(rsp *http.Response) (*GetM
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
 		var dest Error
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -65523,6 +65608,16 @@ func ParseGetModelCatalogApiV1ModelCatalogGetResponse(rsp *http.Response) (*GetM
 	}
 
 	switch {
+	case rsp.StatusCode == 400:
+		var headers GetModelCatalogApiV1ModelCatalogGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
 	case true:
 		var headers GetModelCatalogApiV1ModelCatalogGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
