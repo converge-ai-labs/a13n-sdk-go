@@ -30,12 +30,11 @@ func TestRunItemsOrdinalWindowsAndWholeMutableTail(t *testing.T) {
 		w.Header().Set("X-Request-ID", "ordinal-window")
 		query := req.URL.Query()
 		first, last, sealed := 1, 10, false
-		baseline := query.Get("before") == "" && query.Get("after") == ""
 		switch query.Encode() {
 		case "limit=2": // All ten mutable items, not a client-truncated pair.
 		case "before=5&limit=2", "after=2&limit=2":
 			first, last, sealed = 3, 4, true
-		case "": // A sealed recent baseline starts later than ordinal one.
+		case "": // A sealed recent window starts later than ordinal one.
 			first, last, sealed = 9, 10, true
 		case "after=0&limit=2":
 			first, last, sealed = 1, 2, true
@@ -50,11 +49,7 @@ func TestRunItemsOrdinalWindowsAndWholeMutableTail(t *testing.T) {
 		for ordinal := first; ordinal <= last; ordinal++ {
 			items = append(items, map[string]any{"id": fmt.Sprint(ordinal), "ordinal": ordinal, "kind": "text_message", "state": state, "content": map[string]any{"text": "active"}})
 		}
-		body := map[string]any{"run": map[string]any{"id": "run", "thread_id": "thr", "status": status, "display_position": nil}, "items": items, "baseline": baseline, "complete": sealed, "continuation": nil, "position": nil, "resume_after": nil}
-		if baseline {
-			body["continuation"] = json.RawMessage(displayContinuationJSON)
-			body["position"], body["resume_after"] = "1-8", "99-1"
-		}
+		body := map[string]any{"run": map[string]any{"id": "run", "thread_id": "thr", "status": status}, "items": items, "complete": sealed}
 		_ = json.NewEncoder(w).Encode(body)
 	}))
 	defer server.Close()
@@ -69,22 +64,8 @@ func TestRunItemsOrdinalWindowsAndWholeMutableTail(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !baseline.Value.Baseline || baseline.Value.Complete || len(baseline.Value.Items) != 10 || baseline.RequestID() != "ordinal-window" || !baseline.Value.Run.DisplayPosition.IsNull() {
+	if baseline.Value.Complete || len(baseline.Value.Items) != 10 || baseline.RequestID() != "ordinal-window" {
 		t.Fatal(baseline)
-	}
-	continuation, err := baseline.Value.Continuation.Get()
-	if err != nil || continuation.NextOrdinal != 11 || continuation.Position.Sequence != 8 {
-		t.Fatal(continuation, err)
-	}
-	encoded, err := json.Marshal(continuation)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var got, want any
-	_ = json.Unmarshal(encoded, &got)
-	_ = json.Unmarshal([]byte(displayContinuationJSON), &want)
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("recursive normalization state lost: %s", encoded)
 	}
 
 	for _, options := range []RunItemsOptions{{Before: &five, Limit: &two}, {After: &two, Limit: &two}, {After: &zero, Limit: &two}} {
@@ -92,7 +73,7 @@ func TestRunItemsOrdinalWindowsAndWholeMutableTail(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if window.Value.Baseline || !window.Value.Complete || !window.Value.Continuation.IsNull() || !window.Value.Position.IsNull() || !window.Value.ResumeAfter.IsNull() || len(window.Value.Items) != 2 {
+		if !window.Value.Complete || len(window.Value.Items) != 2 {
 			t.Fatal(window)
 		}
 		if options.After != &zero && window.Value.Items[0].Ordinal != 3 {
@@ -103,7 +84,7 @@ func TestRunItemsOrdinalWindowsAndWholeMutableTail(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !recent.Value.Baseline || !recent.Value.Complete || recent.Value.Items[0].Ordinal != 9 || len(recent.Value.Items) != 2 || reads != 5 {
+	if !recent.Value.Complete || recent.Value.Items[0].Ordinal != 9 || len(recent.Value.Items) != 2 || reads != 5 {
 		t.Fatal("sealed recent window must not trigger loading earlier history", recent, reads)
 	}
 }
@@ -245,7 +226,7 @@ func TestHistoricalReadCannotHealOrSealScopedStream(t *testing.T) {
 			if req.URL.Query().Get("after") != "0" {
 				t.Fatal(req.URL)
 			}
-			return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"completed"},"items":[],"baseline":false,"complete":true,"continuation":null,"position":null,"resume_after":null}`)
+			return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"completed"},"items":[],"complete":true}`)
 		}
 		requests++
 		response := coverageResponse(200, `event: gap
@@ -265,7 +246,7 @@ data: {"run_id":"run","position":"1-5"}
 	}
 	zero := 0
 	history, err := client.Run("run").Items(context.Background(), RunItemsOptions{After: &zero})
-	if err != nil || history.Value.Baseline || !history.Value.Complete {
+	if err != nil || !history.Value.Complete {
 		t.Fatal(history, err)
 	}
 	// A historical response saying sealed describes its Run; it is not a

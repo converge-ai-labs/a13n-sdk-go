@@ -58,7 +58,7 @@ func earlierWindow(ctx context.Context, client *a13n.Client, runID string, befor
 }
 ```
 
-If the current window's first ordinal exceeds 1, pass that ordinal as Before to request earlier display. After requests the items just after an ordinal; both boundaries are exclusive. The SDK neither uses the generic cursor `Pages` iterator here nor automatically loads unbounded history. Explicit Before/After windows have `Baseline=false` and null Continuation/Position/ResumeAfter, even for a sealed Run. Render them as history only: they cannot replace a live baseline, advance coverage, heal gaps or seal a live consumer. Only the default no-boundary read includes the whole mutable tail plus normalization continuation and can establish coverage. A recent sealed baseline can still omit earlier ordinals.
+If the current window's first ordinal exceeds 1, pass that ordinal as Before to request earlier display. After requests items just after an ordinal; both boundaries are exclusive. The SDK neither uses the generic cursor `Pages` iterator here nor automatically loads unbounded history. A default read includes the whole mutable tail, even beyond Limit. Every Items response contains only Run, Items and Complete: it carries no stream position, normalization continuation or retained replay hint. Complete means sealed, not all history loaded. Neither a recent nor a historical read establishes stream coverage.
 
 ## Deadlines and cleanup
 
@@ -81,53 +81,49 @@ If you have persisted an exact Run ID, `client.Run(runID).Items(ctx)` rereads it
 ```go
 items, err := client.Run(savedRunID).Items(ctx)
 if err != nil { return err }
-fmt.Printf("display sealed=%t, baseline=%t\n", items.Value.Complete, items.Value.Baseline)
+fmt.Printf("display sealed=%t\n", items.Value.Complete)
 if err := json.NewEncoder(os.Stdout).Encode(items.Value.Items); err != nil { return err }
 ```
 
-## Rebuild an advanced reader from committed coverage
+## Observe a Session's native snapshots
 
-The generated persistent reader accepts `Run` and `Position` **together**. `RunItems.Position` is the `{attempt}-{sequence}` coverage of the display; `ResumeAfter` is an optional Redis ID hint, not a second coverage cursor. Only a `Baseline=true` response can seed live state. Preserve its native `Continuation`, `Complete` and item truncation/omission metadata; continuation is normalization state, not an execution checkpoint. Historical Before/After windows have null continuation/position/hint and cannot heal a gap or end an existing live consumer, even when Complete is true. Missing or null hints are valid; a retained, expired or incompatible hint does not change the position claim. Import `context`, `fmt`, `net/http`, `a13n` and `generated`:
+`Client.SessionEvents` opens one advanced native connection for all Session threads, including children. It shares the Client transport, authentication, semantic workspace and cancellation lifetime. Its four distinct `SessionFrame` variants embed the generated `sessionstream` schema models: `SessionThreadFrame`, `SessionItemsFrame`, `SessionDeltaFrame` and `SessionGapFrame`. `RawJSON()` returns original bytes independently of typed decoding. Session frames have no SSE ID or cursor; reopening always starts from a fresh snapshot. An already-sealed Run appears in the thread's last-run state, without replaying its items; use Run.Items for that saved display.
+
+This helper imports `context`, `fmt`, `io` and `a13n`. It consumes one connection and leaves reconnection to its caller:
 
 ```go
-func rebuildReader(ctx context.Context, client *a13n.Client, runID string) (
-    a13n.Result[generated.RunItems], *http.Response, error,
-) {
-    snapshot, err := client.Run(runID).Items(ctx)
-    if err != nil { return snapshot, nil, err }
-    if snapshot.Value.Run.Id != runID {
-        return snapshot, nil, fmt.Errorf("items do not belong to run %s", runID)
+func readSession(ctx context.Context, client *a13n.Client, sessionID string, out io.Writer) error {
+    stream, err := client.SessionEvents(ctx, sessionID, a13n.SessionStreamOptions{})
+    if err != nil { return err }
+    defer stream.Close()
+    for {
+        frame, err := stream.Next()
+        if err != nil { return err } // io.EOF ends this connection, not a Run
+        switch value := frame.(type) {
+        case *a13n.SessionThreadFrame:
+            fmt.Fprintln(out, "thread", value.Thread.Id)
+        case *a13n.SessionItemsFrame:
+            fmt.Fprintln(out, "items", value.RunId, value.First, value.Complete)
+        case *a13n.SessionDeltaFrame:
+            fmt.Fprintln(out, "delta", value.RunId, value.Attempt, value.Sequence)
+        case *a13n.SessionGapFrame:
+            fmt.Fprintln(out, "gap", value.RunId)
+        }
     }
-    if !snapshot.Value.Baseline {
-        return snapshot, nil, fmt.Errorf("historical window is not a live baseline")
-    }
-    if snapshot.Value.Complete { return snapshot, nil, nil }
-    position := snapshot.Value.Position.GetOrEmpty()
-    if position == "" {
-        return snapshot, nil, fmt.Errorf("no committed display yet; wait for a checkpoint")
-    }
-    params := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{
-        Run: &runID, Position: &position,
-    }
-    if after := snapshot.Value.ResumeAfter.GetOrEmpty(); after != "" {
-        params.LastEventID = &after
-    }
-    api, err := client.API()
-    if err != nil { return snapshot, nil, err }
-    response, err := api.ThreadStreamApiV1ThreadsThreadIdStreamGet(ctx,
-        snapshot.Value.Run.ThreadId, &params)
-    if err != nil { return snapshot, nil, err }
-    if response.StatusCode != http.StatusOK {
-        _, err = a13n.ParseJSON[struct{}](client, response, nil, http.StatusOK)
-        return snapshot, nil, err
-    }
-    return snapshot, response, nil
 }
 ```
 
-Apply the returned baseline, including its normalization continuation, before applying raw SSE output from the returned response. The SDK does not implement this display reducer. The caller owns the persistent response body and must close it (and use a context deadline); a nil response means the Run is already sealed. This advanced path does not become another finite Agent invocation or follow a successor Run. Session callers must also set `XWorkspaceID` explicitly on generated params.
+Each current Run starts with items; an items frame replaces the suffix beginning at First, while earlier ordinals are final. Its optional native Continuation belongs to that snapshot's normalization cut, not HTTP reconnect progress. A gap holds that Run's deltas until the server supplies replacement items; a completed items frame finishes that Run's display, not Session observation. This SDK exposes these native facts without assembling fragments or maintaining a display reducer. Use the finite Interaction for one Agent invocation and exact outcome.
 
-`a13n.GapFrame.Position` is a `*string`: nil means transport loss with no known missing range, while a value identifies the position the replacement snapshot must cover. A gap or a boundary beyond contiguous applied output is not proof that the hole healed. Do not advance coverage or the hint past it. Refresh Items when a newer boundary or terminal state can cover that target, rather than repeatedly reading the same stale snapshot. The explicit coverage reader freezes its position and hint after a gap, reset, uncovered sequence hole or newer attempt. Later contiguous deltas cannot unfreeze it: apply an authoritative snapshot, then explicitly rebuild the reader with that snapshot's position and hint. A stale snapshot must not be treated as covering the recovery target. A `ResetFrame` means superseded provisional output must be discarded; it does not prove an empty display baseline for the new attempt. Terminal reads replace provisional output with the saved display. The SDK returns these signals without silently folding events or doing readback.
+Unknown SSE event names are ignored before decoding their payload. Known payloads are validated recursively against the bundled pinned JSON Schema before typed decoding; invalid frames terminate Next with ErrProtocol. The shared parser enforces UTF-8 and complete framing. `MaxFrameBytes` defaults to zero, imposing no SDK limit on snapshots; set a positive value to enforce your application's frame bound. Keepalive comments are consumed internally. Close or context cancellation releases local observation; it neither cancels a Run nor sends a mutation. Response retains HTTP status and cloned headers after Close.
+
+There is no automatic reconnect or mutation retry. A persistent application's reconnect loop starts a new SessionEvents call after connection end, except a non-429 4xx refusal or invalid frame. Use full jitter below `min(30s, 0.5s * 2^n)`, honor Retry-After for 429/503, and reset n after 30 seconds open, as specified by Service. Preserve one application cancellation deadline across that loop. Never send Last-Event-ID or manufacture Session progress from a continuation.
+
+## Keep explicit Thread progress separate
+
+The generated persistent `ThreadStreamApiV1ThreadsThreadIdStreamGet` still accepts paired Run and Position, plus optional LastEventID. Supply only progress your application actually applied and saved; Run.Items supplies none. A position uses canonical nonnegative decimal attempt/sequence components, each at most 20 digits. A retained Redis ID optimizes replay and does not establish coverage by itself. Session normalization state is a separate protocol concept.
+
+A Thread gap, reset, uncovered sequence hole or newer attempt freezes the internal explicitly scoped reader's position and hint. Later deltas cannot heal that claim. Read committed display for inspection, or reopen the native Session stream for server-owned snapshot repair; an Items read alone cannot authorize a new Thread coverage claim. The SDK neither infers positions from Redis IDs nor creates an empty baseline after reset. Advanced generated raw responses remain caller-owned and require explicit body closure; session-authenticated generated calls set XWorkspaceID explicitly.
 
 Within the default finite interaction, asking for the next frame acknowledges the preceding one. Reconnect uses only its acknowledged Redis ID, never a merely received ID. It does not automatically add Run/position query parameters or claim a display baseline. Exact-Run filtering and the finite lifecycle remain unchanged. Close does not acknowledge the last returned frame. Advanced readers that maintain their own display must opt into coverage explicitly and follow the applied-only rule. Position components are canonical nonnegative decimal integers, at most 20 digits each; a hint alone uses the older `Last-Event-ID` replay behavior and cannot establish complete delivery.
 

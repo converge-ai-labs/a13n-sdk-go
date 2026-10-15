@@ -8,7 +8,6 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"time"
 
 	a13n "github.com/converge-ai-labs/a13n-sdk-go"
@@ -25,13 +24,13 @@ func pagedDisplayOffline() {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("X-Request-ID", "paged")
 		query := req.URL.Query().Encode()
-		first, last, baseline, complete := 1, 10, true, false
+		first, last, complete := 1, 10, false
 		switch query {
 		case "limit=2":
 		case "after=2&limit=2", "before=5&limit=2":
-			first, last, baseline, complete = 3, 4, false, true
+			first, last, complete = 3, 4, true
 		case "after=0&limit=2":
-			first, last, baseline, complete = 1, 2, false, true
+			first, last, complete = 1, 2, true
 		case "":
 			first, last, complete = 9, 10, true
 		case "after=0&before=1", "before=0", "after=-1", "limit=501":
@@ -49,11 +48,7 @@ func pagedDisplayOffline() {
 		for ordinal := first; ordinal <= last; ordinal++ {
 			items = append(items, map[string]any{"id": fmt.Sprint(ordinal), "ordinal": ordinal, "kind": "text_message", "state": state, "content": map[string]any{"text": "active"}})
 		}
-		value := map[string]any{"run": map[string]any{"id": "paged", "thread_id": "thr", "status": status, "display_position": nil}, "items": items, "baseline": baseline, "complete": complete, "position": nil, "continuation": nil, "resume_after": nil}
-		if baseline {
-			value["position"] = "1-8"
-			value["continuation"] = json.RawMessage(`{"run_id":"paged","position":{"attempt":1,"sequence":8},"next_ordinal":11,"fragments":{"pending":{"x":{"count":2,"parts":["partial"]}}},"observer":{"state":{"children":{"child":{"children":{"grandchild":{"request_index":0}}}}}}}`)
-		}
+		value := map[string]any{"run": map[string]any{"id": "paged", "thread_id": "thr", "status": status}, "items": items, "complete": complete}
 		_ = json.NewEncoder(w).Encode(value)
 	}))
 	defer server.Close()
@@ -62,26 +57,20 @@ func pagedDisplayOffline() {
 	ctx := context.Background()
 	two, five, zero, one, negative, large := 2, 5, 0, 1, -1, 501
 	baseline := must(client.Run("paged").Items(ctx, a13n.RunItemsOptions{Limit: &two}))
-	check(baseline.Value.Baseline && !baseline.Value.Complete && len(baseline.Value.Items) == 10 && baseline.Value.Items[9].Ordinal == 10 && baseline.RequestID() == "paged", "installed whole mutable tail beyond limit")
-	continuation := must(baseline.Value.Continuation.Get())
-	check(continuation.NextOrdinal == 11 && continuation.Position.Sequence == 8 && baseline.Value.Run.DisplayPosition.IsNull(), "installed continuation and nullable display position")
-	check(strings.Contains(string(must(json.Marshal(continuation))), `"grandchild":{"request_index":0}`), "installed recursive normalization cursor")
+	check(!baseline.Value.Complete && len(baseline.Value.Items) == 10 && baseline.Value.Items[9].Ordinal == 10 && baseline.RequestID() == "paged", "installed whole mutable tail beyond limit")
+
 	for _, options := range []a13n.RunItemsOptions{{Before: &five, Limit: &two}, {After: &two, Limit: &two}, {After: &zero, Limit: &two}} {
 		window := must(client.Run("paged").Items(ctx, options))
-		check(!window.Value.Baseline && window.Value.Complete && len(window.Value.Items) == 2 && window.Value.Position.IsNull() && window.Value.Continuation.IsNull() && window.Value.ResumeAfter.IsNull(), "installed historical windows never claim coverage")
+		check(window.Value.Complete && len(window.Value.Items) == 2, "installed historical windows never claim coverage")
 	}
 	recent := must(client.Run("paged").Items(ctx))
-	check(recent.Value.Baseline && recent.Value.Complete && recent.Value.Items[0].Ordinal == 9 && reads == 5, "installed sealed recent window does not auto-load all history")
+	check(recent.Value.Complete && recent.Value.Items[0].Ordinal == 9 && reads == 5, "installed sealed recent window does not auto-load all history")
 	for _, options := range []a13n.RunItemsOptions{{Before: &one, After: &zero}, {Before: &zero}, {After: &negative}, {Limit: &large}} {
 		_, err := client.Run("paged").Items(ctx, options)
 		var failure *a13n.ApiError
 		check(errors.As(err, &failure) && failure.Status == 400 && failure.Code == "invalid_argument" && failure.RequestID == "paged", "installed ordinal Service error metadata")
 	}
-	fmt.Println("Installed module: whole-tail baseline > limit, recursive continuation, explicit ordinal history windows, sealed recent != all history and query errors passed (local mock)")
-}
-
-func historicalWindow(value generated.RunItems) {
-	check(!value.Baseline && value.Position.IsNull() && value.Continuation.IsNull() && value.ResumeAfter.IsNull(), "historical window has no live baseline or coverage")
+	fmt.Println("Installed module: whole mutable tail > limit, explicit ordinal history windows, sealed recent != all history and query errors passed (local mock)")
 }
 
 // The Service's deterministic HTTPS fixture owns the actual page/tail size.
@@ -89,8 +78,7 @@ func historicalWindow(value generated.RunItems) {
 func pagedDisplayLive(ctx context.Context, run a13n.Run) {
 	one, zero := 1, 0
 	recent := must(run.Items(ctx, a13n.RunItemsOptions{Limit: &one}))
-	check(recent.Value.Baseline && recent.Value.Complete && recent.Value.Run.Id == run.ID && recent.Value.Position.GetOrEmpty() != "", "live sealed default display baseline")
-	check(recent.Value.Continuation.IsSpecified() && !recent.Value.Continuation.IsNull(), "live baseline normalization continuation")
+	check(recent.Value.Complete && recent.Value.Run.Id == run.ID, "live sealed default display baseline")
 	for index, item := range recent.Value.Items {
 		check(item.Ordinal >= 1, "live required positive ordinal")
 		if index > 0 {
@@ -98,18 +86,16 @@ func pagedDisplayLive(ctx context.Context, run a13n.Run) {
 		}
 	}
 	first := must(run.Items(ctx, a13n.RunItemsOptions{After: &zero, Limit: &one}))
-	historicalWindow(first.Value)
 	check(first.Value.Complete && len(first.Value.Items) == 1 && first.Value.Items[0].Ordinal == 1, "live first historical ordinal")
 	check(len(recent.Value.Items) > 0, "live sealed baseline has display items")
 	lastOrdinal := recent.Value.Items[len(recent.Value.Items)-1].Ordinal
 	check(lastOrdinal > 1, "live ordinal probe has multiple items")
 	before := must(run.Items(ctx, a13n.RunItemsOptions{Before: &lastOrdinal, Limit: &one}))
-	historicalWindow(before.Value)
 	check(len(before.Value.Items) == 1 && before.Value.Items[0].Ordinal == lastOrdinal-1, "live exclusive before ordinal")
 	_, err := run.Items(ctx, a13n.RunItemsOptions{Before: &one, After: &zero})
 	var failure *a13n.ApiError
 	check(errors.As(err, &failure) && failure.Status == 400 && failure.Code == "invalid_argument", "live mutually exclusive ordinal error")
-	fmt.Println("Verified HTTPS: sealed default baseline/continuation, historical before/after with null coverage and ordinal query errors passed")
+	fmt.Println("Verified HTTPS: sealed default window, historical before/after and ordinal query errors passed")
 	if recent.Value.Items[0].Ordinal > 1 {
 		fmt.Println("Verified HTTPS: sealed recent window excludes earlier ordinals (not all history)")
 	} else {

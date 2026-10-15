@@ -21,7 +21,7 @@ func importedConversation() generated.MessageHistory {
 	}
 }
 
-func TestImportedHistoryHighAndLowLevelWireAndThreadReadback(t *testing.T) {
+func TestImportedHistoryHighAndLowLevelWireIsSubmitOnly(t *testing.T) {
 	history := importedConversation()
 	expected, err := json.Marshal(history)
 	if err != nil {
@@ -53,11 +53,7 @@ func TestImportedHistoryHighAndLowLevelWireAndThreadReadback(t *testing.T) {
 		}
 		switch {
 		case req.URL.Path == "/proxy/api/v1/threads/thr":
-			encoded, err := json.Marshal(map[string]any{"id": "thr", "message_history": history})
-			if err != nil {
-				t.Fatal(err)
-			}
-			return coverageResponse(200, string(encoded))
+			return coverageResponse(200, `{"id":"thr"}`)
 		case strings.HasSuffix(req.URL.Path, "/inbox/ent"):
 			return coverageResponse(200, entryView("consumed", `"run"`))
 		default:
@@ -77,9 +73,8 @@ func TestImportedHistoryHighAndLowLevelWireAndThreadReadback(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	readback, err := json.Marshal(view.Value.MessageHistory)
-	if err != nil || string(readback) != string(expected) || view.ETag() != `"v1"` {
-		t.Fatalf("readback: %s %v", readback, err)
+	if _, exists := reflect.TypeOf(view.Value).FieldByName("MessageHistory"); exists || view.ETag() != `"v1"` {
+		t.Fatal("Thread readback exposes imported history", view)
 	}
 
 	api, err := client.API()

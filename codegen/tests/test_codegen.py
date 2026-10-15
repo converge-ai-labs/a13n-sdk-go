@@ -98,3 +98,26 @@ def test_generated_operations_are_exactly_pinned_contract() -> None:
         if name.startswith("_"):
             name = "Underscore" + name[1:]
         assert re.search(rf"^type {name}\b", generated, re.MULTILINE)
+
+
+def test_both_generated_graphs_match_pinned_inputs(tmp_path: Path) -> None:
+    """CI checks deterministic HTTP and Session outputs, including new files."""
+    import re
+
+    document = json.loads((ROOT / "contract/openapi.json").read_text())
+    schema = json.loads((ROOT / "contract/session-stream.schema.json").read_text())
+    output = codegen.generate(document, tmp_path)
+    codegen.generate_session(schema, tmp_path, output / "sessionstream")
+    actual = {path.relative_to(output): path.read_bytes() for path in output.rglob("*.go")}
+    expected = {path.relative_to(ROOT / "generated"): path.read_bytes() for path in (ROOT / "generated").rglob("*.go")}
+    assert actual == expected
+    text = (output / "sessionstream/models.gen.go").read_text()
+    assert set(schema["frames"]) == {"thread", "items", "delta", "gap"}
+    bundled = (output / "sessionstream/schema.gen.go").read_text().split("const JSONSchema = ", 1)[1].strip()
+    assert json.loads(json.loads(bundled)) == schema
+    assert "nullable.Nullable[SkillSync]" in text
+    assert "func (t SkillSync) MarshalJSON()" in text
+    assert "type JsonValue = json.RawMessage" in text
+    for name in schema["$defs"]:
+        go_name = "Underscore" + name[1:] if name.startswith("_") else name
+        assert re.search(rf"^type {go_name}\b", text, re.MULTILINE)

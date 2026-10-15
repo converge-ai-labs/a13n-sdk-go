@@ -288,7 +288,7 @@ func (r Run) Get(ctx context.Context) (Result[generated.RunView], error) {
 
 // RunItemsOptions selects one ordinal window. Before and After exclude each
 // other. Nil Limit uses the Service default (200); the Service validates bounds.
-// A historical window cannot establish live display coverage.
+// Items windows carry no stream position or normalization continuation.
 type RunItemsOptions struct {
 	Before *int
 	After  *int
@@ -297,7 +297,7 @@ type RunItemsOptions struct {
 
 // Items reads one committed display window, not necessarily all Run history.
 // With no Before/After it includes the entire mutable tail, even beyond Limit,
-// and can seed live coverage. Complete means sealed, not all history loaded.
+// without establishing stream coverage. Complete means sealed, not all history loaded.
 // At most one options value may be supplied; omitting it uses Service defaults.
 func (r Run) Items(ctx context.Context, options ...RunItemsOptions) (Result[generated.RunItems], error) {
 	if err := validateClient(r.client, r.ID); err != nil {

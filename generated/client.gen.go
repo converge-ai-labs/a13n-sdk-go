@@ -1021,22 +1021,22 @@ func (e IsolatedSkillSyncMode) Valid() bool {
 
 // Defines values for ItemKind.
 const (
-	ItemKindObservation      ItemKind = "observation"
-	ItemKindReasoningMessage ItemKind = "reasoning_message"
-	ItemKindTextMessage      ItemKind = "text_message"
-	ItemKindToolCall         ItemKind = "tool_call"
+	Observation      ItemKind = "observation"
+	ReasoningMessage ItemKind = "reasoning_message"
+	TextMessage      ItemKind = "text_message"
+	ToolCall         ItemKind = "tool_call"
 )
 
 // Valid indicates whether the value is a known member of the ItemKind enum.
 func (e ItemKind) Valid() bool {
 	switch e {
-	case ItemKindObservation:
+	case Observation:
 		return true
-	case ItemKindReasoningMessage:
+	case ReasoningMessage:
 		return true
-	case ItemKindTextMessage:
+	case TextMessage:
 		return true
-	case ItemKindToolCall:
+	case ToolCall:
 		return true
 	default:
 		return false
@@ -1195,16 +1195,16 @@ func (e MemoryAccess) Valid() bool {
 
 // Defines values for MemoryKind.
 const (
-	MemoryKindFile   MemoryKind = "file"
-	MemoryKindRecord MemoryKind = "record"
+	File   MemoryKind = "file"
+	Record MemoryKind = "record"
 )
 
 // Valid indicates whether the value is a known member of the MemoryKind enum.
 func (e MemoryKind) Valid() bool {
 	switch e {
-	case MemoryKindFile:
+	case File:
 		return true
-	case MemoryKindRecord:
+	case Record:
 		return true
 	default:
 		return false
@@ -1259,60 +1259,6 @@ func (e MemoryRevisionDetailOp) Valid() bool {
 	case MemoryRevisionDetailOpMoveOut:
 		return true
 	case MemoryRevisionDetailOpUpdate:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for MemorySourceKind.
-const (
-	MemorySourceKindFile   MemorySourceKind = "file"
-	MemorySourceKindRecord MemorySourceKind = "record"
-)
-
-// Valid indicates whether the value is a known member of the MemorySourceKind enum.
-func (e MemorySourceKind) Valid() bool {
-	switch e {
-	case MemorySourceKindFile:
-		return true
-	case MemorySourceKindRecord:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for MemorySourceStatus.
-const (
-	MemorySourceStatusChanges     MemorySourceStatus = "changes"
-	MemorySourceStatusFailed      MemorySourceStatus = "failed"
-	MemorySourceStatusFull        MemorySourceStatus = "full"
-	MemorySourceStatusOmitted     MemorySourceStatus = "omitted"
-	MemorySourceStatusRecalled    MemorySourceStatus = "recalled"
-	MemorySourceStatusTimeout     MemorySourceStatus = "timeout"
-	MemorySourceStatusUnavailable MemorySourceStatus = "unavailable"
-	MemorySourceStatusUnchanged   MemorySourceStatus = "unchanged"
-)
-
-// Valid indicates whether the value is a known member of the MemorySourceStatus enum.
-func (e MemorySourceStatus) Valid() bool {
-	switch e {
-	case MemorySourceStatusChanges:
-		return true
-	case MemorySourceStatusFailed:
-		return true
-	case MemorySourceStatusFull:
-		return true
-	case MemorySourceStatusOmitted:
-		return true
-	case MemorySourceStatusRecalled:
-		return true
-	case MemorySourceStatusTimeout:
-		return true
-	case MemorySourceStatusUnavailable:
-		return true
-	case MemorySourceStatusUnchanged:
 		return true
 	default:
 		return false
@@ -1810,13 +1756,13 @@ func (e SpanStatus) Valid() bool {
 
 // Defines values for TextPartType.
 const (
-	TextPartTypeText TextPartType = "text"
+	Text TextPartType = "text"
 )
 
 // Valid indicates whether the value is a known member of the TextPartType enum.
 func (e TextPartType) Valid() bool {
 	switch e {
-	case TextPartTypeText:
+	case Text:
 		return true
 	default:
 		return false
@@ -2192,27 +2138,6 @@ func (e WebhookDeliveryStatus) Valid() bool {
 	case WebhookDeliveryStatusDelivered:
 		return true
 	case WebhookDeliveryStatusPending:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for PartCursorKind.
-const (
-	PartCursorKindReasoning PartCursorKind = "reasoning"
-	PartCursorKindText      PartCursorKind = "text"
-	PartCursorKindToolCall  PartCursorKind = "tool_call"
-)
-
-// Valid indicates whether the value is a known member of the PartCursorKind enum.
-func (e PartCursorKind) Valid() bool {
-	switch e {
-	case PartCursorKindReasoning:
-		return true
-	case PartCursorKindText:
-		return true
-	case PartCursorKindToolCall:
 		return true
 	default:
 		return false
@@ -3130,23 +3055,6 @@ type Deny struct {
 // DenyAction defines model for Deny.Action.
 type DenyAction string
 
-// DisplayContinuation Parsing state at a semantic cut; Host paging may retire only immutable items.
-type DisplayContinuation struct {
-	Arguments nullable.Nullable[UnderscoreArguments] `json:"arguments,omitempty"`
-
-	// Fragments Incomplete custom payloads, not a journal of completed events.
-	Fragments     *FragmentState             `json:"fragments,omitempty"`
-	FullContent   *bool                      `json:"full_content,omitempty"`
-	MemorySources *map[string][]MemorySource `json:"memory_sources,omitempty"`
-	NextOrdinal   int                        `json:"next_ordinal"`
-
-	// Observer Native conversion cursors required to resume mid-part, without raw history.
-	Observer       *ObserverContinuation `json:"observer,omitempty"`
-	Position       StreamPosition        `json:"position"`
-	ResponseGroups *map[string]string    `json:"response_groups,omitempty"`
-	RunId          string                `json:"run_id"`
-}
-
 // EmailChangeConfirm defines model for EmailChangeConfirm.
 type EmailChangeConfirm struct {
 	Token string `json:"token"`
@@ -3325,14 +3233,6 @@ type Failure struct {
 	Message string `json:"message"`
 }
 
-// FileSource defines model for FileSource.
-type FileSource struct {
-	Bytes     int    `json:"bytes"`
-	Path      string `json:"path"`
-	Sha256    string `json:"sha256"`
-	Truncated *bool  `json:"truncated,omitempty"`
-}
-
 // Finding defines model for Finding.
 type Finding struct {
 	AgentId         string                    `json:"agent_id"`
@@ -3406,14 +3306,6 @@ type Fork struct {
 
 // ForkKind defines model for Fork.Kind.
 type ForkKind string
-
-// FragmentState Incomplete custom payloads, not a journal of completed events.
-type FragmentState struct {
-	Gap        *bool                          `json:"gap,omitempty"`
-	MaxBytes   *int                           `json:"max_bytes,omitempty"`
-	MaxPending *int                           `json:"max_pending,omitempty"`
-	Pending    *map[string]UnderscoreAssembly `json:"pending,omitempty"`
-}
 
 // FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
 type FrozenMemoryMount struct {
@@ -3946,24 +3838,6 @@ type MemoryRevisionPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
-// MemorySource One automatic delivery in this Run; content remains in the memory or execution archive.
-type MemorySource struct {
-	Cursor           nullable.Nullable[string] `json:"cursor,omitempty"`
-	Files            *[]FileSource             `json:"files,omitempty"`
-	Kind             MemorySourceKind          `json:"kind"`
-	Memory           string                    `json:"memory"`
-	MemoryId         nullable.Nullable[string] `json:"memory_id,omitempty"`
-	Records          *[]RecordSource           `json:"records,omitempty"`
-	SourcesTruncated *bool                     `json:"sources_truncated,omitempty"`
-	Status           MemorySourceStatus        `json:"status"`
-}
-
-// MemorySourceKind defines model for MemorySource.Kind.
-type MemorySourceKind string
-
-// MemorySourceStatus defines model for MemorySource.Status.
-type MemorySourceStatus string
-
 // MemorySpace defines model for MemorySpace.
 type MemorySpace struct {
 	AlwaysLoad     []string                  `json:"always_load"`
@@ -4298,13 +4172,6 @@ type OAuthSettings struct {
 	TokenEndpointAuthMethod *ClientAuthentication     `json:"token_endpoint_auth_method,omitempty"`
 }
 
-// ObserverContinuation Native conversion cursors required to resume mid-part, without raw history.
-type ObserverContinuation struct {
-	RunId    nullable.Nullable[string] `json:"run_id,omitempty"`
-	State    *UnderscoreObserverState  `json:"state,omitempty"`
-	ThreadId nullable.Nullable[string] `json:"thread_id,omitempty"`
-}
-
 // OperationKind defines model for OperationKind.
 type OperationKind string
 
@@ -4620,12 +4487,6 @@ type ProviderUpdate struct {
 	Name         nullable.Nullable[string]               `json:"name,omitempty"`
 }
 
-// RecordSource defines model for RecordSource.
-type RecordSource struct {
-	Id     string `json:"id"`
-	Sha256 string `json:"sha256"`
-}
-
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
 	Approvals map[string]ApprovalDecision       `json:"approvals"`
@@ -4721,15 +4582,11 @@ type RunContent struct {
 type RunContentMediaType string
 
 // RunItems Items of a run's committed display, in ordinal order, with the run they describe. Ordinals are dense from 1,
-// so the first item's ordinal tells whether earlier ones exist. Live output continues after `position`.
+// so the first item's ordinal tells whether earlier ones exist.
 type RunItems struct {
-	Baseline     bool                                   `json:"baseline"`
-	Complete     bool                                   `json:"complete"`
-	Continuation nullable.Nullable[DisplayContinuation] `json:"continuation,omitempty"`
-	Items        []Item                                 `json:"items"`
-	Position     nullable.Nullable[string]              `json:"position"`
-	ResumeAfter  nullable.Nullable[string]              `json:"resume_after,omitempty"`
-	Run          RunView                                `json:"run"`
+	Complete bool    `json:"complete"`
+	Items    []Item  `json:"items"`
+	Run      RunView `json:"run"`
 }
 
 // RunLabels defines model for RunLabels.
@@ -4783,7 +4640,6 @@ type RunView struct {
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
 	CreatedAt         time.Time                               `json:"created_at"`
 	CurrentAttemptId  nullable.Nullable[string]               `json:"current_attempt_id"`
-	DisplayPosition   nullable.Nullable[string]               `json:"display_position,omitempty"`
 	EnvironmentMounts []EnvironmentMount                      `json:"environment_mounts"`
 	Failure           nullable.Nullable[Failure]              `json:"failure"`
 	Id                string                                  `json:"id"`
@@ -5152,12 +5008,6 @@ type SpanPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
-// StreamPosition defines model for StreamPosition.
-type StreamPosition struct {
-	Attempt  int `json:"attempt"`
-	Sequence int `json:"sequence"`
-}
-
 // SubagentOverrideInput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
 type SubagentOverrideInput struct {
 	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
@@ -5339,26 +5189,23 @@ type ThreadUpdate struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
-	ArchivedAt   nullable.Nullable[time.Time] `json:"archived_at"`
-	CreatedAt    time.Time                    `json:"created_at"`
-	CurrentRunId nullable.Nullable[string]    `json:"current_run_id"`
-	Id           string                       `json:"id"`
-	Labels       map[string]string            `json:"labels"`
-	LastRunId    nullable.Nullable[string]    `json:"last_run_id"`
-	McpHeaders   map[string]map[string]string `json:"mcp_headers"`
-
-	// MessageHistory Pydantic AI ModelMessage JSON objects, validated by the Service. Imports completed user text, model text and closed tool-call/JSON-result exchanges; no instructions, media or suspended execution. At most 256 messages and 256 KiB of normalized JSON.
-	MessageHistory   MessageHistory            `json:"message_history"`
-	Origin           ThreadViewOrigin          `json:"origin"`
-	OriginRunId      nullable.Nullable[string] `json:"origin_run_id"`
-	OriginThreadId   nullable.Nullable[string] `json:"origin_thread_id"`
-	OriginToolCallId nullable.Nullable[string] `json:"origin_tool_call_id"`
-	Purpose          *ThreadViewPurpose        `json:"purpose,omitempty"`
-	SessionId        string                    `json:"session_id"`
-	Subagent         nullable.Nullable[string] `json:"subagent"`
-	UpdatedAt        time.Time                 `json:"updated_at"`
-	Version          int                       `json:"version"`
-	WorkspaceId      string                    `json:"workspace_id"`
+	ArchivedAt       nullable.Nullable[time.Time] `json:"archived_at"`
+	CreatedAt        time.Time                    `json:"created_at"`
+	CurrentRunId     nullable.Nullable[string]    `json:"current_run_id"`
+	Id               string                       `json:"id"`
+	Labels           map[string]string            `json:"labels"`
+	LastRunId        nullable.Nullable[string]    `json:"last_run_id"`
+	McpHeaders       map[string]map[string]string `json:"mcp_headers"`
+	Origin           ThreadViewOrigin             `json:"origin"`
+	OriginRunId      nullable.Nullable[string]    `json:"origin_run_id"`
+	OriginThreadId   nullable.Nullable[string]    `json:"origin_thread_id"`
+	OriginToolCallId nullable.Nullable[string]    `json:"origin_tool_call_id"`
+	Purpose          *ThreadViewPurpose           `json:"purpose,omitempty"`
+	SessionId        string                       `json:"session_id"`
+	Subagent         nullable.Nullable[string]    `json:"subagent"`
+	UpdatedAt        time.Time                    `json:"updated_at"`
+	Version          int                          `json:"version"`
+	WorkspaceId      string                       `json:"workspace_id"`
 }
 
 // ThreadViewOrigin defines model for ThreadView.Origin.
@@ -5656,43 +5503,6 @@ type WorkspacePage struct {
 type WorkspaceUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
 }
-
-// UnderscoreArguments A tool-call part's streamed arguments so far and the one observation item that holds them.
-type UnderscoreArguments struct {
-	At       time.Time                                 `json:"at"`
-	Event    nullable.Nullable[map[string]interface{}] `json:"event"`
-	Key      string                                    `json:"key"`
-	Sequence int                                       `json:"sequence"`
-	Size     int                                       `json:"size"`
-	Stream   JsonValue                                 `json:"stream"`
-}
-
-// UnderscoreAssembly defines model for _Assembly.
-type UnderscoreAssembly struct {
-	Count int       `json:"count"`
-	Parts *[]string `json:"parts,omitempty"`
-	Size  *int      `json:"size,omitempty"`
-}
-
-// UnderscoreObserverState defines model for _ObserverState.
-type UnderscoreObserverState struct {
-	Children     *map[string]UnderscoreObserverState `json:"children,omitempty"`
-	Parts        *map[string]UnderscorePartCursor    `json:"parts,omitempty"`
-	RequestIndex *int                                `json:"request_index,omitempty"`
-	Threads      *map[string]string                  `json:"threads,omitempty"`
-}
-
-// UnderscorePartCursor defines model for _PartCursor.
-type UnderscorePartCursor struct {
-	EmittedContent   *bool                     `json:"emitted_content,omitempty"`
-	EmittedSignature *bool                     `json:"emitted_signature,omitempty"`
-	Kind             PartCursorKind            `json:"kind"`
-	PartId           string                    `json:"part_id"`
-	ToolName         nullable.Nullable[string] `json:"tool_name,omitempty"`
-}
-
-// PartCursorKind defines model for PartCursor.Kind.
-type PartCursorKind string
 
 // Error How every failure answers, whatever its status.
 type Error = ErrorEnvelope
@@ -6817,6 +6627,12 @@ type UpdateSessionApiV1SessionsSessionIdPatchParams struct {
 type GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams struct {
 	EntryId []string `form:"entry_id" json:"entry_id"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// SessionStreamApiV1SessionsSessionIdStreamGetParams defines parameters for SessionStreamApiV1SessionsSessionIdStreamGet.
+type SessionStreamApiV1SessionsSessionIdStreamGetParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -10872,6 +10688,14 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
 	GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// SessionStreamApiV1SessionsSessionIdStreamGet Session Stream
+	//
+	// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
+	// frames. Every connection starts from a snapshot.
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStreamApiV1SessionsSessionIdStreamGet` operationId).
+	SessionStreamApiV1SessionsSessionIdStreamGet(ctx context.Context, sessionId string, params *SessionStreamApiV1SessionsSessionIdStreamGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListSkillsApiV1SkillsGet List Skills
 	//
 	// Skills of the workspace. `q` matches the name or description, ignoring case; `source` the kind of
@@ -11252,7 +11076,8 @@ type ClientInterface interface {
 
 	// ThreadStreamApiV1ThreadsThreadIdStreamGet Thread Stream
 	//
-	// Live output of the thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+	// Live output of one thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+	// Resumes from `Last-Event-ID` or a run's `position`; the session stream suits clients that do not track them.
 	//
 	// Corresponds with GET /api/v1/threads/{thread_id}/stream (the `ThreadStreamApiV1ThreadsThreadIdStreamGet` operationId).
 	ThreadStreamApiV1ThreadsThreadIdStreamGet(ctx context.Context, threadId string, params *ThreadStreamApiV1ThreadsThreadIdStreamGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -15318,6 +15143,24 @@ func (c *Client) GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx co
 	return c.Client.Do(req)
 }
 
+// SessionStreamApiV1SessionsSessionIdStreamGet Session Stream
+//
+// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
+// frames. Every connection starts from a snapshot.
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStreamApiV1SessionsSessionIdStreamGet` operationId).
+func (c *Client) SessionStreamApiV1SessionsSessionIdStreamGet(ctx context.Context, sessionId string, params *SessionStreamApiV1SessionsSessionIdStreamGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSessionStreamApiV1SessionsSessionIdStreamGetRequest(c.Server, sessionId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListSkillsApiV1SkillsGet List Skills
 //
 // Skills of the workspace. `q` matches the name or description, ignoring case; `source` the kind of
@@ -16248,7 +16091,8 @@ func (c *Client) ListThreadRunsApiV1ThreadsThreadIdRunsGet(ctx context.Context, 
 
 // ThreadStreamApiV1ThreadsThreadIdStreamGet Thread Stream
 //
-// Live output of the thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+// Live output of one thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+// Resumes from `Last-Event-ID` or a run's `position`; the session stream suits clients that do not track them.
 //
 // Corresponds with GET /api/v1/threads/{thread_id}/stream (the `ThreadStreamApiV1ThreadsThreadIdStreamGet` operationId).
 func (c *Client) ThreadStreamApiV1ThreadsThreadIdStreamGet(ctx context.Context, threadId string, params *ThreadStreamApiV1ThreadsThreadIdStreamGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -27799,6 +27643,55 @@ func NewGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetRequest(server s
 	return req, nil
 }
 
+// NewSessionStreamApiV1SessionsSessionIdStreamGetRequest constructs an http.Request for the SessionStreamApiV1SessionsSessionIdStreamGet method
+func NewSessionStreamApiV1SessionsSessionIdStreamGetRequest(server string, sessionId string, params *SessionStreamApiV1SessionsSessionIdStreamGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "session_id", sessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/sessions/%s/stream", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListSkillsApiV1SkillsGetRequest constructs an http.Request for the ListSkillsApiV1SkillsGet method
 func NewListSkillsApiV1SkillsGetRequest(server string, params *ListSkillsApiV1SkillsGetParams) (*http.Request, error) {
 	var err error
@@ -35640,6 +35533,16 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet` operationId).
 	GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetWithResponse(ctx context.Context, sessionId string, params *GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams, reqEditors ...RequestEditorFn) (*GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse, error)
 
+	// SessionStreamApiV1SessionsSessionIdStreamGetWithResponse Session Stream
+	//
+	// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
+	// frames. Every connection starts from a snapshot.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStreamApiV1SessionsSessionIdStreamGet` operationId).
+	SessionStreamApiV1SessionsSessionIdStreamGetWithResponse(ctx context.Context, sessionId string, params *SessionStreamApiV1SessionsSessionIdStreamGetParams, reqEditors ...RequestEditorFn) (*SessionStreamApiV1SessionsSessionIdStreamGetResponse, error)
+
 	// ListSkillsApiV1SkillsGetWithResponse List Skills
 	//
 	// Skills of the workspace. `q` matches the name or description, ignoring case; `source` the kind of
@@ -36070,7 +35973,8 @@ type ClientWithResponsesInterface interface {
 
 	// ThreadStreamApiV1ThreadsThreadIdStreamGetWithResponse Thread Stream
 	//
-	// Live output of the thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+	// Live output of one thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+	// Resumes from `Last-Event-ID` or a run's `position`; the session stream suits clients that do not track them.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -47703,6 +47607,68 @@ func (r GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse) Conten
 	return ""
 }
 
+// SessionStreamApiV1SessionsSessionIdStreamGetResponse400Headers the declared response headers of an HTTP 400 response for SessionStreamApiV1SessionsSessionIdStreamGet
+type SessionStreamApiV1SessionsSessionIdStreamGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// SessionStreamApiV1SessionsSessionIdStreamGetResponseDefaultHeaders the declared response headers of an HTTP default response for SessionStreamApiV1SessionsSessionIdStreamGet
+type SessionStreamApiV1SessionsSessionIdStreamGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type SessionStreamApiV1SessionsSessionIdStreamGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *SessionStreamApiV1SessionsSessionIdStreamGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *SessionStreamApiV1SessionsSessionIdStreamGetResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r SessionStreamApiV1SessionsSessionIdStreamGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r SessionStreamApiV1SessionsSessionIdStreamGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r SessionStreamApiV1SessionsSessionIdStreamGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SessionStreamApiV1SessionsSessionIdStreamGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SessionStreamApiV1SessionsSessionIdStreamGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SessionStreamApiV1SessionsSessionIdStreamGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListSkillsApiV1SkillsGetResponse400Headers the declared response headers of an HTTP 400 response for ListSkillsApiV1SkillsGet
 type ListSkillsApiV1SkillsGetResponse400Headers struct {
 	XRequestId *string
@@ -57218,6 +57184,22 @@ func (c *ClientWithResponses) GetMessageAuthorsApiV1SessionsSessionIdMessageAuth
 	return ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse(rsp)
 }
 
+// SessionStreamApiV1SessionsSessionIdStreamGetWithResponse Session Stream
+//
+// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
+// frames. Every connection starts from a snapshot.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStreamApiV1SessionsSessionIdStreamGet` operationId).
+func (c *ClientWithResponses) SessionStreamApiV1SessionsSessionIdStreamGetWithResponse(ctx context.Context, sessionId string, params *SessionStreamApiV1SessionsSessionIdStreamGetParams, reqEditors ...RequestEditorFn) (*SessionStreamApiV1SessionsSessionIdStreamGetResponse, error) {
+	rsp, err := c.SessionStreamApiV1SessionsSessionIdStreamGet(ctx, sessionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSessionStreamApiV1SessionsSessionIdStreamGetResponse(rsp)
+}
+
 // ListSkillsApiV1SkillsGetWithResponse List Skills
 //
 // Skills of the workspace. `q` matches the name or description, ignoring case; `source` the kind of
@@ -57978,7 +57960,8 @@ func (c *ClientWithResponses) ListThreadRunsApiV1ThreadsThreadIdRunsGetWithRespo
 
 // ThreadStreamApiV1ThreadsThreadIdStreamGetWithResponse Thread Stream
 //
-// Live output of the thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+// Live output of one thread's runs over SSE: `delta` and `boundary` frames with `changed`, `reset`, `gap`.
+// Resumes from `Last-Event-ID` or a run's `position`; the session stream suits clients that do not track them.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -69063,6 +69046,62 @@ func ParseGetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponse(rsp *
 		response.Headers400 = &headers
 	case true:
 		var headers GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseSessionStreamApiV1SessionsSessionIdStreamGetResponse parses an HTTP response from a SessionStreamApiV1SessionsSessionIdStreamGetWithResponse call
+func ParseSessionStreamApiV1SessionsSessionIdStreamGetResponse(rsp *http.Response) (*SessionStreamApiV1SessionsSessionIdStreamGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SessionStreamApiV1SessionsSessionIdStreamGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers SessionStreamApiV1SessionsSessionIdStreamGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers SessionStreamApiV1SessionsSessionIdStreamGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

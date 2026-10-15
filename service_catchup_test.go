@@ -331,7 +331,7 @@ func TestCatchupNativeContentAndProvenanceShapes(t *testing.T) {
 		}
 	}
 	client := coverageClient(t, func(req *http.Request) *http.Response {
-		return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"completed"},"items":[{"id":"item","ordinal":1,"kind":"text_message","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"text":"prefix","memory_sources":[]},"content_refs":{"text":{"id":"content","size_bytes":32769,"media_type":"text/plain","preview":"prefix","truncated":false}}}],"position":"1-1","resume_after":null,"complete":true,"baseline":true,"continuation":null}`)
+		return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"completed"},"items":[{"id":"item","ordinal":1,"kind":"text_message","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"text":"prefix","memory_sources":[]},"content_refs":{"text":{"id":"content","size_bytes":32769,"media_type":"text/plain","preview":"prefix","truncated":false}}}],"complete":true}`)
 	})
 	items, err := client.Run("run").Items(context.Background())
 	if err != nil {
