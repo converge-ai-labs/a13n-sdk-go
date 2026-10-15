@@ -36,7 +36,7 @@ def main() -> None:
         (versions / "list").write_text(VERSION + "\n")
         sources = [ROOT / name for name in ("go.mod", "go.sum", "LICENSE", "README.md")]
         sources += [file for file in ROOT.glob("*.go") if not file.name.endswith("_test.go")]
-        sources += list((ROOT / "generated").glob("*.go"))
+        sources += sorted((ROOT / "generated").rglob("*.go"))
         with zipfile.ZipFile(versions / f"{VERSION}.zip", "w", zipfile.ZIP_DEFLATED) as archive:
             for source in sources:
                 archive.write(source, f"{MODULE}@{VERSION}/{source.relative_to(ROOT)}")

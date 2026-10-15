@@ -25,12 +25,12 @@ func (err *TransportError) Error() string {
 }
 func (err *TransportError) Unwrap() error { return ErrTransport }
 
-// ProtocolError describes an ordinary resource JSON response failure.
+// ProtocolError describes a resource JSON or typed Session stream failure.
 // Use errors.Is with ErrProtocol and errors.As with *ProtocolError.
 // Error and GoString omit response bodies and untrusted request IDs.
 type ProtocolError struct {
 	// Kind is "size_limit", "content_type", "empty_body", "null_body",
-	// "invalid_json" or "error_envelope".
+	// "invalid_json", "error_envelope" or "stream_frame".
 	Kind       string
 	StatusCode int
 	// RequestID is explicit reconciliation metadata, not safe log text.

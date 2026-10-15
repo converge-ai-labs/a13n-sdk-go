@@ -123,7 +123,7 @@ if err != nil { return err }
 fmt.Println(result.Output)
 ```
 
-Call `thread, err := interaction.Thread().Get(ctx)`, check the error, then inspect `thread.Value.MessageHistory` for the immutable seed, not later-turn history. Omit the pointer to omit history; point to an empty slice for explicit `[]`. Send and resume cannot re-import it. Replay an uncertain create only with the original history/key/body; do not truncate oversized input silently.
+The immutable seed is submit-only: Thread.Get does not return MessageHistory. Retain the original export in your application when it is needed for reconciliation. Omit the pointer to omit history; point to an empty slice for explicit `[]`. Send and resume cannot re-import it. Replay an uncertain create only with the original history/key/body; do not truncate oversized input silently.
 
 ## Advanced: create an Agent through the low-level API
 

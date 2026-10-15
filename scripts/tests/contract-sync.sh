@@ -28,7 +28,7 @@ sync() { bash "$sdk/scripts/sync-contract.sh" "$upstream" "$1"; }
 mkdir -p "$upstream/proto/a13n-service/fixtures" "$upstream/spec/a13n-service" "$sdk/contract/semantics"
 printf '{"openapi":"3.1.0","paths":{}}\n' > "$upstream/proto/a13n-service/openapi.json"
 printf '{"examples":[]}\n' > "$upstream/proto/a13n-service/fixtures/wire.json"
-for name in notification-client run-stream-event thread-stream; do
+for name in notification-client run-stream-event thread-stream session-stream; do
   printf '{"type":"object"}\n' > "$upstream/proto/a13n-service/$name.schema.json"
 done
 printf '# API conventions\n' > "$upstream/spec/api-conventions.md"
@@ -62,8 +62,6 @@ reject sync main
 reject sync "${initial:0:12}"
 reject sync '$(touch unsafe)'
 reject sync 0000000000000000000000000000000000000000
-sync "$initial"
-diff -r "$sdk/contract" "$work/initial"
 
 rm "$upstream/spec/a13n-service/07-facts-and-delivery.md"
 missing=$(commit_source 'Incomplete authority')
@@ -74,7 +72,7 @@ complete=$(commit_source 'Complete authority')
 # The working tree is deliberately dirty: only committed bytes may be imported.
 printf 'uncommitted and invalid JSON' > "$upstream/proto/a13n-service/openapi.json"
 sync "$complete"
-[[ $(jq '.files | length' "$sdk/contract/source.json") == 6 ]]
+[[ $(jq '.files | length' "$sdk/contract/source.json") == 7 ]]
 for retired in notification-client.schema.json run-stream-event.schema.json fixtures/wire.json \
   semantics/native-streaming-and-notifications.md semantics/queued-submissions.md; do
   [[ ! -e "$sdk/contract/$retired" ]]
@@ -82,11 +80,17 @@ done
 for owned in README.md fixtures/local.txt semantics/local.md; do
   cmp "$sdk/contract/$owned" "$work/initial/$owned"
 done
-[[ -f "$sdk/contract/thread-stream.schema.json" ]]
+[[ -f "$sdk/contract/thread-stream.schema.json" && -f "$sdk/contract/session-stream.schema.json" ]]
 for name in runs facts-and-delivery api; do [[ -f "$sdk/contract/semantics/$name.md" ]]; done
 cmp "$sdk/contract/openapi.json" "$work/initial/openapi.json"
 [[ $(jq -r .commit "$sdk/contract/source.json") == "$complete" ]]
 cp -R "$sdk/contract" "$work/complete"
+# Extend the selected input set without requiring a new upstream commit.
+jq 'del(.files["session-stream.schema.json"])' "$sdk/contract/source.json" > "$work/six.json"
+cp "$work/six.json" "$sdk/contract/source.json"
+rm "$sdk/contract/session-stream.schema.json"
+sync "$complete"
+diff -r "$sdk/contract" "$work/complete"
 reject sync "$initial"
 diff -r "$sdk/contract" "$work/complete"
 git -C "$upstream" restore proto/a13n-service/openapi.json
@@ -184,6 +188,8 @@ printf 'not a generated file\n' > handwritten.txt
 printf 'untracked build output\n' > unexpected.txt
 if [[ ${TEST_GENERATE_FAIL:-false} != false ]]; then exit 1; fi
 cp contract/openapi.json "$TEST_GENERATED"
+mkdir -p generated/sessionstream
+cp contract/session-stream.schema.json generated/sessionstream/models.gen.go
 if [[ $(jq '.paths | length' contract/openapi.json) != 0 ]]; then
   cp contract/openapi.json "$TEST_ADDED"
   if [[ -n "$TEST_REMOVED" ]]; then rm -f "$TEST_REMOVED"; fi
@@ -261,6 +267,31 @@ next_runtime() {
   printf '%s\n' "$1" >> "$upstream/runtime.txt"
   commit_source "$1"
 }
+# A six-input accepted manifest at the same upstream SHA is a real update.
+# New source and nested generated files must both reach the rolling proposal.
+git -C "$sdk" switch -q main
+jq 'del(.files["session-stream.schema.json"])' "$sdk/contract/source.json" > "$work/six-main.json"
+cp "$work/six-main.json" "$sdk/contract/source.json"
+rm "$sdk/contract/session-stream.schema.json"
+git -C "$sdk" add contract
+git -C "$sdk" commit -qm 'Legacy six-input selection'
+git -C "$sdk" push -q origin main
+propose "$complete"
+[[ $(git -C "$sdk" show HEAD:contract/source.json | jq '.files | length') == 7 ]]
+git -C "$sdk" show HEAD:contract/session-stream.schema.json > "$work/imported-session"
+git -C "$sdk" show HEAD:generated/sessionstream/models.gen.go > "$work/generated-session"
+cmp "$work/imported-session" "$upstream/proto/a13n-service/session-stream.schema.json"
+cmp "$work/imported-session" "$work/generated-session"
+# Accept this disposable cycle, then exercise the unchanged-input lifecycle below.
+git -C "$sdk" switch -q main
+git -C "$sdk" merge --ff-only -q "$(head)"
+git -C "$sdk" push -q origin main
+git -C "$sdk" push -q origin ":refs/heads/$branch"
+: > "$TEST_PR_STATE"
+: > "$TEST_PR_LOG"
+: > "$TEST_GENERATE_LOG"
+fresh
+
 # An accepted pin is a no-op, even if generation would fail.
 export TEST_GENERATE_FAIL=true
 propose "$complete"

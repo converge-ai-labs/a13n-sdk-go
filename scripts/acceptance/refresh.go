@@ -51,7 +51,7 @@ func refreshOffline() {
 		case req.URL.Path == "/api/v1/runs/refresh-run":
 			_, _ = fmt.Fprintf(w, `{"id":"refresh-run","thread_id":"refresh-thread","status":"completed","options":%s}`, expected)
 		case strings.HasSuffix(req.URL.Path, "/items"):
-			_, _ = fmt.Fprintf(w, `{"run":{"id":"refresh-run","thread_id":"refresh-thread","status":"completed","options":%s},"items":[{"id":"child-result","ordinal":3,"kind":"tool_call","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"subagentRunId":"child","result_parts":[{"type":"image","source":{"type":"url","value":"https://example.invalid/a.png"}}],"truncated":true}}],"position":"1-1","resume_after":null,"complete":true,"baseline":true,"continuation":null}`, expected)
+			_, _ = fmt.Fprintf(w, `{"run":{"id":"refresh-run","thread_id":"refresh-thread","status":"completed","options":%s},"items":[{"id":"child-result","ordinal":3,"kind":"tool_call","state":"completed","first_stream_id":"1-1","last_stream_id":"1-1","content":{"subagentRunId":"child","result_parts":[{"type":"image","source":{"type":"url","value":"https://example.invalid/a.png"}}],"truncated":true}}],"complete":true}`, expected)
 		case strings.HasSuffix(req.URL.Path, "/stream"):
 			w.Header().Set("Content-Type", "text/event-stream")
 			_, _ = fmt.Fprintf(w, "id: 1-1\nevent: delta\ndata: {\"run_id\":\"refresh-run\",\"attempt\":1,\"sequence\":1,\"event\":%s,\"item\":null}\n\n", nativeEvent)
@@ -95,7 +95,7 @@ func refreshOffline() {
 	}
 	expected = string(must(json.Marshal(options)))
 	items := must(outcome.Run.Items(ctx))
-	check(items.Value.Baseline && items.Value.Items[0].Ordinal == 3 && items.Value.Items[0].Content["subagentRunId"] == "child" && items.Value.Items[0].Content["truncated"] == true, "installed media/attribution readback")
+	check(items.Value.Items[0].Ordinal == 3 && items.Value.Items[0].Content["subagentRunId"] == "child" && items.Value.Items[0].Content["truncated"] == true, "installed media/attribution readback")
 	api := must(client.API())
 	stream := must(api.ThreadStreamApiV1ThreadsThreadIdStreamGet(ctx, "refresh-thread", &generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{}))
 	wire := string(must(io.ReadAll(stream.Body)))

@@ -15,53 +15,40 @@ import (
 	"github.com/converge-ai-labs/a13n-sdk-go/generated"
 )
 
-func TestRunItemsRecoveryHintsAndGeneratedStreamWire(t *testing.T) {
-	for _, hint := range []string{"", `,"resume_after":null`, `,"resume_after":"123-4"`} {
-		t.Run(hint, func(t *testing.T) {
-			client := coverageClient(t, func(req *http.Request) *http.Response {
-				if strings.HasSuffix(req.URL.Path, "/items") {
-					return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"running"},"items":[],"position":"1-8","baseline":true,"continuation":{"run_id":"run","next_ordinal":1,"position":{"attempt":1,"sequence":8}},"complete":false`+hint+`}`)
-				}
-				if req.URL.Query().Get("run") != "run" || req.URL.Query().Get("position") != "1-8" {
-					t.Fatal(req.URL)
-				}
-				expected := ""
-				if strings.Contains(hint, "123-4") {
-					expected = "123-4"
-				}
-				if req.Header.Get("Last-Event-ID") != expected {
-					t.Fatal(req.Header)
-				}
-				response := coverageResponse(200, gapEvent)
-				response.Header.Set("Content-Type", "text/event-stream")
-				return response
-			})
-			snapshot, err := client.Run("run").Items(context.Background())
-			if err != nil {
-				t.Fatal(err)
+func TestRunItemsHasNoCoverageAndGeneratedStreamUsesExplicitProgress(t *testing.T) {
+	for _, hint := range []string{"", "123-4"} {
+		client := coverageClient(t, func(req *http.Request) *http.Response {
+			if strings.HasSuffix(req.URL.Path, "/items") {
+				return coverageResponse(200, `{"run":{"id":"run","thread_id":"thr","status":"running"},"items":[],"complete":false}`)
 			}
-			if !snapshot.Value.Baseline || snapshot.Value.Complete || snapshot.Value.Run.Id != "run" {
-				t.Fatal(snapshot)
+			if req.URL.Query().Get("run") != "run" || req.URL.Query().Get("position") != "1-8" || req.Header.Get("Last-Event-ID") != hint {
+				t.Fatal(req.URL, req.Header)
 			}
-			value := snapshot.Value
-			if hint == "" && value.ResumeAfter.IsSpecified() {
-				t.Fatal("absent hint lost")
-			}
-			if strings.Contains(hint, "null") && !value.ResumeAfter.IsNull() {
-				t.Fatal("null hint lost")
-			}
-			api, _ := client.API()
-			runID, position := value.Run.Id, value.Position.GetOrEmpty()
-			params := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{Run: &runID, Position: &position}
-			if after := value.ResumeAfter.GetOrEmpty(); after != "" {
-				params.LastEventID = &after
-			}
-			response, err := api.ThreadStreamApiV1ThreadsThreadIdStreamGet(context.Background(), "thr", &params)
-			if err != nil {
-				t.Fatal(err)
-			}
-			_ = response.Body.Close()
+			response := coverageResponse(200, gapEvent)
+			response.Header.Set("Content-Type", "text/event-stream")
+			return response
 		})
+		snapshot, err := client.Run("run").Items(context.Background())
+		if err != nil || snapshot.Value.Complete || snapshot.Value.Run.Id != "run" {
+			t.Fatal(snapshot, err)
+		}
+		for _, field := range []string{"Baseline", "Continuation", "Position", "ResumeAfter"} {
+			if _, exists := reflect.TypeOf(snapshot.Value).FieldByName(field); exists {
+				t.Fatalf("retired coverage field %s remains", field)
+			}
+		}
+		api, _ := client.API()
+		// Progress is explicitly caller-supplied, never obtained from Items.
+		runID, position := "run", "1-8"
+		params := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{Run: &runID, Position: &position}
+		if hint != "" {
+			params.LastEventID = &hint
+		}
+		response, err := api.ThreadStreamApiV1ThreadsThreadIdStreamGet(context.Background(), "thr", &params)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_ = response.Body.Close()
 	}
 }
 

@@ -85,7 +85,7 @@ func offline() {
 			w.WriteHeader(201)
 			_, _ = io.WriteString(w, `{"thread":{"id":"thr"},"entry":{"id":"ent","thread_id":"thr"},"run":null}`)
 		case r.URL.Path == "/api/v1/threads/thr" && r.Method == "GET":
-			encoded := must(json.Marshal(map[string]any{"id": "thr", "message_history": history}))
+			encoded := []byte(`{"id":"thr"}`)
 			_, _ = w.Write(encoded)
 		case r.URL.Path == "/api/v1/runs/wait/resume":
 			resumeCalls++
@@ -141,8 +141,7 @@ func offline() {
 	_, err := interaction.Next()
 	check(errors.Is(err, io.EOF) && streams == 0 && submitted == 1, "finite result-only, no duplicate mutation")
 	thread := must(interaction.Thread().Get(ctx))
-	readback := must(json.Marshal(thread.Value.MessageHistory))
-	check(string(readback) == string(expectedHistory), "installed imported history readback")
+	check(thread.Value.Id == "thr" && !strings.Contains(string(thread.RawJSON()), "message_history"), "installed history is submit-only")
 	api := must(client.API())
 	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
 		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: "offline"},
@@ -256,14 +255,10 @@ func live() {
 	checkConfiguration(outcome.Evidence().Value, initialOptions)
 	items := must(outcome.Run.Items(ctx))
 	check(items.Value.Complete && items.Value.Run.Id == outcome.Run.ID, "exact committed Items")
-	readCtx, stopRead := context.WithTimeout(ctx, 20*time.Second)
-	recoveryResponse := must(api.ThreadStreamApiV1ThreadsThreadIdStreamGet(readCtx, first.Thread().ID, recoveryParams(items.Value)))
-	check(recoveryResponse.StatusCode == 200 && strings.HasPrefix(recoveryResponse.Header.Get("Content-Type"), "text/event-stream"), "snapshot coverage stream read")
-	_ = recoveryResponse.Body.Close()
-	stopRead()
-	fmt.Println("Verified HTTPS: exact RunItems position/resume_after and paired recovery reader passed")
 	thread := must(first.Thread().Get(ctx))
-	check(string(must(json.Marshal(thread.Value.MessageHistory))) == string(must(json.Marshal(history))), "immutable imported history readback preserves nested key order and number tokens")
+	check(!strings.Contains(string(thread.RawJSON()), "message_history"), "immutable imported history is submit-only")
+	sessionStreamLive(ctx, client, thread.Value.SessionId, outcome.Run.ID)
+
 	catchupReadback(ctx, client, outcome, first.Entry().ID)
 	memoryComputerReadback(ctx, client, outcome)
 	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
@@ -423,13 +418,12 @@ func memory(ctx context.Context, client *a13n.Client, api *generated.ClientWithR
 	fmt.Println("Verified HTTPS: Unicode memory file, CAS, paged numeric history, nullable restore and frozen mounts passed")
 }
 
-// Only the saved display position claims coverage. A Redis ID is optional.
-func recoveryParams(snapshot generated.RunItems) *generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams {
-	check(snapshot.Baseline, "historical windows cannot claim live coverage")
-	runID, position := snapshot.Run.Id, snapshot.Position.GetOrEmpty()
-	check(position != "", "a committed display position is required before claiming coverage")
+// This progress is saved by the application independently of Run Items.
+func recoveryParams(hint string) *generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams {
+	runID, position := "recovered", "2-8"
 	params := &generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{Run: &runID, Position: &position}
-	if after := snapshot.ResumeAfter.GetOrEmpty(); after != "" {
+	if hint != "null" {
+		after := "999-1"
 		params.LastEventID = &after
 	}
 	return params
@@ -439,11 +433,7 @@ func streamRecoveryOffline() {
 	for _, hint := range []string{"null", `"999-1"`} {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			w.Header().Set("X-Request-ID", "recovery")
-			if strings.HasSuffix(req.URL.Path, "/items") {
-				w.Header().Set("Content-Type", "application/json")
-				_, _ = fmt.Fprintf(w, `{"run":{"id":"recovered","thread_id":"recovery-thread","status":"running"},"items":[],"position":"2-8","resume_after":%s,"baseline":true,"continuation":{"run_id":"recovered","next_ordinal":1,"position":{"attempt":2,"sequence":8}},"complete":false}`, hint)
-				return
-			}
+
 			check(req.URL.Query().Get("run") == "recovered" && req.URL.Query().Get("position") == "2-8", "installed run/position claims")
 			expected := ""
 			if hint != "null" {
@@ -455,13 +445,8 @@ func streamRecoveryOffline() {
 			_, _ = io.WriteString(w, "id: 1000-1\nevent: boundary\ndata: {\"run_id\":\"recovered\",\"attempt\":2,\"sequence\":8}\n\n")
 		}))
 		client := must(a13n.NewClient(server.URL, a13n.NewSecret("offline"), nil))
-		snapshot := must(client.Run("recovered").Items(context.Background()))
-		check(snapshot.Value.Baseline && !snapshot.Value.Complete && snapshot.RequestID() == "recovery", "installed committed baseline/metadata")
-		if hint == "null" {
-			check(snapshot.Value.ResumeAfter.IsNull(), "installed null recovery hint")
-		}
 		api := must(client.API())
-		response := must(api.ThreadStreamApiV1ThreadsThreadIdStreamGet(context.Background(), "recovery-thread", recoveryParams(snapshot.Value)))
+		response := must(api.ThreadStreamApiV1ThreadsThreadIdStreamGet(context.Background(), "recovery-thread", recoveryParams(hint)))
 		body := must(io.ReadAll(response.Body))
 		_ = response.Body.Close()
 		check(strings.Contains(string(body), "event: boundary") && !strings.Contains(string(body), "event: gap"), "covered boundary and expired hint")
@@ -480,12 +465,13 @@ func streamRecoveryOffline() {
 	settings := map[string]generated.JsonValue{"nested": map[string]any{"enabled": true, "value": nil}}
 	config := generated.ModelConfigInput{ModelApi: "other.native", ModelName: "native", Settings: &settings}
 	check(strings.Contains(string(must(json.Marshal(config))), `"settings":{"nested":{"enabled":true,"value":null}}`), "installed native backend settings")
-	fmt.Println("Installed module: display coverage, nullable/expired hints, run/position wire and gap positions passed")
+	fmt.Println("Installed module: explicit caller progress, optional/expired hints, run/position wire and gap positions passed")
 }
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "--offline" {
 		offline()
+		sessionStreamOffline()
 	} else {
 		live()
 	}

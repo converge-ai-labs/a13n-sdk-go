@@ -18,6 +18,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/converge-ai-labs/a13n-sdk-go/generated"
+	"github.com/converge-ai-labs/a13n-sdk-go/generated/sessionstream"
 	"github.com/oapi-codegen/nullable"
 )
 
@@ -38,13 +39,13 @@ func (f frameMeta) Cursor() string    { return f.cursor }
 func (frameMeta) threadFrame()        {}
 
 type ItemRef struct {
-	ID            string                                        `json:"id"`
-	Kind          string                                        `json:"kind"`
-	State         string                                        `json:"state"`
-	Ordinal       nullable.Nullable[int]                        `json:"ordinal,omitempty"`
-	ResponseGroup nullable.Nullable[string]                     `json:"response_group,omitempty"`
-	Failure       nullable.Nullable[map[string]json.RawMessage] `json:"failure,omitempty"`
-	MemorySources nullable.Nullable[[]generated.MemorySource]   `json:"memory_sources,omitempty"`
+	ID            string                                          `json:"id"`
+	Kind          string                                          `json:"kind"`
+	State         string                                          `json:"state"`
+	Ordinal       nullable.Nullable[int]                          `json:"ordinal,omitempty"`
+	ResponseGroup nullable.Nullable[string]                       `json:"response_group,omitempty"`
+	Failure       nullable.Nullable[map[string]json.RawMessage]   `json:"failure,omitempty"`
+	MemorySources nullable.Nullable[[]sessionstream.MemorySource] `json:"memory_sources,omitempty"`
 }
 type BoundaryFrame struct {
 	frameMeta
@@ -409,12 +410,27 @@ func (p *sseParser) line() (string, error) {
 			return string(raw), nil
 		}
 		raw = append(raw, b)
-		if len(raw) > p.limit {
+		if p.limit > 0 && len(raw) > p.limit {
 			return "", fmt.Errorf("%w: oversized SSE line", ErrProtocol)
 		}
 	}
 }
+
+type sseEvent struct {
+	event, cursor string
+	hasID         bool
+	data          []byte
+}
+
 func (p *sseParser) next() (ThreadFrame, error) {
+	frame, err := p.nextEvent()
+	if err != nil {
+		return nil, err
+	}
+	return parseThreadFrame(frame.event, frame.cursor, frame.hasID, frame.data)
+}
+
+func (p *sseParser) nextEvent() (sseEvent, error) {
 	var data []string
 	event, cursor := "", ""
 	hasID, size := false, 0
@@ -422,21 +438,21 @@ func (p *sseParser) next() (ThreadFrame, error) {
 		line, err := p.line()
 		if err != nil {
 			if err == io.EOF && (len(data) > 0 || event != "" || hasID) {
-				return nil, fmt.Errorf("%w: truncated SSE frame", ErrProtocol)
+				return sseEvent{}, fmt.Errorf("%w: truncated SSE frame", ErrProtocol)
 			}
-			return nil, err
+			return sseEvent{}, err
 		}
 		if p.first {
 			line = strings.TrimPrefix(line, "\ufeff")
 			p.first = false
 		}
 		size += len(line) + 1
-		if size > p.limit {
-			return nil, fmt.Errorf("%w: oversized SSE frame", ErrProtocol)
+		if p.limit > 0 && size > p.limit {
+			return sseEvent{}, fmt.Errorf("%w: oversized SSE frame", ErrProtocol)
 		}
 		if line == "" {
 			if len(data) > 0 {
-				return parseThreadFrame(event, cursor, hasID, []byte(strings.Join(data, "\n")))
+				return sseEvent{event, cursor, hasID, []byte(strings.Join(data, "\n"))}, nil
 			}
 			event, cursor, hasID, size = "", "", false, 0
 			continue
