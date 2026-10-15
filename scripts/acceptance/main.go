@@ -211,6 +211,7 @@ func offline() {
 	streamRecoveryOffline()
 	refreshOffline()
 	catchupOffline()
+	memoryComputerOffline()
 	pagedDisplayOffline()
 	sealedHistoryOffline()
 	fmt.Println("Installed module: interaction, exact Run, lazy pages, metadata, unions, null and diagnostics passed")
@@ -264,6 +265,7 @@ func live() {
 	thread := must(first.Thread().Get(ctx))
 	check(string(must(json.Marshal(thread.Value.MessageHistory))) == string(must(json.Marshal(history))), "immutable imported history readback preserves nested key order and number tokens")
 	catchupReadback(ctx, client, outcome, first.Entry().ID)
+	memoryComputerReadback(ctx, client, outcome)
 	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
 		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: firstKey},
 		generated.NewThread{AgentId: agent, Payload: testTextPayload(firstText), MessageHistory: &history, Options: initialOptions})
@@ -414,7 +416,10 @@ func memory(ctx context.Context, client *a13n.Client, api *generated.ClientWithR
 		&generated.UpdateMountApiV1ThreadsThreadIdMemoriesNamePatchParams{IfMatch: &etag},
 		generated.MemoryMountUpdate{Access: nullable.NewNullableWithValue(generated.MemoryAccessWrite)})
 	_ = must(a13n.ParseJSON[generated.MemoryMount](client, mountResponse, err, 200))
-	check(must(outcome.Run.Get(ctx)).Value.MemoryMounts[0].Access == generated.MemoryAccessRead, "Run mount frozen")
+	// This explicit legacy memory mount is one native union alternative; shared
+	// Space bindings use FrozenMemoryMount with their host-resolved roots.
+	frozen := must(must(outcome.Run.Get(ctx)).Value.MemoryMounts[0].AsMemoryMount())
+	check(frozen.Access == generated.MemoryAccessRead, "Run mount frozen")
 	fmt.Println("Verified HTTPS: Unicode memory file, CAS, paged numeric history, nullable restore and frozen mounts passed")
 }
 

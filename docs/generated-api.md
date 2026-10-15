@@ -197,3 +197,19 @@ func messageAuthors(ctx context.Context, client *a13n.Client, sessionID string, 
 ```
 
 `MessageAuthor.Principal` remains nullable independently of the submitted principal ID. Memory record provenance is separately available as optional nullable `MemoryRecordView.Provenance`; confirmed-write evidence and `ContentMatches` do not promise complete provider history or causal attribution.
+
+## Query Runs, executed configuration and request metrics
+
+`ListRunsApiV1RunsGet` combines Agent, Session, Thread, principal, status and aware creation-time filters with a native Run cursor page. `CreatedAfter` is inclusive and `CreatedBefore` exclusive; results are newest first. Keep filters fixed while advancing the opaque cursor. `RunAgentApiV1RunsRunIdAgentGet` returns the retained revision and the Run's override-applied configuration as `generated.RunAgent`. Referenced Models, Connections and templates remain live resources. Read individual attempts with `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet`; the attempt must belong to that Run.
+
+Native Agent configuration exposes `BuiltinSkills` separately from `PlatformTools`: installed instructions and platform tool groups are independent selections. `PlatformSelection` carries groups plus read/write permissions. The root workflow aliases `BuiltinSkill`, `PlatformSelection` and `PlatformGroup` preserve these values through `Overrides`; explicit empty lists remain empty. Service owns platform tool authentication and permission enforcement.
+
+`ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` returns authoritative nullable time-to-first-chunk, full request duration and output-token speed. Null means unavailable; a timed zero-output request can report speed zero. `UsageSummary.Runs` provides per-Run model breakdowns, while `ModelUsage` includes nullable aggregate timing/speed and decimal-string cost. Usage can include reports received after a Run seals. Use those returned metrics rather than deriving speed from stream timestamps or averaging per-request speeds.
+
+`GetModelCatalogApiV1ModelCatalogGetParams{Provider: &channel, Model: &model}` applies exact AND filters; `Provider` names a catalog channel, not a workspace Provider ID, and `Model` is case-sensitive. Account-specific Provider model discovery remains a separate operation. Config-only Provider updates preserve omitted credentials/headers; send explicit `Credential: a13n.Null[map[string]generated.JsonValue]()` only when removing the credential. Provider configuration proposed by a client tool remains an ordinary pending call; private credential collection belongs to the application's authorized UI.
+
+## Probe Computer capability and set mount permissions
+
+`CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` sends no body and returns `generated.ComputerCheck`: checked, unsupported or not-ready status with available operations and readiness evidence. This is a point-in-time probe, separate from execution authority. Agent and mount permission ceilings select exact `EnvironmentAction` operations. Use the native `EnvironmentPermissionSetInput` (root alias `EnvironmentPermissionSet`) in initial mounts or `MountUpdate` with the Thread ETag; an explicit `Operations: a13n.Ptr([]generated.EnvironmentAction{})` retains the empty ceiling.
+
+Environment Provider references and conditional deletion are also generated operations. Service owns in-use conflicts, provider readiness, desktop transport and gateway credentials. Docker catalog presets and provider JSON-schema extensions remain native data; SDK callers do not synthesize environment recipes or gateway authorization headers.

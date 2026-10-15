@@ -2,7 +2,7 @@
 
 Run an existing a13n Service Agent from a Go application, read its result, and continue the conversation. Go 1.25+; execution and authorization stay in the Service.
 
-The current contract is pinned to Service `350ffa70b886c3493a90b1bd4158f63180dbde12`: 242 native operations and 340 wire schemas. The [generated API guide](docs/generated-api.md) covers advanced resource access, while [saved content readback](docs/streaming-and-readback.md#explicitly-expand-saved-display-content) keeps previews and authoritative values distinct. Imported conversation messages use `[]json.RawMessage` to preserve native nested key order and number tokens.
+The current contract is pinned to Service `74affc9f735350f2b049f76590df1c05075445cf`: 260 native operations and 364 wire schemas. The [generated API guide](docs/generated-api.md) covers advanced resource access, while [saved content readback](docs/streaming-and-readback.md#explicitly-expand-saved-display-content) keeps previews and authoritative values distinct. Imported conversation messages use `[]json.RawMessage` to preserve native nested key order and number tokens.
 
 ## Before you start
 
