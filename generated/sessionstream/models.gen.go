@@ -962,9 +962,10 @@ func (e UrlPartType) Valid() bool {
 
 // Defines values for WaitReason.
 const (
-	Approval WaitReason = "approval"
-	Call     WaitReason = "call"
-	Multiple WaitReason = "multiple"
+	Approval       WaitReason = "approval"
+	Call           WaitReason = "call"
+	DesktopControl WaitReason = "desktop_control"
+	Multiple       WaitReason = "multiple"
 )
 
 // Valid indicates whether the value is a known member of the WaitReason enum.
@@ -973,6 +974,8 @@ func (e WaitReason) Valid() bool {
 	case Approval:
 		return true
 	case Call:
+		return true
+	case DesktopControl:
 		return true
 	case Multiple:
 		return true
@@ -1401,8 +1404,9 @@ type Part struct {
 
 // Pending Public projection; complete native requests and private metadata stay in the checkpoint.
 type Pending struct {
-	Approvals []PendingCall `json:"approvals"`
-	Calls     []PendingCall `json:"calls"`
+	Approvals        []PendingCall             `json:"approvals"`
+	Calls            []PendingCall             `json:"calls"`
+	DesktopControlId nullable.Nullable[string] `json:"desktop_control_id,omitempty"`
 }
 
 // PendingCall defines model for PendingCall.

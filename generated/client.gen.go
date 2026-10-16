@@ -20,6 +20,24 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for AccessMode.
+const (
+	AccessModeControl AccessMode = "control"
+	AccessModeView    AccessMode = "view"
+)
+
+// Valid indicates whether the value is a known member of the AccessMode enum.
+func (e AccessMode) Valid() bool {
+	switch e {
+	case AccessModeControl:
+		return true
+	case AccessModeView:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentConfigInputBuiltinSkills.
 const (
 	AgentConfigInputBuiltinSkillsPlatformOperations AgentConfigInputBuiltinSkills = "platform-operations"
@@ -470,6 +488,24 @@ func (e ClientToolDefinitionPermission) Valid() bool {
 	case ClientToolDefinitionPermissionDeny:
 		return true
 	case ClientToolDefinitionPermissionInherit:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CompletionOutcome.
+const (
+	CompletionOutcomeAbandoned CompletionOutcome = "abandoned"
+	CompletionOutcomeCompleted CompletionOutcome = "completed"
+)
+
+// Valid indicates whether the value is a known member of the CompletionOutcome enum.
+func (e CompletionOutcome) Valid() bool {
+	switch e {
+	case CompletionOutcomeAbandoned:
+		return true
+	case CompletionOutcomeCompleted:
 		return true
 	default:
 		return false
@@ -2084,11 +2120,30 @@ func (e VideoUrlType) Valid() bool {
 	}
 }
 
+// Defines values for ViewCause.
+const (
+	ViewCauseAgent ViewCause = "agent"
+	ViewCauseUser  ViewCause = "user"
+)
+
+// Valid indicates whether the value is a known member of the ViewCause enum.
+func (e ViewCause) Valid() bool {
+	switch e {
+	case ViewCauseAgent:
+		return true
+	case ViewCauseUser:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WaitReason.
 const (
-	Approval WaitReason = "approval"
-	Call     WaitReason = "call"
-	Multiple WaitReason = "multiple"
+	Approval       WaitReason = "approval"
+	Call           WaitReason = "call"
+	DesktopControl WaitReason = "desktop_control"
+	Multiple       WaitReason = "multiple"
 )
 
 // Valid indicates whether the value is a known member of the WaitReason enum.
@@ -2097,6 +2152,8 @@ func (e WaitReason) Valid() bool {
 	case Approval:
 		return true
 	case Call:
+		return true
+	case DesktopControl:
 		return true
 	case Multiple:
 		return true
@@ -2236,6 +2293,18 @@ func (e ListSkillsApiV1SkillsGetParamsSource) Valid() bool {
 		return false
 	}
 }
+
+// Access defines model for Access.
+type Access struct {
+	Assistance       View       `json:"assistance"`
+	ExpiresInSeconds float32    `json:"expires_in_seconds"`
+	Mode             AccessMode `json:"mode"`
+	Password         string     `json:"password"`
+	WebsocketUrl     string     `json:"websocket_url"`
+}
+
+// AccessMode defines model for Access.Mode.
+type AccessMode string
 
 // AccountDisable defines model for AccountDisable.
 type AccountDisable struct {
@@ -2836,6 +2905,17 @@ type ClientToolDefinition struct {
 // ClientToolDefinitionPermission defines model for ClientToolDefinition.Permission.
 type ClientToolDefinitionPermission string
 
+// Completion defines model for Completion.
+type Completion struct {
+	Epoch     int                `json:"epoch"`
+	Note      *string            `json:"note,omitempty"`
+	Outcome   *CompletionOutcome `json:"outcome,omitempty"`
+	SessionId string             `json:"session_id"`
+}
+
+// CompletionOutcome defines model for Completion.Outcome.
+type CompletionOutcome string
+
 // ComputerCheck A point-in-time capability probe, not an Agent or mount permission grant.
 type ComputerCheck struct {
 	DisplayCount *int                 `json:"display_count,omitempty"`
@@ -2995,6 +3075,21 @@ type ContentRef struct {
 
 // ContentRefMediaType defines model for ContentRef.MediaType.
 type ContentRefMediaType string
+
+// ContextUsage One reported generation, compared with its currently configured window.
+type ContextUsage struct {
+	ContextWindowTokens nullable.Nullable[int] `json:"context_window_tokens"`
+	InputTokens         nullable.Nullable[int] `json:"input_tokens"`
+	OutputTokens        nullable.Nullable[int] `json:"output_tokens"`
+	RecordId            string                 `json:"record_id"`
+	RunId               string                 `json:"run_id"`
+}
+
+// Control defines model for Control.
+type Control struct {
+	Epoch     int    `json:"epoch"`
+	SessionId string `json:"session_id"`
+}
 
 // CreatedSubscription defines model for CreatedSubscription.
 type CreatedSubscription struct {
@@ -4254,8 +4349,9 @@ type PasswordResetConfirm struct {
 
 // Pending Public projection; complete native requests and private metadata stay in the checkpoint.
 type Pending struct {
-	Approvals []PendingCall `json:"approvals"`
-	Calls     []PendingCall `json:"calls"`
+	Approvals        []PendingCall             `json:"approvals"`
+	Calls            []PendingCall             `json:"calls"`
+	DesktopControlId nullable.Nullable[string] `json:"desktop_control_id,omitempty"`
 }
 
 // PendingCall defines model for PendingCall.
@@ -4485,6 +4581,12 @@ type ProviderUpdate struct {
 	Enabled      nullable.Nullable[bool]                 `json:"enabled,omitempty"`
 	ExtraHeaders *map[string]interface{}                 `json:"extra_headers,omitempty"`
 	Name         nullable.Nullable[string]               `json:"name,omitempty"`
+}
+
+// Request defines model for Request.
+type Request struct {
+	Mount  string `json:"mount"`
+	Reason string `json:"reason"`
 }
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
@@ -5451,6 +5553,27 @@ type VideoInputPolicy struct {
 // VideoUrlType defines model for VideoUrlType.
 type VideoUrlType string
 
+// View defines model for View.
+type View struct {
+	Cause          ViewCause                                 `json:"cause"`
+	ControllerId   nullable.Nullable[string]                 `json:"controller_id"`
+	Deadline       time.Time                                 `json:"deadline"`
+	EnvironmentId  string                                    `json:"environment_id"`
+	Epoch          int                                       `json:"epoch"`
+	Failure        nullable.Nullable[string]                 `json:"failure"`
+	Id             string                                    `json:"id"`
+	LeaseExpiresAt nullable.Nullable[time.Time]              `json:"lease_expires_at"`
+	Mount          string                                    `json:"mount"`
+	Outcome        nullable.Nullable[map[string]interface{}] `json:"outcome"`
+	Reason         string                                    `json:"reason"`
+	RunId          string                                    `json:"run_id"`
+	State          string                                    `json:"state"`
+	ToolCallId     nullable.Nullable[string]                 `json:"tool_call_id"`
+}
+
+// ViewCause defines model for View.Cause.
+type ViewCause string
+
 // WaitReason defines model for WaitReason.
 type WaitReason string
 
@@ -5797,6 +5920,40 @@ type ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams struct 
 
 // TestProviderApiV1ConnectorProvidersProviderIdTestPostParams defines parameters for TestProviderApiV1ConnectorProvidersProviderIdTestPost.
 type TestProviderApiV1ConnectorProvidersProviderIdTestPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams defines parameters for CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost.
+type CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams defines parameters for ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost.
+type ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams struct {
+	Renew *bool `form:"renew,omitempty" json:"renew,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams defines parameters for DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost.
+type DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostParams defines parameters for RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost.
+type RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams defines parameters for ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost.
+type ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams struct {
+	Renew *bool `form:"renew,omitempty" json:"renew,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -6536,6 +6693,24 @@ type RunContentApiV1RunsRunIdContentsContentIdGetParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams defines parameters for GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet.
+type GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetControlApiV1RunsRunIdDesktopControlGetParams defines parameters for GetControlApiV1RunsRunIdDesktopControlGet.
+type GetControlApiV1RunsRunIdDesktopControlGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// OpenControlApiV1RunsRunIdDesktopControlPostParams defines parameters for OpenControlApiV1RunsRunIdDesktopControlPost.
+type OpenControlApiV1RunsRunIdDesktopControlPostParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ForkRunApiV1RunsRunIdForkPostParams defines parameters for ForkRunApiV1RunsRunIdForkPost.
 type ForkRunApiV1RunsRunIdForkPostParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
@@ -7051,6 +7226,16 @@ type UsageAgentsApiV1UsageAgentsGetParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ContextUsageApiV1UsageContextGetParams defines parameters for ContextUsageApiV1UsageContextGet.
+type ContextUsageApiV1UsageContextGetParams struct {
+	ThreadId *string `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	RunId    *string `form:"run_id,omitempty" json:"run_id,omitempty"`
+	RecordId *string `form:"record_id,omitempty" json:"record_id,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // UsageModelsApiV1UsageModelsGetParams defines parameters for UsageModelsApiV1UsageModelsGet.
 type UsageModelsApiV1UsageModelsGetParams struct {
 	Start  time.Time `form:"start" json:"start"`
@@ -7302,6 +7487,18 @@ type CreateProviderApiV1ConnectorProvidersPostJSONRequestBody = ProviderCreate
 // UpdateProviderApiV1ConnectorProvidersProviderIdPatchJSONRequestBody defines body for UpdateProviderApiV1ConnectorProvidersProviderIdPatch for application/json ContentType.
 type UpdateProviderApiV1ConnectorProvidersProviderIdPatchJSONRequestBody = ProviderUpdate
 
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostJSONRequestBody defines body for CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost for application/json ContentType.
+type CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostJSONRequestBody = Completion
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostJSONRequestBody defines body for ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost for application/json ContentType.
+type ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostJSONRequestBody = Control
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostJSONRequestBody defines body for DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost for application/json ContentType.
+type DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostJSONRequestBody = Control
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostJSONRequestBody defines body for ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost for application/json ContentType.
+type ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostJSONRequestBody = Control
+
 // CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody defines body for CreateProviderApiV1EnvironmentProvidersPost for application/json ContentType.
 type CreateProviderApiV1EnvironmentProvidersPostJSONRequestBody = ProviderCreate
 
@@ -7406,6 +7603,9 @@ type CreateWorkspaceApiV1OrganizationsOrganizationIdWorkspacesPostJSONRequestBod
 
 // UpdateRunApiV1RunsRunIdPatchJSONRequestBody defines body for UpdateRunApiV1RunsRunIdPatch for application/json ContentType.
 type UpdateRunApiV1RunsRunIdPatchJSONRequestBody = RunLabels
+
+// OpenControlApiV1RunsRunIdDesktopControlPostJSONRequestBody defines body for OpenControlApiV1RunsRunIdDesktopControlPost for application/json ContentType.
+type OpenControlApiV1RunsRunIdDesktopControlPostJSONRequestBody = Request
 
 // ForkRunApiV1RunsRunIdForkPostJSONRequestBody defines body for ForkRunApiV1RunsRunIdForkPost for application/json ContentType.
 type ForkRunApiV1RunsRunIdForkPostJSONRequestBody = Fork
@@ -9668,6 +9868,67 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestProviderApiV1ConnectorProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1ConnectorProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1ConnectorProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBody Complete Assistance
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+	CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBody(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost Complete Assistance
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+	CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, body CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBody Control Desktop
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+	ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBody(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost Control Desktop
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+	ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, body ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBody Disconnect Desktop
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+	DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBody(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost Disconnect Desktop
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+	DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, body DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost Request Control
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost` operationId).
+	RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost(ctx context.Context, assistanceId string, params *RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBody View Desktop
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+	ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBody(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost View Desktop
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+	ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, body ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListProvidersApiV1EnvironmentProvidersGet List environment providers
 	//
 	// Corresponds with GET /api/v1/environment-providers (the `ListProvidersApiV1EnvironmentProvidersGet` operationId).
@@ -10582,6 +10843,30 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `RunContentApiV1RunsRunIdContentsContentIdGet` operationId).
 	RunContentApiV1RunsRunIdContentsContentIdGet(ctx context.Context, runId string, contentId string, params *RunContentApiV1RunsRunIdContentsContentIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet Get Assistance
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet` operationId).
+	GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet(ctx context.Context, runId string, callId string, params *GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetControlApiV1RunsRunIdDesktopControlGet Get Control
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControlApiV1RunsRunIdDesktopControlGet` operationId).
+	GetControlApiV1RunsRunIdDesktopControlGet(ctx context.Context, runId string, params *GetControlApiV1RunsRunIdDesktopControlGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OpenControlApiV1RunsRunIdDesktopControlPostWithBody Open Control
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+	OpenControlApiV1RunsRunIdDesktopControlPostWithBody(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OpenControlApiV1RunsRunIdDesktopControlPost Open Control
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+	OpenControlApiV1RunsRunIdDesktopControlPost(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, body OpenControlApiV1RunsRunIdDesktopControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ForkRunApiV1RunsRunIdForkPostWithBody Fork Run
 	//
 	// A new thread in the run's session that continues from this run's committed history.
@@ -11133,6 +11418,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
 	UsageAgentsApiV1UsageAgentsGet(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ContextUsageApiV1UsageContextGet Context Usage
+	//
+	// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+	ContextUsageApiV1UsageContextGet(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UsageModelsApiV1UsageModelsGet Usage Models
 	//
@@ -12563,6 +12853,157 @@ func (c *Client) ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet(c
 // Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestProviderApiV1ConnectorProvidersProviderIdTestPost` operationId).
 func (c *Client) TestProviderApiV1ConnectorProvidersProviderIdTestPost(ctx context.Context, providerId string, params *TestProviderApiV1ConnectorProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewTestProviderApiV1ConnectorProvidersProviderIdTestPostRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBody Complete Assistance
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+func (c *Client) CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBody(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostRequestWithBody(c.Server, assistanceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost Complete Assistance
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+func (c *Client) CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, body CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostRequest(c.Server, assistanceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBody Control Desktop
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+func (c *Client) ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBody(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostRequestWithBody(c.Server, assistanceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost Control Desktop
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+func (c *Client) ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, body ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostRequest(c.Server, assistanceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBody Disconnect Desktop
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+func (c *Client) DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBody(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostRequestWithBody(c.Server, assistanceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost Disconnect Desktop
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+func (c *Client) DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, body DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostRequest(c.Server, assistanceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost Request Control
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost` operationId).
+func (c *Client) RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost(ctx context.Context, assistanceId string, params *RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostRequest(c.Server, assistanceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBody View Desktop
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+func (c *Client) ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBody(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostRequestWithBody(c.Server, assistanceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost View Desktop
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+func (c *Client) ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, body ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostRequest(c.Server, assistanceId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -14887,6 +15328,70 @@ func (c *Client) RunContentApiV1RunsRunIdContentsContentIdGet(ctx context.Contex
 	return c.Client.Do(req)
 }
 
+// GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet Get Assistance
+//
+// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet` operationId).
+func (c *Client) GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet(ctx context.Context, runId string, callId string, params *GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetRequest(c.Server, runId, callId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetControlApiV1RunsRunIdDesktopControlGet Get Control
+//
+// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControlApiV1RunsRunIdDesktopControlGet` operationId).
+func (c *Client) GetControlApiV1RunsRunIdDesktopControlGet(ctx context.Context, runId string, params *GetControlApiV1RunsRunIdDesktopControlGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetControlApiV1RunsRunIdDesktopControlGetRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OpenControlApiV1RunsRunIdDesktopControlPostWithBody Open Control
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+func (c *Client) OpenControlApiV1RunsRunIdDesktopControlPostWithBody(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOpenControlApiV1RunsRunIdDesktopControlPostRequestWithBody(c.Server, runId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OpenControlApiV1RunsRunIdDesktopControlPost Open Control
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+func (c *Client) OpenControlApiV1RunsRunIdDesktopControlPost(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, body OpenControlApiV1RunsRunIdDesktopControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOpenControlApiV1RunsRunIdDesktopControlPostRequest(c.Server, runId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ForkRunApiV1RunsRunIdForkPostWithBody Fork Run
 //
 // A new thread in the run's session that continues from this run's committed history.
@@ -16229,6 +16734,21 @@ func (c *Client) SummarizeUsageApiV1UsageGet(ctx context.Context, params *Summar
 // Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
 func (c *Client) UsageAgentsApiV1UsageAgentsGet(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUsageAgentsApiV1UsageAgentsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ContextUsageApiV1UsageContextGet Context Usage
+//
+// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+func (c *Client) ContextUsageApiV1UsageContextGet(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewContextUsageApiV1UsageContextGetRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -20012,6 +20532,357 @@ func NewTestProviderApiV1ConnectorProvidersProviderIdTestPostRequest(server stri
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostRequest calls the generic CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost builder with application/json body
+func NewCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostRequest(server string, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, body CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
+}
+
+// NewCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostRequestWithBody constructs an http.Request for the CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost method, with any body, and a specified content type
+func NewCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostRequestWithBody(server string, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/complete", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostRequest calls the generic ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost builder with application/json body
+func NewControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostRequest(server string, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, body ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
+}
+
+// NewControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostRequestWithBody constructs an http.Request for the ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost method, with any body, and a specified content type
+func NewControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostRequestWithBody(server string, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/control", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Renew != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "renew", *params.Renew, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostRequest calls the generic DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost builder with application/json body
+func NewDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostRequest(server string, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, body DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
+}
+
+// NewDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostRequestWithBody constructs an http.Request for the DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost method, with any body, and a specified content type
+func NewDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostRequestWithBody(server string, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/disconnect", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostRequest constructs an http.Request for the RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost method
+func NewRequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostRequest(server string, assistanceId string, params *RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/request-control", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostRequest calls the generic ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost builder with application/json body
+func NewViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostRequest(server string, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, body ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
+}
+
+// NewViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostRequestWithBody constructs an http.Request for the ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost method, with any body, and a specified content type
+func NewViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostRequestWithBody(server string, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/view", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Renew != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "renew", *params.Renew, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -26802,6 +27673,173 @@ func NewRunContentApiV1RunsRunIdContentsContentIdGetRequest(server string, runId
 	return req, nil
 }
 
+// NewGetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetRequest constructs an http.Request for the GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet method
+func NewGetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetRequest(server string, runId string, callId string, params *GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "call_id", callId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/desktop-assistance/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetControlApiV1RunsRunIdDesktopControlGetRequest constructs an http.Request for the GetControlApiV1RunsRunIdDesktopControlGet method
+func NewGetControlApiV1RunsRunIdDesktopControlGetRequest(server string, runId string, params *GetControlApiV1RunsRunIdDesktopControlGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/desktop-control", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewOpenControlApiV1RunsRunIdDesktopControlPostRequest calls the generic OpenControlApiV1RunsRunIdDesktopControlPost builder with application/json body
+func NewOpenControlApiV1RunsRunIdDesktopControlPostRequest(server string, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, body OpenControlApiV1RunsRunIdDesktopControlPostJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewOpenControlApiV1RunsRunIdDesktopControlPostRequestWithBody(server, runId, params, "application/json", bodyReader)
+}
+
+// NewOpenControlApiV1RunsRunIdDesktopControlPostRequestWithBody constructs an http.Request for the OpenControlApiV1RunsRunIdDesktopControlPost method, with any body, and a specified content type
+func NewOpenControlApiV1RunsRunIdDesktopControlPostRequestWithBody(server string, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/desktop-control", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewForkRunApiV1RunsRunIdForkPostRequest calls the generic ForkRunApiV1RunsRunIdForkPost builder with application/json body
 func NewForkRunApiV1RunsRunIdForkPostRequest(server string, runId string, params *ForkRunApiV1RunsRunIdForkPostParams, body ForkRunApiV1RunsRunIdForkPostJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -31202,6 +32240,99 @@ func NewUsageAgentsApiV1UsageAgentsGetRequest(server string, params *UsageAgents
 	return req, nil
 }
 
+// NewContextUsageApiV1UsageContextGetRequest constructs an http.Request for the ContextUsageApiV1UsageContextGet method
+func NewContextUsageApiV1UsageContextGetRequest(server string, params *ContextUsageApiV1UsageContextGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/context")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ThreadId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "thread_id", *params.ThreadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.RunId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "run_id", *params.RunId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.RecordId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "record_id", *params.RecordId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewUsageModelsApiV1UsageModelsGetRequest constructs an http.Request for the UsageModelsApiV1UsageModelsGet method
 func NewUsageModelsApiV1UsageModelsGetRequest(server string, params *UsageModelsApiV1UsageModelsGetParams) (*http.Request, error) {
 	var err error
@@ -34361,6 +35492,69 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestProviderApiV1ConnectorProvidersProviderIdTestPost` operationId).
 	TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse(ctx context.Context, providerId string, params *TestProviderApiV1ConnectorProvidersProviderIdTestPostParams, reqEditors ...RequestEditorFn) (*TestProviderApiV1ConnectorProvidersProviderIdTestPostResponse, error)
 
+	// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBodyWithResponse Complete Assistance
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+	CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBodyWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse, error)
+
+	// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithResponse Complete Assistance
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+	CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, body CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostJSONRequestBody, reqEditors ...RequestEditorFn) (*CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse, error)
+
+	// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBodyWithResponse Control Desktop
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+	ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBodyWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse, error)
+
+	// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithResponse Control Desktop
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+	ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, body ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse, error)
+
+	// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBodyWithResponse Disconnect Desktop
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+	DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBodyWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse, error)
+
+	// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithResponse Disconnect Desktop
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+	DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, body DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse, error)
+
+	// RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostWithResponse Request Control
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost` operationId).
+	RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostWithResponse(ctx context.Context, assistanceId string, params *RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostParams, reqEditors ...RequestEditorFn) (*RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse, error)
+
+	// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBodyWithResponse View Desktop
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+	ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBodyWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse, error)
+
+	// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithResponse View Desktop
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+	ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, body ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse, error)
+
 	// ListProvidersApiV1EnvironmentProvidersGetWithResponse List environment providers
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -35413,6 +36607,34 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `RunContentApiV1RunsRunIdContentsContentIdGet` operationId).
 	RunContentApiV1RunsRunIdContentsContentIdGetWithResponse(ctx context.Context, runId string, contentId string, params *RunContentApiV1RunsRunIdContentsContentIdGetParams, reqEditors ...RequestEditorFn) (*RunContentApiV1RunsRunIdContentsContentIdGetResponse, error)
 
+	// GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetWithResponse Get Assistance
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet` operationId).
+	GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetWithResponse(ctx context.Context, runId string, callId string, params *GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams, reqEditors ...RequestEditorFn) (*GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse, error)
+
+	// GetControlApiV1RunsRunIdDesktopControlGetWithResponse Get Control
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControlApiV1RunsRunIdDesktopControlGet` operationId).
+	GetControlApiV1RunsRunIdDesktopControlGetWithResponse(ctx context.Context, runId string, params *GetControlApiV1RunsRunIdDesktopControlGetParams, reqEditors ...RequestEditorFn) (*GetControlApiV1RunsRunIdDesktopControlGetResponse, error)
+
+	// OpenControlApiV1RunsRunIdDesktopControlPostWithBodyWithResponse Open Control
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+	OpenControlApiV1RunsRunIdDesktopControlPostWithBodyWithResponse(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenControlApiV1RunsRunIdDesktopControlPostResponse, error)
+
+	// OpenControlApiV1RunsRunIdDesktopControlPostWithResponse Open Control
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+	OpenControlApiV1RunsRunIdDesktopControlPostWithResponse(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, body OpenControlApiV1RunsRunIdDesktopControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenControlApiV1RunsRunIdDesktopControlPostResponse, error)
+
 	// ForkRunApiV1RunsRunIdForkPostWithBodyWithResponse Fork Run
 	//
 	// A new thread in the run's session that continues from this run's committed history.
@@ -36046,6 +37268,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/agents (the `UsageAgentsApiV1UsageAgentsGet` operationId).
 	UsageAgentsApiV1UsageAgentsGetWithResponse(ctx context.Context, params *UsageAgentsApiV1UsageAgentsGetParams, reqEditors ...RequestEditorFn) (*UsageAgentsApiV1UsageAgentsGetResponse, error)
+
+	// ContextUsageApiV1UsageContextGetWithResponse Context Usage
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+	ContextUsageApiV1UsageContextGetWithResponse(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*ContextUsageApiV1UsageContextGetResponse, error)
 
 	// UsageModelsApiV1UsageModelsGetWithResponse Usage Models
 	//
@@ -39639,6 +40868,351 @@ func (r TestProviderApiV1ConnectorProvidersProviderIdTestPostResponse) StatusCod
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r TestProviderApiV1ConnectorProvidersProviderIdTestPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse400Headers the declared response headers of an HTTP 400 response for CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost
+type CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse400Headers struct {
+	XRequestId *string
+}
+
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponseDefaultHeaders the declared response headers of an HTTP default response for CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost
+type CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *View
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse) GetJSON200() *View {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse400Headers the declared response headers of an HTTP 400 response for ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost
+type ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponseDefaultHeaders the declared response headers of an HTTP default response for ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost
+type ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Access
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse) GetJSON200() *Access {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse400Headers the declared response headers of an HTTP 400 response for DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost
+type DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponseDefaultHeaders the declared response headers of an HTTP default response for DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost
+type DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *View
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse) GetJSON200() *View {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse400Headers the declared response headers of an HTTP 400 response for RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost
+type RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponseDefaultHeaders the declared response headers of an HTTP default response for RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost
+type RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *View
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse) GetJSON200() *View {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse400Headers the declared response headers of an HTTP 400 response for ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost
+type ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponseDefaultHeaders the declared response headers of an HTTP default response for ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost
+type ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Access
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse) GetJSON200() *Access {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -46841,6 +48415,213 @@ func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) ContentType() stri
 	return ""
 }
 
+// GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse400Headers the declared response headers of an HTTP 400 response for GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet
+type GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet
+type GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *View
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse) GetJSON200() *View {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetControlApiV1RunsRunIdDesktopControlGetResponse400Headers the declared response headers of an HTTP 400 response for GetControlApiV1RunsRunIdDesktopControlGet
+type GetControlApiV1RunsRunIdDesktopControlGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetControlApiV1RunsRunIdDesktopControlGetResponseDefaultHeaders the declared response headers of an HTTP default response for GetControlApiV1RunsRunIdDesktopControlGet
+type GetControlApiV1RunsRunIdDesktopControlGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetControlApiV1RunsRunIdDesktopControlGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *View
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetControlApiV1RunsRunIdDesktopControlGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetControlApiV1RunsRunIdDesktopControlGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetControlApiV1RunsRunIdDesktopControlGetResponse) GetJSON200() *View {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetControlApiV1RunsRunIdDesktopControlGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetControlApiV1RunsRunIdDesktopControlGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetControlApiV1RunsRunIdDesktopControlGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetControlApiV1RunsRunIdDesktopControlGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetControlApiV1RunsRunIdDesktopControlGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetControlApiV1RunsRunIdDesktopControlGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// OpenControlApiV1RunsRunIdDesktopControlPostResponse400Headers the declared response headers of an HTTP 400 response for OpenControlApiV1RunsRunIdDesktopControlPost
+type OpenControlApiV1RunsRunIdDesktopControlPostResponse400Headers struct {
+	XRequestId *string
+}
+
+// OpenControlApiV1RunsRunIdDesktopControlPostResponseDefaultHeaders the declared response headers of an HTTP default response for OpenControlApiV1RunsRunIdDesktopControlPost
+type OpenControlApiV1RunsRunIdDesktopControlPostResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type OpenControlApiV1RunsRunIdDesktopControlPostResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *View
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *OpenControlApiV1RunsRunIdDesktopControlPostResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *OpenControlApiV1RunsRunIdDesktopControlPostResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r OpenControlApiV1RunsRunIdDesktopControlPostResponse) GetJSON200() *View {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r OpenControlApiV1RunsRunIdDesktopControlPostResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r OpenControlApiV1RunsRunIdDesktopControlPostResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r OpenControlApiV1RunsRunIdDesktopControlPostResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r OpenControlApiV1RunsRunIdDesktopControlPostResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OpenControlApiV1RunsRunIdDesktopControlPostResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r OpenControlApiV1RunsRunIdDesktopControlPostResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ForkRunApiV1RunsRunIdForkPostResponse400Headers the declared response headers of an HTTP 400 response for ForkRunApiV1RunsRunIdForkPost
 type ForkRunApiV1RunsRunIdForkPostResponse400Headers struct {
 	XRequestId *string
@@ -51022,6 +52803,75 @@ func (r UsageAgentsApiV1UsageAgentsGetResponse) ContentType() string {
 	return ""
 }
 
+// ContextUsageApiV1UsageContextGetResponse400Headers the declared response headers of an HTTP 400 response for ContextUsageApiV1UsageContextGet
+type ContextUsageApiV1UsageContextGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ContextUsageApiV1UsageContextGetResponseDefaultHeaders the declared response headers of an HTTP default response for ContextUsageApiV1UsageContextGet
+type ContextUsageApiV1UsageContextGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ContextUsageApiV1UsageContextGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ContextUsage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ContextUsageApiV1UsageContextGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ContextUsageApiV1UsageContextGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ContextUsageApiV1UsageContextGetResponse) GetJSON200() *ContextUsage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ContextUsageApiV1UsageContextGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ContextUsageApiV1UsageContextGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ContextUsageApiV1UsageContextGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ContextUsageApiV1UsageContextGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ContextUsageApiV1UsageContextGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ContextUsageApiV1UsageContextGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // UsageModelsApiV1UsageModelsGetResponse400Headers the declared response headers of an HTTP 400 response for UsageModelsApiV1UsageModelsGet
 type UsageModelsApiV1UsageModelsGetResponse400Headers struct {
 	XRequestId *string
@@ -55082,6 +56932,123 @@ func (c *ClientWithResponses) TestProviderApiV1ConnectorProvidersProviderIdTestP
 	return ParseTestProviderApiV1ConnectorProvidersProviderIdTestPostResponse(rsp)
 }
 
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBodyWithResponse Complete Assistance
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+func (c *ClientWithResponses) CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBodyWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse, error) {
+	rsp, err := c.CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse(rsp)
+}
+
+// CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithResponse Complete Assistance
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost` operationId).
+func (c *ClientWithResponses) CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostParams, body CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostJSONRequestBody, reqEditors ...RequestEditorFn) (*CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse, error) {
+	rsp, err := c.CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost(ctx, assistanceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse(rsp)
+}
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBodyWithResponse Control Desktop
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+func (c *ClientWithResponses) ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBodyWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse, error) {
+	rsp, err := c.ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse(rsp)
+}
+
+// ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithResponse Control Desktop
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost` operationId).
+func (c *ClientWithResponses) ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostParams, body ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse, error) {
+	rsp, err := c.ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPost(ctx, assistanceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse(rsp)
+}
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBodyWithResponse Disconnect Desktop
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+func (c *ClientWithResponses) DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBodyWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse, error) {
+	rsp, err := c.DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse(rsp)
+}
+
+// DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithResponse Disconnect Desktop
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost` operationId).
+func (c *ClientWithResponses) DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostParams, body DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostJSONRequestBody, reqEditors ...RequestEditorFn) (*DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse, error) {
+	rsp, err := c.DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPost(ctx, assistanceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse(rsp)
+}
+
+// RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostWithResponse Request Control
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost` operationId).
+func (c *ClientWithResponses) RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostWithResponse(ctx context.Context, assistanceId string, params *RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostParams, reqEditors ...RequestEditorFn) (*RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse, error) {
+	rsp, err := c.RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPost(ctx, assistanceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse(rsp)
+}
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBodyWithResponse View Desktop
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+func (c *ClientWithResponses) ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBodyWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse, error) {
+	rsp, err := c.ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse(rsp)
+}
+
+// ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithResponse View Desktop
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost` operationId).
+func (c *ClientWithResponses) ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostParams, body ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostJSONRequestBody, reqEditors ...RequestEditorFn) (*ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse, error) {
+	rsp, err := c.ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPost(ctx, assistanceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse(rsp)
+}
+
 // ListProvidersApiV1EnvironmentProvidersGetWithResponse List environment providers
 //
 // Returns a wrapper object for the known response body format(s).
@@ -56974,6 +58941,58 @@ func (c *ClientWithResponses) RunContentApiV1RunsRunIdContentsContentIdGetWithRe
 	return ParseRunContentApiV1RunsRunIdContentsContentIdGetResponse(rsp)
 }
 
+// GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetWithResponse Get Assistance
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet` operationId).
+func (c *ClientWithResponses) GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetWithResponse(ctx context.Context, runId string, callId string, params *GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams, reqEditors ...RequestEditorFn) (*GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse, error) {
+	rsp, err := c.GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet(ctx, runId, callId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse(rsp)
+}
+
+// GetControlApiV1RunsRunIdDesktopControlGetWithResponse Get Control
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControlApiV1RunsRunIdDesktopControlGet` operationId).
+func (c *ClientWithResponses) GetControlApiV1RunsRunIdDesktopControlGetWithResponse(ctx context.Context, runId string, params *GetControlApiV1RunsRunIdDesktopControlGetParams, reqEditors ...RequestEditorFn) (*GetControlApiV1RunsRunIdDesktopControlGetResponse, error) {
+	rsp, err := c.GetControlApiV1RunsRunIdDesktopControlGet(ctx, runId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetControlApiV1RunsRunIdDesktopControlGetResponse(rsp)
+}
+
+// OpenControlApiV1RunsRunIdDesktopControlPostWithBodyWithResponse Open Control
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+func (c *ClientWithResponses) OpenControlApiV1RunsRunIdDesktopControlPostWithBodyWithResponse(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenControlApiV1RunsRunIdDesktopControlPostResponse, error) {
+	rsp, err := c.OpenControlApiV1RunsRunIdDesktopControlPostWithBody(ctx, runId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOpenControlApiV1RunsRunIdDesktopControlPostResponse(rsp)
+}
+
+// OpenControlApiV1RunsRunIdDesktopControlPostWithResponse Open Control
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControlApiV1RunsRunIdDesktopControlPost` operationId).
+func (c *ClientWithResponses) OpenControlApiV1RunsRunIdDesktopControlPostWithResponse(ctx context.Context, runId string, params *OpenControlApiV1RunsRunIdDesktopControlPostParams, body OpenControlApiV1RunsRunIdDesktopControlPostJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenControlApiV1RunsRunIdDesktopControlPostResponse, error) {
+	rsp, err := c.OpenControlApiV1RunsRunIdDesktopControlPost(ctx, runId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOpenControlApiV1RunsRunIdDesktopControlPostResponse(rsp)
+}
+
 // ForkRunApiV1RunsRunIdForkPostWithBodyWithResponse Fork Run
 //
 // A new thread in the run's session that continues from this run's committed history.
@@ -58086,6 +60105,19 @@ func (c *ClientWithResponses) UsageAgentsApiV1UsageAgentsGetWithResponse(ctx con
 		return nil, err
 	}
 	return ParseUsageAgentsApiV1UsageAgentsGetResponse(rsp)
+}
+
+// ContextUsageApiV1UsageContextGetWithResponse Context Usage
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/context (the `ContextUsageApiV1UsageContextGet` operationId).
+func (c *ClientWithResponses) ContextUsageApiV1UsageContextGetWithResponse(ctx context.Context, params *ContextUsageApiV1UsageContextGetParams, reqEditors ...RequestEditorFn) (*ContextUsageApiV1UsageContextGetResponse, error) {
+	rsp, err := c.ContextUsageApiV1UsageContextGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseContextUsageApiV1UsageContextGetResponse(rsp)
 }
 
 // UsageModelsApiV1UsageModelsGetWithResponse Usage Models
@@ -61762,6 +63794,321 @@ func ParseTestProviderApiV1ConnectorProvidersProviderIdTestPostResponse(rsp *htt
 		response.Headers400 = &headers
 	case true:
 		var headers TestProviderApiV1ConnectorProvidersProviderIdTestPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse parses an HTTP response from a CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostWithResponse call
+func ParseCompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse(rsp *http.Response) (*CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest View
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse parses an HTTP response from a ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostWithResponse call
+func ParseControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse(rsp *http.Response) (*ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Access
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ControlDesktopApiV1DesktopAssistanceAssistanceIdControlPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse parses an HTTP response from a DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostWithResponse call
+func ParseDisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse(rsp *http.Response) (*DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest View
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DisconnectDesktopApiV1DesktopAssistanceAssistanceIdDisconnectPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse parses an HTTP response from a RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostWithResponse call
+func ParseRequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse(rsp *http.Response) (*RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest View
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RequestControlApiV1DesktopAssistanceAssistanceIdRequestControlPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse parses an HTTP response from a ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostWithResponse call
+func ParseViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse(rsp *http.Response) (*ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Access
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ViewDesktopApiV1DesktopAssistanceAssistanceIdViewPostResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -68359,6 +70706,195 @@ func ParseRunContentApiV1RunsRunIdContentsContentIdGetResponse(rsp *http.Respons
 	return response, nil
 }
 
+// ParseGetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse parses an HTTP response from a GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetWithResponse call
+func ParseGetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse(rsp *http.Response) (*GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest View
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetControlApiV1RunsRunIdDesktopControlGetResponse parses an HTTP response from a GetControlApiV1RunsRunIdDesktopControlGetWithResponse call
+func ParseGetControlApiV1RunsRunIdDesktopControlGetResponse(rsp *http.Response) (*GetControlApiV1RunsRunIdDesktopControlGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetControlApiV1RunsRunIdDesktopControlGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest View
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetControlApiV1RunsRunIdDesktopControlGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetControlApiV1RunsRunIdDesktopControlGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseOpenControlApiV1RunsRunIdDesktopControlPostResponse parses an HTTP response from a OpenControlApiV1RunsRunIdDesktopControlPostWithResponse call
+func ParseOpenControlApiV1RunsRunIdDesktopControlPostResponse(rsp *http.Response) (*OpenControlApiV1RunsRunIdDesktopControlPostResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OpenControlApiV1RunsRunIdDesktopControlPostResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest View
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers OpenControlApiV1RunsRunIdDesktopControlPostResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers OpenControlApiV1RunsRunIdDesktopControlPostResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseForkRunApiV1RunsRunIdForkPostResponse parses an HTTP response from a ForkRunApiV1RunsRunIdForkPostWithResponse call
 func ParseForkRunApiV1RunsRunIdForkPostResponse(rsp *http.Response) (*ForkRunApiV1RunsRunIdForkPostResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -72170,6 +74706,69 @@ func ParseUsageAgentsApiV1UsageAgentsGetResponse(rsp *http.Response) (*UsageAgen
 		response.Headers400 = &headers
 	case true:
 		var headers UsageAgentsApiV1UsageAgentsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseContextUsageApiV1UsageContextGetResponse parses an HTTP response from a ContextUsageApiV1UsageContextGetWithResponse call
+func ParseContextUsageApiV1UsageContextGetResponse(rsp *http.Response) (*ContextUsageApiV1UsageContextGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ContextUsageApiV1UsageContextGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ContextUsage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ContextUsageApiV1UsageContextGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ContextUsageApiV1UsageContextGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
