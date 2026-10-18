@@ -9,6 +9,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
+	"reflect"
 	"slices"
 	"strings"
 
@@ -83,7 +84,9 @@ func apiFailure(response *http.Response, limit int64) error {
 
 // ParseJSON decodes one raw generated HTTP response with bounded buffering,
 // structured Service errors, and status/header evidence. It owns and closes
-// the response body. Generated WithResponse methods have separate parsers.
+// the response body. Use a pointer T for native nullable success bodies: JSON
+// null becomes nil. Non-pointer resource values still reject null responses.
+// Generated WithResponse methods have separate parsers.
 func ParseJSON[T any](client *Client, response *http.Response, err error, success ...int) (Result[T], error) {
 	return jsonResult[T](client, response, err, success...)
 }
@@ -111,7 +114,7 @@ func jsonResult[T any](client *Client, response *http.Response, err error, succe
 	if len(bytes.TrimSpace(data)) == 0 {
 		return result, protocolError(response, "empty_body")
 	}
-	if bytes.Equal(bytes.TrimSpace(data), []byte("null")) {
+	if bytes.Equal(bytes.TrimSpace(data), []byte("null")) && reflect.TypeFor[T]().Kind() != reflect.Pointer {
 		return result, protocolError(response, "null_body")
 	}
 	result.raw = data

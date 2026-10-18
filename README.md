@@ -2,7 +2,7 @@
 
 Run an existing a13n Service Agent from a Go application, read its result, and continue the conversation. Go 1.25+; execution and authorization stay in the Service.
 
-The current contract is pinned to Service `9e22fb915fe331933f484a9d2bdc25ceb92af781`: 261 native operations and 353 HTTP wire schemas, plus both native stream exports. The [generated API guide](docs/generated-api.md) covers advanced resource access, while [saved content readback](docs/streaming-and-readback.md#explicitly-expand-saved-display-content) keeps previews and authoritative values distinct. Imported conversation messages use `[]json.RawMessage` to preserve native nested key order and number tokens.
+The current contract is pinned to Service `647371cdc6f1e85b9c4ccfe954999823f52f08e8`: 270 native operations and 364 HTTP wire schemas, plus both native stream exports. The [generated API guide](docs/generated-api.md) covers advanced resource access, while [saved content readback](docs/streaming-and-readback.md#explicitly-expand-saved-display-content) keeps previews and authoritative values distinct. Imported conversation messages use `[]json.RawMessage` to preserve native nested key order and number tokens.
 
 ## Before you start
 
@@ -140,6 +140,8 @@ For result-only applications, `Start`/`Send` plus `Result` is enough. Public `In
 `Run.Items(ctx)` reads a committed display **window**, not automatically all history. Its default read includes the whole mutable tail even beyond the Service's limit (default 200, maximum 500). Use one optional `a13n.RunItemsOptions{Before: &ordinal, Limit: &limit}` or After for exclusive ordinal windows. Complete means sealed, not all history loaded. Items returns no stream position, continuation or replay hint. For advanced server-owned snapshots of a Session, use `client.SessionEvents(ctx, sessionID, a13n.SessionStreamOptions{})`; its single connection yields typed thread/items/delta/gap frames and reopens from a fresh snapshot. See [streaming and readback](docs/streaming-and-readback.md).
 
 A Thread's `LastRunId` is its latest sealed Run of any outcome. Continue completed, failed or cancelled history with normal explicit `Send`; failed/cancelled outcomes stop automatic advancement but do not discard history. Resume is only for the exact idle waiting last Run with full approvals/calls, not a generic retry.
+
+Desktop waits finish the finite Interaction normally. Use the explicit native control/completion APIs before deciding whether to resume; the SDK does not acquire or renew a human lease. See [desktop control, typed tool discovery and nullable context usage](docs/desktop-and-tool-discovery.md).
 
 ## License
 

@@ -283,6 +283,7 @@ const (
 	EnvironmentComputerPressKeys   EnvironmentAction = "environment.computer.press_keys"
 	EnvironmentComputerScroll      EnvironmentAction = "environment.computer.scroll"
 	EnvironmentComputerTypeText    EnvironmentAction = "environment.computer.type_text"
+	EnvironmentComputerZoom        EnvironmentAction = "environment.computer.zoom"
 	EnvironmentFileCopyDestination EnvironmentAction = "environment.file.copy_destination"
 	EnvironmentFileCopySource      EnvironmentAction = "environment.file.copy_source"
 	EnvironmentFileList            EnvironmentAction = "environment.file.list"
@@ -334,6 +335,8 @@ func (e EnvironmentAction) Valid() bool {
 	case EnvironmentComputerScroll:
 		return true
 	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentComputerZoom:
 		return true
 	case EnvironmentFileCopyDestination:
 		return true
@@ -588,6 +591,39 @@ func (e MemorySourceStatus) Valid() bool {
 	}
 }
 
+// Defines values for NativeToolSearchConfigMode.
+const (
+	Native NativeToolSearchConfigMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeToolSearchConfigMode enum.
+func (e NativeToolSearchConfigMode) Valid() bool {
+	switch e {
+	case Native:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NativeToolSearchConfigStrategy.
+const (
+	Bm25  NativeToolSearchConfigStrategy = "bm25"
+	Regex NativeToolSearchConfigStrategy = "regex"
+)
+
+// Valid indicates whether the value is a known member of the NativeToolSearchConfigStrategy enum.
+func (e NativeToolSearchConfigStrategy) Valid() bool {
+	switch e {
+	case Bm25:
+		return true
+	case Regex:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PlatformGroup.
 const (
 	Agents               PlatformGroup = "agents"
@@ -657,6 +693,21 @@ func (e PlatformSelectionWritePermission) Valid() bool {
 	case PlatformSelectionWritePermissionAsk:
 		return true
 	case PlatformSelectionWritePermissionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProxyToolSearchConfigMode.
+const (
+	Proxy ProxyToolSearchConfigMode = "proxy"
+)
+
+// Valid indicates whether the value is a known member of the ProxyToolSearchConfigMode enum.
+func (e ProxyToolSearchConfigMode) Valid() bool {
+	switch e {
+	case Proxy:
 		return true
 	default:
 		return false
@@ -962,9 +1013,10 @@ func (e UrlPartType) Valid() bool {
 
 // Defines values for WaitReason.
 const (
-	Approval WaitReason = "approval"
-	Call     WaitReason = "call"
-	Multiple WaitReason = "multiple"
+	Approval       WaitReason = "approval"
+	Call           WaitReason = "call"
+	DesktopControl WaitReason = "desktop_control"
+	Multiple       WaitReason = "multiple"
 )
 
 // Valid indicates whether the value is a known member of the WaitReason enum.
@@ -973,6 +1025,8 @@ func (e WaitReason) Valid() bool {
 	case Approval:
 		return true
 	case Call:
+		return true
+	case DesktopControl:
 		return true
 	case Multiple:
 		return true
@@ -1031,6 +1085,7 @@ type AgentOverride struct {
 	SkillSync            nullable.Nullable[SkillSync]                    `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]             `json:"skills,omitempty"`
 	Subagents            nullable.Nullable[map[string]interface{}]       `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[ToolSearch]                   `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection]  `json:"toolsets,omitempty"`
 }
 
@@ -1368,6 +1423,18 @@ type MessagePayload struct {
 	Content []Part `json:"content"`
 }
 
+// NativeToolSearchConfig Provider-native discovery; omitted strategy uses the provider default.
+type NativeToolSearchConfig struct {
+	Mode     NativeToolSearchConfigMode                        `json:"mode"`
+	Strategy nullable.Nullable[NativeToolSearchConfigStrategy] `json:"strategy,omitempty"`
+}
+
+// NativeToolSearchConfigMode defines model for NativeToolSearchConfig.Mode.
+type NativeToolSearchConfigMode string
+
+// NativeToolSearchConfigStrategy defines model for NativeToolSearchConfig.Strategy.
+type NativeToolSearchConfigStrategy string
+
 // ObserverContinuation Native conversion cursors required to resume mid-part, without raw history.
 type ObserverContinuation struct {
 	RunId    nullable.Nullable[string] `json:"run_id,omitempty"`
@@ -1401,8 +1468,9 @@ type Part struct {
 
 // Pending Public projection; complete native requests and private metadata stay in the checkpoint.
 type Pending struct {
-	Approvals []PendingCall `json:"approvals"`
-	Calls     []PendingCall `json:"calls"`
+	Approvals        []PendingCall             `json:"approvals"`
+	Calls            []PendingCall             `json:"calls"`
+	DesktopControlId nullable.Nullable[string] `json:"desktop_control_id,omitempty"`
 }
 
 // PendingCall defines model for PendingCall.
@@ -1435,6 +1503,18 @@ type PluginSelection struct {
 	InstanceName string                `json:"instance_name"`
 	PluginKey    string                `json:"plugin_key"`
 }
+
+// ProxyToolSearchConfig Names and bounded discovery settings for one Agent's proxy surface.
+type ProxyToolSearchConfig struct {
+	CallName       *string                   `json:"call_name,omitempty"`
+	MaxResults     *int                      `json:"max_results,omitempty"`
+	MaxSearchBytes *int                      `json:"max_search_bytes,omitempty"`
+	Mode           ProxyToolSearchConfigMode `json:"mode"`
+	SearchName     *string                   `json:"search_name,omitempty"`
+}
+
+// ProxyToolSearchConfigMode defines model for ProxyToolSearchConfig.Mode.
+type ProxyToolSearchConfigMode string
 
 // RecordSource defines model for RecordSource.
 type RecordSource struct {
@@ -1650,6 +1730,25 @@ type ToolReviewRuleOnFlagged string
 
 // ToolRiskLevel defines model for ToolRiskLevel.
 type ToolRiskLevel string
+
+// ToolSearch Presentation of already-selected sources, composed by Harness once per agent.
+type ToolSearch struct {
+	Config *ToolSearchConfig           `json:"config,omitempty"`
+	Groups *map[string]ToolSearchGroup `json:"groups,omitempty"`
+}
+
+// ToolSearchConfig defines model for ToolSearchConfig.
+type ToolSearchConfig struct {
+	union json.RawMessage
+}
+
+// ToolSearchGroup defines model for ToolSearchGroup.
+type ToolSearchGroup struct {
+	Connections *[]string `json:"connections,omitempty"`
+	Description string    `json:"description"`
+	Platform    *bool     `json:"platform,omitempty"`
+	Plugins     *[]string `json:"plugins,omitempty"`
+}
 
 // ToolSelection defines model for ToolSelection.
 type ToolSelection struct {
@@ -2340,4 +2439,110 @@ func (t ToolPermissionSetting) MarshalJSON() ([]byte, error) {
 func (t *ToolPermissionSetting) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
+}
+
+// AsProxyToolSearchConfig returns the union data inside the ToolSearchConfig as a ProxyToolSearchConfig
+func (t ToolSearchConfig) AsProxyToolSearchConfig() (ProxyToolSearchConfig, error) {
+	var body ProxyToolSearchConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromProxyToolSearchConfig overwrites any union data inside the ToolSearchConfig as the provided ProxyToolSearchConfig
+func (t *ToolSearchConfig) FromProxyToolSearchConfig(v ProxyToolSearchConfig) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"proxy"}`))
+	t.union = b
+	return err
+}
+
+// MergeProxyToolSearchConfig performs a merge with any union data inside the ToolSearchConfig, using the provided ProxyToolSearchConfig
+func (t *ToolSearchConfig) MergeProxyToolSearchConfig(v ProxyToolSearchConfig) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"proxy"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsNativeToolSearchConfig returns the union data inside the ToolSearchConfig as a NativeToolSearchConfig
+func (t ToolSearchConfig) AsNativeToolSearchConfig() (NativeToolSearchConfig, error) {
+	var body NativeToolSearchConfig
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeToolSearchConfig overwrites any union data inside the ToolSearchConfig as the provided NativeToolSearchConfig
+func (t *ToolSearchConfig) FromNativeToolSearchConfig(v NativeToolSearchConfig) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	t.union = b
+	return err
+}
+
+// MergeNativeToolSearchConfig performs a merge with any union data inside the ToolSearchConfig, using the provided NativeToolSearchConfig
+func (t *ToolSearchConfig) MergeNativeToolSearchConfig(v NativeToolSearchConfig) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ToolSearchConfig) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t ToolSearchConfig) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "native":
+		return t.AsNativeToolSearchConfig()
+	case "proxy":
+		return t.AsProxyToolSearchConfig()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t ToolSearchConfig) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	if err == nil {
+		err = validateToolSearchJSON("ToolSearchConfig", b)
+	}
+	return b, err
+}
+
+func (t *ToolSearchConfig) UnmarshalJSON(b []byte) error {
+	if err := validateToolSearchJSON("ToolSearchConfig", b); err != nil {
+		return err
+	}
+	return t.union.UnmarshalJSON(b)
 }
