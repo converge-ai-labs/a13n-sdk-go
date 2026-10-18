@@ -283,6 +283,7 @@ const (
 	EnvironmentComputerPressKeys   EnvironmentAction = "environment.computer.press_keys"
 	EnvironmentComputerScroll      EnvironmentAction = "environment.computer.scroll"
 	EnvironmentComputerTypeText    EnvironmentAction = "environment.computer.type_text"
+	EnvironmentComputerZoom        EnvironmentAction = "environment.computer.zoom"
 	EnvironmentFileCopyDestination EnvironmentAction = "environment.file.copy_destination"
 	EnvironmentFileCopySource      EnvironmentAction = "environment.file.copy_source"
 	EnvironmentFileList            EnvironmentAction = "environment.file.list"
@@ -334,6 +335,8 @@ func (e EnvironmentAction) Valid() bool {
 	case EnvironmentComputerScroll:
 		return true
 	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentComputerZoom:
 		return true
 	case EnvironmentFileCopyDestination:
 		return true
