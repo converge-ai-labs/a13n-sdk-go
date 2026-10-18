@@ -1037,6 +1037,7 @@ type AgentOverride struct {
 	SkillSync            nullable.Nullable[SkillSync]                    `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]             `json:"skills,omitempty"`
 	Subagents            nullable.Nullable[map[string]interface{}]       `json:"subagents,omitempty"`
+	ToolProxy            nullable.Nullable[ToolProxy]                    `json:"tool_proxy,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection]  `json:"toolsets,omitempty"`
 }
 
@@ -1645,6 +1646,30 @@ type ToolPermissionSetting struct {
 
 // ToolPermissionSetting1 defines model for ToolPermissionSetting.1.
 type ToolPermissionSetting1 string
+
+// ToolProxy Presentation of already-selected sources, composed by Harness once per agent.
+type ToolProxy struct {
+	// Config Names and bounded discovery settings for one Agent's proxy surface.
+	Config       *ToolProxyConfig           `json:"config,omitempty"`
+	Groups       *map[string]ToolProxyGroup `json:"groups,omitempty"`
+	NativeSearch *bool                      `json:"native_search,omitempty"`
+}
+
+// ToolProxyConfig Names and bounded discovery settings for one Agent's proxy surface.
+type ToolProxyConfig struct {
+	CallName       *string `json:"call_name,omitempty"`
+	MaxResults     *int    `json:"max_results,omitempty"`
+	MaxSearchBytes *int    `json:"max_search_bytes,omitempty"`
+	SearchName     *string `json:"search_name,omitempty"`
+}
+
+// ToolProxyGroup defines model for ToolProxyGroup.
+type ToolProxyGroup struct {
+	Connections *[]string `json:"connections,omitempty"`
+	Description string    `json:"description"`
+	Platform    *bool     `json:"platform,omitempty"`
+	Plugins     *[]string `json:"plugins,omitempty"`
+}
 
 // ToolReviewRule A matching rule overrides the supplied fields of the global policy.
 type ToolReviewRule struct {
