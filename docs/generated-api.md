@@ -2,6 +2,8 @@
 
 The Agent workflow handles conversation lifecycle. For configuration, administration, Memory, Models, raw SSE and every other pinned route, call `client.API()`. The generated methods share the client's authentication, transport and cancellation lifetime; there is no separate resource-tree API or reason to assemble URLs yourself. The [pinned OpenAPI](../contract/openapi.json) lists fields and statuses, and [provenance](../contract/README.md) identifies the source commit.
 
+The nine current desktop/control/context operations use this same API. [Desktop control, tool discovery and context usage](desktop-and-tool-discovery.md) covers typed proxy/native configuration, finite desktop waits and successful JSON null with `ParseJSON[*T]`.
+
 ## Read and conditionally update a resource
 
 This example reads an Agent, uses its returned ETag, and returns the updated view. It requires a key with `builder` permission; import `context`, `a13n`, `generated` and `nullable`:

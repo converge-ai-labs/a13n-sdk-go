@@ -9439,12 +9439,17 @@ func (t ToolSearchConfig) ValueByDiscriminator() (interface{}, error) {
 
 func (t ToolSearchConfig) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
+	if err == nil {
+		err = validateToolSearchJSON("ToolSearchConfig", b)
+	}
 	return b, err
 }
 
 func (t *ToolSearchConfig) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
+	if err := validateToolSearchJSON("ToolSearchConfig", b); err != nil {
+		return err
+	}
+	return t.union.UnmarshalJSON(b)
 }
 
 // AsUsageLimitsInputCostLimit0 returns the union data inside the UsageLimitsInput_CostLimit as a UsageLimitsInputCostLimit0

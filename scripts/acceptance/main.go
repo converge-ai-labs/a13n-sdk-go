@@ -213,6 +213,7 @@ func offline() {
 	memoryComputerOffline()
 	pagedDisplayOffline()
 	sealedHistoryOffline()
+	desktopDiscoveryOffline()
 	fmt.Println("Installed module: interaction, exact Run, lazy pages, metadata, unions, null and diagnostics passed")
 }
 
@@ -232,6 +233,7 @@ func live() {
 	check(response.StatusCode == 200, "health")
 	_ = response.Body.Close()
 	agent := required("A13N_AGENT")
+	desktopDiscoveryLive(ctx, client, agent)
 	history := importedHistory()
 	firstKey := key()
 	firstText := "[slow] [long] Summarize this project."
