@@ -533,6 +533,93 @@ func (e ComputerCheckStatus) Valid() bool {
 	}
 }
 
+// Defines values for ConfigSection.
+const (
+	ConfigSectionAll                          ConfigSection = "all"
+	ConfigSectionBuiltinSkills                ConfigSection = "builtin_skills"
+	ConfigSectionClientTools                  ConfigSection = "client_tools"
+	ConfigSectionConnectionTools              ConfigSection = "connection_tools"
+	ConfigSectionDefaultEnvironmentTemplateId ConfigSection = "default_environment_template_id"
+	ConfigSectionInstructions                 ConfigSection = "instructions"
+	ConfigSectionLazyEnvironment              ConfigSection = "lazy_environment"
+	ConfigSectionMediaUnderstanding           ConfigSection = "media_understanding"
+	ConfigSectionMemory                       ConfigSection = "memory"
+	ConfigSectionMemoryMounts                 ConfigSection = "memory_mounts"
+	ConfigSectionModel                        ConfigSection = "model"
+	ConfigSectionModelCharacteristics         ConfigSection = "model_characteristics"
+	ConfigSectionModelSettings                ConfigSection = "model_settings"
+	ConfigSectionOutputSpec                   ConfigSection = "output_spec"
+	ConfigSectionPlatformTools                ConfigSection = "platform_tools"
+	ConfigSectionPlugins                      ConfigSection = "plugins"
+	ConfigSectionRetries                      ConfigSection = "retries"
+	ConfigSectionReviewer                     ConfigSection = "reviewer"
+	ConfigSectionSkillSync                    ConfigSection = "skill_sync"
+	ConfigSectionSkills                       ConfigSection = "skills"
+	ConfigSectionSubagentMode                 ConfigSection = "subagent_mode"
+	ConfigSectionSubagents                    ConfigSection = "subagents"
+	ConfigSectionToolSearch                   ConfigSection = "tool_search"
+	ConfigSectionToolsets                     ConfigSection = "toolsets"
+	ConfigSectionUserQuestions                ConfigSection = "user_questions"
+)
+
+// Valid indicates whether the value is a known member of the ConfigSection enum.
+func (e ConfigSection) Valid() bool {
+	switch e {
+	case ConfigSectionAll:
+		return true
+	case ConfigSectionBuiltinSkills:
+		return true
+	case ConfigSectionClientTools:
+		return true
+	case ConfigSectionConnectionTools:
+		return true
+	case ConfigSectionDefaultEnvironmentTemplateId:
+		return true
+	case ConfigSectionInstructions:
+		return true
+	case ConfigSectionLazyEnvironment:
+		return true
+	case ConfigSectionMediaUnderstanding:
+		return true
+	case ConfigSectionMemory:
+		return true
+	case ConfigSectionMemoryMounts:
+		return true
+	case ConfigSectionModel:
+		return true
+	case ConfigSectionModelCharacteristics:
+		return true
+	case ConfigSectionModelSettings:
+		return true
+	case ConfigSectionOutputSpec:
+		return true
+	case ConfigSectionPlatformTools:
+		return true
+	case ConfigSectionPlugins:
+		return true
+	case ConfigSectionRetries:
+		return true
+	case ConfigSectionReviewer:
+		return true
+	case ConfigSectionSkillSync:
+		return true
+	case ConfigSectionSkills:
+		return true
+	case ConfigSectionSubagentMode:
+		return true
+	case ConfigSectionSubagents:
+		return true
+	case ConfigSectionToolSearch:
+		return true
+	case ConfigSectionToolsets:
+		return true
+	case ConfigSectionUserQuestions:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ConnectionAuth.
 const (
 	ConnectionAuthAccount ConnectionAuth = "account"
@@ -653,6 +740,21 @@ func (e ContentRefMediaType) Valid() bool {
 	}
 }
 
+// Defines values for ContentSummaryView.
+const (
+	ContentSummaryViewCompact ContentSummaryView = "compact"
+)
+
+// Valid indicates whether the value is a known member of the ContentSummaryView enum.
+func (e ContentSummaryView) Valid() bool {
+	switch e {
+	case ContentSummaryViewCompact:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CredentialMode.
 const (
 	CredentialModeForbidden CredentialMode = "forbidden"
@@ -715,16 +817,16 @@ func (e DelegationContextPolicyTaskState) Valid() bool {
 
 // Defines values for Delivery.
 const (
-	NextRun Delivery = "next_run"
-	Steer   Delivery = "steer"
+	DeliveryNextRun Delivery = "next_run"
+	DeliverySteer   Delivery = "steer"
 )
 
 // Valid indicates whether the value is a known member of the Delivery enum.
 func (e Delivery) Valid() bool {
 	switch e {
-	case NextRun:
+	case DeliveryNextRun:
 		return true
-	case Steer:
+	case DeliverySteer:
 		return true
 	default:
 		return false
@@ -767,6 +869,57 @@ func (e EntryStatus) Valid() bool {
 	case EntryStatusPending:
 		return true
 	case EntryStatusWithdrawn:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EntrySummaryDelivery.
+const (
+	EntrySummaryDeliveryNextRun EntrySummaryDelivery = "next_run"
+	EntrySummaryDeliverySteer   EntrySummaryDelivery = "steer"
+)
+
+// Valid indicates whether the value is a known member of the EntrySummaryDelivery enum.
+func (e EntrySummaryDelivery) Valid() bool {
+	switch e {
+	case EntrySummaryDeliveryNextRun:
+		return true
+	case EntrySummaryDeliverySteer:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EntrySummaryKind.
+const (
+	EntrySummaryKindChildResult EntrySummaryKind = "child_result"
+	EntrySummaryKindMessage     EntrySummaryKind = "message"
+)
+
+// Valid indicates whether the value is a known member of the EntrySummaryKind enum.
+func (e EntrySummaryKind) Valid() bool {
+	switch e {
+	case EntrySummaryKindChildResult:
+		return true
+	case EntrySummaryKindMessage:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EntrySummaryView.
+const (
+	EntrySummaryViewCompact EntrySummaryView = "compact"
+)
+
+// Valid indicates whether the value is a known member of the EntrySummaryView enum.
+func (e EntrySummaryView) Valid() bool {
+	switch e {
+	case EntrySummaryViewCompact:
 		return true
 	default:
 		return false
@@ -1082,6 +1235,24 @@ func (e ItemKind) Valid() bool {
 	}
 }
 
+// Defines values for ItemPageView.
+const (
+	ItemPageViewCompact  ItemPageView = "compact"
+	ItemPageViewDetailed ItemPageView = "detailed"
+)
+
+// Valid indicates whether the value is a known member of the ItemPageView enum.
+func (e ItemPageView) Valid() bool {
+	switch e {
+	case ItemPageViewCompact:
+		return true
+	case ItemPageViewDetailed:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ItemState.
 const (
 	ItemStateCompleted   ItemState = "completed"
@@ -1364,6 +1535,42 @@ func (e ModelCatalogStatus) Valid() bool {
 	}
 }
 
+// Defines values for ModelCatalogPageStatus.
+const (
+	ModelCatalogPageStatusReady       ModelCatalogPageStatus = "ready"
+	ModelCatalogPageStatusStale       ModelCatalogPageStatus = "stale"
+	ModelCatalogPageStatusUnavailable ModelCatalogPageStatus = "unavailable"
+)
+
+// Valid indicates whether the value is a known member of the ModelCatalogPageStatus enum.
+func (e ModelCatalogPageStatus) Valid() bool {
+	switch e {
+	case ModelCatalogPageStatusReady:
+		return true
+	case ModelCatalogPageStatusStale:
+		return true
+	case ModelCatalogPageStatusUnavailable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ModelSummaryView.
+const (
+	ModelSummaryViewCompact ModelSummaryView = "compact"
+)
+
+// Valid indicates whether the value is a known member of the ModelSummaryView enum.
+func (e ModelSummaryView) Valid() bool {
+	switch e {
+	case ModelSummaryViewCompact:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for NativeToolSearchConfigMode.
 const (
 	Native NativeToolSearchConfigMode = "native"
@@ -1628,6 +1835,24 @@ func (e ProxyToolSearchConfigMode) Valid() bool {
 	}
 }
 
+// Defines values for ReadView.
+const (
+	ReadViewCompact  ReadView = "compact"
+	ReadViewDetailed ReadView = "detailed"
+)
+
+// Valid indicates whether the value is a known member of the ReadView enum.
+func (e ReadView) Valid() bool {
+	switch e {
+	case ReadViewCompact:
+		return true
+	case ReadViewDetailed:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ReturnedStatus.
 const (
 	ReturnedStatusReturned ReturnedStatus = "returned"
@@ -1637,6 +1862,21 @@ const (
 func (e ReturnedStatus) Valid() bool {
 	switch e {
 	case ReturnedStatusReturned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RevisionSummaryView.
+const (
+	RevisionSummaryViewCompact RevisionSummaryView = "compact"
+)
+
+// Valid indicates whether the value is a known member of the RevisionSummaryView enum.
+func (e RevisionSummaryView) Valid() bool {
+	switch e {
+	case RevisionSummaryViewCompact:
 		return true
 	default:
 		return false
@@ -1658,6 +1898,21 @@ func (e RevokedConnectionRemoteRevocation) Valid() bool {
 	case RevokedConnectionRemoteRevocationRevoked:
 		return true
 	case RevokedConnectionRemoteRevocationSkipped:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunAgentSummaryView.
+const (
+	RunAgentSummaryViewCompact RunAgentSummaryView = "compact"
+)
+
+// Valid indicates whether the value is a known member of the RunAgentSummaryView enum.
+func (e RunAgentSummaryView) Valid() bool {
+	switch e {
+	case RunAgentSummaryViewCompact:
 		return true
 	default:
 		return false
@@ -1712,21 +1967,78 @@ func (e RunStatus) Valid() bool {
 	}
 }
 
+// Defines values for RunSummaryLineage.
+const (
+	RunSummaryLineageContinue RunSummaryLineage = "continue"
+	RunSummaryLineageFork     RunSummaryLineage = "fork"
+	RunSummaryLineageRoot     RunSummaryLineage = "root"
+)
+
+// Valid indicates whether the value is a known member of the RunSummaryLineage enum.
+func (e RunSummaryLineage) Valid() bool {
+	switch e {
+	case RunSummaryLineageContinue:
+		return true
+	case RunSummaryLineageFork:
+		return true
+	case RunSummaryLineageRoot:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunSummaryRevisionSelection.
+const (
+	RunSummaryRevisionSelectionDefault   RunSummaryRevisionSelection = "default"
+	RunSummaryRevisionSelectionInherited RunSummaryRevisionSelection = "inherited"
+	RunSummaryRevisionSelectionPinned    RunSummaryRevisionSelection = "pinned"
+)
+
+// Valid indicates whether the value is a known member of the RunSummaryRevisionSelection enum.
+func (e RunSummaryRevisionSelection) Valid() bool {
+	switch e {
+	case RunSummaryRevisionSelectionDefault:
+		return true
+	case RunSummaryRevisionSelectionInherited:
+		return true
+	case RunSummaryRevisionSelectionPinned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunSummaryView.
+const (
+	RunSummaryViewCompact RunSummaryView = "compact"
+)
+
+// Valid indicates whether the value is a known member of the RunSummaryView enum.
+func (e RunSummaryView) Valid() bool {
+	switch e {
+	case RunSummaryViewCompact:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for RunViewRevisionSelection.
 const (
-	Default   RunViewRevisionSelection = "default"
-	Inherited RunViewRevisionSelection = "inherited"
-	Pinned    RunViewRevisionSelection = "pinned"
+	RunViewRevisionSelectionDefault   RunViewRevisionSelection = "default"
+	RunViewRevisionSelectionInherited RunViewRevisionSelection = "inherited"
+	RunViewRevisionSelectionPinned    RunViewRevisionSelection = "pinned"
 )
 
 // Valid indicates whether the value is a known member of the RunViewRevisionSelection enum.
 func (e RunViewRevisionSelection) Valid() bool {
 	switch e {
-	case Default:
+	case RunViewRevisionSelectionDefault:
 		return true
-	case Inherited:
+	case RunViewRevisionSelectionInherited:
 		return true
-	case Pinned:
+	case RunViewRevisionSelectionPinned:
 		return true
 	default:
 		return false
@@ -1841,15 +2153,81 @@ func (e SpanStatus) Valid() bool {
 	}
 }
 
+// Defines values for SpanSummaryStatus.
+const (
+	SpanSummaryStatusError SpanSummaryStatus = "error"
+	SpanSummaryStatusOk    SpanSummaryStatus = "ok"
+)
+
+// Valid indicates whether the value is a known member of the SpanSummaryStatus enum.
+func (e SpanSummaryStatus) Valid() bool {
+	switch e {
+	case SpanSummaryStatusError:
+		return true
+	case SpanSummaryStatusOk:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SpanSummaryView.
+const (
+	SpanSummaryViewCompact SpanSummaryView = "compact"
+)
+
+// Valid indicates whether the value is a known member of the SpanSummaryView enum.
+func (e SpanSummaryView) Valid() bool {
+	switch e {
+	case SpanSummaryViewCompact:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TextPartType.
 const (
-	Text TextPartType = "text"
+	TextPartTypeText TextPartType = "text"
 )
 
 // Valid indicates whether the value is a known member of the TextPartType enum.
 func (e TextPartType) Valid() bool {
 	switch e {
-	case Text:
+	case TextPartTypeText:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TextReadMediaType.
+const (
+	TextReadMediaTypeApplicationjson TextReadMediaType = "application/json"
+	TextReadMediaTypeTextplain       TextReadMediaType = "text/plain"
+)
+
+// Valid indicates whether the value is a known member of the TextReadMediaType enum.
+func (e TextReadMediaType) Valid() bool {
+	switch e {
+	case TextReadMediaTypeApplicationjson:
+		return true
+	case TextReadMediaTypeTextplain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TextReadRepresentation.
+const (
+	Fragment TextReadRepresentation = "fragment"
+)
+
+// Valid indicates whether the value is a known member of the TextReadRepresentation enum.
+func (e TextReadRepresentation) Valid() bool {
+	switch e {
+	case Fragment:
 		return true
 	default:
 		return false
@@ -2252,6 +2630,114 @@ func (e WebhookDeliveryStatus) Valid() bool {
 	}
 }
 
+// Defines values for CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection.
+const (
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionAll                          CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "all"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionBuiltinSkills                CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "builtin_skills"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionClientTools                  CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "client_tools"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionConnectionTools              CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "connection_tools"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionDefaultEnvironmentTemplateId CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "default_environment_template_id"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionInstructions                 CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "instructions"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionLazyEnvironment              CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "lazy_environment"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionMediaUnderstanding           CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "media_understanding"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionMemory                       CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "memory"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionMemoryMounts                 CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "memory_mounts"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionModel                        CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "model"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionModelCharacteristics         CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "model_characteristics"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionModelSettings                CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "model_settings"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionOutputSpec                   CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "output_spec"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionPlatformTools                CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "platform_tools"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionPlugins                      CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "plugins"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionRetries                      CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "retries"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionReviewer                     CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "reviewer"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSkillSync                    CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "skill_sync"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSkills                       CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "skills"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSubagentMode                 CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "subagent_mode"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSubagents                    CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "subagents"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionToolSearch                   CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "tool_search"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionToolsets                     CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "toolsets"
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionUserQuestions                CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection = "user_questions"
+)
+
+// Valid indicates whether the value is a known member of the CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection enum.
+func (e CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection) Valid() bool {
+	switch e {
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionAll:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionBuiltinSkills:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionClientTools:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionConnectionTools:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionDefaultEnvironmentTemplateId:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionInstructions:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionLazyEnvironment:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionMediaUnderstanding:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionMemory:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionMemoryMounts:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionModel:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionModelCharacteristics:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionModelSettings:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionOutputSpec:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionPlatformTools:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionPlugins:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionRetries:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionReviewer:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSkillSync:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSkills:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSubagentMode:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionSubagents:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionToolSearch:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionToolsets:
+		return true
+	case CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSectionUserQuestions:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetModelCatalogApiV1ModelCatalogGetParamsSection.
+const (
+	GetModelCatalogApiV1ModelCatalogGetParamsSectionAll             GetModelCatalogApiV1ModelCatalogGetParamsSection = "all"
+	GetModelCatalogApiV1ModelCatalogGetParamsSectionCharacteristics GetModelCatalogApiV1ModelCatalogGetParamsSection = "characteristics"
+	GetModelCatalogApiV1ModelCatalogGetParamsSectionPricing         GetModelCatalogApiV1ModelCatalogGetParamsSection = "pricing"
+)
+
+// Valid indicates whether the value is a known member of the GetModelCatalogApiV1ModelCatalogGetParamsSection enum.
+func (e GetModelCatalogApiV1ModelCatalogGetParamsSection) Valid() bool {
+	switch e {
+	case GetModelCatalogApiV1ModelCatalogGetParamsSectionAll:
+		return true
+	case GetModelCatalogApiV1ModelCatalogGetParamsSectionCharacteristics:
+		return true
+	case GetModelCatalogApiV1ModelCatalogGetParamsSectionPricing:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind.
 const (
 	ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKindServiceAccount ListMembersApiV1OrganizationsOrganizationIdMembersGetParamsKind = "service_account"
@@ -2327,6 +2813,228 @@ func (e ListRunsApiV1RunsGetParamsStatus) Valid() bool {
 	}
 }
 
+// Defines values for ListRunsApiV1RunsGetParamsView.
+const (
+	ListRunsApiV1RunsGetParamsViewCompact  ListRunsApiV1RunsGetParamsView = "compact"
+	ListRunsApiV1RunsGetParamsViewDetailed ListRunsApiV1RunsGetParamsView = "detailed"
+)
+
+// Valid indicates whether the value is a known member of the ListRunsApiV1RunsGetParamsView enum.
+func (e ListRunsApiV1RunsGetParamsView) Valid() bool {
+	switch e {
+	case ListRunsApiV1RunsGetParamsViewCompact:
+		return true
+	case ListRunsApiV1RunsGetParamsViewDetailed:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetRunApiV1RunsRunIdGetParamsSection.
+const (
+	GetRunApiV1RunsRunIdGetParamsSectionEnvironmentMounts GetRunApiV1RunsRunIdGetParamsSection = "environment_mounts"
+	GetRunApiV1RunsRunIdGetParamsSectionFailure           GetRunApiV1RunsRunIdGetParamsSection = "failure"
+	GetRunApiV1RunsRunIdGetParamsSectionInput             GetRunApiV1RunsRunIdGetParamsSection = "input"
+	GetRunApiV1RunsRunIdGetParamsSectionLabels            GetRunApiV1RunsRunIdGetParamsSection = "labels"
+	GetRunApiV1RunsRunIdGetParamsSectionMemoryMounts      GetRunApiV1RunsRunIdGetParamsSection = "memory_mounts"
+	GetRunApiV1RunsRunIdGetParamsSectionOptions           GetRunApiV1RunsRunIdGetParamsSection = "options"
+	GetRunApiV1RunsRunIdGetParamsSectionOutput            GetRunApiV1RunsRunIdGetParamsSection = "output"
+	GetRunApiV1RunsRunIdGetParamsSectionPending           GetRunApiV1RunsRunIdGetParamsSection = "pending"
+	GetRunApiV1RunsRunIdGetParamsSectionResume            GetRunApiV1RunsRunIdGetParamsSection = "resume"
+	GetRunApiV1RunsRunIdGetParamsSectionUsageAtSeal       GetRunApiV1RunsRunIdGetParamsSection = "usage_at_seal"
+)
+
+// Valid indicates whether the value is a known member of the GetRunApiV1RunsRunIdGetParamsSection enum.
+func (e GetRunApiV1RunsRunIdGetParamsSection) Valid() bool {
+	switch e {
+	case GetRunApiV1RunsRunIdGetParamsSectionEnvironmentMounts:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionFailure:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionInput:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionLabels:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionMemoryMounts:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionOptions:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionOutput:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionPending:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionResume:
+		return true
+	case GetRunApiV1RunsRunIdGetParamsSectionUsageAtSeal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunAgentApiV1RunsRunIdAgentGetParamsSection.
+const (
+	Effective RunAgentApiV1RunsRunIdAgentGetParamsSection = "effective"
+	Original  RunAgentApiV1RunsRunIdAgentGetParamsSection = "original"
+	Overrides RunAgentApiV1RunsRunIdAgentGetParamsSection = "overrides"
+)
+
+// Valid indicates whether the value is a known member of the RunAgentApiV1RunsRunIdAgentGetParamsSection enum.
+func (e RunAgentApiV1RunsRunIdAgentGetParamsSection) Valid() bool {
+	switch e {
+	case Effective:
+		return true
+	case Original:
+		return true
+	case Overrides:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunAgentApiV1RunsRunIdAgentGetParamsPart.
+const (
+	RunAgentApiV1RunsRunIdAgentGetParamsPartAll                          RunAgentApiV1RunsRunIdAgentGetParamsPart = "all"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartBuiltinSkills                RunAgentApiV1RunsRunIdAgentGetParamsPart = "builtin_skills"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartClientTools                  RunAgentApiV1RunsRunIdAgentGetParamsPart = "client_tools"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartConnectionTools              RunAgentApiV1RunsRunIdAgentGetParamsPart = "connection_tools"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartDefaultEnvironmentTemplateId RunAgentApiV1RunsRunIdAgentGetParamsPart = "default_environment_template_id"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartInstructions                 RunAgentApiV1RunsRunIdAgentGetParamsPart = "instructions"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartLazyEnvironment              RunAgentApiV1RunsRunIdAgentGetParamsPart = "lazy_environment"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartMediaUnderstanding           RunAgentApiV1RunsRunIdAgentGetParamsPart = "media_understanding"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartMemory                       RunAgentApiV1RunsRunIdAgentGetParamsPart = "memory"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartMemoryMounts                 RunAgentApiV1RunsRunIdAgentGetParamsPart = "memory_mounts"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartModel                        RunAgentApiV1RunsRunIdAgentGetParamsPart = "model"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartModelCharacteristics         RunAgentApiV1RunsRunIdAgentGetParamsPart = "model_characteristics"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartModelSettings                RunAgentApiV1RunsRunIdAgentGetParamsPart = "model_settings"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartOutputSpec                   RunAgentApiV1RunsRunIdAgentGetParamsPart = "output_spec"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartPlatformTools                RunAgentApiV1RunsRunIdAgentGetParamsPart = "platform_tools"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartPlugins                      RunAgentApiV1RunsRunIdAgentGetParamsPart = "plugins"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartRetries                      RunAgentApiV1RunsRunIdAgentGetParamsPart = "retries"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartReviewer                     RunAgentApiV1RunsRunIdAgentGetParamsPart = "reviewer"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartSkillSync                    RunAgentApiV1RunsRunIdAgentGetParamsPart = "skill_sync"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartSkills                       RunAgentApiV1RunsRunIdAgentGetParamsPart = "skills"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartSubagentMode                 RunAgentApiV1RunsRunIdAgentGetParamsPart = "subagent_mode"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartSubagents                    RunAgentApiV1RunsRunIdAgentGetParamsPart = "subagents"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartToolSearch                   RunAgentApiV1RunsRunIdAgentGetParamsPart = "tool_search"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartToolsets                     RunAgentApiV1RunsRunIdAgentGetParamsPart = "toolsets"
+	RunAgentApiV1RunsRunIdAgentGetParamsPartUserQuestions                RunAgentApiV1RunsRunIdAgentGetParamsPart = "user_questions"
+)
+
+// Valid indicates whether the value is a known member of the RunAgentApiV1RunsRunIdAgentGetParamsPart enum.
+func (e RunAgentApiV1RunsRunIdAgentGetParamsPart) Valid() bool {
+	switch e {
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartAll:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartBuiltinSkills:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartClientTools:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartConnectionTools:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartDefaultEnvironmentTemplateId:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartInstructions:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartLazyEnvironment:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartMediaUnderstanding:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartMemory:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartMemoryMounts:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartModel:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartModelCharacteristics:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartModelSettings:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartOutputSpec:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartPlatformTools:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartPlugins:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartRetries:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartReviewer:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartSkillSync:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartSkills:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartSubagentMode:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartSubagents:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartToolSearch:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartToolsets:
+		return true
+	case RunAgentApiV1RunsRunIdAgentGetParamsPartUserQuestions:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus.
+const (
+	ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatusError ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus = "error"
+	ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatusOk    ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus = "ok"
+)
+
+// Valid indicates whether the value is a known member of the ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus enum.
+func (e ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus) Valid() bool {
+	switch e {
+	case ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatusError:
+		return true
+	case ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatusOk:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField.
+const (
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldAll         ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "all"
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldArguments   ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "arguments"
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldFailure     ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "failure"
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldMetadata    ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "metadata"
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldResult      ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "result"
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldResultParts ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "result_parts"
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldText        ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "text"
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldValue       ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField = "value"
+)
+
+// Valid indicates whether the value is a known member of the ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField enum.
+func (e ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField) Valid() bool {
+	switch e {
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldAll:
+		return true
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldArguments:
+		return true
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldFailure:
+		return true
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldMetadata:
+		return true
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldResult:
+		return true
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldResultParts:
+		return true
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldText:
+		return true
+	case ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsFieldValue:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListSkillsApiV1SkillsGetParamsSource.
 const (
 	ListSkillsApiV1SkillsGetParamsSourceGithub ListSkillsApiV1SkillsGetParamsSource = "github"
@@ -2339,6 +3047,150 @@ func (e ListSkillsApiV1SkillsGetParamsSource) Valid() bool {
 	case ListSkillsApiV1SkillsGetParamsSourceGithub:
 		return true
 	case ListSkillsApiV1SkillsGetParamsSourceUpload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListInboxApiV1ThreadsThreadIdInboxGetParamsKind.
+const (
+	ListInboxApiV1ThreadsThreadIdInboxGetParamsKindChildResult ListInboxApiV1ThreadsThreadIdInboxGetParamsKind = "child_result"
+	ListInboxApiV1ThreadsThreadIdInboxGetParamsKindMessage     ListInboxApiV1ThreadsThreadIdInboxGetParamsKind = "message"
+)
+
+// Valid indicates whether the value is a known member of the ListInboxApiV1ThreadsThreadIdInboxGetParamsKind enum.
+func (e ListInboxApiV1ThreadsThreadIdInboxGetParamsKind) Valid() bool {
+	switch e {
+	case ListInboxApiV1ThreadsThreadIdInboxGetParamsKindChildResult:
+		return true
+	case ListInboxApiV1ThreadsThreadIdInboxGetParamsKindMessage:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection.
+const (
+	GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSectionFailure GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection = "failure"
+	GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSectionOptions GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection = "options"
+	GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSectionPayload GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection = "payload"
+)
+
+// Valid indicates whether the value is a known member of the GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection enum.
+func (e GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection) Valid() bool {
+	switch e {
+	case GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSectionFailure:
+		return true
+	case GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSectionOptions:
+		return true
+	case GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSectionPayload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListTracesApiV1TracesGetParamsStatus.
+const (
+	ListTracesApiV1TracesGetParamsStatusError ListTracesApiV1TracesGetParamsStatus = "error"
+	ListTracesApiV1TracesGetParamsStatusOk    ListTracesApiV1TracesGetParamsStatus = "ok"
+)
+
+// Valid indicates whether the value is a known member of the ListTracesApiV1TracesGetParamsStatus enum.
+func (e ListTracesApiV1TracesGetParamsStatus) Valid() bool {
+	switch e {
+	case ListTracesApiV1TracesGetParamsStatusError:
+		return true
+	case ListTracesApiV1TracesGetParamsStatusOk:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTraceApiV1TracesTraceIdGetParamsSection.
+const (
+	GetTraceApiV1TracesTraceIdGetParamsSectionAttributes         GetTraceApiV1TracesTraceIdGetParamsSection = "attributes"
+	GetTraceApiV1TracesTraceIdGetParamsSectionEvents             GetTraceApiV1TracesTraceIdGetParamsSection = "events"
+	GetTraceApiV1TracesTraceIdGetParamsSectionInput              GetTraceApiV1TracesTraceIdGetParamsSection = "input"
+	GetTraceApiV1TracesTraceIdGetParamsSectionLinks              GetTraceApiV1TracesTraceIdGetParamsSection = "links"
+	GetTraceApiV1TracesTraceIdGetParamsSectionOutput             GetTraceApiV1TracesTraceIdGetParamsSection = "output"
+	GetTraceApiV1TracesTraceIdGetParamsSectionResourceAttributes GetTraceApiV1TracesTraceIdGetParamsSection = "resource_attributes"
+	GetTraceApiV1TracesTraceIdGetParamsSectionUsage              GetTraceApiV1TracesTraceIdGetParamsSection = "usage"
+)
+
+// Valid indicates whether the value is a known member of the GetTraceApiV1TracesTraceIdGetParamsSection enum.
+func (e GetTraceApiV1TracesTraceIdGetParamsSection) Valid() bool {
+	switch e {
+	case GetTraceApiV1TracesTraceIdGetParamsSectionAttributes:
+		return true
+	case GetTraceApiV1TracesTraceIdGetParamsSectionEvents:
+		return true
+	case GetTraceApiV1TracesTraceIdGetParamsSectionInput:
+		return true
+	case GetTraceApiV1TracesTraceIdGetParamsSectionLinks:
+		return true
+	case GetTraceApiV1TracesTraceIdGetParamsSectionOutput:
+		return true
+	case GetTraceApiV1TracesTraceIdGetParamsSectionResourceAttributes:
+		return true
+	case GetTraceApiV1TracesTraceIdGetParamsSectionUsage:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus.
+const (
+	ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatusError ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus = "error"
+	ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatusOk    ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus = "ok"
+)
+
+// Valid indicates whether the value is a known member of the ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus enum.
+func (e ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus) Valid() bool {
+	switch e {
+	case ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatusError:
+		return true
+	case ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatusOk:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection.
+const (
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionAll                ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "all"
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionAttributes         ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "attributes"
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionEvents             ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "events"
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionInput              ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "input"
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionLinks              ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "links"
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionOutput             ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "output"
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionResourceAttributes ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "resource_attributes"
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionUsage              ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection = "usage"
+)
+
+// Valid indicates whether the value is a known member of the ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection enum.
+func (e ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection) Valid() bool {
+	switch e {
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionAll:
+		return true
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionAttributes:
+		return true
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionEvents:
+		return true
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionInput:
+		return true
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionLinks:
+		return true
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionOutput:
+		return true
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionResourceAttributes:
+		return true
+	case ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSectionUsage:
 		return true
 	default:
 		return false
@@ -2899,6 +3751,23 @@ type CallbackOutcome struct {
 	Status       ConnectionStatus          `json:"status"`
 }
 
+// CatalogIndex defines model for CatalogIndex.
+type CatalogIndex struct {
+	Items           []CatalogIndexItem        `json:"items"`
+	NextCursor      nullable.Nullable[string] `json:"next_cursor"`
+	OmittedSections *[]string                 `json:"omitted_sections,omitempty"`
+}
+
+// CatalogIndexItem defines model for CatalogIndexItem.
+type CatalogIndexItem struct {
+	Description          string                    `json:"description"`
+	DescriptionTruncated *bool                     `json:"description_truncated,omitempty"`
+	Name                 string                    `json:"name"`
+	ProviderVersion      nullable.Nullable[string] `json:"provider_version,omitempty"`
+	SupportedToolCount   nullable.Nullable[int]    `json:"supported_tool_count,omitempty"`
+	ToolCount            nullable.Nullable[int]    `json:"tool_count,omitempty"`
+}
+
 // CatalogModel A catalog model, with the characteristics and pricing a model created from it starts with.
 type CatalogModel struct {
 	// Characteristics Resolved Harness characteristics of the active Agent model.
@@ -2982,6 +3851,19 @@ type ComputerCheck struct {
 
 // ComputerCheckStatus defines model for ComputerCheck.Status.
 type ComputerCheckStatus string
+
+// ConfigSection defines model for ConfigSection.
+type ConfigSection string
+
+// ConfigSummary defines model for ConfigSummary.
+type ConfigSummary struct {
+	ConnectionCount int       `json:"connection_count"`
+	Model           string    `json:"model"`
+	OmittedSections *[]string `json:"omitted_sections,omitempty"`
+	SkillCount      int       `json:"skill_count"`
+	SubagentCount   int       `json:"subagent_count"`
+	Toolsets        []string  `json:"toolsets"`
+}
 
 // Connection defines model for Connection.
 type Connection struct {
@@ -3131,6 +4013,20 @@ type ContentRef struct {
 // ContentRefMediaType defines model for ContentRef.MediaType.
 type ContentRefMediaType string
 
+// ContentSummary defines model for ContentSummary.
+type ContentSummary struct {
+	Id              string              `json:"id"`
+	MediaType       string              `json:"media_type"`
+	OmittedSections *[]string           `json:"omitted_sections,omitempty"`
+	SizeChars       int                 `json:"size_chars"`
+	SourceTruncated bool                `json:"source_truncated"`
+	Value           Preview             `json:"value"`
+	View            *ContentSummaryView `json:"view,omitempty"`
+}
+
+// ContentSummaryView defines model for ContentSummary.View.
+type ContentSummaryView string
+
 // ContextUsage One reported generation, compared with its currently configured window.
 type ContextUsage struct {
 	ContextWindowTokens nullable.Nullable[int] `json:"context_window_tokens"`
@@ -3172,6 +4068,27 @@ type CredentialMode string
 type DailyUsage struct {
 	Date  openapi_types.Date `json:"date"`
 	Usage ModelMetrics       `json:"usage"`
+}
+
+// Definition defines model for Definition.
+type Definition struct {
+	Definition map[string]JsonValue `json:"definition"`
+	Name       string               `json:"name"`
+}
+
+// DefinitionReference defines model for DefinitionReference.
+type DefinitionReference struct {
+	Instruction *string `json:"instruction,omitempty"`
+	Name        string  `json:"name"`
+	SizeChars   int     `json:"size_chars"`
+	Version     string  `json:"version"`
+}
+
+// Definitions defines model for Definitions.
+type Definitions struct {
+	Items     *[]Definition          `json:"items,omitempty"`
+	Missing   *[]string              `json:"missing,omitempty"`
+	Oversized *[]DefinitionReference `json:"oversized,omitempty"`
 }
 
 // DelegationContextPolicy defines model for DelegationContextPolicy.
@@ -3223,6 +4140,43 @@ type EntryPage struct {
 
 // EntryStatus defines model for EntryStatus.
 type EntryStatus string
+
+// EntrySummary defines model for EntrySummary.
+type EntrySummary struct {
+	AgentId         nullable.Nullable[string]         `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string]         `json:"agent_revision_id"`
+	AssignedRunId   nullable.Nullable[string]         `json:"assigned_run_id"`
+	ChildRunId      nullable.Nullable[string]         `json:"child_run_id"`
+	CreatedAt       time.Time                         `json:"created_at"`
+	Delivery        EntrySummaryDelivery              `json:"delivery"`
+	Failure         nullable.Nullable[FailureSummary] `json:"failure"`
+	FinishedAt      nullable.Nullable[time.Time]      `json:"finished_at"`
+	Id              string                            `json:"id"`
+	Kind            EntrySummaryKind                  `json:"kind"`
+	OmittedSections *[]string                         `json:"omitted_sections,omitempty"`
+	OriginRunId     nullable.Nullable[string]         `json:"origin_run_id"`
+	Payload         Preview                           `json:"payload"`
+	Position        int                               `json:"position"`
+	PrincipalId     string                            `json:"principal_id"`
+	Status          EntryStatus                       `json:"status"`
+	ThreadId        string                            `json:"thread_id"`
+	View            *EntrySummaryView                 `json:"view,omitempty"`
+}
+
+// EntrySummaryDelivery defines model for EntrySummary.Delivery.
+type EntrySummaryDelivery string
+
+// EntrySummaryKind defines model for EntrySummary.Kind.
+type EntrySummaryKind string
+
+// EntrySummaryView defines model for EntrySummary.View.
+type EntrySummaryView string
+
+// EntrySummaryPage defines model for EntrySummaryPage.
+type EntrySummaryPage struct {
+	Items      []EntrySummary            `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
 
 // EntryUpdate Pending entries only; the original request digest never changes.
 type EntryUpdate struct {
@@ -3381,6 +4335,12 @@ type FailedStatus string
 type Failure struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+}
+
+// FailureSummary defines model for FailureSummary.
+type FailureSummary struct {
+	Code    string  `json:"code"`
+	Message Preview `json:"message"`
 }
 
 // Finding defines model for Finding.
@@ -3663,8 +4623,44 @@ type Item struct {
 // ItemKind defines model for ItemKind.
 type ItemKind string
 
+// ItemPage defines model for ItemPage.
+type ItemPage struct {
+	Complete   bool                   `json:"complete"`
+	Items      []ItemPage_Items_Item  `json:"items"`
+	NextAfter  nullable.Nullable[int] `json:"next_after,omitempty"`
+	NextBefore nullable.Nullable[int] `json:"next_before,omitempty"`
+	Run        RunSummary             `json:"run"`
+	View       ItemPageView           `json:"view"`
+}
+
+// ItemPage_Items_Item defines model for ItemPage.items.Item.
+type ItemPage_Items_Item struct {
+	union json.RawMessage
+}
+
+// ItemPageView defines model for ItemPage.View.
+type ItemPageView string
+
 // ItemState defines model for ItemState.
 type ItemState string
+
+// ItemSummary defines model for ItemSummary.
+type ItemSummary struct {
+	Arguments             Preview                      `json:"arguments"`
+	EndedAt               nullable.Nullable[time.Time] `json:"ended_at"`
+	Id                    string                       `json:"id"`
+	Kind                  ItemKind                     `json:"kind"`
+	OmittedSections       *[]string                    `json:"omitted_sections,omitempty"`
+	Ordinal               int                          `json:"ordinal"`
+	Result                Preview                      `json:"result"`
+	SourceTruncated       bool                         `json:"source_truncated"`
+	SourceTruncatedFields []string                     `json:"source_truncated_fields"`
+	StartedAt             time.Time                    `json:"started_at"`
+	State                 ItemState                    `json:"state"`
+	Text                  Preview                      `json:"text"`
+	ToolCallId            nullable.Nullable[string]    `json:"tool_call_id"`
+	ToolName              nullable.Nullable[string]    `json:"tool_name"`
+}
 
 // JsonPart defines model for JsonPart.
 type JsonPart struct {
@@ -4115,6 +5111,21 @@ type ModelCatalog struct {
 // ModelCatalogStatus defines model for ModelCatalog.Status.
 type ModelCatalogStatus string
 
+// ModelCatalogPage defines model for ModelCatalogPage.
+type ModelCatalogPage struct {
+	Items      []ModelCatalogPage_Items_Item `json:"items"`
+	NextCursor nullable.Nullable[string]     `json:"next_cursor"`
+	Status     ModelCatalogPageStatus        `json:"status"`
+}
+
+// ModelCatalogPage_Items_Item defines model for ModelCatalogPage.items.Item.
+type ModelCatalogPage_Items_Item struct {
+	union json.RawMessage
+}
+
+// ModelCatalogPageStatus defines model for ModelCatalogPage.Status.
+type ModelCatalogPageStatus string
+
 // ModelConfigInput defines model for ModelConfig-Input.
 type ModelConfigInput struct {
 	// Characteristics Resolved Harness characteristics of the active Agent model.
@@ -4220,6 +5231,22 @@ type ModelRequestMetrics struct {
 	RequestDurationSeconds  nullable.Nullable[float32] `json:"request_duration_seconds"`
 	TimeToFirstChunkSeconds nullable.Nullable[float32] `json:"time_to_first_chunk_seconds"`
 }
+
+// ModelSummary defines model for ModelSummary.
+type ModelSummary struct {
+	Capabilities        []string               `json:"capabilities"`
+	ContextWindowTokens nullable.Nullable[int] `json:"context_window_tokens"`
+	Name                string                 `json:"name"`
+	OmittedSections     *[]string              `json:"omitted_sections,omitempty"`
+	PricingAvailable    bool                   `json:"pricing_available"`
+
+	// Ref A models.dev channel and the model ID it lists there.
+	Ref  CatalogRef        `json:"ref"`
+	View *ModelSummaryView `json:"view,omitempty"`
+}
+
+// ModelSummaryView defines model for ModelSummary.View.
+type ModelSummaryView string
 
 // ModelUpdate defines model for ModelUpdate.
 type ModelUpdate struct {
@@ -4458,6 +5485,12 @@ type Preset string
 // PresetKind defines model for PresetKind.
 type PresetKind string
 
+// Preview defines model for Preview.
+type Preview struct {
+	Text      string `json:"text"`
+	Truncated bool   `json:"truncated"`
+}
+
 // PriceComponentInput One genai-prices usage dimension and its USD unit price.
 type PriceComponentInput struct {
 	Price    PriceComponentInput_Price `json:"price"`
@@ -4662,6 +5695,9 @@ type ProxyToolSearchConfig struct {
 // ProxyToolSearchConfigMode defines model for ProxyToolSearchConfig.Mode.
 type ProxyToolSearchConfigMode string
 
+// ReadView defines model for ReadView.
+type ReadView string
+
 // Request defines model for Request.
 type Request struct {
 	Mount  string `json:"mount"`
@@ -4695,6 +5731,29 @@ type Returned struct {
 
 // ReturnedStatus defines model for Returned.Status.
 type ReturnedStatus string
+
+// RevisionSummary defines model for RevisionSummary.
+type RevisionSummary struct {
+	AgentId         string               `json:"agent_id"`
+	Config          ConfigSummary        `json:"config"`
+	CreatedAt       time.Time            `json:"created_at"`
+	Digest          string               `json:"digest"`
+	Id              string               `json:"id"`
+	IsDefault       bool                 `json:"is_default"`
+	Note            Preview              `json:"note"`
+	Number          int                  `json:"number"`
+	OmittedSections *[]string            `json:"omitted_sections,omitempty"`
+	View            *RevisionSummaryView `json:"view,omitempty"`
+}
+
+// RevisionSummaryView defines model for RevisionSummary.View.
+type RevisionSummaryView string
+
+// RevisionSummaryPage defines model for RevisionSummaryPage.
+type RevisionSummaryPage struct {
+	Items      []RevisionSummary         `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
 
 // RevokedConnection defines model for RevokedConnection.
 type RevokedConnection struct {
@@ -4730,6 +5789,22 @@ type RunAgent struct {
 	Config   AgentConfigOutput `json:"config"`
 	Revision AgentRevision     `json:"revision"`
 }
+
+// RunAgentSummary defines model for RunAgentSummary.
+type RunAgentSummary struct {
+	Config              ConfigSummary        `json:"config"`
+	ConnectionIds       []string             `json:"connection_ids"`
+	OmittedSections     *[]string            `json:"omitted_sections,omitempty"`
+	OverriddenPaths     []string             `json:"overridden_paths"`
+	ReferencesTruncated bool                 `json:"references_truncated"`
+	RevisionId          string               `json:"revision_id"`
+	SkillIds            []string             `json:"skill_ids"`
+	SubagentIds         []string             `json:"subagent_ids"`
+	View                *RunAgentSummaryView `json:"view,omitempty"`
+}
+
+// RunAgentSummaryView defines model for RunAgentSummary.View.
+type RunAgentSummaryView string
 
 // RunConfigurationInput An accepted snapshot, independent of Agent definitions and Capability configuration.
 //
@@ -4805,6 +5880,54 @@ type RunPage struct {
 
 // RunStatus defines model for RunStatus.
 type RunStatus string
+
+// RunSummary defines model for RunSummary.
+type RunSummary struct {
+	AgentId           string                            `json:"agent_id"`
+	AgentName         nullable.Nullable[string]         `json:"agent_name"`
+	AgentRevisionId   string                            `json:"agent_revision_id"`
+	Attempts          int                               `json:"attempts"`
+	CreatedAt         time.Time                         `json:"created_at"`
+	CurrentAttemptId  nullable.Nullable[string]         `json:"current_attempt_id"`
+	Failure           nullable.Nullable[FailureSummary] `json:"failure"`
+	Id                string                            `json:"id"`
+	Input             Preview                           `json:"input"`
+	Lineage           RunSummaryLineage                 `json:"lineage"`
+	MaxAttempts       int                               `json:"max_attempts"`
+	OmittedSections   *[]string                         `json:"omitted_sections,omitempty"`
+	Output            Preview                           `json:"output"`
+	ParentRunId       nullable.Nullable[string]         `json:"parent_run_id"`
+	PrincipalId       string                            `json:"principal_id"`
+	RevisionSelection RunSummaryRevisionSelection       `json:"revision_selection"`
+	SealedAt          nullable.Nullable[time.Time]      `json:"sealed_at"`
+	SessionId         string                            `json:"session_id"`
+	SourceEntryId     nullable.Nullable[string]         `json:"source_entry_id"`
+	StartedAt         nullable.Nullable[time.Time]      `json:"started_at"`
+	Status            RunStatus                         `json:"status"`
+	ThreadId          string                            `json:"thread_id"`
+	Trigger           Trigger                           `json:"trigger"`
+	UpdatedAt         time.Time                         `json:"updated_at"`
+	Usage             Preview                           `json:"usage"`
+	Version           int                               `json:"version"`
+	View              *RunSummaryView                   `json:"view,omitempty"`
+	WaitReason        nullable.Nullable[WaitReason]     `json:"wait_reason"`
+	WorkspaceId       string                            `json:"workspace_id"`
+}
+
+// RunSummaryLineage defines model for RunSummary.Lineage.
+type RunSummaryLineage string
+
+// RunSummaryRevisionSelection defines model for RunSummary.RevisionSelection.
+type RunSummaryRevisionSelection string
+
+// RunSummaryView defines model for RunSummary.View.
+type RunSummaryView string
+
+// RunSummaryPage defines model for RunSummaryPage.
+type RunSummaryPage struct {
+	Items      []RunSummary              `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
 
 // RunUsage defines model for RunUsage.
 type RunUsage struct {
@@ -5169,6 +6292,12 @@ type Span struct {
 // SpanStatus defines model for Span.Status.
 type SpanStatus string
 
+// SpanContentPage A matching span's selected content, or a continuation to keep locating that span.
+type SpanContentPage struct {
+	Items      []TextRead                `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
 // SpanEvent Something the span recorded at one moment, such as an exception.
 type SpanEvent struct {
 	Attributes map[string]JsonValue `json:"attributes"`
@@ -5188,6 +6317,42 @@ type SpanPage struct {
 	Items      []Span                    `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
+
+// SpanReadPage defines model for SpanReadPage.
+type SpanReadPage struct {
+	Items      []SpanReadPage_Items_Item `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// SpanReadPage_Items_Item defines model for SpanReadPage.items.Item.
+type SpanReadPage_Items_Item struct {
+	union json.RawMessage
+}
+
+// SpanSummary defines model for SpanSummary.
+type SpanSummary struct {
+	CostUsd         nullable.Nullable[string]    `json:"cost_usd"`
+	DurationMs      nullable.Nullable[float32]   `json:"duration_ms"`
+	EndedAt         nullable.Nullable[time.Time] `json:"ended_at"`
+	Error           Preview                      `json:"error"`
+	Id              string                       `json:"id"`
+	Kind            string                       `json:"kind"`
+	Model           Preview                      `json:"model"`
+	Name            Preview                      `json:"name"`
+	OmittedSections *[]string                    `json:"omitted_sections,omitempty"`
+	ParentId        nullable.Nullable[string]    `json:"parent_id"`
+	StartedAt       time.Time                    `json:"started_at"`
+	Status          SpanSummaryStatus            `json:"status"`
+	TraceId         string                       `json:"trace_id"`
+	Usage           Preview                      `json:"usage"`
+	View            *SpanSummaryView             `json:"view,omitempty"`
+}
+
+// SpanSummaryStatus defines model for SpanSummary.Status.
+type SpanSummaryStatus string
+
+// SpanSummaryView defines model for SpanSummary.View.
+type SpanSummaryView string
 
 // SubagentOverrideInput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
 type SubagentOverrideInput struct {
@@ -5355,6 +6520,28 @@ type TextPart struct {
 
 // TextPartType defines model for TextPart.Type.
 type TextPartType string
+
+// TextRead A fragment of a versioned value, not a complete JSON object or writable configuration.
+type TextRead struct {
+	HasMore         bool                      `json:"has_more"`
+	MatchOffset     nullable.Nullable[int]    `json:"match_offset,omitempty"`
+	MediaType       TextReadMediaType         `json:"media_type"`
+	NextOffset      nullable.Nullable[int]    `json:"next_offset"`
+	Offset          int                       `json:"offset"`
+	Query           nullable.Nullable[string] `json:"query,omitempty"`
+	Representation  *TextReadRepresentation   `json:"representation,omitempty"`
+	Source          string                    `json:"source"`
+	SourceTruncated *bool                     `json:"source_truncated,omitempty"`
+	Text            string                    `json:"text"`
+	TotalChars      int                       `json:"total_chars"`
+	Version         string                    `json:"version"`
+}
+
+// TextReadMediaType defines model for TextRead.MediaType.
+type TextReadMediaType string
+
+// TextReadRepresentation defines model for TextRead.Representation.
+type TextReadRepresentation string
 
 // ThreadPage defines model for ThreadPage.
 type ThreadPage struct {
@@ -5818,11 +7005,18 @@ type DuplicateAgentApiV1AgentsAgentIdDuplicatePostParams struct {
 
 // ListRevisionsApiV1AgentsAgentIdRevisionsGetParams defines parameters for ListRevisionsApiV1AgentsAgentIdRevisionsGet.
 type ListRevisionsApiV1AgentsAgentIdRevisionsGetParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	// View Use compact for discovery; detailed preserves the original response.
+	View   *ReadView `form:"view,omitempty" json:"view,omitempty"`
+	Limit  *int      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody defines parameters for ListRevisionsApiV1AgentsAgentIdRevisionsGet.
+type ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // CreateRevisionApiV1AgentsAgentIdRevisionsPostParams defines parameters for CreateRevisionApiV1AgentsAgentIdRevisionsPost.
@@ -5836,9 +7030,54 @@ type CreateRevisionApiV1AgentsAgentIdRevisionsPostParams struct {
 
 // GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetParams defines parameters for GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet.
 type GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetParams struct {
+	// View Use compact for discovery; detailed preserves the original response.
+	View    *ReadView      `form:"view,omitempty" json:"view,omitempty"`
+	Section *ConfigSection `form:"section,omitempty" json:"section,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody defines parameters for GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet.
+type GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParams defines parameters for CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet.
+type CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParams struct {
+	BaseRevisionId string                                                                        `form:"base_revision_id" json:"base_revision_id"`
+	Section        *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection `form:"section,omitempty" json:"section,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection defines parameters for CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet.
+type CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParamsSection string
 
 // SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPostParams defines parameters for SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPost.
 type SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPostParams struct {
@@ -5963,6 +7202,41 @@ type ListToolsApiV1ConnectionsConnectionIdToolsGetParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetParams defines parameters for DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet.
+type DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetParams struct {
+	// Name Exact names; repeat name to select up to five definitions.
+	Name   []string `form:"name" json:"name"`
+	Offset *int     `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody defines parameters for DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet.
+type DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetParams defines parameters for IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet.
+type IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetParams struct {
+	// Query Case-insensitive substring of full names and descriptions.
+	Query  *string `form:"query,omitempty" json:"query,omitempty"`
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListProvidersApiV1ConnectorProvidersGetParams defines parameters for ListProvidersApiV1ConnectorProvidersGet.
 type ListProvidersApiV1ConnectorProvidersGetParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -6012,6 +7286,41 @@ type GetAppApiV1ConnectorProvidersProviderIdAppsAppGetParams struct {
 
 // ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams defines parameters for ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet.
 type ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetParams defines parameters for DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet.
+type DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetParams struct {
+	// Name Exact names; repeat name to select up to five definitions.
+	Name   []string `form:"name" json:"name"`
+	Offset *int     `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody defines parameters for DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet.
+type DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetParams defines parameters for IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet.
+type IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetParams struct {
+	// Query Case-insensitive substring of full names and descriptions.
+	Query  *string `form:"query,omitempty" json:"query,omitempty"`
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -6553,6 +7862,33 @@ type GetModelCatalogApiV1ModelCatalogGetParams struct {
 
 	// Model Exact, case-sensitive model ID within the catalog channel.
 	Model *string `form:"model,omitempty" json:"model,omitempty"`
+
+	// View Use compact for discovery; detailed preserves the original response.
+	View *ReadView `form:"view,omitempty" json:"view,omitempty"`
+
+	// Query Case-insensitive substring of full names and descriptions.
+	Query      *string                                           `form:"query,omitempty" json:"query,omitempty"`
+	Capability *string                                           `form:"capability,omitempty" json:"capability,omitempty"`
+	Limit      *int                                              `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor     *string                                           `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Section    *GetModelCatalogApiV1ModelCatalogGetParamsSection `form:"section,omitempty" json:"section,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// TextLimit Maximum Unicode code points in this fragment.
+	TextLimit *int `form:"text_limit,omitempty" json:"text_limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+}
+
+// GetModelCatalogApiV1ModelCatalogGetParamsSection defines parameters for GetModelCatalogApiV1ModelCatalogGet.
+type GetModelCatalogApiV1ModelCatalogGetParamsSection string
+
+// GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody defines parameters for GetModelCatalogApiV1ModelCatalogGet.
+type GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // ListProvidersApiV1ModelProvidersGetParams defines parameters for ListProvidersApiV1ModelProvidersGet.
@@ -6733,6 +8069,7 @@ type ListRunsApiV1RunsGetParams struct {
 	Status        *ListRunsApiV1RunsGetParamsStatus `form:"status,omitempty" json:"status,omitempty"`
 	CreatedAfter  *time.Time                        `form:"created_after,omitempty" json:"created_after,omitempty"`
 	CreatedBefore *time.Time                        `form:"created_before,omitempty" json:"created_before,omitempty"`
+	View          *ListRunsApiV1RunsGetParamsView   `form:"view,omitempty" json:"view,omitempty"`
 	Limit         *int                              `form:"limit,omitempty" json:"limit,omitempty"`
 	Cursor        *string                           `form:"cursor,omitempty" json:"cursor,omitempty"`
 
@@ -6743,10 +8080,42 @@ type ListRunsApiV1RunsGetParams struct {
 // ListRunsApiV1RunsGetParamsStatus defines parameters for ListRunsApiV1RunsGet.
 type ListRunsApiV1RunsGetParamsStatus string
 
+// ListRunsApiV1RunsGetParamsView defines parameters for ListRunsApiV1RunsGet.
+type ListRunsApiV1RunsGetParamsView string
+
+// ListRunsApiV1RunsGet200JSONResponseBody defines parameters for ListRunsApiV1RunsGet.
+type ListRunsApiV1RunsGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
 // GetRunApiV1RunsRunIdGetParams defines parameters for GetRunApiV1RunsRunIdGet.
 type GetRunApiV1RunsRunIdGetParams struct {
+	// View Use compact for discovery; detailed preserves the original response.
+	View    *ReadView                             `form:"view,omitempty" json:"view,omitempty"`
+	Section *GetRunApiV1RunsRunIdGetParamsSection `form:"section,omitempty" json:"section,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetRunApiV1RunsRunIdGetParamsSection defines parameters for GetRunApiV1RunsRunIdGet.
+type GetRunApiV1RunsRunIdGetParamsSection string
+
+// GetRunApiV1RunsRunIdGet200JSONResponseBody defines parameters for GetRunApiV1RunsRunIdGet.
+type GetRunApiV1RunsRunIdGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // UpdateRunApiV1RunsRunIdPatchParams defines parameters for UpdateRunApiV1RunsRunIdPatch.
@@ -6760,8 +8129,36 @@ type UpdateRunApiV1RunsRunIdPatchParams struct {
 
 // RunAgentApiV1RunsRunIdAgentGetParams defines parameters for RunAgentApiV1RunsRunIdAgentGet.
 type RunAgentApiV1RunsRunIdAgentGetParams struct {
+	// View Use compact for discovery; detailed preserves the original response.
+	View    *ReadView                                    `form:"view,omitempty" json:"view,omitempty"`
+	Section *RunAgentApiV1RunsRunIdAgentGetParamsSection `form:"section,omitempty" json:"section,omitempty"`
+	Part    *RunAgentApiV1RunsRunIdAgentGetParamsPart    `form:"part,omitempty" json:"part,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RunAgentApiV1RunsRunIdAgentGetParamsSection defines parameters for RunAgentApiV1RunsRunIdAgentGet.
+type RunAgentApiV1RunsRunIdAgentGetParamsSection string
+
+// RunAgentApiV1RunsRunIdAgentGetParamsPart defines parameters for RunAgentApiV1RunsRunIdAgentGet.
+type RunAgentApiV1RunsRunIdAgentGetParamsPart string
+
+// RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody defines parameters for RunAgentApiV1RunsRunIdAgentGet.
+type RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // RunAttemptsApiV1RunsRunIdAttemptsGetParams defines parameters for RunAttemptsApiV1RunsRunIdAttemptsGet.
@@ -6778,17 +8175,48 @@ type GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams struct {
 
 // ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParams defines parameters for ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet.
 type ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	// View Use compact for discovery; detailed preserves the original response.
+	View     *ReadView                                                            `form:"view,omitempty" json:"view,omitempty"`
+	Status   *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Kind     *string                                                              `form:"kind,omitempty" json:"kind,omitempty"`
+	ToolName *string                                                              `form:"tool_name,omitempty" json:"tool_name,omitempty"`
+	Limit    *int                                                                 `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor   *string                                                              `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus defines parameters for ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet.
+type ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetParamsStatus string
+
+// ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody defines parameters for ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet.
+type ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
 // RunContentApiV1RunsRunIdContentsContentIdGetParams defines parameters for RunContentApiV1RunsRunIdContentsContentIdGet.
 type RunContentApiV1RunsRunIdContentsContentIdGetParams struct {
+	// View Use compact for discovery; detailed preserves the original response.
+	View   *ReadView `form:"view,omitempty" json:"view,omitempty"`
+	Offset *int      `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody defines parameters for RunContentApiV1RunsRunIdContentsContentIdGet.
+type RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGetParams defines parameters for GetAssistanceApiV1RunsRunIdDesktopAssistanceCallIdGet.
@@ -6838,16 +8266,61 @@ type RunItemsApiV1RunsRunIdItemsGetParams struct {
 	After *int `form:"after,omitempty" json:"after,omitempty"`
 	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
 
+	// View Use compact for discovery; detailed preserves the original response.
+	View     *ReadView  `form:"view,omitempty" json:"view,omitempty"`
+	Kind     *ItemKind  `form:"kind,omitempty" json:"kind,omitempty"`
+	State    *ItemState `form:"state,omitempty" json:"state,omitempty"`
+	ToolName *string    `form:"tool_name,omitempty" json:"tool_name,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody defines parameters for RunItemsApiV1RunsRunIdItemsGet.
+type RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParams defines parameters for ReadItemContentApiV1RunsRunIdItemsItemIdContentGet.
+type ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParams struct {
+	// Ordinal Ordinal returned with this item ID; both must match
+	Ordinal int                                                            `form:"ordinal" json:"ordinal"`
+	Field   *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField `form:"field,omitempty" json:"field,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField defines parameters for ReadItemContentApiV1RunsRunIdItemsItemIdContentGet.
+type ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParamsField string
 
 // RunLineageApiV1RunsRunIdLineageGetParams defines parameters for RunLineageApiV1RunsRunIdLineageGet.
 type RunLineageApiV1RunsRunIdLineageGetParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
+	// View Use compact for discovery; detailed preserves the original response.
+	View  *ReadView `form:"view,omitempty" json:"view,omitempty"`
+	Limit *int      `form:"limit,omitempty" json:"limit,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody defines parameters for RunLineageApiV1RunsRunIdLineageGet.
+type RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // ResumeRunApiV1RunsRunIdResumePostParams defines parameters for ResumeRunApiV1RunsRunIdResumePost.
@@ -7149,11 +8622,23 @@ type UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams struct {
 // ListInboxApiV1ThreadsThreadIdInboxGetParams defines parameters for ListInboxApiV1ThreadsThreadIdInboxGet.
 type ListInboxApiV1ThreadsThreadIdInboxGetParams struct {
 	Status *[]EntryStatus `form:"status,omitempty" json:"status,omitempty"`
-	Limit  *int           `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string        `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// View Use compact for discovery; detailed preserves the original response.
+	View   *ReadView                                        `form:"view,omitempty" json:"view,omitempty"`
+	Kind   *ListInboxApiV1ThreadsThreadIdInboxGetParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
+	Limit  *int                                             `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string                                          `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListInboxApiV1ThreadsThreadIdInboxGetParamsKind defines parameters for ListInboxApiV1ThreadsThreadIdInboxGet.
+type ListInboxApiV1ThreadsThreadIdInboxGetParamsKind string
+
+// ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody defines parameters for ListInboxApiV1ThreadsThreadIdInboxGet.
+type ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // SubmitMessageApiV1ThreadsThreadIdInboxPostParams defines parameters for SubmitMessageApiV1ThreadsThreadIdInboxPost.
@@ -7184,8 +8669,32 @@ type WithdrawEntryApiV1ThreadsThreadIdInboxEntryIdDeleteParams struct {
 
 // GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParams defines parameters for GetEntryApiV1ThreadsThreadIdInboxEntryIdGet.
 type GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParams struct {
+	// View Use compact for discovery; detailed preserves the original response.
+	View    *ReadView                                                 `form:"view,omitempty" json:"view,omitempty"`
+	Section *GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection `form:"section,omitempty" json:"section,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection defines parameters for GetEntryApiV1ThreadsThreadIdInboxEntryIdGet.
+type GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParamsSection string
+
+// GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody defines parameters for GetEntryApiV1ThreadsThreadIdInboxEntryIdGet.
+type GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // EditEntryApiV1ThreadsThreadIdInboxEntryIdPatchParams defines parameters for EditEntryApiV1ThreadsThreadIdInboxEntryIdPatch.
@@ -7232,11 +8741,18 @@ type UpdateMountApiV1ThreadsThreadIdMemoriesNamePatchParams struct {
 
 // ListThreadRunsApiV1ThreadsThreadIdRunsGetParams defines parameters for ListThreadRunsApiV1ThreadsThreadIdRunsGet.
 type ListThreadRunsApiV1ThreadsThreadIdRunsGetParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	// View Use compact for discovery; detailed preserves the original response.
+	View   *ReadView `form:"view,omitempty" json:"view,omitempty"`
+	Limit  *int      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody defines parameters for ListThreadRunsApiV1ThreadsThreadIdRunsGet.
+type ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // ThreadStreamApiV1ThreadsThreadIdStreamGetParams defines parameters for ThreadStreamApiV1ThreadsThreadIdStreamGet.
@@ -7251,6 +8767,41 @@ type ThreadStreamApiV1ThreadsThreadIdStreamGetParams struct {
 
 // ListToolsetsApiV1ToolsetsGetParams defines parameters for ListToolsetsApiV1ToolsetsGet.
 type ListToolsetsApiV1ToolsetsGetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DefineToolsetsApiV1ToolsetsDefinitionsGetParams defines parameters for DefineToolsetsApiV1ToolsetsDefinitionsGet.
+type DefineToolsetsApiV1ToolsetsDefinitionsGetParams struct {
+	// Name Exact names; repeat name to select up to five definitions.
+	Name   []string `form:"name" json:"name"`
+	Offset *int     `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody defines parameters for DefineToolsetsApiV1ToolsetsDefinitionsGet.
+type DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// IndexToolsetsApiV1ToolsetsIndexGetParams defines parameters for IndexToolsetsApiV1ToolsetsIndexGet.
+type IndexToolsetsApiV1ToolsetsIndexGetParams struct {
+	// Query Case-insensitive substring of full names and descriptions.
+	Query  *string `form:"query,omitempty" json:"query,omitempty"`
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -7271,27 +8822,102 @@ type ListTracesApiV1TracesGetParams struct {
 	Attribute     *[]string  `form:"attribute,omitempty" json:"attribute,omitempty"`
 	StartedAfter  *time.Time `form:"started_after,omitempty" json:"started_after,omitempty"`
 	StartedBefore *time.Time `form:"started_before,omitempty" json:"started_before,omitempty"`
-	Limit         *int       `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor        *string    `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// View Use compact for discovery; detailed preserves the original response.
+	View     *ReadView                             `form:"view,omitempty" json:"view,omitempty"`
+	Status   *ListTracesApiV1TracesGetParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Kind     *string                               `form:"kind,omitempty" json:"kind,omitempty"`
+	ToolName *string                               `form:"tool_name,omitempty" json:"tool_name,omitempty"`
+	Limit    *int                                  `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor   *string                               `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListTracesApiV1TracesGetParamsStatus defines parameters for ListTracesApiV1TracesGet.
+type ListTracesApiV1TracesGetParamsStatus string
+
+// ListTracesApiV1TracesGet200JSONResponseBody defines parameters for ListTracesApiV1TracesGet.
+type ListTracesApiV1TracesGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // GetTraceApiV1TracesTraceIdGetParams defines parameters for GetTraceApiV1TracesTraceIdGet.
 type GetTraceApiV1TracesTraceIdGetParams struct {
+	// View Use compact for discovery; detailed preserves the original response.
+	View    *ReadView                                   `form:"view,omitempty" json:"view,omitempty"`
+	Section *GetTraceApiV1TracesTraceIdGetParamsSection `form:"section,omitempty" json:"section,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetTraceApiV1TracesTraceIdGetParamsSection defines parameters for GetTraceApiV1TracesTraceIdGet.
+type GetTraceApiV1TracesTraceIdGetParamsSection string
+
+// GetTraceApiV1TracesTraceIdGet200JSONResponseBody defines parameters for GetTraceApiV1TracesTraceIdGet.
+type GetTraceApiV1TracesTraceIdGet200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // ListTraceSpansApiV1TracesTraceIdSpansGetParams defines parameters for ListTraceSpansApiV1TracesTraceIdSpansGet.
 type ListTraceSpansApiV1TracesTraceIdSpansGetParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	// View Use compact for discovery; detailed preserves the original response.
+	View     *ReadView                                             `form:"view,omitempty" json:"view,omitempty"`
+	Status   *ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Kind     *string                                               `form:"kind,omitempty" json:"kind,omitempty"`
+	ToolName *string                                               `form:"tool_name,omitempty" json:"tool_name,omitempty"`
+	Limit    *int                                                  `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor   *string                                               `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus defines parameters for ListTraceSpansApiV1TracesTraceIdSpansGet.
+type ListTraceSpansApiV1TracesTraceIdSpansGetParamsStatus string
+
+// ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody defines parameters for ListTraceSpansApiV1TracesTraceIdSpansGet.
+type ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParams defines parameters for ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet.
+type ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParams struct {
+	Section *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection `form:"section,omitempty" json:"section,omitempty"`
+	Cursor  *string                                                              `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Offset Unicode code-point offset; continue with next_offset.
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Limit Maximum Unicode code points in this fragment.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Version Content version from the first read; required after offset 0.
+	Version *string `form:"version,omitempty" json:"version,omitempty"`
+
+	// Query Case-sensitive literal text search.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection defines parameters for ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet.
+type ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParamsSection string
 
 // CreateUploadApiV1UploadsPostParams defines parameters for CreateUploadApiV1UploadsPost.
 type CreateUploadApiV1UploadsPostParams struct {
@@ -8214,6 +9840,130 @@ func (t EnteredCredential) MarshalJSON() ([]byte, error) {
 }
 
 func (t *EnteredCredential) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsItemSummary returns the union data inside the ItemPage_Items_Item as a ItemSummary
+func (t ItemPage_Items_Item) AsItemSummary() (ItemSummary, error) {
+	var body ItemSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromItemSummary overwrites any union data inside the ItemPage_Items_Item as the provided ItemSummary
+func (t *ItemPage_Items_Item) FromItemSummary(v ItemSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeItemSummary performs a merge with any union data inside the ItemPage_Items_Item, using the provided ItemSummary
+func (t *ItemPage_Items_Item) MergeItemSummary(v ItemSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsItem returns the union data inside the ItemPage_Items_Item as a Item
+func (t ItemPage_Items_Item) AsItem() (Item, error) {
+	var body Item
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromItem overwrites any union data inside the ItemPage_Items_Item as the provided Item
+func (t *ItemPage_Items_Item) FromItem(v Item) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeItem performs a merge with any union data inside the ItemPage_Items_Item, using the provided Item
+func (t *ItemPage_Items_Item) MergeItem(v Item) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ItemPage_Items_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ItemPage_Items_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsModelSummary returns the union data inside the ModelCatalogPage_Items_Item as a ModelSummary
+func (t ModelCatalogPage_Items_Item) AsModelSummary() (ModelSummary, error) {
+	var body ModelSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromModelSummary overwrites any union data inside the ModelCatalogPage_Items_Item as the provided ModelSummary
+func (t *ModelCatalogPage_Items_Item) FromModelSummary(v ModelSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeModelSummary performs a merge with any union data inside the ModelCatalogPage_Items_Item, using the provided ModelSummary
+func (t *ModelCatalogPage_Items_Item) MergeModelSummary(v ModelSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCatalogModel returns the union data inside the ModelCatalogPage_Items_Item as a CatalogModel
+func (t ModelCatalogPage_Items_Item) AsCatalogModel() (CatalogModel, error) {
+	var body CatalogModel
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCatalogModel overwrites any union data inside the ModelCatalogPage_Items_Item as the provided CatalogModel
+func (t *ModelCatalogPage_Items_Item) FromCatalogModel(v CatalogModel) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCatalogModel performs a merge with any union data inside the ModelCatalogPage_Items_Item, using the provided CatalogModel
+func (t *ModelCatalogPage_Items_Item) MergeCatalogModel(v CatalogModel) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ModelCatalogPage_Items_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ModelCatalogPage_Items_Item) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -9284,6 +11034,68 @@ func (t *SkillValidate_Source) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsSpanSummary returns the union data inside the SpanReadPage_Items_Item as a SpanSummary
+func (t SpanReadPage_Items_Item) AsSpanSummary() (SpanSummary, error) {
+	var body SpanSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanSummary overwrites any union data inside the SpanReadPage_Items_Item as the provided SpanSummary
+func (t *SpanReadPage_Items_Item) FromSpanSummary(v SpanSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanSummary performs a merge with any union data inside the SpanReadPage_Items_Item, using the provided SpanSummary
+func (t *SpanReadPage_Items_Item) MergeSpanSummary(v SpanSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSpan returns the union data inside the SpanReadPage_Items_Item as a Span
+func (t SpanReadPage_Items_Item) AsSpan() (Span, error) {
+	var body Span
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpan overwrites any union data inside the SpanReadPage_Items_Item as the provided Span
+func (t *SpanReadPage_Items_Item) FromSpan(v Span) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpan performs a merge with any union data inside the SpanReadPage_Items_Item, using the provided Span
+func (t *SpanReadPage_Items_Item) MergeSpan(v Span) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SpanReadPage_Items_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SpanReadPage_Items_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsToolPermissionMode returns the union data inside the ToolPermissionSetting as a ToolPermissionMode
 func (t ToolPermissionSetting) AsToolPermissionMode() (ToolPermissionMode, error) {
 	var body ToolPermissionMode
@@ -9514,6 +11326,280 @@ func (t *UsageLimitsInput_CostLimit) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsAgentRevisionPage returns the union data inside the ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody as a AgentRevisionPage
+func (t ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) AsAgentRevisionPage() (AgentRevisionPage, error) {
+	var body AgentRevisionPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAgentRevisionPage overwrites any union data inside the ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody as the provided AgentRevisionPage
+func (t *ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) FromAgentRevisionPage(v AgentRevisionPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAgentRevisionPage performs a merge with any union data inside the ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody, using the provided AgentRevisionPage
+func (t *ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) MergeAgentRevisionPage(v AgentRevisionPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRevisionSummaryPage returns the union data inside the ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody as a RevisionSummaryPage
+func (t ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) AsRevisionSummaryPage() (RevisionSummaryPage, error) {
+	var body RevisionSummaryPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRevisionSummaryPage overwrites any union data inside the ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody as the provided RevisionSummaryPage
+func (t *ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) FromRevisionSummaryPage(v RevisionSummaryPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRevisionSummaryPage performs a merge with any union data inside the ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody, using the provided RevisionSummaryPage
+func (t *ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) MergeRevisionSummaryPage(v RevisionSummaryPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsAgentRevision returns the union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody as a AgentRevision
+func (t GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) AsAgentRevision() (AgentRevision, error) {
+	var body AgentRevision
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAgentRevision overwrites any union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody as the provided AgentRevision
+func (t *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) FromAgentRevision(v AgentRevision) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAgentRevision performs a merge with any union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody, using the provided AgentRevision
+func (t *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) MergeAgentRevision(v AgentRevision) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRevisionSummary returns the union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody as a RevisionSummary
+func (t GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) AsRevisionSummary() (RevisionSummary, error) {
+	var body RevisionSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRevisionSummary overwrites any union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody as the provided RevisionSummary
+func (t *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) FromRevisionSummary(v RevisionSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRevisionSummary performs a merge with any union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody, using the provided RevisionSummary
+func (t *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) MergeRevisionSummary(v RevisionSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody as a TextRead
+func (t GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody as the provided TextRead
+func (t *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody, using the provided TextRead
+func (t *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDefinitions returns the union data inside the DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody as a Definitions
+func (t DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) AsDefinitions() (Definitions, error) {
+	var body Definitions
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitions overwrites any union data inside the DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody as the provided Definitions
+func (t *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) FromDefinitions(v Definitions) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitions performs a merge with any union data inside the DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody, using the provided Definitions
+func (t *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) MergeDefinitions(v Definitions) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody as a TextRead
+func (t DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody as the provided TextRead
+func (t *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody, using the provided TextRead
+func (t *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDefinitions returns the union data inside the DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody as a Definitions
+func (t DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) AsDefinitions() (Definitions, error) {
+	var body Definitions
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitions overwrites any union data inside the DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody as the provided Definitions
+func (t *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) FromDefinitions(v Definitions) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitions performs a merge with any union data inside the DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody, using the provided Definitions
+func (t *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) MergeDefinitions(v Definitions) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody as a TextRead
+func (t DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody as the provided TextRead
+func (t *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody, using the provided TextRead
+func (t *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsManagedEnvironmentCreate returns the union data inside the CreateEnvironmentApiV1EnvironmentsPostJSONBody as a ManagedEnvironmentCreate
 func (t CreateEnvironmentApiV1EnvironmentsPostJSONBody) AsManagedEnvironmentCreate() (ManagedEnvironmentCreate, error) {
 	var body ManagedEnvironmentCreate
@@ -9572,6 +11658,1092 @@ func (t CreateEnvironmentApiV1EnvironmentsPostJSONBody) MarshalJSON() ([]byte, e
 }
 
 func (t *CreateEnvironmentApiV1EnvironmentsPostJSONBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsModelCatalog returns the union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody as a ModelCatalog
+func (t GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) AsModelCatalog() (ModelCatalog, error) {
+	var body ModelCatalog
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromModelCatalog overwrites any union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody as the provided ModelCatalog
+func (t *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) FromModelCatalog(v ModelCatalog) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeModelCatalog performs a merge with any union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody, using the provided ModelCatalog
+func (t *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) MergeModelCatalog(v ModelCatalog) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsModelCatalogPage returns the union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody as a ModelCatalogPage
+func (t GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) AsModelCatalogPage() (ModelCatalogPage, error) {
+	var body ModelCatalogPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromModelCatalogPage overwrites any union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody as the provided ModelCatalogPage
+func (t *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) FromModelCatalogPage(v ModelCatalogPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeModelCatalogPage performs a merge with any union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody, using the provided ModelCatalogPage
+func (t *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) MergeModelCatalogPage(v ModelCatalogPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody as a TextRead
+func (t GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody as the provided TextRead
+func (t *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody, using the provided TextRead
+func (t *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRunPage returns the union data inside the ListRunsApiV1RunsGet200JSONResponseBody as a RunPage
+func (t ListRunsApiV1RunsGet200JSONResponseBody) AsRunPage() (RunPage, error) {
+	var body RunPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunPage overwrites any union data inside the ListRunsApiV1RunsGet200JSONResponseBody as the provided RunPage
+func (t *ListRunsApiV1RunsGet200JSONResponseBody) FromRunPage(v RunPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunPage performs a merge with any union data inside the ListRunsApiV1RunsGet200JSONResponseBody, using the provided RunPage
+func (t *ListRunsApiV1RunsGet200JSONResponseBody) MergeRunPage(v RunPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRunSummaryPage returns the union data inside the ListRunsApiV1RunsGet200JSONResponseBody as a RunSummaryPage
+func (t ListRunsApiV1RunsGet200JSONResponseBody) AsRunSummaryPage() (RunSummaryPage, error) {
+	var body RunSummaryPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunSummaryPage overwrites any union data inside the ListRunsApiV1RunsGet200JSONResponseBody as the provided RunSummaryPage
+func (t *ListRunsApiV1RunsGet200JSONResponseBody) FromRunSummaryPage(v RunSummaryPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunSummaryPage performs a merge with any union data inside the ListRunsApiV1RunsGet200JSONResponseBody, using the provided RunSummaryPage
+func (t *ListRunsApiV1RunsGet200JSONResponseBody) MergeRunSummaryPage(v RunSummaryPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListRunsApiV1RunsGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListRunsApiV1RunsGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRunView returns the union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody as a RunView
+func (t GetRunApiV1RunsRunIdGet200JSONResponseBody) AsRunView() (RunView, error) {
+	var body RunView
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunView overwrites any union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody as the provided RunView
+func (t *GetRunApiV1RunsRunIdGet200JSONResponseBody) FromRunView(v RunView) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunView performs a merge with any union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody, using the provided RunView
+func (t *GetRunApiV1RunsRunIdGet200JSONResponseBody) MergeRunView(v RunView) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRunSummary returns the union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody as a RunSummary
+func (t GetRunApiV1RunsRunIdGet200JSONResponseBody) AsRunSummary() (RunSummary, error) {
+	var body RunSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunSummary overwrites any union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody as the provided RunSummary
+func (t *GetRunApiV1RunsRunIdGet200JSONResponseBody) FromRunSummary(v RunSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunSummary performs a merge with any union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody, using the provided RunSummary
+func (t *GetRunApiV1RunsRunIdGet200JSONResponseBody) MergeRunSummary(v RunSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody as a TextRead
+func (t GetRunApiV1RunsRunIdGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody as the provided TextRead
+func (t *GetRunApiV1RunsRunIdGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the GetRunApiV1RunsRunIdGet200JSONResponseBody, using the provided TextRead
+func (t *GetRunApiV1RunsRunIdGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetRunApiV1RunsRunIdGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetRunApiV1RunsRunIdGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRunAgent returns the union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody as a RunAgent
+func (t RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) AsRunAgent() (RunAgent, error) {
+	var body RunAgent
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunAgent overwrites any union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody as the provided RunAgent
+func (t *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) FromRunAgent(v RunAgent) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunAgent performs a merge with any union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody, using the provided RunAgent
+func (t *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) MergeRunAgent(v RunAgent) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRunAgentSummary returns the union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody as a RunAgentSummary
+func (t RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) AsRunAgentSummary() (RunAgentSummary, error) {
+	var body RunAgentSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunAgentSummary overwrites any union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody as the provided RunAgentSummary
+func (t *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) FromRunAgentSummary(v RunAgentSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunAgentSummary performs a merge with any union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody, using the provided RunAgentSummary
+func (t *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) MergeRunAgentSummary(v RunAgentSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody as a TextRead
+func (t RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody as the provided TextRead
+func (t *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody, using the provided TextRead
+func (t *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsSpanPage returns the union data inside the ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody as a SpanPage
+func (t ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) AsSpanPage() (SpanPage, error) {
+	var body SpanPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanPage overwrites any union data inside the ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody as the provided SpanPage
+func (t *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) FromSpanPage(v SpanPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanPage performs a merge with any union data inside the ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody, using the provided SpanPage
+func (t *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) MergeSpanPage(v SpanPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSpanReadPage returns the union data inside the ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody as a SpanReadPage
+func (t ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) AsSpanReadPage() (SpanReadPage, error) {
+	var body SpanReadPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanReadPage overwrites any union data inside the ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody as the provided SpanReadPage
+func (t *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) FromSpanReadPage(v SpanReadPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanReadPage performs a merge with any union data inside the ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody, using the provided SpanReadPage
+func (t *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) MergeSpanReadPage(v SpanReadPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRunContent returns the union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody as a RunContent
+func (t RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) AsRunContent() (RunContent, error) {
+	var body RunContent
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunContent overwrites any union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody as the provided RunContent
+func (t *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) FromRunContent(v RunContent) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunContent performs a merge with any union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody, using the provided RunContent
+func (t *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) MergeRunContent(v RunContent) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsContentSummary returns the union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody as a ContentSummary
+func (t RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) AsContentSummary() (ContentSummary, error) {
+	var body ContentSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromContentSummary overwrites any union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody as the provided ContentSummary
+func (t *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) FromContentSummary(v ContentSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeContentSummary performs a merge with any union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody, using the provided ContentSummary
+func (t *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) MergeContentSummary(v ContentSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody as a TextRead
+func (t RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody as the provided TextRead
+func (t *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody, using the provided TextRead
+func (t *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRunItems returns the union data inside the RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody as a RunItems
+func (t RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) AsRunItems() (RunItems, error) {
+	var body RunItems
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunItems overwrites any union data inside the RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody as the provided RunItems
+func (t *RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) FromRunItems(v RunItems) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunItems performs a merge with any union data inside the RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody, using the provided RunItems
+func (t *RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) MergeRunItems(v RunItems) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsItemPage returns the union data inside the RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody as a ItemPage
+func (t RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) AsItemPage() (ItemPage, error) {
+	var body ItemPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromItemPage overwrites any union data inside the RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody as the provided ItemPage
+func (t *RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) FromItemPage(v ItemPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeItemPage performs a merge with any union data inside the RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody, using the provided ItemPage
+func (t *RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) MergeItemPage(v ItemPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRunPage returns the union data inside the RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody as a RunPage
+func (t RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) AsRunPage() (RunPage, error) {
+	var body RunPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunPage overwrites any union data inside the RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody as the provided RunPage
+func (t *RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) FromRunPage(v RunPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunPage performs a merge with any union data inside the RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody, using the provided RunPage
+func (t *RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) MergeRunPage(v RunPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRunSummaryPage returns the union data inside the RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody as a RunSummaryPage
+func (t RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) AsRunSummaryPage() (RunSummaryPage, error) {
+	var body RunSummaryPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunSummaryPage overwrites any union data inside the RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody as the provided RunSummaryPage
+func (t *RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) FromRunSummaryPage(v RunSummaryPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunSummaryPage performs a merge with any union data inside the RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody, using the provided RunSummaryPage
+func (t *RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) MergeRunSummaryPage(v RunSummaryPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsEntryPage returns the union data inside the ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody as a EntryPage
+func (t ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) AsEntryPage() (EntryPage, error) {
+	var body EntryPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromEntryPage overwrites any union data inside the ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody as the provided EntryPage
+func (t *ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) FromEntryPage(v EntryPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeEntryPage performs a merge with any union data inside the ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody, using the provided EntryPage
+func (t *ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) MergeEntryPage(v EntryPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsEntrySummaryPage returns the union data inside the ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody as a EntrySummaryPage
+func (t ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) AsEntrySummaryPage() (EntrySummaryPage, error) {
+	var body EntrySummaryPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromEntrySummaryPage overwrites any union data inside the ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody as the provided EntrySummaryPage
+func (t *ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) FromEntrySummaryPage(v EntrySummaryPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeEntrySummaryPage performs a merge with any union data inside the ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody, using the provided EntrySummaryPage
+func (t *ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) MergeEntrySummaryPage(v EntrySummaryPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsEntryView returns the union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody as a EntryView
+func (t GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) AsEntryView() (EntryView, error) {
+	var body EntryView
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromEntryView overwrites any union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody as the provided EntryView
+func (t *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) FromEntryView(v EntryView) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeEntryView performs a merge with any union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody, using the provided EntryView
+func (t *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) MergeEntryView(v EntryView) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsEntrySummary returns the union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody as a EntrySummary
+func (t GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) AsEntrySummary() (EntrySummary, error) {
+	var body EntrySummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromEntrySummary overwrites any union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody as the provided EntrySummary
+func (t *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) FromEntrySummary(v EntrySummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeEntrySummary performs a merge with any union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody, using the provided EntrySummary
+func (t *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) MergeEntrySummary(v EntrySummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody as a TextRead
+func (t GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody as the provided TextRead
+func (t *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody, using the provided TextRead
+func (t *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRunPage returns the union data inside the ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody as a RunPage
+func (t ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) AsRunPage() (RunPage, error) {
+	var body RunPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunPage overwrites any union data inside the ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody as the provided RunPage
+func (t *ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) FromRunPage(v RunPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunPage performs a merge with any union data inside the ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody, using the provided RunPage
+func (t *ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) MergeRunPage(v RunPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRunSummaryPage returns the union data inside the ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody as a RunSummaryPage
+func (t ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) AsRunSummaryPage() (RunSummaryPage, error) {
+	var body RunSummaryPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRunSummaryPage overwrites any union data inside the ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody as the provided RunSummaryPage
+func (t *ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) FromRunSummaryPage(v RunSummaryPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRunSummaryPage performs a merge with any union data inside the ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody, using the provided RunSummaryPage
+func (t *ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) MergeRunSummaryPage(v RunSummaryPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDefinitions returns the union data inside the DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody as a Definitions
+func (t DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) AsDefinitions() (Definitions, error) {
+	var body Definitions
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitions overwrites any union data inside the DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody as the provided Definitions
+func (t *DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) FromDefinitions(v Definitions) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitions performs a merge with any union data inside the DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody, using the provided Definitions
+func (t *DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) MergeDefinitions(v Definitions) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody as a TextRead
+func (t DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody as the provided TextRead
+func (t *DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody, using the provided TextRead
+func (t *DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsSpanPage returns the union data inside the ListTracesApiV1TracesGet200JSONResponseBody as a SpanPage
+func (t ListTracesApiV1TracesGet200JSONResponseBody) AsSpanPage() (SpanPage, error) {
+	var body SpanPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanPage overwrites any union data inside the ListTracesApiV1TracesGet200JSONResponseBody as the provided SpanPage
+func (t *ListTracesApiV1TracesGet200JSONResponseBody) FromSpanPage(v SpanPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanPage performs a merge with any union data inside the ListTracesApiV1TracesGet200JSONResponseBody, using the provided SpanPage
+func (t *ListTracesApiV1TracesGet200JSONResponseBody) MergeSpanPage(v SpanPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSpanReadPage returns the union data inside the ListTracesApiV1TracesGet200JSONResponseBody as a SpanReadPage
+func (t ListTracesApiV1TracesGet200JSONResponseBody) AsSpanReadPage() (SpanReadPage, error) {
+	var body SpanReadPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanReadPage overwrites any union data inside the ListTracesApiV1TracesGet200JSONResponseBody as the provided SpanReadPage
+func (t *ListTracesApiV1TracesGet200JSONResponseBody) FromSpanReadPage(v SpanReadPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanReadPage performs a merge with any union data inside the ListTracesApiV1TracesGet200JSONResponseBody, using the provided SpanReadPage
+func (t *ListTracesApiV1TracesGet200JSONResponseBody) MergeSpanReadPage(v SpanReadPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListTracesApiV1TracesGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListTracesApiV1TracesGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsSpan returns the union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody as a Span
+func (t GetTraceApiV1TracesTraceIdGet200JSONResponseBody) AsSpan() (Span, error) {
+	var body Span
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpan overwrites any union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody as the provided Span
+func (t *GetTraceApiV1TracesTraceIdGet200JSONResponseBody) FromSpan(v Span) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpan performs a merge with any union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody, using the provided Span
+func (t *GetTraceApiV1TracesTraceIdGet200JSONResponseBody) MergeSpan(v Span) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSpanSummary returns the union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody as a SpanSummary
+func (t GetTraceApiV1TracesTraceIdGet200JSONResponseBody) AsSpanSummary() (SpanSummary, error) {
+	var body SpanSummary
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanSummary overwrites any union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody as the provided SpanSummary
+func (t *GetTraceApiV1TracesTraceIdGet200JSONResponseBody) FromSpanSummary(v SpanSummary) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanSummary performs a merge with any union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody, using the provided SpanSummary
+func (t *GetTraceApiV1TracesTraceIdGet200JSONResponseBody) MergeSpanSummary(v SpanSummary) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTextRead returns the union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody as a TextRead
+func (t GetTraceApiV1TracesTraceIdGet200JSONResponseBody) AsTextRead() (TextRead, error) {
+	var body TextRead
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTextRead overwrites any union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody as the provided TextRead
+func (t *GetTraceApiV1TracesTraceIdGet200JSONResponseBody) FromTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTextRead performs a merge with any union data inside the GetTraceApiV1TracesTraceIdGet200JSONResponseBody, using the provided TextRead
+func (t *GetTraceApiV1TracesTraceIdGet200JSONResponseBody) MergeTextRead(v TextRead) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetTraceApiV1TracesTraceIdGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetTraceApiV1TracesTraceIdGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsSpanPage returns the union data inside the ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody as a SpanPage
+func (t ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) AsSpanPage() (SpanPage, error) {
+	var body SpanPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanPage overwrites any union data inside the ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody as the provided SpanPage
+func (t *ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) FromSpanPage(v SpanPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanPage performs a merge with any union data inside the ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody, using the provided SpanPage
+func (t *ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) MergeSpanPage(v SpanPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSpanReadPage returns the union data inside the ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody as a SpanReadPage
+func (t ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) AsSpanReadPage() (SpanReadPage, error) {
+	var body SpanReadPage
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpanReadPage overwrites any union data inside the ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody as the provided SpanReadPage
+func (t *ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) FromSpanReadPage(v SpanReadPage) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSpanReadPage performs a merge with any union data inside the ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody, using the provided SpanReadPage
+func (t *ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) MergeSpanReadPage(v SpanReadPage) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -9784,6 +12956,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/agents/{agent_id}/revisions/{revision_id} (the `GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet` operationId).
 	GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet(ctx context.Context, agentId string, revisionId string, params *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet Compare Revisions
+	//
+	// Versioned unified diff of two revisions of this agent, optionally limited to one configuration section.
+	//
+	// Corresponds with GET /api/v1/agents/{agent_id}/revisions/{revision_id}/compare (the `CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet` operationId).
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet(ctx context.Context, agentId string, revisionId string, params *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPost Set Default
 	//
@@ -10010,6 +13189,20 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/connections/{connection_id}/tools (the `ListToolsApiV1ConnectionsConnectionIdToolsGet` operationId).
 	ListToolsApiV1ConnectionsConnectionIdToolsGet(ctx context.Context, connectionId string, params *ListToolsApiV1ConnectionsConnectionIdToolsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet Define Connection Tools
+	//
+	// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+	//
+	// Corresponds with GET /api/v1/connections/{connection_id}/tools/definitions (the `DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet` operationId).
+	DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet(ctx context.Context, connectionId string, params *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet Index Connection Tools
+	//
+	// Search full names and descriptions; definitions are read separately by exact name.
+	//
+	// Corresponds with GET /api/v1/connections/{connection_id}/tools/index (the `IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet` operationId).
+	IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet(ctx context.Context, connectionId string, params *IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListProvidersApiV1ConnectorProvidersGet List connector providers
 	//
 	// Corresponds with GET /api/v1/connector-providers (the `ListProvidersApiV1ConnectorProvidersGet` operationId).
@@ -10066,6 +13259,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions (the `ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet` operationId).
 	ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet(ctx context.Context, providerId string, app string, params *ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet Define Connector Actions
+	//
+	// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/definitions (the `DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet` operationId).
+	DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet(ctx context.Context, providerId string, app string, params *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet Index Connector Actions
+	//
+	// Search full names and descriptions; definitions are read separately by exact name.
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/index (the `IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet` operationId).
+	IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet(ctx context.Context, providerId string, app string, params *IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// TestProviderApiV1ConnectorProvidersProviderIdTestPost Test connector provider
 	//
@@ -11018,7 +14225,7 @@ type ClientInterface interface {
 
 	// RunAgentApiV1RunsRunIdAgentGet Run Agent
 	//
-	// The agent configuration the run executes: its revision with the run's override applied.
+	// The frozen revision and effective configuration. Section reads are versioned fragments, never writable configs.
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
 	RunAgentApiV1RunsRunIdAgentGet(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -11103,11 +14310,19 @@ type ClientInterface interface {
 
 	// RunItemsApiV1RunsRunIdItemsGet Run Items
 	//
-	// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
-	// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
+	// A run's committed display items by ordinal. Detailed unfiltered reads default to the newest items and full tail.
+	// Compact or filtered reads start at the oldest ordinal and strictly honor limit. Use exclusive before/after
+	// positions, then follow next_before/next_after even when a filtered page is empty.
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/items (the `RunItemsApiV1RunsRunIdItemsGet` operationId).
 	RunItemsApiV1RunsRunIdItemsGet(ctx context.Context, runId string, params *RunItemsApiV1RunsRunIdItemsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReadItemContentApiV1RunsRunIdItemsItemIdContentGet Read Item Content
+	//
+	// Read one display field or follow its retained content reference, under the run's existing authorization.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/items/{item_id}/content (the `ReadItemContentApiV1RunsRunIdItemsItemIdContentGet` operationId).
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGet(ctx context.Context, runId string, itemId string, params *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RunLineageApiV1RunsRunIdLineageGet Run Lineage
 	//
@@ -11576,6 +14791,20 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/toolsets (the `ListToolsetsApiV1ToolsetsGet` operationId).
 	ListToolsetsApiV1ToolsetsGet(ctx context.Context, params *ListToolsetsApiV1ToolsetsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DefineToolsetsApiV1ToolsetsDefinitionsGet Define Toolsets
+	//
+	// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+	//
+	// Corresponds with GET /api/v1/toolsets/definitions (the `DefineToolsetsApiV1ToolsetsDefinitionsGet` operationId).
+	DefineToolsetsApiV1ToolsetsDefinitionsGet(ctx context.Context, params *DefineToolsetsApiV1ToolsetsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// IndexToolsetsApiV1ToolsetsIndexGet Index Toolsets
+	//
+	// Search full names and descriptions; definitions are read separately by exact name.
+	//
+	// Corresponds with GET /api/v1/toolsets/index (the `IndexToolsetsApiV1ToolsetsIndexGet` operationId).
+	IndexToolsetsApiV1ToolsetsIndexGet(ctx context.Context, params *IndexToolsetsApiV1ToolsetsIndexGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetTraceBackendApiV1TraceBackendGet Get Trace Backend
 	//
 	// The backend trace queries read, and how far back they find a trace.
@@ -11603,6 +14832,14 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/traces/{trace_id}/spans (the `ListTraceSpansApiV1TracesTraceIdSpansGet` operationId).
 	ListTraceSpansApiV1TracesTraceIdSpansGet(ctx context.Context, traceId string, params *ListTraceSpansApiV1TracesTraceIdSpansGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet Read Span Content
+	//
+	// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
+	// cursor while continuing fragments with version and next_offset.
+	//
+	// Corresponds with GET /api/v1/traces/{trace_id}/spans/{span_id}/content (the `ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet` operationId).
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet(ctx context.Context, traceId string, spanId string, params *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateUploadApiV1UploadsPostWithBody Create Upload
 	//
@@ -12340,6 +15577,23 @@ func (c *Client) GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet(ctx context
 	return c.Client.Do(req)
 }
 
+// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet Compare Revisions
+//
+// Versioned unified diff of two revisions of this agent, optionally limited to one configuration section.
+//
+// Corresponds with GET /api/v1/agents/{agent_id}/revisions/{revision_id}/compare (the `CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet` operationId).
+func (c *Client) CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet(ctx context.Context, agentId string, revisionId string, params *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetRequest(c.Server, agentId, revisionId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPost Set Default
 //
 // Corresponds with POST /api/v1/agents/{agent_id}/revisions/{revision_id}/set-default (the `SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPost` operationId).
@@ -12905,6 +16159,40 @@ func (c *Client) ListToolsApiV1ConnectionsConnectionIdToolsGet(ctx context.Conte
 	return c.Client.Do(req)
 }
 
+// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet Define Connection Tools
+//
+// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+//
+// Corresponds with GET /api/v1/connections/{connection_id}/tools/definitions (the `DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet` operationId).
+func (c *Client) DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet(ctx context.Context, connectionId string, params *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetRequest(c.Server, connectionId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet Index Connection Tools
+//
+// Search full names and descriptions; definitions are read separately by exact name.
+//
+// Corresponds with GET /api/v1/connections/{connection_id}/tools/index (the `IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet` operationId).
+func (c *Client) IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet(ctx context.Context, connectionId string, params *IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewIndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetRequest(c.Server, connectionId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListProvidersApiV1ConnectorProvidersGet List connector providers
 //
 // Corresponds with GET /api/v1/connector-providers (the `ListProvidersApiV1ConnectorProvidersGet` operationId).
@@ -13042,6 +16330,40 @@ func (c *Client) GetAppApiV1ConnectorProvidersProviderIdAppsAppGet(ctx context.C
 // Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions (the `ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet` operationId).
 func (c *Client) ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet(ctx context.Context, providerId string, app string, params *ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetRequest(c.Server, providerId, app, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet Define Connector Actions
+//
+// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/definitions (the `DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet` operationId).
+func (c *Client) DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet(ctx context.Context, providerId string, app string, params *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetRequest(c.Server, providerId, app, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet Index Connector Actions
+//
+// Search full names and descriptions; definitions are read separately by exact name.
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/index (the `IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet` operationId).
+func (c *Client) IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet(ctx context.Context, providerId string, app string, params *IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewIndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetRequest(c.Server, providerId, app, params)
 	if err != nil {
 		return nil, err
 	}
@@ -15453,7 +18775,7 @@ func (c *Client) UpdateRunApiV1RunsRunIdPatch(ctx context.Context, runId string,
 
 // RunAgentApiV1RunsRunIdAgentGet Run Agent
 //
-// The agent configuration the run executes: its revision with the run's override applied.
+// The frozen revision and effective configuration. Section reads are versioned fragments, never writable configs.
 //
 // Corresponds with GET /api/v1/runs/{run_id}/agent (the `RunAgentApiV1RunsRunIdAgentGet` operationId).
 func (c *Client) RunAgentApiV1RunsRunIdAgentGet(ctx context.Context, runId string, params *RunAgentApiV1RunsRunIdAgentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -15668,12 +18990,30 @@ func (c *Client) InterruptRunApiV1RunsRunIdInterruptPost(ctx context.Context, ru
 
 // RunItemsApiV1RunsRunIdItemsGet Run Items
 //
-// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
-// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
+// A run's committed display items by ordinal. Detailed unfiltered reads default to the newest items and full tail.
+// Compact or filtered reads start at the oldest ordinal and strictly honor limit. Use exclusive before/after
+// positions, then follow next_before/next_after even when a filtered page is empty.
 //
 // Corresponds with GET /api/v1/runs/{run_id}/items (the `RunItemsApiV1RunsRunIdItemsGet` operationId).
 func (c *Client) RunItemsApiV1RunsRunIdItemsGet(ctx context.Context, runId string, params *RunItemsApiV1RunsRunIdItemsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRunItemsApiV1RunsRunIdItemsGetRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReadItemContentApiV1RunsRunIdItemsItemIdContentGet Read Item Content
+//
+// Read one display field or follow its retained content reference, under the run's existing authorization.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/items/{item_id}/content (the `ReadItemContentApiV1RunsRunIdItemsItemIdContentGet` operationId).
+func (c *Client) ReadItemContentApiV1RunsRunIdItemsItemIdContentGet(ctx context.Context, runId string, itemId string, params *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadItemContentApiV1RunsRunIdItemsItemIdContentGetRequest(c.Server, runId, itemId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -16831,6 +20171,40 @@ func (c *Client) ListToolsetsApiV1ToolsetsGet(ctx context.Context, params *ListT
 	return c.Client.Do(req)
 }
 
+// DefineToolsetsApiV1ToolsetsDefinitionsGet Define Toolsets
+//
+// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+//
+// Corresponds with GET /api/v1/toolsets/definitions (the `DefineToolsetsApiV1ToolsetsDefinitionsGet` operationId).
+func (c *Client) DefineToolsetsApiV1ToolsetsDefinitionsGet(ctx context.Context, params *DefineToolsetsApiV1ToolsetsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDefineToolsetsApiV1ToolsetsDefinitionsGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// IndexToolsetsApiV1ToolsetsIndexGet Index Toolsets
+//
+// Search full names and descriptions; definitions are read separately by exact name.
+//
+// Corresponds with GET /api/v1/toolsets/index (the `IndexToolsetsApiV1ToolsetsIndexGet` operationId).
+func (c *Client) IndexToolsetsApiV1ToolsetsIndexGet(ctx context.Context, params *IndexToolsetsApiV1ToolsetsIndexGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewIndexToolsetsApiV1ToolsetsIndexGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetTraceBackendApiV1TraceBackendGet Get Trace Backend
 //
 // The backend trace queries read, and how far back they find a trace.
@@ -16889,6 +20263,24 @@ func (c *Client) GetTraceApiV1TracesTraceIdGet(ctx context.Context, traceId stri
 // Corresponds with GET /api/v1/traces/{trace_id}/spans (the `ListTraceSpansApiV1TracesTraceIdSpansGet` operationId).
 func (c *Client) ListTraceSpansApiV1TracesTraceIdSpansGet(ctx context.Context, traceId string, params *ListTraceSpansApiV1TracesTraceIdSpansGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListTraceSpansApiV1TracesTraceIdSpansGetRequest(c.Server, traceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet Read Span Content
+//
+// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
+// cursor while continuing fragments with version and next_offset.
+//
+// Corresponds with GET /api/v1/traces/{trace_id}/spans/{span_id}/content (the `ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet` operationId).
+func (c *Client) ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet(ctx context.Context, traceId string, spanId string, params *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetRequest(c.Server, traceId, spanId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -18726,9 +22118,21 @@ func NewListRevisionsApiV1AgentsAgentIdRevisionsGetRequest(server string, agentI
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -18883,6 +22287,232 @@ func NewGetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetRequest(server string
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetRequest constructs an http.Request for the CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet method
+func NewCompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetRequest(server string, agentId string, revisionId string, params *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "agent_id", agentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "revision_id", revisionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/agents/%s/revisions/%s/compare", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "base_revision_id", params.BaseRevisionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -20224,6 +23854,230 @@ func NewListToolsApiV1ConnectionsConnectionIdToolsGetRequest(server string, conn
 	return req, nil
 }
 
+// NewDefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetRequest constructs an http.Request for the DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet method
+func NewDefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetRequest(server string, connectionId string, params *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "connection_id", connectionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connections/%s/tools/definitions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewIndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetRequest constructs an http.Request for the IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet method
+func NewIndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetRequest(server string, connectionId string, params *IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "connection_id", connectionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connections/%s/tools/index", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListProvidersApiV1ConnectorProvidersGetRequest constructs an http.Request for the ListProvidersApiV1ConnectorProvidersGet method
 func NewListProvidersApiV1ConnectorProvidersGetRequest(server string, params *ListProvidersApiV1ConnectorProvidersGetParams) (*http.Request, error) {
 	var err error
@@ -20681,6 +24535,244 @@ func NewListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetRequest(ser
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetRequest constructs an http.Request for the DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet method
+func NewDefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetRequest(server string, providerId string, app string, params *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app", app, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s/apps/%s/actions/definitions", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewIndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetRequest constructs an http.Request for the IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet method
+func NewIndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetRequest(server string, providerId string, app string, params *IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app", app, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s/apps/%s/actions/index", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -25380,6 +29472,114 @@ func NewGetModelCatalogApiV1ModelCatalogGetRequest(server string, params *GetMod
 
 		}
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Capability != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "capability", *params.Capability, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TextLimit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "text_limit", *params.TextLimit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -27397,9 +31597,21 @@ func NewListRunsApiV1RunsGetRequest(server string, params *ListRunsApiV1RunsGetP
 
 		}
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -27474,6 +31686,93 @@ func NewGetRunApiV1RunsRunIdGetRequest(server string, runId string, params *GetR
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -27596,6 +31895,105 @@ func NewRunAgentApiV1RunsRunIdAgentGetRequest(server string, runId string, param
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Part != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "part", *params.Part, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -27768,9 +32166,57 @@ func NewListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetRequest(server st
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ToolName != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tool_name", *params.ToolName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -27852,6 +32298,81 @@ func NewRunContentApiV1RunsRunIdContentsContentIdGetRequest(server string, runId
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -28281,7 +32802,194 @@ func NewRunItemsApiV1RunsRunIdItemsGetRequest(server string, runId string, param
 
 		if params.Limit != nil {
 
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.State != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "state", *params.State, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ToolName != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tool_name", *params.ToolName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewReadItemContentApiV1RunsRunIdItemsItemIdContentGetRequest constructs an http.Request for the ReadItemContentApiV1RunsRunIdItemsItemIdContentGet method
+func NewReadItemContentApiV1RunsRunIdItemsItemIdContentGetRequest(server string, runId string, itemId string, params *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "item_id", itemId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/items/%s/content", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "ordinal", params.Ordinal, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.Field != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "field", *params.Field, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -28358,6 +33066,30 @@ func NewRunLineageApiV1RunsRunIdLineageGetRequest(server string, runId string, p
 		if params.Cursor != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -30947,9 +35679,33 @@ func NewListInboxApiV1ThreadsThreadIdInboxGetRequest(server string, threadId str
 
 		}
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -31242,6 +35998,93 @@ func NewGetEntryApiV1ThreadsThreadIdInboxEntryIdGetRequest(server string, thread
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -31651,9 +36494,21 @@ func NewListThreadRunsApiV1ThreadsThreadIdRunsGetRequest(server string, threadId
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -31845,6 +36700,216 @@ func NewListToolsetsApiV1ToolsetsGetRequest(server string, params *ListToolsetsA
 	return req, nil
 }
 
+// NewDefineToolsetsApiV1ToolsetsDefinitionsGetRequest constructs an http.Request for the DefineToolsetsApiV1ToolsetsDefinitionsGet method
+func NewDefineToolsetsApiV1ToolsetsDefinitionsGetRequest(server string, params *DefineToolsetsApiV1ToolsetsDefinitionsGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/toolsets/definitions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewIndexToolsetsApiV1ToolsetsIndexGetRequest constructs an http.Request for the IndexToolsetsApiV1ToolsetsIndexGet method
+func NewIndexToolsetsApiV1ToolsetsIndexGetRequest(server string, params *IndexToolsetsApiV1ToolsetsIndexGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/toolsets/index")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetTraceBackendApiV1TraceBackendGetRequest constructs an http.Request for the GetTraceBackendApiV1TraceBackendGet method
 func NewGetTraceBackendApiV1TraceBackendGetRequest(server string, params *GetTraceBackendApiV1TraceBackendGetParams) (*http.Request, error) {
 	var err error
@@ -31987,9 +37052,57 @@ func NewListTracesApiV1TracesGetRequest(server string, params *ListTracesApiV1Tr
 
 		}
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ToolName != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tool_name", *params.ToolName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -32066,6 +37179,93 @@ func NewGetTraceApiV1TracesTraceIdGetRequest(server string, traceId string, para
 		return nil, err
 	}
 
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -32124,9 +37324,57 @@ func NewListTraceSpansApiV1TracesTraceIdSpansGetRequest(server string, traceId s
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
 
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "view", *params.View, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ToolName != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tool_name", *params.ToolName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -32139,6 +37387,149 @@ func NewListTraceSpansApiV1TracesTraceIdSpansGetRequest(server string, traceId s
 		if params.Cursor != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetRequest constructs an http.Request for the ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet method
+func NewReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetRequest(server string, traceId string, spanId string, params *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "trace_id", traceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "span_id", spanId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/traces/%s/spans/%s/content", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Section != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "section", *params.Section, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Version != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "version", *params.Version, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -35365,6 +40756,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/agents/{agent_id}/revisions/{revision_id} (the `GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet` operationId).
 	GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetWithResponse(ctx context.Context, agentId string, revisionId string, params *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetParams, reqEditors ...RequestEditorFn) (*GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse, error)
 
+	// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetWithResponse Compare Revisions
+	//
+	// Versioned unified diff of two revisions of this agent, optionally limited to one configuration section.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/agents/{agent_id}/revisions/{revision_id}/compare (the `CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet` operationId).
+	CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetWithResponse(ctx context.Context, agentId string, revisionId string, params *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParams, reqEditors ...RequestEditorFn) (*CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse, error)
+
 	// SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPostWithResponse Set Default
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -35622,6 +41022,24 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/connections/{connection_id}/tools (the `ListToolsApiV1ConnectionsConnectionIdToolsGet` operationId).
 	ListToolsApiV1ConnectionsConnectionIdToolsGetWithResponse(ctx context.Context, connectionId string, params *ListToolsApiV1ConnectionsConnectionIdToolsGetParams, reqEditors ...RequestEditorFn) (*ListToolsApiV1ConnectionsConnectionIdToolsGetResponse, error)
 
+	// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetWithResponse Define Connection Tools
+	//
+	// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connections/{connection_id}/tools/definitions (the `DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet` operationId).
+	DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetWithResponse(ctx context.Context, connectionId string, params *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse, error)
+
+	// IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetWithResponse Index Connection Tools
+	//
+	// Search full names and descriptions; definitions are read separately by exact name.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connections/{connection_id}/tools/index (the `IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet` operationId).
+	IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetWithResponse(ctx context.Context, connectionId string, params *IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetParams, reqEditors ...RequestEditorFn) (*IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse, error)
+
 	// ListProvidersApiV1ConnectorProvidersGetWithResponse List connector providers
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -35688,6 +41106,24 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions (the `ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGet` operationId).
 	ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetWithResponse(ctx context.Context, providerId string, app string, params *ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetParams, reqEditors ...RequestEditorFn) (*ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponse, error)
+
+	// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetWithResponse Define Connector Actions
+	//
+	// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/definitions (the `DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet` operationId).
+	DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetWithResponse(ctx context.Context, providerId string, app string, params *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse, error)
+
+	// IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetWithResponse Index Connector Actions
+	//
+	// Search full names and descriptions; definitions are read separately by exact name.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/index (the `IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet` operationId).
+	IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetWithResponse(ctx context.Context, providerId string, app string, params *IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetParams, reqEditors ...RequestEditorFn) (*IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse, error)
 
 	// TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse Test connector provider
 	//
@@ -36772,7 +42208,7 @@ type ClientWithResponsesInterface interface {
 
 	// RunAgentApiV1RunsRunIdAgentGetWithResponse Run Agent
 	//
-	// The agent configuration the run executes: its revision with the run's override applied.
+	// The frozen revision and effective configuration. Section reads are versioned fragments, never writable configs.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -36875,13 +42311,23 @@ type ClientWithResponsesInterface interface {
 
 	// RunItemsApiV1RunsRunIdItemsGetWithResponse Run Items
 	//
-	// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
-	// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
+	// A run's committed display items by ordinal. Detailed unfiltered reads default to the newest items and full tail.
+	// Compact or filtered reads start at the oldest ordinal and strictly honor limit. Use exclusive before/after
+	// positions, then follow next_before/next_after even when a filtered page is empty.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/items (the `RunItemsApiV1RunsRunIdItemsGet` operationId).
 	RunItemsApiV1RunsRunIdItemsGetWithResponse(ctx context.Context, runId string, params *RunItemsApiV1RunsRunIdItemsGetParams, reqEditors ...RequestEditorFn) (*RunItemsApiV1RunsRunIdItemsGetResponse, error)
+
+	// ReadItemContentApiV1RunsRunIdItemsItemIdContentGetWithResponse Read Item Content
+	//
+	// Read one display field or follow its retained content reference, under the run's existing authorization.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/items/{item_id}/content (the `ReadItemContentApiV1RunsRunIdItemsItemIdContentGet` operationId).
+	ReadItemContentApiV1RunsRunIdItemsItemIdContentGetWithResponse(ctx context.Context, runId string, itemId string, params *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParams, reqEditors ...RequestEditorFn) (*ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse, error)
 
 	// RunLineageApiV1RunsRunIdLineageGetWithResponse Run Lineage
 	//
@@ -37414,6 +42860,24 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/toolsets (the `ListToolsetsApiV1ToolsetsGet` operationId).
 	ListToolsetsApiV1ToolsetsGetWithResponse(ctx context.Context, params *ListToolsetsApiV1ToolsetsGetParams, reqEditors ...RequestEditorFn) (*ListToolsetsApiV1ToolsetsGetResponse, error)
 
+	// DefineToolsetsApiV1ToolsetsDefinitionsGetWithResponse Define Toolsets
+	//
+	// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/toolsets/definitions (the `DefineToolsetsApiV1ToolsetsDefinitionsGet` operationId).
+	DefineToolsetsApiV1ToolsetsDefinitionsGetWithResponse(ctx context.Context, params *DefineToolsetsApiV1ToolsetsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*DefineToolsetsApiV1ToolsetsDefinitionsGetResponse, error)
+
+	// IndexToolsetsApiV1ToolsetsIndexGetWithResponse Index Toolsets
+	//
+	// Search full names and descriptions; definitions are read separately by exact name.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/toolsets/index (the `IndexToolsetsApiV1ToolsetsIndexGet` operationId).
+	IndexToolsetsApiV1ToolsetsIndexGetWithResponse(ctx context.Context, params *IndexToolsetsApiV1ToolsetsIndexGetParams, reqEditors ...RequestEditorFn) (*IndexToolsetsApiV1ToolsetsIndexGetResponse, error)
+
 	// GetTraceBackendApiV1TraceBackendGetWithResponse Get Trace Backend
 	//
 	// The backend trace queries read, and how far back they find a trace.
@@ -37449,6 +42913,16 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/traces/{trace_id}/spans (the `ListTraceSpansApiV1TracesTraceIdSpansGet` operationId).
 	ListTraceSpansApiV1TracesTraceIdSpansGetWithResponse(ctx context.Context, traceId string, params *ListTraceSpansApiV1TracesTraceIdSpansGetParams, reqEditors ...RequestEditorFn) (*ListTraceSpansApiV1TracesTraceIdSpansGetResponse, error)
+
+	// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetWithResponse Read Span Content
+	//
+	// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
+	// cursor while continuing fragments with version and next_offset.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/traces/{trace_id}/spans/{span_id}/content (the `ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet` operationId).
+	ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetWithResponse(ctx context.Context, traceId string, spanId string, params *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParams, reqEditors ...RequestEditorFn) (*ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse, error)
 
 	// CreateUploadApiV1UploadsPostWithBodyWithResponse Create Upload
 	//
@@ -38692,7 +44166,7 @@ type ListRevisionsApiV1AgentsAgentIdRevisionsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *AgentRevisionPage
+	JSON200 *ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -38704,7 +44178,7 @@ type ListRevisionsApiV1AgentsAgentIdRevisionsGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ListRevisionsApiV1AgentsAgentIdRevisionsGetResponse) GetJSON200() *AgentRevisionPage {
+func (r ListRevisionsApiV1AgentsAgentIdRevisionsGetResponse) GetJSON200() *ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -38830,7 +44304,7 @@ type GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *AgentRevision
+	JSON200 *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -38842,7 +44316,7 @@ type GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse) GetJSON200() *AgentRevision {
+func (r GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse) GetJSON200() *GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -38879,6 +44353,75 @@ func (r GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse) StatusCode(
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse400Headers the declared response headers of an HTTP 400 response for CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet
+type CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponseDefaultHeaders the declared response headers of an HTTP default response for CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet
+type CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TextRead
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse) GetJSON200() *TextRead {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -40526,6 +46069,144 @@ func (r ListToolsApiV1ConnectionsConnectionIdToolsGetResponse) ContentType() str
 	return ""
 }
 
+// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse400Headers the declared response headers of an HTTP 400 response for DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet
+type DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponseDefaultHeaders the declared response headers of an HTTP default response for DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet
+type DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse) GetJSON200() *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse400Headers the declared response headers of an HTTP 400 response for IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet
+type IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponseDefaultHeaders the declared response headers of an HTTP default response for IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet
+type IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CatalogIndex
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse) GetJSON200() *CatalogIndex {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListProvidersApiV1ConnectorProvidersGetResponse400Headers the declared response headers of an HTTP 400 response for ListProvidersApiV1ConnectorProvidersGet
 type ListProvidersApiV1ConnectorProvidersGetResponse400Headers struct {
 	XRequestId *string
@@ -41003,6 +46684,144 @@ func (r ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponse) S
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse400Headers the declared response headers of an HTTP 400 response for DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet
+type DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponseDefaultHeaders the declared response headers of an HTTP default response for DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet
+type DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse) GetJSON200() *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse400Headers the declared response headers of an HTTP 400 response for IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet
+type IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponseDefaultHeaders the declared response headers of an HTTP default response for IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet
+type IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CatalogIndex
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse) GetJSON200() *CatalogIndex {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -45749,7 +51568,7 @@ type GetModelCatalogApiV1ModelCatalogGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *ModelCatalog
+	JSON200 *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -45761,7 +51580,7 @@ type GetModelCatalogApiV1ModelCatalogGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetModelCatalogApiV1ModelCatalogGetResponse) GetJSON200() *ModelCatalog {
+func (r GetModelCatalogApiV1ModelCatalogGetResponse) GetJSON200() *GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -48081,7 +53900,7 @@ type ListRunsApiV1RunsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *RunPage
+	JSON200 *ListRunsApiV1RunsGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -48093,7 +53912,7 @@ type ListRunsApiV1RunsGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ListRunsApiV1RunsGetResponse) GetJSON200() *RunPage {
+func (r ListRunsApiV1RunsGetResponse) GetJSON200() *ListRunsApiV1RunsGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -48150,7 +53969,7 @@ type GetRunApiV1RunsRunIdGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *RunView
+	JSON200 *GetRunApiV1RunsRunIdGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -48162,7 +53981,7 @@ type GetRunApiV1RunsRunIdGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetRunApiV1RunsRunIdGetResponse) GetJSON200() *RunView {
+func (r GetRunApiV1RunsRunIdGetResponse) GetJSON200() *GetRunApiV1RunsRunIdGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -48288,7 +54107,7 @@ type RunAgentApiV1RunsRunIdAgentGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *RunAgent
+	JSON200 *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -48300,7 +54119,7 @@ type RunAgentApiV1RunsRunIdAgentGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSON200() *RunAgent {
+func (r RunAgentApiV1RunsRunIdAgentGetResponse) GetJSON200() *RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -48495,7 +54314,7 @@ type ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *SpanPage
+	JSON200 *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -48507,7 +54326,7 @@ type ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse) GetJSON200() *SpanPage {
+func (r ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse) GetJSON200() *ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -48564,7 +54383,7 @@ type RunContentApiV1RunsRunIdContentsContentIdGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *RunContent
+	JSON200 *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -48576,7 +54395,7 @@ type RunContentApiV1RunsRunIdContentsContentIdGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) GetJSON200() *RunContent {
+func (r RunContentApiV1RunsRunIdContentsContentIdGetResponse) GetJSON200() *RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -49047,7 +54866,7 @@ type RunItemsApiV1RunsRunIdItemsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *RunItems
+	JSON200 *RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -49059,7 +54878,7 @@ type RunItemsApiV1RunsRunIdItemsGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r RunItemsApiV1RunsRunIdItemsGetResponse) GetJSON200() *RunItems {
+func (r RunItemsApiV1RunsRunIdItemsGetResponse) GetJSON200() *RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -49102,6 +54921,75 @@ func (r RunItemsApiV1RunsRunIdItemsGetResponse) ContentType() string {
 	return ""
 }
 
+// ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse400Headers the declared response headers of an HTTP 400 response for ReadItemContentApiV1RunsRunIdItemsItemIdContentGet
+type ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponseDefaultHeaders the declared response headers of an HTTP default response for ReadItemContentApiV1RunsRunIdItemsItemIdContentGet
+type ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TextRead
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse) GetJSON200() *TextRead {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // RunLineageApiV1RunsRunIdLineageGetResponse400Headers the declared response headers of an HTTP 400 response for RunLineageApiV1RunsRunIdLineageGet
 type RunLineageApiV1RunsRunIdLineageGetResponse400Headers struct {
 	XRequestId *string
@@ -49116,7 +55004,7 @@ type RunLineageApiV1RunsRunIdLineageGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *RunPage
+	JSON200 *RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -49128,7 +55016,7 @@ type RunLineageApiV1RunsRunIdLineageGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r RunLineageApiV1RunsRunIdLineageGetResponse) GetJSON200() *RunPage {
+func (r RunLineageApiV1RunsRunIdLineageGetResponse) GetJSON200() *RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -51648,7 +57536,7 @@ type ListInboxApiV1ThreadsThreadIdInboxGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *EntryPage
+	JSON200 *ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -51660,7 +57548,7 @@ type ListInboxApiV1ThreadsThreadIdInboxGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ListInboxApiV1ThreadsThreadIdInboxGetResponse) GetJSON200() *EntryPage {
+func (r ListInboxApiV1ThreadsThreadIdInboxGetResponse) GetJSON200() *ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -51931,7 +57819,7 @@ type GetEntryApiV1ThreadsThreadIdInboxEntryIdGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *EntryView
+	JSON200 *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -51943,7 +57831,7 @@ type GetEntryApiV1ThreadsThreadIdInboxEntryIdGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetEntryApiV1ThreadsThreadIdInboxEntryIdGetResponse) GetJSON200() *EntryView {
+func (r GetEntryApiV1ThreadsThreadIdInboxEntryIdGetResponse) GetJSON200() *GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -52338,7 +58226,7 @@ type ListThreadRunsApiV1ThreadsThreadIdRunsGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *RunPage
+	JSON200 *ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -52350,7 +58238,7 @@ type ListThreadRunsApiV1ThreadsThreadIdRunsGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ListThreadRunsApiV1ThreadsThreadIdRunsGetResponse) GetJSON200() *RunPage {
+func (r ListThreadRunsApiV1ThreadsThreadIdRunsGetResponse) GetJSON200() *ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -52524,6 +58412,144 @@ func (r ListToolsetsApiV1ToolsetsGetResponse) ContentType() string {
 	return ""
 }
 
+// DefineToolsetsApiV1ToolsetsDefinitionsGetResponse400Headers the declared response headers of an HTTP 400 response for DefineToolsetsApiV1ToolsetsDefinitionsGet
+type DefineToolsetsApiV1ToolsetsDefinitionsGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// DefineToolsetsApiV1ToolsetsDefinitionsGetResponseDefaultHeaders the declared response headers of an HTTP default response for DefineToolsetsApiV1ToolsetsDefinitionsGet
+type DefineToolsetsApiV1ToolsetsDefinitionsGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DefineToolsetsApiV1ToolsetsDefinitionsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DefineToolsetsApiV1ToolsetsDefinitionsGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DefineToolsetsApiV1ToolsetsDefinitionsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DefineToolsetsApiV1ToolsetsDefinitionsGetResponse) GetJSON200() *DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DefineToolsetsApiV1ToolsetsDefinitionsGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DefineToolsetsApiV1ToolsetsDefinitionsGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DefineToolsetsApiV1ToolsetsDefinitionsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DefineToolsetsApiV1ToolsetsDefinitionsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DefineToolsetsApiV1ToolsetsDefinitionsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DefineToolsetsApiV1ToolsetsDefinitionsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// IndexToolsetsApiV1ToolsetsIndexGetResponse400Headers the declared response headers of an HTTP 400 response for IndexToolsetsApiV1ToolsetsIndexGet
+type IndexToolsetsApiV1ToolsetsIndexGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// IndexToolsetsApiV1ToolsetsIndexGetResponseDefaultHeaders the declared response headers of an HTTP default response for IndexToolsetsApiV1ToolsetsIndexGet
+type IndexToolsetsApiV1ToolsetsIndexGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type IndexToolsetsApiV1ToolsetsIndexGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CatalogIndex
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *IndexToolsetsApiV1ToolsetsIndexGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *IndexToolsetsApiV1ToolsetsIndexGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r IndexToolsetsApiV1ToolsetsIndexGetResponse) GetJSON200() *CatalogIndex {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r IndexToolsetsApiV1ToolsetsIndexGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r IndexToolsetsApiV1ToolsetsIndexGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r IndexToolsetsApiV1ToolsetsIndexGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r IndexToolsetsApiV1ToolsetsIndexGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r IndexToolsetsApiV1ToolsetsIndexGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r IndexToolsetsApiV1ToolsetsIndexGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetTraceBackendApiV1TraceBackendGetResponse400Headers the declared response headers of an HTTP 400 response for GetTraceBackendApiV1TraceBackendGet
 type GetTraceBackendApiV1TraceBackendGetResponse400Headers struct {
 	XRequestId *string
@@ -52607,7 +58633,7 @@ type ListTracesApiV1TracesGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *SpanPage
+	JSON200 *ListTracesApiV1TracesGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -52619,7 +58645,7 @@ type ListTracesApiV1TracesGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ListTracesApiV1TracesGetResponse) GetJSON200() *SpanPage {
+func (r ListTracesApiV1TracesGetResponse) GetJSON200() *ListTracesApiV1TracesGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -52676,7 +58702,7 @@ type GetTraceApiV1TracesTraceIdGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *Span
+	JSON200 *GetTraceApiV1TracesTraceIdGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -52688,7 +58714,7 @@ type GetTraceApiV1TracesTraceIdGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetTraceApiV1TracesTraceIdGetResponse) GetJSON200() *Span {
+func (r GetTraceApiV1TracesTraceIdGetResponse) GetJSON200() *GetTraceApiV1TracesTraceIdGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -52745,7 +58771,7 @@ type ListTraceSpansApiV1TracesTraceIdSpansGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *SpanPage
+	JSON200 *ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -52757,7 +58783,7 @@ type ListTraceSpansApiV1TracesTraceIdSpansGetResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ListTraceSpansApiV1TracesTraceIdSpansGetResponse) GetJSON200() *SpanPage {
+func (r ListTraceSpansApiV1TracesTraceIdSpansGetResponse) GetJSON200() *ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody {
 	return r.JSON200
 }
 
@@ -52794,6 +58820,75 @@ func (r ListTraceSpansApiV1TracesTraceIdSpansGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ListTraceSpansApiV1TracesTraceIdSpansGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse400Headers the declared response headers of an HTTP 400 response for ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet
+type ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse400Headers struct {
+	XRequestId *string
+}
+
+// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponseDefaultHeaders the declared response headers of an HTTP default response for ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet
+type ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SpanContentPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse) GetJSON200() *SpanContentPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -56541,6 +62636,21 @@ func (c *ClientWithResponses) GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGe
 	return ParseGetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse(rsp)
 }
 
+// CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetWithResponse Compare Revisions
+//
+// Versioned unified diff of two revisions of this agent, optionally limited to one configuration section.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/agents/{agent_id}/revisions/{revision_id}/compare (the `CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet` operationId).
+func (c *ClientWithResponses) CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetWithResponse(ctx context.Context, agentId string, revisionId string, params *CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetParams, reqEditors ...RequestEditorFn) (*CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse, error) {
+	rsp, err := c.CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGet(ctx, agentId, revisionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse(rsp)
+}
+
 // SetDefaultApiV1AgentsAgentIdRevisionsRevisionIdSetDefaultPostWithResponse Set Default
 //
 // Returns a wrapper object for the known response body format(s).
@@ -57002,6 +63112,36 @@ func (c *ClientWithResponses) ListToolsApiV1ConnectionsConnectionIdToolsGetWithR
 	return ParseListToolsApiV1ConnectionsConnectionIdToolsGetResponse(rsp)
 }
 
+// DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetWithResponse Define Connection Tools
+//
+// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connections/{connection_id}/tools/definitions (the `DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet` operationId).
+func (c *ClientWithResponses) DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetWithResponse(ctx context.Context, connectionId string, params *DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse, error) {
+	rsp, err := c.DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet(ctx, connectionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse(rsp)
+}
+
+// IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetWithResponse Index Connection Tools
+//
+// Search full names and descriptions; definitions are read separately by exact name.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connections/{connection_id}/tools/index (the `IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet` operationId).
+func (c *ClientWithResponses) IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetWithResponse(ctx context.Context, connectionId string, params *IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetParams, reqEditors ...RequestEditorFn) (*IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse, error) {
+	rsp, err := c.IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGet(ctx, connectionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseIndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse(rsp)
+}
+
 // ListProvidersApiV1ConnectorProvidersGetWithResponse List connector providers
 //
 // Returns a wrapper object for the known response body format(s).
@@ -57121,6 +63261,36 @@ func (c *ClientWithResponses) ListActionsApiV1ConnectorProvidersProviderIdAppsAp
 		return nil, err
 	}
 	return ParseListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponse(rsp)
+}
+
+// DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetWithResponse Define Connector Actions
+//
+// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/definitions (the `DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet` operationId).
+func (c *ClientWithResponses) DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetWithResponse(ctx context.Context, providerId string, app string, params *DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse, error) {
+	rsp, err := c.DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet(ctx, providerId, app, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse(rsp)
+}
+
+// IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetWithResponse Index Connector Actions
+//
+// Search full names and descriptions; definitions are read separately by exact name.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/index (the `IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet` operationId).
+func (c *ClientWithResponses) IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetWithResponse(ctx context.Context, providerId string, app string, params *IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetParams, reqEditors ...RequestEditorFn) (*IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse, error) {
+	rsp, err := c.IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGet(ctx, providerId, app, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseIndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse(rsp)
 }
 
 // TestProviderApiV1ConnectorProvidersProviderIdTestPostWithResponse Test connector provider
@@ -59076,7 +65246,7 @@ func (c *ClientWithResponses) UpdateRunApiV1RunsRunIdPatchWithResponse(ctx conte
 
 // RunAgentApiV1RunsRunIdAgentGetWithResponse Run Agent
 //
-// The agent configuration the run executes: its revision with the run's override applied.
+// The frozen revision and effective configuration. Section reads are versioned fragments, never writable configs.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -59257,8 +65427,9 @@ func (c *ClientWithResponses) InterruptRunApiV1RunsRunIdInterruptPostWithRespons
 
 // RunItemsApiV1RunsRunIdItemsGetWithResponse Run Items
 //
-// A run's committed display items by ordinal. By default the newest, always including the unpaged tail whose
-// items live output can still change; `before` and `after` page from an ordinal and exclude each other.
+// A run's committed display items by ordinal. Detailed unfiltered reads default to the newest items and full tail.
+// Compact or filtered reads start at the oldest ordinal and strictly honor limit. Use exclusive before/after
+// positions, then follow next_before/next_after even when a filtered page is empty.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -59269,6 +65440,21 @@ func (c *ClientWithResponses) RunItemsApiV1RunsRunIdItemsGetWithResponse(ctx con
 		return nil, err
 	}
 	return ParseRunItemsApiV1RunsRunIdItemsGetResponse(rsp)
+}
+
+// ReadItemContentApiV1RunsRunIdItemsItemIdContentGetWithResponse Read Item Content
+//
+// Read one display field or follow its retained content reference, under the run's existing authorization.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/items/{item_id}/content (the `ReadItemContentApiV1RunsRunIdItemsItemIdContentGet` operationId).
+func (c *ClientWithResponses) ReadItemContentApiV1RunsRunIdItemsItemIdContentGetWithResponse(ctx context.Context, runId string, itemId string, params *ReadItemContentApiV1RunsRunIdItemsItemIdContentGetParams, reqEditors ...RequestEditorFn) (*ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse, error) {
+	rsp, err := c.ReadItemContentApiV1RunsRunIdItemsItemIdContentGet(ctx, runId, itemId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse(rsp)
 }
 
 // RunLineageApiV1RunsRunIdLineageGetWithResponse Run Lineage
@@ -60210,6 +66396,36 @@ func (c *ClientWithResponses) ListToolsetsApiV1ToolsetsGetWithResponse(ctx conte
 	return ParseListToolsetsApiV1ToolsetsGetResponse(rsp)
 }
 
+// DefineToolsetsApiV1ToolsetsDefinitionsGetWithResponse Define Toolsets
+//
+// Read up to five exact definitions. Oversized values provide a versioned fragment reference.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/toolsets/definitions (the `DefineToolsetsApiV1ToolsetsDefinitionsGet` operationId).
+func (c *ClientWithResponses) DefineToolsetsApiV1ToolsetsDefinitionsGetWithResponse(ctx context.Context, params *DefineToolsetsApiV1ToolsetsDefinitionsGetParams, reqEditors ...RequestEditorFn) (*DefineToolsetsApiV1ToolsetsDefinitionsGetResponse, error) {
+	rsp, err := c.DefineToolsetsApiV1ToolsetsDefinitionsGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDefineToolsetsApiV1ToolsetsDefinitionsGetResponse(rsp)
+}
+
+// IndexToolsetsApiV1ToolsetsIndexGetWithResponse Index Toolsets
+//
+// Search full names and descriptions; definitions are read separately by exact name.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/toolsets/index (the `IndexToolsetsApiV1ToolsetsIndexGet` operationId).
+func (c *ClientWithResponses) IndexToolsetsApiV1ToolsetsIndexGetWithResponse(ctx context.Context, params *IndexToolsetsApiV1ToolsetsIndexGetParams, reqEditors ...RequestEditorFn) (*IndexToolsetsApiV1ToolsetsIndexGetResponse, error) {
+	rsp, err := c.IndexToolsetsApiV1ToolsetsIndexGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseIndexToolsetsApiV1ToolsetsIndexGetResponse(rsp)
+}
+
 // GetTraceBackendApiV1TraceBackendGetWithResponse Get Trace Backend
 //
 // The backend trace queries read, and how far back they find a trace.
@@ -60268,6 +66484,22 @@ func (c *ClientWithResponses) ListTraceSpansApiV1TracesTraceIdSpansGetWithRespon
 		return nil, err
 	}
 	return ParseListTraceSpansApiV1TracesTraceIdSpansGetResponse(rsp)
+}
+
+// ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetWithResponse Read Span Content
+//
+// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
+// cursor while continuing fragments with version and next_offset.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/traces/{trace_id}/spans/{span_id}/content (the `ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet` operationId).
+func (c *ClientWithResponses) ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetWithResponse(ctx context.Context, traceId string, spanId string, params *ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetParams, reqEditors ...RequestEditorFn) (*ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse, error) {
+	rsp, err := c.ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGet(ctx, traceId, spanId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse(rsp)
 }
 
 // CreateUploadApiV1UploadsPostWithBodyWithResponse Create Upload
@@ -61839,7 +68071,7 @@ func ParseListRevisionsApiV1AgentsAgentIdRevisionsGetResponse(rsp *http.Response
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AgentRevisionPage
+		var dest ListRevisionsApiV1AgentsAgentIdRevisionsGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -61965,7 +68197,7 @@ func ParseGetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse(rsp *http.
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AgentRevision
+		var dest GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -62000,6 +68232,69 @@ func ParseGetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponse(rsp *http.
 		response.Headers400 = &headers
 	case true:
 		var headers GetRevisionApiV1AgentsAgentIdRevisionsRevisionIdGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse parses an HTTP response from a CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetWithResponse call
+func ParseCompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse(rsp *http.Response) (*CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TextRead
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CompareRevisionsApiV1AgentsAgentIdRevisionsRevisionIdCompareGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -63507,6 +69802,132 @@ func ParseListToolsApiV1ConnectionsConnectionIdToolsGetResponse(rsp *http.Respon
 	return response, nil
 }
 
+// ParseDefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse parses an HTTP response from a DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetWithResponse call
+func ParseDefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse(rsp *http.Response) (*DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGet200JSONResponseBody
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DefineConnectionToolsApiV1ConnectionsConnectionIdToolsDefinitionsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseIndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse parses an HTTP response from a IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetWithResponse call
+func ParseIndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse(rsp *http.Response) (*IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogIndex
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers IndexConnectionToolsApiV1ConnectionsConnectionIdToolsIndexGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListProvidersApiV1ConnectorProvidersGetResponse parses an HTTP response from a ListProvidersApiV1ConnectorProvidersGetWithResponse call
 func ParseListProvidersApiV1ConnectorProvidersGetResponse(rsp *http.Response) (*ListProvidersApiV1ConnectorProvidersGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -63935,6 +70356,132 @@ func ParseListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponse(
 		response.Headers400 = &headers
 	case true:
 		var headers ListActionsApiV1ConnectorProvidersProviderIdAppsAppActionsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse parses an HTTP response from a DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetWithResponse call
+func ParseDefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse(rsp *http.Response) (*DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGet200JSONResponseBody
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DefineConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsDefinitionsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseIndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse parses an HTTP response from a IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetWithResponse call
+func ParseIndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse(rsp *http.Response) (*IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogIndex
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers IndexConnectorActionsApiV1ConnectorProvidersProviderIdAppsAppActionsIndexGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -68290,7 +74837,7 @@ func ParseGetModelCatalogApiV1ModelCatalogGetResponse(rsp *http.Response) (*GetM
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ModelCatalog
+		var dest GetModelCatalogApiV1ModelCatalogGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -70421,7 +76968,7 @@ func ParseListRunsApiV1RunsGetResponse(rsp *http.Response) (*ListRunsApiV1RunsGe
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RunPage
+		var dest ListRunsApiV1RunsGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -70484,7 +77031,7 @@ func ParseGetRunApiV1RunsRunIdGetResponse(rsp *http.Response) (*GetRunApiV1RunsR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RunView
+		var dest GetRunApiV1RunsRunIdGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -70610,7 +77157,7 @@ func ParseRunAgentApiV1RunsRunIdAgentGetResponse(rsp *http.Response) (*RunAgentA
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RunAgent
+		var dest RunAgentApiV1RunsRunIdAgentGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -70799,7 +77346,7 @@ func ParseListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGetResponse(rsp *h
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest SpanPage
+		var dest ListAttemptSpansApiV1RunsRunIdAttemptsAttemptIdTraceGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -70862,7 +77409,7 @@ func ParseRunContentApiV1RunsRunIdContentsContentIdGetResponse(rsp *http.Respons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RunContent
+		var dest RunContentApiV1RunsRunIdContentsContentIdGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -71303,7 +77850,7 @@ func ParseRunItemsApiV1RunsRunIdItemsGetResponse(rsp *http.Response) (*RunItemsA
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RunItems
+		var dest RunItemsApiV1RunsRunIdItemsGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -71351,6 +77898,69 @@ func ParseRunItemsApiV1RunsRunIdItemsGetResponse(rsp *http.Response) (*RunItemsA
 	return response, nil
 }
 
+// ParseReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse parses an HTTP response from a ReadItemContentApiV1RunsRunIdItemsItemIdContentGetWithResponse call
+func ParseReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse(rsp *http.Response) (*ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TextRead
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ReadItemContentApiV1RunsRunIdItemsItemIdContentGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseRunLineageApiV1RunsRunIdLineageGetResponse parses an HTTP response from a RunLineageApiV1RunsRunIdLineageGetWithResponse call
 func ParseRunLineageApiV1RunsRunIdLineageGetResponse(rsp *http.Response) (*RunLineageApiV1RunsRunIdLineageGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -71366,7 +77976,7 @@ func ParseRunLineageApiV1RunsRunIdLineageGetResponse(rsp *http.Response) (*RunLi
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RunPage
+		var dest RunLineageApiV1RunsRunIdLineageGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -73682,7 +80292,7 @@ func ParseListInboxApiV1ThreadsThreadIdInboxGetResponse(rsp *http.Response) (*Li
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest EntryPage
+		var dest ListInboxApiV1ThreadsThreadIdInboxGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -73941,7 +80551,7 @@ func ParseGetEntryApiV1ThreadsThreadIdInboxEntryIdGetResponse(rsp *http.Response
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest EntryView
+		var dest GetEntryApiV1ThreadsThreadIdInboxEntryIdGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -74315,7 +80925,7 @@ func ParseListThreadRunsApiV1ThreadsThreadIdRunsGetResponse(rsp *http.Response) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest RunPage
+		var dest ListThreadRunsApiV1ThreadsThreadIdRunsGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -74482,6 +81092,132 @@ func ParseListToolsetsApiV1ToolsetsGetResponse(rsp *http.Response) (*ListToolset
 	return response, nil
 }
 
+// ParseDefineToolsetsApiV1ToolsetsDefinitionsGetResponse parses an HTTP response from a DefineToolsetsApiV1ToolsetsDefinitionsGetWithResponse call
+func ParseDefineToolsetsApiV1ToolsetsDefinitionsGetResponse(rsp *http.Response) (*DefineToolsetsApiV1ToolsetsDefinitionsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DefineToolsetsApiV1ToolsetsDefinitionsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefineToolsetsApiV1ToolsetsDefinitionsGet200JSONResponseBody
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DefineToolsetsApiV1ToolsetsDefinitionsGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DefineToolsetsApiV1ToolsetsDefinitionsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseIndexToolsetsApiV1ToolsetsIndexGetResponse parses an HTTP response from a IndexToolsetsApiV1ToolsetsIndexGetWithResponse call
+func ParseIndexToolsetsApiV1ToolsetsIndexGetResponse(rsp *http.Response) (*IndexToolsetsApiV1ToolsetsIndexGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &IndexToolsetsApiV1ToolsetsIndexGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogIndex
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers IndexToolsetsApiV1ToolsetsIndexGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers IndexToolsetsApiV1ToolsetsIndexGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetTraceBackendApiV1TraceBackendGetResponse parses an HTTP response from a GetTraceBackendApiV1TraceBackendGetWithResponse call
 func ParseGetTraceBackendApiV1TraceBackendGetResponse(rsp *http.Response) (*GetTraceBackendApiV1TraceBackendGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -74560,7 +81296,7 @@ func ParseListTracesApiV1TracesGetResponse(rsp *http.Response) (*ListTracesApiV1
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest SpanPage
+		var dest ListTracesApiV1TracesGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -74623,7 +81359,7 @@ func ParseGetTraceApiV1TracesTraceIdGetResponse(rsp *http.Response) (*GetTraceAp
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Span
+		var dest GetTraceApiV1TracesTraceIdGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -74686,7 +81422,7 @@ func ParseListTraceSpansApiV1TracesTraceIdSpansGetResponse(rsp *http.Response) (
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest SpanPage
+		var dest ListTraceSpansApiV1TracesTraceIdSpansGet200JSONResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -74721,6 +81457,69 @@ func ParseListTraceSpansApiV1TracesTraceIdSpansGetResponse(rsp *http.Response) (
 		response.Headers400 = &headers
 	case true:
 		var headers ListTraceSpansApiV1TracesTraceIdSpansGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse parses an HTTP response from a ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetWithResponse call
+func ParseReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse(rsp *http.Response) (*ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SpanContentPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ReadSpanContentApiV1TracesTraceIdSpansSpanIdContentGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
