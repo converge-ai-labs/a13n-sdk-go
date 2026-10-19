@@ -663,48 +663,6 @@ func (e PlatformGroup) Valid() bool {
 	}
 }
 
-// Defines values for PlatformSelectionReadPermission.
-const (
-	PlatformSelectionReadPermissionAllow PlatformSelectionReadPermission = "allow"
-	PlatformSelectionReadPermissionAsk   PlatformSelectionReadPermission = "ask"
-	PlatformSelectionReadPermissionDeny  PlatformSelectionReadPermission = "deny"
-)
-
-// Valid indicates whether the value is a known member of the PlatformSelectionReadPermission enum.
-func (e PlatformSelectionReadPermission) Valid() bool {
-	switch e {
-	case PlatformSelectionReadPermissionAllow:
-		return true
-	case PlatformSelectionReadPermissionAsk:
-		return true
-	case PlatformSelectionReadPermissionDeny:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for PlatformSelectionWritePermission.
-const (
-	PlatformSelectionWritePermissionAllow PlatformSelectionWritePermission = "allow"
-	PlatformSelectionWritePermissionAsk   PlatformSelectionWritePermission = "ask"
-	PlatformSelectionWritePermissionDeny  PlatformSelectionWritePermission = "deny"
-)
-
-// Valid indicates whether the value is a known member of the PlatformSelectionWritePermission enum.
-func (e PlatformSelectionWritePermission) Valid() bool {
-	switch e {
-	case PlatformSelectionWritePermissionAllow:
-		return true
-	case PlatformSelectionWritePermissionAsk:
-		return true
-	case PlatformSelectionWritePermissionDeny:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ProxyToolSearchConfigMode.
 const (
 	Proxy ProxyToolSearchConfigMode = "proxy"
@@ -936,37 +894,28 @@ func (e ToolRiskLevel) Valid() bool {
 	}
 }
 
-// Defines values for ToolsetKey.
+// Defines values for ToolsetKey0.
 const (
-	Assets        ToolsetKey = "assets"
-	Computer      ToolsetKey = "computer"
-	Configuration ToolsetKey = "configuration"
-	Files         ToolsetKey = "files"
-	Findings      ToolsetKey = "findings"
-	Memory        ToolsetKey = "memory"
-	Shell         ToolsetKey = "shell"
-	Traces        ToolsetKey = "traces"
-	Web           ToolsetKey = "web"
+	Assets   ToolsetKey0 = "assets"
+	Computer ToolsetKey0 = "computer"
+	Files    ToolsetKey0 = "files"
+	Memory   ToolsetKey0 = "memory"
+	Shell    ToolsetKey0 = "shell"
+	Web      ToolsetKey0 = "web"
 )
 
-// Valid indicates whether the value is a known member of the ToolsetKey enum.
-func (e ToolsetKey) Valid() bool {
+// Valid indicates whether the value is a known member of the ToolsetKey0 enum.
+func (e ToolsetKey0) Valid() bool {
 	switch e {
 	case Assets:
 		return true
 	case Computer:
 		return true
-	case Configuration:
-		return true
 	case Files:
-		return true
-	case Findings:
 		return true
 	case Memory:
 		return true
 	case Shell:
-		return true
-	case Traces:
 		return true
 	case Web:
 		return true
@@ -1084,7 +1033,6 @@ type AgentOverride struct {
 	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]    `json:"model_characteristics,omitempty"`
 	ModelSettings        nullable.Nullable[map[string]JsonValue]         `json:"model_settings,omitempty"`
 	OutputSpec           nullable.Nullable[OutputSpec]                   `json:"output_spec,omitempty"`
-	PlatformTools        nullable.Nullable[PlatformSelection]            `json:"platform_tools,omitempty"`
 	Plugins              nullable.Nullable[[]PluginSelection]            `json:"plugins,omitempty"`
 	Retries              nullable.Nullable[RetryOverride]                `json:"retries,omitempty"`
 	Reviewer             nullable.Nullable[AgentReviewer]                `json:"reviewer,omitempty"`
@@ -1490,19 +1438,6 @@ type PendingCall struct {
 // PlatformGroup defines model for PlatformGroup.
 type PlatformGroup string
 
-// PlatformSelection Platform MCP groups selected independently of local operating instructions.
-type PlatformSelection struct {
-	Groups          *[]PlatformGroup                  `json:"groups,omitempty"`
-	ReadPermission  *PlatformSelectionReadPermission  `json:"read_permission,omitempty"`
-	WritePermission *PlatformSelectionWritePermission `json:"write_permission,omitempty"`
-}
-
-// PlatformSelectionReadPermission defines model for PlatformSelection.ReadPermission.
-type PlatformSelectionReadPermission string
-
-// PlatformSelectionWritePermission defines model for PlatformSelection.WritePermission.
-type PlatformSelectionWritePermission string
-
 // PluginSelection One instance of a Harness plugin factory the deployment installed.
 type PluginSelection struct {
 	Config       *map[string]JsonValue `json:"config,omitempty"`
@@ -1764,7 +1699,12 @@ type ToolSelection struct {
 }
 
 // ToolsetKey defines model for ToolsetKey.
-type ToolsetKey string
+type ToolsetKey struct {
+	union json.RawMessage
+}
+
+// ToolsetKey0 defines model for ToolsetKey.0.
+type ToolsetKey0 string
 
 // ToolsetSelection defines model for ToolsetSelection.
 type ToolsetSelection struct {
@@ -2551,4 +2491,66 @@ func (t *ToolSearchConfig) UnmarshalJSON(b []byte) error {
 		return err
 	}
 	return t.union.UnmarshalJSON(b)
+}
+
+// AsToolsetKey0 returns the union data inside the ToolsetKey as a ToolsetKey0
+func (t ToolsetKey) AsToolsetKey0() (ToolsetKey0, error) {
+	var body ToolsetKey0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromToolsetKey0 overwrites any union data inside the ToolsetKey as the provided ToolsetKey0
+func (t *ToolsetKey) FromToolsetKey0(v ToolsetKey0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeToolsetKey0 performs a merge with any union data inside the ToolsetKey, using the provided ToolsetKey0
+func (t *ToolsetKey) MergeToolsetKey0(v ToolsetKey0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsPlatformGroup returns the union data inside the ToolsetKey as a PlatformGroup
+func (t ToolsetKey) AsPlatformGroup() (PlatformGroup, error) {
+	var body PlatformGroup
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPlatformGroup overwrites any union data inside the ToolsetKey as the provided PlatformGroup
+func (t *ToolsetKey) FromPlatformGroup(v PlatformGroup) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePlatformGroup performs a merge with any union data inside the ToolsetKey, using the provided PlatformGroup
+func (t *ToolsetKey) MergePlatformGroup(v PlatformGroup) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ToolsetKey) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ToolsetKey) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
 }
