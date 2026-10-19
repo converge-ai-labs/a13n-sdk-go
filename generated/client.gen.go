@@ -946,46 +946,48 @@ func (e EntryViewKind) Valid() bool {
 
 // Defines values for EnvironmentAction.
 const (
-	EnvironmentComputerClick       EnvironmentAction = "environment.computer.click"
-	EnvironmentComputerDescribe    EnvironmentAction = "environment.computer.describe"
-	EnvironmentComputerDrag        EnvironmentAction = "environment.computer.drag"
-	EnvironmentComputerMove        EnvironmentAction = "environment.computer.move"
-	EnvironmentComputerObserve     EnvironmentAction = "environment.computer.observe"
-	EnvironmentComputerPressKeys   EnvironmentAction = "environment.computer.press_keys"
-	EnvironmentComputerScroll      EnvironmentAction = "environment.computer.scroll"
-	EnvironmentComputerTypeText    EnvironmentAction = "environment.computer.type_text"
-	EnvironmentComputerZoom        EnvironmentAction = "environment.computer.zoom"
-	EnvironmentFileCopyDestination EnvironmentAction = "environment.file.copy_destination"
-	EnvironmentFileCopySource      EnvironmentAction = "environment.file.copy_source"
-	EnvironmentFileList            EnvironmentAction = "environment.file.list"
-	EnvironmentFileMkdir           EnvironmentAction = "environment.file.mkdir"
-	EnvironmentFileMove            EnvironmentAction = "environment.file.move"
-	EnvironmentFilePatchText       EnvironmentAction = "environment.file.patch_text"
-	EnvironmentFileQuery           EnvironmentAction = "environment.file.query"
-	EnvironmentFileReadBytes       EnvironmentAction = "environment.file.read_bytes"
-	EnvironmentFileReadText        EnvironmentAction = "environment.file.read_text"
-	EnvironmentFileRemove          EnvironmentAction = "environment.file.remove"
-	EnvironmentFileSearchText      EnvironmentAction = "environment.file.search_text"
-	EnvironmentFileStat            EnvironmentAction = "environment.file.stat"
-	EnvironmentFileWriteBytes      EnvironmentAction = "environment.file.write_bytes"
-	EnvironmentFileWriteText       EnvironmentAction = "environment.file.write_text"
-	EnvironmentOutputRead          EnvironmentAction = "environment.output.read"
-	EnvironmentOutputRelease       EnvironmentAction = "environment.output.release"
-	EnvironmentPortInspect         EnvironmentAction = "environment.port.inspect"
-	EnvironmentPortWait            EnvironmentAction = "environment.port.wait"
-	EnvironmentProcessCloseStdin   EnvironmentAction = "environment.process.close_stdin"
-	EnvironmentProcessInspect      EnvironmentAction = "environment.process.inspect"
-	EnvironmentProcessKill         EnvironmentAction = "environment.process.kill"
-	EnvironmentProcessList         EnvironmentAction = "environment.process.list"
-	EnvironmentProcessReadOutput   EnvironmentAction = "environment.process.read_output"
-	EnvironmentProcessRelease      EnvironmentAction = "environment.process.release"
-	EnvironmentProcessSignal       EnvironmentAction = "environment.process.signal"
-	EnvironmentProcessStart        EnvironmentAction = "environment.process.start"
-	EnvironmentProcessWait         EnvironmentAction = "environment.process.wait"
-	EnvironmentProcessWriteStdin   EnvironmentAction = "environment.process.write_stdin"
-	EnvironmentShellExec           EnvironmentAction = "environment.shell.exec"
-	EnvironmentStateExport         EnvironmentAction = "environment.state.export"
-	EnvironmentStateRestore        EnvironmentAction = "environment.state.restore"
+	EnvironmentComputerClick          EnvironmentAction = "environment.computer.click"
+	EnvironmentComputerDescribe       EnvironmentAction = "environment.computer.describe"
+	EnvironmentComputerDrag           EnvironmentAction = "environment.computer.drag"
+	EnvironmentComputerMove           EnvironmentAction = "environment.computer.move"
+	EnvironmentComputerObserve        EnvironmentAction = "environment.computer.observe"
+	EnvironmentComputerPressKeys      EnvironmentAction = "environment.computer.press_keys"
+	EnvironmentComputerReadClipboard  EnvironmentAction = "environment.computer.read_clipboard"
+	EnvironmentComputerScroll         EnvironmentAction = "environment.computer.scroll"
+	EnvironmentComputerTypeText       EnvironmentAction = "environment.computer.type_text"
+	EnvironmentComputerWriteClipboard EnvironmentAction = "environment.computer.write_clipboard"
+	EnvironmentComputerZoom           EnvironmentAction = "environment.computer.zoom"
+	EnvironmentFileCopyDestination    EnvironmentAction = "environment.file.copy_destination"
+	EnvironmentFileCopySource         EnvironmentAction = "environment.file.copy_source"
+	EnvironmentFileList               EnvironmentAction = "environment.file.list"
+	EnvironmentFileMkdir              EnvironmentAction = "environment.file.mkdir"
+	EnvironmentFileMove               EnvironmentAction = "environment.file.move"
+	EnvironmentFilePatchText          EnvironmentAction = "environment.file.patch_text"
+	EnvironmentFileQuery              EnvironmentAction = "environment.file.query"
+	EnvironmentFileReadBytes          EnvironmentAction = "environment.file.read_bytes"
+	EnvironmentFileReadText           EnvironmentAction = "environment.file.read_text"
+	EnvironmentFileRemove             EnvironmentAction = "environment.file.remove"
+	EnvironmentFileSearchText         EnvironmentAction = "environment.file.search_text"
+	EnvironmentFileStat               EnvironmentAction = "environment.file.stat"
+	EnvironmentFileWriteBytes         EnvironmentAction = "environment.file.write_bytes"
+	EnvironmentFileWriteText          EnvironmentAction = "environment.file.write_text"
+	EnvironmentOutputRead             EnvironmentAction = "environment.output.read"
+	EnvironmentOutputRelease          EnvironmentAction = "environment.output.release"
+	EnvironmentPortInspect            EnvironmentAction = "environment.port.inspect"
+	EnvironmentPortWait               EnvironmentAction = "environment.port.wait"
+	EnvironmentProcessCloseStdin      EnvironmentAction = "environment.process.close_stdin"
+	EnvironmentProcessInspect         EnvironmentAction = "environment.process.inspect"
+	EnvironmentProcessKill            EnvironmentAction = "environment.process.kill"
+	EnvironmentProcessList            EnvironmentAction = "environment.process.list"
+	EnvironmentProcessReadOutput      EnvironmentAction = "environment.process.read_output"
+	EnvironmentProcessRelease         EnvironmentAction = "environment.process.release"
+	EnvironmentProcessSignal          EnvironmentAction = "environment.process.signal"
+	EnvironmentProcessStart           EnvironmentAction = "environment.process.start"
+	EnvironmentProcessWait            EnvironmentAction = "environment.process.wait"
+	EnvironmentProcessWriteStdin      EnvironmentAction = "environment.process.write_stdin"
+	EnvironmentShellExec              EnvironmentAction = "environment.shell.exec"
+	EnvironmentStateExport            EnvironmentAction = "environment.state.export"
+	EnvironmentStateRestore           EnvironmentAction = "environment.state.restore"
 )
 
 // Valid indicates whether the value is a known member of the EnvironmentAction enum.
@@ -1003,9 +1005,13 @@ func (e EnvironmentAction) Valid() bool {
 		return true
 	case EnvironmentComputerPressKeys:
 		return true
+	case EnvironmentComputerReadClipboard:
+		return true
 	case EnvironmentComputerScroll:
 		return true
 	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentComputerWriteClipboard:
 		return true
 	case EnvironmentComputerZoom:
 		return true
