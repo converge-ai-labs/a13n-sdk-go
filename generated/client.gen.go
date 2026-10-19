@@ -8062,6 +8062,8 @@ type ListProviderTypesApiV1ProviderTypesKindGetParamsKind string
 
 // ListRunsApiV1RunsGetParams defines parameters for ListRunsApiV1RunsGet.
 type ListRunsApiV1RunsGetParams struct {
+	// TextQuery All search terms must match one run's retained user/assistant text
+	TextQuery     *string                           `form:"text_query,omitempty" json:"text_query,omitempty"`
 	AgentId       *string                           `form:"agent_id,omitempty" json:"agent_id,omitempty"`
 	SessionId     *string                           `form:"session_id,omitempty" json:"session_id,omitempty"`
 	ThreadId      *string                           `form:"thread_id,omitempty" json:"thread_id,omitempty"`
@@ -8333,6 +8335,9 @@ type ResumeRunApiV1RunsRunIdResumePostParams struct {
 
 // ListSessionsApiV1SessionsGetParams defines parameters for ListSessionsApiV1SessionsGet.
 type ListSessionsApiV1SessionsGetParams struct {
+	// TextQuery All search terms must match one run's retained user/assistant text
+	TextQuery *string `form:"text_query,omitempty" json:"text_query,omitempty"`
+
 	// Q A session or thread ID
 	Q             *string      `form:"q,omitempty" json:"q,omitempty"`
 	AgentId       *string      `form:"agent_id,omitempty" json:"agent_id,omitempty"`
@@ -8546,6 +8551,7 @@ type RedeliverApiV1SubscriptionsSubscriptionIdDeliveriesDeliveryIdRedeliverPostP
 // ListThreadsApiV1ThreadsGetParams defines parameters for ListThreadsApiV1ThreadsGet.
 type ListThreadsApiV1ThreadsGetParams struct {
 	SessionId *string   `form:"session_id,omitempty" json:"session_id,omitempty"`
+	TextQuery *string   `form:"text_query,omitempty" json:"text_query,omitempty"`
 	Label     *[]string `form:"label,omitempty" json:"label,omitempty"`
 	Limit     *int      `form:"limit,omitempty" json:"limit,omitempty"`
 	Cursor    *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
@@ -31513,6 +31519,18 @@ func NewListRunsApiV1RunsGetRequest(server string, params *ListRunsApiV1RunsGetP
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
 
+		if params.TextQuery != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "text_query", *params.TextQuery, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.AgentId != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", *params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
@@ -33226,6 +33244,18 @@ func NewListSessionsApiV1SessionsGetRequest(server string, params *ListSessionsA
 		// styled parameters, preserving literal commas as delimiters
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
+
+		if params.TextQuery != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "text_query", *params.TextQuery, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
 
 		if params.Q != nil {
 
@@ -35043,6 +35073,18 @@ func NewListThreadsApiV1ThreadsGetRequest(server string, params *ListThreadsApiV
 		if params.SessionId != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "session_id", *params.SessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TextQuery != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "text_query", *params.TextQuery, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
