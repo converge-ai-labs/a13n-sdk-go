@@ -3965,13 +3965,13 @@ type ContentSummary struct {
 // ContentSummaryView defines model for ContentSummary.View.
 type ContentSummaryView string
 
-// ContextUsage One reported generation, compared with its currently configured window.
+// ContextUsage A Run's configured window and its latest eligible generation, when available.
 type ContextUsage struct {
-	ContextWindowTokens nullable.Nullable[int] `json:"context_window_tokens"`
-	InputTokens         nullable.Nullable[int] `json:"input_tokens"`
-	OutputTokens        nullable.Nullable[int] `json:"output_tokens"`
-	RecordId            string                 `json:"record_id"`
-	RunId               string                 `json:"run_id"`
+	ContextWindowTokens nullable.Nullable[int]    `json:"context_window_tokens"`
+	InputTokens         nullable.Nullable[int]    `json:"input_tokens"`
+	OutputTokens        nullable.Nullable[int]    `json:"output_tokens"`
+	RecordId            nullable.Nullable[string] `json:"record_id"`
+	RunId               string                    `json:"run_id"`
 }
 
 // Control defines model for Control.
