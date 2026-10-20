@@ -156,6 +156,21 @@ func (e ContentRefMediaType) Valid() bool {
 	}
 }
 
+// Defines values for CronScheduleType.
+const (
+	Cron CronScheduleType = "cron"
+)
+
+// Valid indicates whether the value is a known member of the CronScheduleType enum.
+func (e CronScheduleType) Valid() bool {
+	switch e {
+	case Cron:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DelegationContextPolicyHistory.
 const (
 	DelegationContextPolicyHistoryNone     DelegationContextPolicyHistory = "none"
@@ -630,6 +645,33 @@ func (e NativeToolSearchConfigStrategy) Valid() bool {
 	}
 }
 
+// Defines values for OccurrenceStatus.
+const (
+	OccurrenceStatusCancelled OccurrenceStatus = "cancelled"
+	OccurrenceStatusFailed    OccurrenceStatus = "failed"
+	OccurrenceStatusPending   OccurrenceStatus = "pending"
+	OccurrenceStatusSkipped   OccurrenceStatus = "skipped"
+	OccurrenceStatusSubmitted OccurrenceStatus = "submitted"
+)
+
+// Valid indicates whether the value is a known member of the OccurrenceStatus enum.
+func (e OccurrenceStatus) Valid() bool {
+	switch e {
+	case OccurrenceStatusCancelled:
+		return true
+	case OccurrenceStatusFailed:
+		return true
+	case OccurrenceStatusPending:
+		return true
+	case OccurrenceStatusSkipped:
+		return true
+	case OccurrenceStatusSubmitted:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PlatformGroup.
 const (
 	Agents               PlatformGroup = "agents"
@@ -738,6 +780,45 @@ func (e RunViewRevisionSelection) Valid() bool {
 	case Inherited:
 		return true
 	case Pinned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ScheduleState.
+const (
+	Archived ScheduleState = "archived"
+	Enabled  ScheduleState = "enabled"
+	Paused   ScheduleState = "paused"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleState enum.
+func (e ScheduleState) Valid() bool {
+	switch e {
+	case Archived:
+		return true
+	case Enabled:
+		return true
+	case Paused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ScheduleTrigger.
+const (
+	Manual    ScheduleTrigger = "manual"
+	Scheduled ScheduleTrigger = "scheduled"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleTrigger enum.
+func (e ScheduleTrigger) Valid() bool {
+	switch e {
+	case Manual:
+		return true
+	case Scheduled:
 		return true
 	default:
 		return false
@@ -1114,6 +1195,19 @@ type ClientToolDefinition struct {
 // ClientToolDefinitionPermission defines model for ClientToolDefinition.Permission.
 type ClientToolDefinitionPermission string
 
+// Configuration defines model for Configuration.
+type Configuration struct {
+	Id                 string                    `json:"id"`
+	MaxLatenessSeconds int                       `json:"max_lateness_seconds"`
+	Name               string                    `json:"name"`
+	PauseReason        nullable.Nullable[string] `json:"pause_reason"`
+	PrincipalId        string                    `json:"principal_id"`
+	Schedule           CronSchedule              `json:"schedule"`
+	SessionId          string                    `json:"session_id"`
+	State              ScheduleState             `json:"state"`
+	Version            int                       `json:"version"`
+}
+
 // ConnectionSelection An agent's use of one connection: all the tools it exposes, or a subset, and their permissions.
 type ConnectionSelection struct {
 	ConnectionId string                            `json:"connection_id"`
@@ -1134,6 +1228,16 @@ type ContentRef struct {
 
 // ContentRefMediaType defines model for ContentRef.MediaType.
 type ContentRefMediaType string
+
+// CronSchedule defines model for CronSchedule.
+type CronSchedule struct {
+	Expression string            `json:"expression"`
+	Timezone   string            `json:"timezone"`
+	Type       *CronScheduleType `json:"type,omitempty"`
+}
+
+// CronScheduleType defines model for CronSchedule.Type.
+type CronScheduleType string
 
 // DelegationContextPolicy defines model for DelegationContextPolicy.
 type DelegationContextPolicy struct {
@@ -1280,6 +1384,12 @@ type Gap struct {
 	ThreadId string `json:"thread_id"`
 }
 
+// InitialRun defines model for InitialRun.
+type InitialRun struct {
+	Id     string    `json:"id"`
+	Status RunStatus `json:"status"`
+}
+
 // IsolatedSkillSync Reuse immutable package directories, with a soft count budget.
 type IsolatedSkillSync struct {
 	CacheCount *int                   `json:"cache_count,omitempty"`
@@ -1396,6 +1506,48 @@ type ObserverContinuation struct {
 	ThreadId nullable.Nullable[string] `json:"thread_id,omitempty"`
 }
 
+// OccurrenceEvent defines model for OccurrenceEvent.
+type OccurrenceEvent struct {
+	Occurrence OccurrenceSummary `json:"occurrence"`
+	ScheduleId string            `json:"schedule_id"`
+	SessionId  string            `json:"session_id"`
+}
+
+// OccurrenceExecution Current execution facts, independent of the immutable submission result and its version.
+type OccurrenceExecution struct {
+	HasUnfinishedWork  bool                           `json:"has_unfinished_work"`
+	InitialEntryStatus nullable.Nullable[EntryStatus] `json:"initial_entry_status"`
+	InitialRun         nullable.Nullable[InitialRun]  `json:"initial_run"`
+	ObservedAt         time.Time                      `json:"observed_at"`
+}
+
+// OccurrenceStatus defines model for OccurrenceStatus.
+type OccurrenceStatus string
+
+// OccurrenceSummary defines model for OccurrenceSummary.
+type OccurrenceSummary struct {
+	CoveredFromAt    nullable.Nullable[time.Time]           `json:"covered_from_at"`
+	CreatedAt        time.Time                              `json:"created_at"`
+	DeadlineAt       time.Time                              `json:"deadline_at"`
+	DispatchAttempts int                                    `json:"dispatch_attempts"`
+	EntryId          nullable.Nullable[string]              `json:"entry_id"`
+	Execution        nullable.Nullable[OccurrenceExecution] `json:"execution,omitempty"`
+	FinishedAt       nullable.Nullable[time.Time]           `json:"finished_at"`
+	Id               string                                 `json:"id"`
+	LastError        nullable.Nullable[string]              `json:"last_error"`
+	NextAttemptAt    nullable.Nullable[time.Time]           `json:"next_attempt_at"`
+	Reason           nullable.Nullable[string]              `json:"reason"`
+	ScheduleId       string                                 `json:"schedule_id"`
+	ScheduleVersion  int                                    `json:"schedule_version"`
+	ScheduledAt      nullable.Nullable[time.Time]           `json:"scheduled_at"`
+	SessionId        string                                 `json:"session_id"`
+	Status           OccurrenceStatus                       `json:"status"`
+	ThreadId         nullable.Nullable[string]              `json:"thread_id"`
+	Trigger          ScheduleTrigger                        `json:"trigger"`
+	UpdatedAt        time.Time                              `json:"updated_at"`
+	Version          int                                    `json:"version"`
+}
+
 // OutputSpec Plain text without a schema, one structured output, or at least two named variants.
 //
 // `resources` are the schemas `$ref`s may name besides the schema's own definitions.
@@ -1443,6 +1595,13 @@ type PluginSelection struct {
 	Config       *map[string]JsonValue `json:"config,omitempty"`
 	InstanceName string                `json:"instance_name"`
 	PluginKey    string                `json:"plugin_key"`
+}
+
+// Progress defines model for Progress.
+type Progress struct {
+	LastOccurrenceId    nullable.Nullable[string]    `json:"last_occurrence_id"`
+	NextFireAt          nullable.Nullable[time.Time] `json:"next_fire_at"`
+	PendingOccurrenceId nullable.Nullable[string]    `json:"pending_occurrence_id"`
 }
 
 // ProxyToolSearchConfig Names and bounded discovery settings for one Agent's proxy surface.
@@ -1543,6 +1702,7 @@ type RunView struct {
 	Resume            nullable.Nullable[Resume]               `json:"resume"`
 	ResumedById       nullable.Nullable[string]               `json:"resumed_by_id"`
 	RevisionSelection RunViewRevisionSelection                `json:"revision_selection"`
+	ScheduleOrigin    nullable.Nullable[ScheduleOrigin]       `json:"schedule_origin,omitempty"`
 	SealedAt          nullable.Nullable[time.Time]            `json:"sealed_at"`
 	SessionId         string                                  `json:"session_id"`
 	SourceEntryId     nullable.Nullable[string]               `json:"source_entry_id"`
@@ -1564,6 +1724,26 @@ type RunView_MemoryMounts_Item struct {
 
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
+
+// ScheduleEvent defines model for ScheduleEvent.
+type ScheduleEvent struct {
+	Configuration Configuration `json:"configuration"`
+	Progress      Progress      `json:"progress"`
+	ScheduleId    string        `json:"schedule_id"`
+	SessionId     string        `json:"session_id"`
+}
+
+// ScheduleOrigin defines model for ScheduleOrigin.
+type ScheduleOrigin struct {
+	OccurrenceId string `json:"occurrence_id"`
+	ScheduleId   string `json:"schedule_id"`
+}
+
+// ScheduleState defines model for ScheduleState.
+type ScheduleState string
+
+// ScheduleTrigger defines model for ScheduleTrigger.
+type ScheduleTrigger string
 
 // SharedSkillSync Publish mutable conventional names; the last completed publication wins.
 type SharedSkillSync struct {
@@ -1621,23 +1801,24 @@ type ThreadState struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
-	ArchivedAt       nullable.Nullable[time.Time] `json:"archived_at"`
-	CreatedAt        time.Time                    `json:"created_at"`
-	CurrentRunId     nullable.Nullable[string]    `json:"current_run_id"`
-	Id               string                       `json:"id"`
-	Labels           map[string]string            `json:"labels"`
-	LastRunId        nullable.Nullable[string]    `json:"last_run_id"`
-	McpHeaders       map[string]map[string]string `json:"mcp_headers"`
-	Origin           ThreadViewOrigin             `json:"origin"`
-	OriginRunId      nullable.Nullable[string]    `json:"origin_run_id"`
-	OriginThreadId   nullable.Nullable[string]    `json:"origin_thread_id"`
-	OriginToolCallId nullable.Nullable[string]    `json:"origin_tool_call_id"`
-	Purpose          *ThreadViewPurpose           `json:"purpose,omitempty"`
-	SessionId        string                       `json:"session_id"`
-	Subagent         nullable.Nullable[string]    `json:"subagent"`
-	UpdatedAt        time.Time                    `json:"updated_at"`
-	Version          int                          `json:"version"`
-	WorkspaceId      string                       `json:"workspace_id"`
+	ArchivedAt           nullable.Nullable[time.Time] `json:"archived_at"`
+	CreatedAt            time.Time                    `json:"created_at"`
+	CurrentRunId         nullable.Nullable[string]    `json:"current_run_id"`
+	Id                   string                       `json:"id"`
+	Labels               map[string]string            `json:"labels"`
+	LastRunId            nullable.Nullable[string]    `json:"last_run_id"`
+	McpHeaders           map[string]map[string]string `json:"mcp_headers"`
+	Origin               ThreadViewOrigin             `json:"origin"`
+	OriginRunId          nullable.Nullable[string]    `json:"origin_run_id"`
+	OriginThreadId       nullable.Nullable[string]    `json:"origin_thread_id"`
+	OriginToolCallId     nullable.Nullable[string]    `json:"origin_tool_call_id"`
+	Purpose              *ThreadViewPurpose           `json:"purpose,omitempty"`
+	ScheduleOccurrenceId nullable.Nullable[string]    `json:"schedule_occurrence_id,omitempty"`
+	SessionId            string                       `json:"session_id"`
+	Subagent             nullable.Nullable[string]    `json:"subagent"`
+	UpdatedAt            time.Time                    `json:"updated_at"`
+	Version              int                          `json:"version"`
+	WorkspaceId          string                       `json:"workspace_id"`
 }
 
 // ThreadViewOrigin defines model for ThreadView.Origin.

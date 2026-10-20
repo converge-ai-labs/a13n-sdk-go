@@ -773,6 +773,21 @@ func (e CredentialMode) Valid() bool {
 	}
 }
 
+// Defines values for CronScheduleType.
+const (
+	Cron CronScheduleType = "cron"
+)
+
+// Valid indicates whether the value is a known member of the CronScheduleType enum.
+func (e CronScheduleType) Valid() bool {
+	switch e {
+	case Cron:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DelegationContextPolicyHistory.
 const (
 	DelegationContextPolicyHistoryNone     DelegationContextPolicyHistory = "none"
@@ -1640,6 +1655,33 @@ func (e OAuthGrant) Valid() bool {
 	}
 }
 
+// Defines values for OccurrenceStatus.
+const (
+	OccurrenceStatusCancelled OccurrenceStatus = "cancelled"
+	OccurrenceStatusFailed    OccurrenceStatus = "failed"
+	OccurrenceStatusPending   OccurrenceStatus = "pending"
+	OccurrenceStatusSkipped   OccurrenceStatus = "skipped"
+	OccurrenceStatusSubmitted OccurrenceStatus = "submitted"
+)
+
+// Valid indicates whether the value is a known member of the OccurrenceStatus enum.
+func (e OccurrenceStatus) Valid() bool {
+	switch e {
+	case OccurrenceStatusCancelled:
+		return true
+	case OccurrenceStatusFailed:
+		return true
+	case OccurrenceStatusPending:
+		return true
+	case OccurrenceStatusSkipped:
+		return true
+	case OccurrenceStatusSubmitted:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OperationKind.
 const (
 	Complete OperationKind = "complete"
@@ -2000,6 +2042,84 @@ func (e RunViewRevisionSelection) Valid() bool {
 	case RunViewRevisionSelectionInherited:
 		return true
 	case RunViewRevisionSelectionPinned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SchedulePauseReason.
+const (
+	SchedulePauseReasonAuthorityInvalid SchedulePauseReason = "authority_invalid"
+	SchedulePauseReasonManual           SchedulePauseReason = "manual"
+	SchedulePauseReasonTargetInvalid    SchedulePauseReason = "target_invalid"
+)
+
+// Valid indicates whether the value is a known member of the SchedulePauseReason enum.
+func (e SchedulePauseReason) Valid() bool {
+	switch e {
+	case SchedulePauseReasonAuthorityInvalid:
+		return true
+	case SchedulePauseReasonManual:
+		return true
+	case SchedulePauseReasonTargetInvalid:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ScheduleCreateState.
+const (
+	ScheduleCreateStateEnabled ScheduleCreateState = "enabled"
+	ScheduleCreateStatePaused  ScheduleCreateState = "paused"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleCreateState enum.
+func (e ScheduleCreateState) Valid() bool {
+	switch e {
+	case ScheduleCreateStateEnabled:
+		return true
+	case ScheduleCreateStatePaused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ScheduleState.
+const (
+	ScheduleStateArchived ScheduleState = "archived"
+	ScheduleStateEnabled  ScheduleState = "enabled"
+	ScheduleStatePaused   ScheduleState = "paused"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleState enum.
+func (e ScheduleState) Valid() bool {
+	switch e {
+	case ScheduleStateArchived:
+		return true
+	case ScheduleStateEnabled:
+		return true
+	case ScheduleStatePaused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ScheduleTrigger.
+const (
+	ScheduleTriggerManual    ScheduleTrigger = "manual"
+	ScheduleTriggerScheduled ScheduleTrigger = "scheduled"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleTrigger enum.
+func (e ScheduleTrigger) Valid() bool {
+	switch e {
+	case ScheduleTriggerManual:
+		return true
+	case ScheduleTriggerScheduled:
 		return true
 	default:
 		return false
@@ -2981,6 +3101,36 @@ func (e ReadRunItemContentParamsField) Valid() bool {
 	}
 }
 
+// Defines values for ListScheduleOccurrencesParamsInclude.
+const (
+	ListScheduleOccurrencesParamsIncludeExecution ListScheduleOccurrencesParamsInclude = "execution"
+)
+
+// Valid indicates whether the value is a known member of the ListScheduleOccurrencesParamsInclude enum.
+func (e ListScheduleOccurrencesParamsInclude) Valid() bool {
+	switch e {
+	case ListScheduleOccurrencesParamsIncludeExecution:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetScheduleOccurrenceParamsInclude.
+const (
+	GetScheduleOccurrenceParamsIncludeExecution GetScheduleOccurrenceParamsInclude = "execution"
+)
+
+// Valid indicates whether the value is a known member of the GetScheduleOccurrenceParamsInclude enum.
+func (e GetScheduleOccurrenceParamsInclude) Valid() bool {
+	switch e {
+	case GetScheduleOccurrenceParamsIncludeExecution:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListSkillsParamsSource.
 const (
 	ListSkillsParamsSourceGithub ListSkillsParamsSource = "github"
@@ -3677,6 +3827,19 @@ type BootstrapInput struct {
 	Password *string             `json:"password,omitempty"`
 }
 
+// BusyOccurrence defines model for BusyOccurrence.
+type BusyOccurrence struct {
+	EntryId      string `json:"entry_id"`
+	OccurrenceId string `json:"occurrence_id"`
+	RootThreadId string `json:"root_thread_id"`
+}
+
+// BusyOccurrencePage defines model for BusyOccurrencePage.
+type BusyOccurrencePage struct {
+	Items      []BusyOccurrence          `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
+}
+
 // CallResult defines model for CallResult.
 type CallResult struct {
 	union json.RawMessage
@@ -4001,6 +4164,16 @@ type CreatedSubscription struct {
 
 // CredentialMode defines model for CredentialMode.
 type CredentialMode string
+
+// CronSchedule defines model for CronSchedule.
+type CronSchedule struct {
+	Expression string            `json:"expression"`
+	Timezone   string            `json:"timezone"`
+	Type       *CronScheduleType `json:"type,omitempty"`
+}
+
+// CronScheduleType defines model for CronSchedule.Type.
+type CronScheduleType string
 
 // DailyUsage defines model for DailyUsage.
 type DailyUsage struct {
@@ -4478,6 +4651,12 @@ type InboxOrder struct {
 
 // InitialMounts defines model for InitialMounts.
 type InitialMounts = []MountCreate
+
+// InitialRun defines model for InitialRun.
+type InitialRun struct {
+	Id     string    `json:"id"`
+	Status RunStatus `json:"status"`
+}
 
 // InstrumentationScope The instrumentation library that recorded the span.
 type InstrumentationScope struct {
@@ -5301,6 +5480,84 @@ type OAuthSettings struct {
 	TokenEndpointAuthMethod *ClientAuthentication     `json:"token_endpoint_auth_method,omitempty"`
 }
 
+// Occurrence defines model for Occurrence.
+type Occurrence struct {
+	CoveredFromAt    nullable.Nullable[time.Time]           `json:"covered_from_at"`
+	CreatedAt        time.Time                              `json:"created_at"`
+	DeadlineAt       time.Time                              `json:"deadline_at"`
+	DispatchAttempts int                                    `json:"dispatch_attempts"`
+	EntryId          nullable.Nullable[string]              `json:"entry_id"`
+	Execution        nullable.Nullable[OccurrenceExecution] `json:"execution,omitempty"`
+	FinishedAt       nullable.Nullable[time.Time]           `json:"finished_at"`
+	Id               string                                 `json:"id"`
+	LastError        nullable.Nullable[string]              `json:"last_error"`
+	NextAttemptAt    nullable.Nullable[time.Time]           `json:"next_attempt_at"`
+	PrincipalId      string                                 `json:"principal_id"`
+	Reason           nullable.Nullable[string]              `json:"reason"`
+	RequestedById    nullable.Nullable[string]              `json:"requested_by_id"`
+	ScheduleId       string                                 `json:"schedule_id"`
+	ScheduleVersion  int                                    `json:"schedule_version"`
+	ScheduledAt      nullable.Nullable[time.Time]           `json:"scheduled_at"`
+	SessionId        string                                 `json:"session_id"`
+	Snapshot         OccurrenceSnapshot                     `json:"snapshot"`
+	Status           OccurrenceStatus                       `json:"status"`
+	ThreadId         nullable.Nullable[string]              `json:"thread_id"`
+	Trigger          ScheduleTrigger                        `json:"trigger"`
+	UpdatedAt        time.Time                              `json:"updated_at"`
+	Version          int                                    `json:"version"`
+}
+
+// OccurrenceExecution Current execution facts, independent of the immutable submission result and its version.
+type OccurrenceExecution struct {
+	HasUnfinishedWork  bool                           `json:"has_unfinished_work"`
+	InitialEntryStatus nullable.Nullable[EntryStatus] `json:"initial_entry_status"`
+	InitialRun         nullable.Nullable[InitialRun]  `json:"initial_run"`
+	ObservedAt         time.Time                      `json:"observed_at"`
+}
+
+// OccurrencePage defines model for OccurrencePage.
+type OccurrencePage struct {
+	Items      []OccurrenceSummary       `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
+}
+
+// OccurrenceSnapshot defines model for OccurrenceSnapshot.
+type OccurrenceSnapshot struct {
+	Invocation          ScheduleInvocationOutput `json:"invocation"`
+	MaxLatenessSeconds  int                      `json:"max_lateness_seconds"`
+	Name                string                   `json:"name"`
+	Schedule            CronSchedule             `json:"schedule"`
+	TimezoneDataVersion string                   `json:"timezone_data_version"`
+	UtcOffsetSeconds    nullable.Nullable[int]   `json:"utc_offset_seconds"`
+}
+
+// OccurrenceStatus defines model for OccurrenceStatus.
+type OccurrenceStatus string
+
+// OccurrenceSummary defines model for OccurrenceSummary.
+type OccurrenceSummary struct {
+	CoveredFromAt    nullable.Nullable[time.Time]           `json:"covered_from_at"`
+	CreatedAt        time.Time                              `json:"created_at"`
+	DeadlineAt       time.Time                              `json:"deadline_at"`
+	DispatchAttempts int                                    `json:"dispatch_attempts"`
+	EntryId          nullable.Nullable[string]              `json:"entry_id"`
+	Execution        nullable.Nullable[OccurrenceExecution] `json:"execution,omitempty"`
+	FinishedAt       nullable.Nullable[time.Time]           `json:"finished_at"`
+	Id               string                                 `json:"id"`
+	LastError        nullable.Nullable[string]              `json:"last_error"`
+	NextAttemptAt    nullable.Nullable[time.Time]           `json:"next_attempt_at"`
+	Reason           nullable.Nullable[string]              `json:"reason"`
+	ScheduleId       string                                 `json:"schedule_id"`
+	ScheduleVersion  int                                    `json:"schedule_version"`
+	ScheduledAt      nullable.Nullable[time.Time]           `json:"scheduled_at"`
+	SessionId        string                                 `json:"session_id"`
+	Status           OccurrenceStatus                       `json:"status"`
+	ThreadId         nullable.Nullable[string]              `json:"thread_id"`
+	Trigger          ScheduleTrigger                        `json:"trigger"`
+	UpdatedAt        time.Time                              `json:"updated_at"`
+	Version          int                                    `json:"version"`
+}
+
 // OperationKind defines model for OperationKind.
 type OperationKind string
 
@@ -5826,6 +6083,7 @@ type RunSummary struct {
 	ParentRunId       nullable.Nullable[string]         `json:"parent_run_id"`
 	PrincipalId       string                            `json:"principal_id"`
 	RevisionSelection RunSummaryRevisionSelection       `json:"revision_selection"`
+	ScheduleOrigin    nullable.Nullable[ScheduleOrigin] `json:"schedule_origin,omitempty"`
 	SealedAt          nullable.Nullable[time.Time]      `json:"sealed_at"`
 	SessionId         string                            `json:"session_id"`
 	SourceEntryId     nullable.Nullable[string]         `json:"source_entry_id"`
@@ -5889,6 +6147,7 @@ type RunView struct {
 	Resume            nullable.Nullable[Resume]               `json:"resume"`
 	ResumedById       nullable.Nullable[string]               `json:"resumed_by_id"`
 	RevisionSelection RunViewRevisionSelection                `json:"revision_selection"`
+	ScheduleOrigin    nullable.Nullable[ScheduleOrigin]       `json:"schedule_origin,omitempty"`
 	SealedAt          nullable.Nullable[time.Time]            `json:"sealed_at"`
 	SessionId         string                                  `json:"session_id"`
 	SourceEntryId     nullable.Nullable[string]               `json:"source_entry_id"`
@@ -5910,6 +6169,129 @@ type RunView_MemoryMounts_Item struct {
 
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
+
+// Schedule defines model for Schedule.
+type Schedule struct {
+	ArchivedAt         nullable.Nullable[time.Time]           `json:"archived_at"`
+	CreatedAt          time.Time                              `json:"created_at"`
+	CreatedById        string                                 `json:"created_by_id"`
+	Description        nullable.Nullable[string]              `json:"description,omitempty"`
+	Id                 string                                 `json:"id"`
+	Invocation         ScheduleInvocationOutput               `json:"invocation"`
+	Labels             *map[string]string                     `json:"labels,omitempty"`
+	MaxLatenessSeconds *int                                   `json:"max_lateness_seconds,omitempty"`
+	Name               string                                 `json:"name"`
+	PauseReason        nullable.Nullable[SchedulePauseReason] `json:"pause_reason"`
+	PrincipalId        string                                 `json:"principal_id"`
+	Schedule           CronSchedule                           `json:"schedule"`
+	SessionId          string                                 `json:"session_id"`
+	State              ScheduleState                          `json:"state"`
+	StreamUrl          string                                 `json:"stream_url"`
+	UpdatedAt          time.Time                              `json:"updated_at"`
+	UpdatedById        string                                 `json:"updated_by_id"`
+	Version            int                                    `json:"version"`
+	WorkspaceId        string                                 `json:"workspace_id"`
+}
+
+// SchedulePauseReason defines model for Schedule.PauseReason.
+type SchedulePauseReason string
+
+// ScheduleCommand Commands accept no configuration or authority overrides.
+type ScheduleCommand = map[string]interface{}
+
+// ScheduleCreate defines model for ScheduleCreate.
+type ScheduleCreate struct {
+	Description        nullable.Nullable[string] `json:"description,omitempty"`
+	Invocation         ScheduleInvocationInput   `json:"invocation"`
+	Labels             *map[string]string        `json:"labels,omitempty"`
+	MaxLatenessSeconds *int                      `json:"max_lateness_seconds,omitempty"`
+	Name               string                    `json:"name"`
+	Schedule           CronSchedule              `json:"schedule"`
+	State              *ScheduleCreateState      `json:"state,omitempty"`
+}
+
+// ScheduleCreateState defines model for ScheduleCreate.State.
+type ScheduleCreateState string
+
+// ScheduleInvocationInput defines model for ScheduleInvocation-Input.
+type ScheduleInvocationInput struct {
+	AgentId         string                    `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
+	Memories        *[]MemoryMount            `json:"memories,omitempty"`
+
+	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
+	Options *RunOptionsInput `json:"options,omitempty"`
+	Payload MessagePayload   `json:"payload"`
+}
+
+// ScheduleInvocationOutput defines model for ScheduleInvocation-Output.
+type ScheduleInvocationOutput struct {
+	AgentId         string                    `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
+	Memories        *[]MemoryMount            `json:"memories,omitempty"`
+
+	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
+	Options *RunOptionsOutput `json:"options,omitempty"`
+	Payload MessagePayload    `json:"payload"`
+}
+
+// ScheduleOrigin defines model for ScheduleOrigin.
+type ScheduleOrigin struct {
+	OccurrenceId string `json:"occurrence_id"`
+	ScheduleId   string `json:"schedule_id"`
+}
+
+// SchedulePage defines model for SchedulePage.
+type SchedulePage struct {
+	Items      []Schedule                `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
+}
+
+// SchedulePreview defines model for SchedulePreview.
+type SchedulePreview struct {
+	Items []ScheduleTime `json:"items"`
+}
+
+// SchedulePreviewRequest defines model for SchedulePreviewRequest.
+type SchedulePreviewRequest struct {
+	After    time.Time    `json:"after"`
+	Count    *int         `json:"count,omitempty"`
+	Schedule CronSchedule `json:"schedule"`
+}
+
+// ScheduleState defines model for ScheduleState.
+type ScheduleState string
+
+// ScheduleStatus defines model for ScheduleStatus.
+type ScheduleStatus struct {
+	BusyOccurrences     BusyOccurrencePage           `json:"busy_occurrences"`
+	HasUnfinishedWork   bool                         `json:"has_unfinished_work"`
+	LastOccurrenceId    nullable.Nullable[string]    `json:"last_occurrence_id"`
+	NextFireAt          nullable.Nullable[time.Time] `json:"next_fire_at"`
+	ObservedAt          time.Time                    `json:"observed_at"`
+	PendingOccurrenceId nullable.Nullable[string]    `json:"pending_occurrence_id"`
+	ScheduleId          string                       `json:"schedule_id"`
+	SessionId           string                       `json:"session_id"`
+}
+
+// ScheduleTime defines model for ScheduleTime.
+type ScheduleTime struct {
+	Local time.Time `json:"local"`
+	Utc   time.Time `json:"utc"`
+}
+
+// ScheduleTrigger defines model for ScheduleTrigger.
+type ScheduleTrigger string
+
+// ScheduleUpdate defines model for ScheduleUpdate.
+type ScheduleUpdate struct {
+	Description        nullable.Nullable[string]                  `json:"description,omitempty"`
+	Invocation         nullable.Nullable[ScheduleInvocationInput] `json:"invocation,omitempty"`
+	Labels             nullable.Nullable[map[string]string]       `json:"labels,omitempty"`
+	MaxLatenessSeconds nullable.Nullable[int]                     `json:"max_lateness_seconds,omitempty"`
+	Name               nullable.Nullable[string]                  `json:"name,omitempty"`
+	Schedule           nullable.Nullable[CronSchedule]            `json:"schedule,omitempty"`
+}
 
 // SelectedTrace defines model for SelectedTrace.
 type SelectedTrace struct {
@@ -6013,6 +6395,7 @@ type SessionView struct {
 	Preview     nullable.Nullable[SessionPreview] `json:"preview,omitempty"`
 	Purpose     *SessionViewPurpose               `json:"purpose,omitempty"`
 	RunCount    *int                              `json:"run_count,omitempty"`
+	ScheduleId  nullable.Nullable[string]         `json:"schedule_id,omitempty"`
 	UpdatedAt   time.Time                         `json:"updated_at"`
 	Version     int                               `json:"version"`
 	WorkspaceId string                            `json:"workspace_id"`
@@ -6484,23 +6867,24 @@ type ThreadUpdate struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
-	ArchivedAt       nullable.Nullable[time.Time] `json:"archived_at"`
-	CreatedAt        time.Time                    `json:"created_at"`
-	CurrentRunId     nullable.Nullable[string]    `json:"current_run_id"`
-	Id               string                       `json:"id"`
-	Labels           map[string]string            `json:"labels"`
-	LastRunId        nullable.Nullable[string]    `json:"last_run_id"`
-	McpHeaders       map[string]map[string]string `json:"mcp_headers"`
-	Origin           ThreadViewOrigin             `json:"origin"`
-	OriginRunId      nullable.Nullable[string]    `json:"origin_run_id"`
-	OriginThreadId   nullable.Nullable[string]    `json:"origin_thread_id"`
-	OriginToolCallId nullable.Nullable[string]    `json:"origin_tool_call_id"`
-	Purpose          *ThreadViewPurpose           `json:"purpose,omitempty"`
-	SessionId        string                       `json:"session_id"`
-	Subagent         nullable.Nullable[string]    `json:"subagent"`
-	UpdatedAt        time.Time                    `json:"updated_at"`
-	Version          int                          `json:"version"`
-	WorkspaceId      string                       `json:"workspace_id"`
+	ArchivedAt           nullable.Nullable[time.Time] `json:"archived_at"`
+	CreatedAt            time.Time                    `json:"created_at"`
+	CurrentRunId         nullable.Nullable[string]    `json:"current_run_id"`
+	Id                   string                       `json:"id"`
+	Labels               map[string]string            `json:"labels"`
+	LastRunId            nullable.Nullable[string]    `json:"last_run_id"`
+	McpHeaders           map[string]map[string]string `json:"mcp_headers"`
+	Origin               ThreadViewOrigin             `json:"origin"`
+	OriginRunId          nullable.Nullable[string]    `json:"origin_run_id"`
+	OriginThreadId       nullable.Nullable[string]    `json:"origin_thread_id"`
+	OriginToolCallId     nullable.Nullable[string]    `json:"origin_tool_call_id"`
+	Purpose              *ThreadViewPurpose           `json:"purpose,omitempty"`
+	ScheduleOccurrenceId nullable.Nullable[string]    `json:"schedule_occurrence_id,omitempty"`
+	SessionId            string                       `json:"session_id"`
+	Subagent             nullable.Nullable[string]    `json:"subagent"`
+	UpdatedAt            time.Time                    `json:"updated_at"`
+	Version              int                          `json:"version"`
+	WorkspaceId          string                       `json:"workspace_id"`
 }
 
 // ThreadViewOrigin defines model for ThreadView.Origin.
@@ -8266,6 +8650,122 @@ type ResumeRunParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListSchedulesParams defines parameters for ListSchedules.
+type ListSchedulesParams struct {
+	Limit       *int           `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor      *string        `form:"cursor,omitempty" json:"cursor,omitempty"`
+	State       *ScheduleState `form:"state,omitempty" json:"state,omitempty"`
+	AgentId     *string        `form:"agent_id,omitempty" json:"agent_id,omitempty"`
+	PrincipalId *string        `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Label       *[]string      `form:"label,omitempty" json:"label,omitempty"`
+	Q           *string        `form:"q,omitempty" json:"q,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateScheduleParams defines parameters for CreateSchedule.
+type CreateScheduleParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// PreviewScheduleParams defines parameters for PreviewSchedule.
+type PreviewScheduleParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ArchiveScheduleParams defines parameters for ArchiveSchedule.
+type ArchiveScheduleParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetScheduleParams defines parameters for GetSchedule.
+type GetScheduleParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateScheduleParams defines parameters for UpdateSchedule.
+type UpdateScheduleParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DispatchScheduleParams defines parameters for DispatchSchedule.
+type DispatchScheduleParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// EnableScheduleParams defines parameters for EnableSchedule.
+type EnableScheduleParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListScheduleOccurrencesParams defines parameters for ListScheduleOccurrences.
+type ListScheduleOccurrencesParams struct {
+	Limit         *int                                  `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor        *string                               `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Status        *OccurrenceStatus                     `form:"status,omitempty" json:"status,omitempty"`
+	Trigger       *ScheduleTrigger                      `form:"trigger,omitempty" json:"trigger,omitempty"`
+	CreatedAfter  *time.Time                            `form:"created_after,omitempty" json:"created_after,omitempty"`
+	CreatedBefore *time.Time                            `form:"created_before,omitempty" json:"created_before,omitempty"`
+	Unfinished    *bool                                 `form:"unfinished,omitempty" json:"unfinished,omitempty"`
+	Include       *ListScheduleOccurrencesParamsInclude `form:"include,omitempty" json:"include,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListScheduleOccurrencesParamsInclude defines parameters for ListScheduleOccurrences.
+type ListScheduleOccurrencesParamsInclude string
+
+// GetScheduleOccurrenceParams defines parameters for GetScheduleOccurrence.
+type GetScheduleOccurrenceParams struct {
+	Include *GetScheduleOccurrenceParamsInclude `form:"include,omitempty" json:"include,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetScheduleOccurrenceParamsInclude defines parameters for GetScheduleOccurrence.
+type GetScheduleOccurrenceParamsInclude string
+
+// PauseScheduleParams defines parameters for PauseSchedule.
+type PauseScheduleParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetScheduleStatusParams defines parameters for GetScheduleStatus.
+type GetScheduleStatusParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListSessionsParams defines parameters for ListSessions.
 type ListSessionsParams struct {
 	// TextQuery All search terms must match one run's retained user/assistant text
@@ -8483,11 +8983,12 @@ type RedeliverParams struct {
 
 // ListThreadsParams defines parameters for ListThreads.
 type ListThreadsParams struct {
-	SessionId *string   `form:"session_id,omitempty" json:"session_id,omitempty"`
-	TextQuery *string   `form:"text_query,omitempty" json:"text_query,omitempty"`
-	Label     *[]string `form:"label,omitempty" json:"label,omitempty"`
-	Limit     *int      `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor    *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	SessionId    *string   `form:"session_id,omitempty" json:"session_id,omitempty"`
+	OccurrenceId *string   `form:"occurrence_id,omitempty" json:"occurrence_id,omitempty"`
+	TextQuery    *string   `form:"text_query,omitempty" json:"text_query,omitempty"`
+	Label        *[]string `form:"label,omitempty" json:"label,omitempty"`
+	Limit        *int      `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor       *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -9275,6 +9776,24 @@ type ForkRunJSONRequestBody = Fork
 
 // ResumeRunJSONRequestBody defines body for ResumeRun for application/json ContentType.
 type ResumeRunJSONRequestBody = Resume
+
+// CreateScheduleJSONRequestBody defines body for CreateSchedule for application/json ContentType.
+type CreateScheduleJSONRequestBody = ScheduleCreate
+
+// PreviewScheduleJSONRequestBody defines body for PreviewSchedule for application/json ContentType.
+type PreviewScheduleJSONRequestBody = SchedulePreviewRequest
+
+// UpdateScheduleJSONRequestBody defines body for UpdateSchedule for application/json ContentType.
+type UpdateScheduleJSONRequestBody = ScheduleUpdate
+
+// DispatchScheduleJSONRequestBody defines body for DispatchSchedule for application/json ContentType.
+type DispatchScheduleJSONRequestBody = ScheduleCommand
+
+// EnableScheduleJSONRequestBody defines body for EnableSchedule for application/json ContentType.
+type EnableScheduleJSONRequestBody = ScheduleCommand
+
+// PauseScheduleJSONRequestBody defines body for PauseSchedule for application/json ContentType.
+type PauseScheduleJSONRequestBody = ScheduleCommand
 
 // CreateSessionJSONRequestBody defines body for CreateSession for application/json ContentType.
 type CreateSessionJSONRequestBody = SessionCreate
@@ -14356,6 +14875,124 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/runs/{run_id}/resume (the `ResumeRun` operationId).
 	ResumeRun(ctx context.Context, runId string, params *ResumeRunParams, body ResumeRunJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListSchedules List Schedules
+	//
+	// Corresponds with GET /api/v1/schedules (the `ListSchedules` operationId).
+	ListSchedules(ctx context.Context, params *ListSchedulesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateScheduleWithBody Create Schedule
+	//
+	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+	CreateScheduleWithBody(ctx context.Context, params *CreateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSchedule Create Schedule
+	//
+	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+	CreateSchedule(ctx context.Context, params *CreateScheduleParams, body CreateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PreviewScheduleWithBody Preview Schedule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+	PreviewScheduleWithBody(ctx context.Context, params *PreviewScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PreviewSchedule Preview Schedule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+	PreviewSchedule(ctx context.Context, params *PreviewScheduleParams, body PreviewScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ArchiveSchedule Archive Schedule
+	//
+	// Corresponds with DELETE /api/v1/schedules/{schedule_id} (the `ArchiveSchedule` operationId).
+	ArchiveSchedule(ctx context.Context, scheduleId string, params *ArchiveScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSchedule Get Schedule
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id} (the `GetSchedule` operationId).
+	GetSchedule(ctx context.Context, scheduleId string, params *GetScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateScheduleWithBody Update Schedule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+	UpdateScheduleWithBody(ctx context.Context, scheduleId string, params *UpdateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSchedule Update Schedule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+	UpdateSchedule(ctx context.Context, scheduleId string, params *UpdateScheduleParams, body UpdateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DispatchScheduleWithBody Dispatch Schedule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+	DispatchScheduleWithBody(ctx context.Context, scheduleId string, params *DispatchScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DispatchSchedule Dispatch Schedule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+	DispatchSchedule(ctx context.Context, scheduleId string, params *DispatchScheduleParams, body DispatchScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EnableScheduleWithBody Enable Schedule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+	EnableScheduleWithBody(ctx context.Context, scheduleId string, params *EnableScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EnableSchedule Enable Schedule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+	EnableSchedule(ctx context.Context, scheduleId string, params *EnableScheduleParams, body EnableScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListScheduleOccurrences List Schedule Occurrences
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences (the `ListScheduleOccurrences` operationId).
+	ListScheduleOccurrences(ctx context.Context, scheduleId string, params *ListScheduleOccurrencesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetScheduleOccurrence Get Schedule Occurrence
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences/{occurrence_id} (the `GetScheduleOccurrence` operationId).
+	GetScheduleOccurrence(ctx context.Context, scheduleId string, occurrenceId string, params *GetScheduleOccurrenceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PauseScheduleWithBody Pause Schedule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+	PauseScheduleWithBody(ctx context.Context, scheduleId string, params *PauseScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PauseSchedule Pause Schedule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+	PauseSchedule(ctx context.Context, scheduleId string, params *PauseScheduleParams, body PauseScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetScheduleStatus Get Schedule Status
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id}/status (the `GetScheduleStatus` operationId).
+	GetScheduleStatus(ctx context.Context, scheduleId string, params *GetScheduleStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListSessions List Sessions
 	//
 	// Corresponds with GET /api/v1/sessions (the `ListSessions` operationId).
@@ -14402,7 +15039,7 @@ type ClientInterface interface {
 	// SessionStream Session Stream
 	//
 	// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-	// frames. Every connection starts from a snapshot.
+	// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
 	//
 	// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStream` operationId).
 	SessionStream(ctx context.Context, sessionId string, params *SessionStreamParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -19092,6 +19729,304 @@ func (c *Client) ResumeRun(ctx context.Context, runId string, params *ResumeRunP
 	return c.Client.Do(req)
 }
 
+// ListSchedules List Schedules
+//
+// Corresponds with GET /api/v1/schedules (the `ListSchedules` operationId).
+func (c *Client) ListSchedules(ctx context.Context, params *ListSchedulesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSchedulesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateScheduleWithBody Create Schedule
+//
+// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+func (c *Client) CreateScheduleWithBody(ctx context.Context, params *CreateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateScheduleRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateSchedule Create Schedule
+//
+// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+func (c *Client) CreateSchedule(ctx context.Context, params *CreateScheduleParams, body CreateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateScheduleRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PreviewScheduleWithBody Preview Schedule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+func (c *Client) PreviewScheduleWithBody(ctx context.Context, params *PreviewScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPreviewScheduleRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PreviewSchedule Preview Schedule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+func (c *Client) PreviewSchedule(ctx context.Context, params *PreviewScheduleParams, body PreviewScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPreviewScheduleRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ArchiveSchedule Archive Schedule
+//
+// Corresponds with DELETE /api/v1/schedules/{schedule_id} (the `ArchiveSchedule` operationId).
+func (c *Client) ArchiveSchedule(ctx context.Context, scheduleId string, params *ArchiveScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewArchiveScheduleRequest(c.Server, scheduleId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetSchedule Get Schedule
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id} (the `GetSchedule` operationId).
+func (c *Client) GetSchedule(ctx context.Context, scheduleId string, params *GetScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetScheduleRequest(c.Server, scheduleId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateScheduleWithBody Update Schedule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+func (c *Client) UpdateScheduleWithBody(ctx context.Context, scheduleId string, params *UpdateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateScheduleRequestWithBody(c.Server, scheduleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSchedule Update Schedule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+func (c *Client) UpdateSchedule(ctx context.Context, scheduleId string, params *UpdateScheduleParams, body UpdateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateScheduleRequest(c.Server, scheduleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DispatchScheduleWithBody Dispatch Schedule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+func (c *Client) DispatchScheduleWithBody(ctx context.Context, scheduleId string, params *DispatchScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDispatchScheduleRequestWithBody(c.Server, scheduleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DispatchSchedule Dispatch Schedule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+func (c *Client) DispatchSchedule(ctx context.Context, scheduleId string, params *DispatchScheduleParams, body DispatchScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDispatchScheduleRequest(c.Server, scheduleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// EnableScheduleWithBody Enable Schedule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+func (c *Client) EnableScheduleWithBody(ctx context.Context, scheduleId string, params *EnableScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnableScheduleRequestWithBody(c.Server, scheduleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// EnableSchedule Enable Schedule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+func (c *Client) EnableSchedule(ctx context.Context, scheduleId string, params *EnableScheduleParams, body EnableScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnableScheduleRequest(c.Server, scheduleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListScheduleOccurrences List Schedule Occurrences
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences (the `ListScheduleOccurrences` operationId).
+func (c *Client) ListScheduleOccurrences(ctx context.Context, scheduleId string, params *ListScheduleOccurrencesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListScheduleOccurrencesRequest(c.Server, scheduleId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetScheduleOccurrence Get Schedule Occurrence
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences/{occurrence_id} (the `GetScheduleOccurrence` operationId).
+func (c *Client) GetScheduleOccurrence(ctx context.Context, scheduleId string, occurrenceId string, params *GetScheduleOccurrenceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetScheduleOccurrenceRequest(c.Server, scheduleId, occurrenceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PauseScheduleWithBody Pause Schedule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+func (c *Client) PauseScheduleWithBody(ctx context.Context, scheduleId string, params *PauseScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPauseScheduleRequestWithBody(c.Server, scheduleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PauseSchedule Pause Schedule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+func (c *Client) PauseSchedule(ctx context.Context, scheduleId string, params *PauseScheduleParams, body PauseScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPauseScheduleRequest(c.Server, scheduleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetScheduleStatus Get Schedule Status
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id}/status (the `GetScheduleStatus` operationId).
+func (c *Client) GetScheduleStatus(ctx context.Context, scheduleId string, params *GetScheduleStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetScheduleStatusRequest(c.Server, scheduleId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListSessions List Sessions
 //
 // Corresponds with GET /api/v1/sessions (the `ListSessions` operationId).
@@ -19208,7 +20143,7 @@ func (c *Client) GetMessageAuthors(ctx context.Context, sessionId string, params
 // SessionStream Session Stream
 //
 // The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-// frames. Every connection starts from a snapshot.
+// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
 //
 // Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStream` operationId).
 func (c *Client) SessionStream(ctx context.Context, sessionId string, params *SessionStreamParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -33224,6 +34159,968 @@ func NewResumeRunRequestWithBody(server string, runId string, params *ResumeRunP
 	return req, nil
 }
 
+// NewListSchedulesRequest constructs an http.Request for the ListSchedules method
+func NewListSchedulesRequest(server string, params *ListSchedulesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.State != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "state", *params.State, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AgentId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", *params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Label != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "label", *params.Label, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Q != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "q", *params.Q, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateScheduleRequest calls the generic CreateSchedule builder with application/json body
+func NewCreateScheduleRequest(server string, params *CreateScheduleParams, body CreateScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateScheduleRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateScheduleRequestWithBody constructs an http.Request for the CreateSchedule method, with any body, and a specified content type
+func NewCreateScheduleRequestWithBody(server string, params *CreateScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("Idempotency-Key", headerParam0)
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewPreviewScheduleRequest calls the generic PreviewSchedule builder with application/json body
+func NewPreviewScheduleRequest(server string, params *PreviewScheduleParams, body PreviewScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPreviewScheduleRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewPreviewScheduleRequestWithBody constructs an http.Request for the PreviewSchedule method, with any body, and a specified content type
+func NewPreviewScheduleRequestWithBody(server string, params *PreviewScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/preview")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewArchiveScheduleRequest constructs an http.Request for the ArchiveSchedule method
+func NewArchiveScheduleRequest(server string, scheduleId string, params *ArchiveScheduleParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetScheduleRequest constructs an http.Request for the GetSchedule method
+func NewGetScheduleRequest(server string, scheduleId string, params *GetScheduleParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateScheduleRequest calls the generic UpdateSchedule builder with application/json body
+func NewUpdateScheduleRequest(server string, scheduleId string, params *UpdateScheduleParams, body UpdateScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateScheduleRequestWithBody(server, scheduleId, params, "application/json", bodyReader)
+}
+
+// NewUpdateScheduleRequestWithBody constructs an http.Request for the UpdateSchedule method, with any body, and a specified content type
+func NewUpdateScheduleRequestWithBody(server string, scheduleId string, params *UpdateScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDispatchScheduleRequest calls the generic DispatchSchedule builder with application/json body
+func NewDispatchScheduleRequest(server string, scheduleId string, params *DispatchScheduleParams, body DispatchScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDispatchScheduleRequestWithBody(server, scheduleId, params, "application/json", bodyReader)
+}
+
+// NewDispatchScheduleRequestWithBody constructs an http.Request for the DispatchSchedule method, with any body, and a specified content type
+func NewDispatchScheduleRequestWithBody(server string, scheduleId string, params *DispatchScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s/dispatch", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("Idempotency-Key", headerParam0)
+
+		if params.IfMatch != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam1)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam2 string
+
+			headerParam2, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam2)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewEnableScheduleRequest calls the generic EnableSchedule builder with application/json body
+func NewEnableScheduleRequest(server string, scheduleId string, params *EnableScheduleParams, body EnableScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewEnableScheduleRequestWithBody(server, scheduleId, params, "application/json", bodyReader)
+}
+
+// NewEnableScheduleRequestWithBody constructs an http.Request for the EnableSchedule method, with any body, and a specified content type
+func NewEnableScheduleRequestWithBody(server string, scheduleId string, params *EnableScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s/enable", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListScheduleOccurrencesRequest constructs an http.Request for the ListScheduleOccurrences method
+func NewListScheduleOccurrencesRequest(server string, scheduleId string, params *ListScheduleOccurrencesParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s/occurrences", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Trigger != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "trigger", *params.Trigger, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CreatedAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_after", *params.CreatedAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CreatedBefore != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_before", *params.CreatedBefore, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Unfinished != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "unfinished", *params.Unfinished, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Include != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include", *params.Include, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetScheduleOccurrenceRequest constructs an http.Request for the GetScheduleOccurrence method
+func NewGetScheduleOccurrenceRequest(server string, scheduleId string, occurrenceId string, params *GetScheduleOccurrenceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "occurrence_id", occurrenceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s/occurrences/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Include != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include", *params.Include, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewPauseScheduleRequest calls the generic PauseSchedule builder with application/json body
+func NewPauseScheduleRequest(server string, scheduleId string, params *PauseScheduleParams, body PauseScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPauseScheduleRequestWithBody(server, scheduleId, params, "application/json", bodyReader)
+}
+
+// NewPauseScheduleRequestWithBody constructs an http.Request for the PauseSchedule method, with any body, and a specified content type
+func NewPauseScheduleRequestWithBody(server string, scheduleId string, params *PauseScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s/pause", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetScheduleStatusRequest constructs an http.Request for the GetScheduleStatus method
+func NewGetScheduleStatusRequest(server string, scheduleId string, params *GetScheduleStatusParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s/status", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListSessionsRequest constructs an http.Request for the ListSessions method
 func NewListSessionsRequest(server string, params *ListSessionsParams) (*http.Request, error) {
 	var err error
@@ -35080,6 +36977,18 @@ func NewListThreadsRequest(server string, params *ListThreadsParams) (*http.Requ
 		if params.SessionId != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "session_id", *params.SessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.OccurrenceId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "occurrence_id", *params.OccurrenceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -42411,6 +44320,136 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/runs/{run_id}/resume (the `ResumeRun` operationId).
 	ResumeRunWithResponse(ctx context.Context, runId string, params *ResumeRunParams, body ResumeRunJSONRequestBody, reqEditors ...RequestEditorFn) (*ResumeRunResponse, error)
 
+	// ListSchedulesWithResponse List Schedules
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/schedules (the `ListSchedules` operationId).
+	ListSchedulesWithResponse(ctx context.Context, params *ListSchedulesParams, reqEditors ...RequestEditorFn) (*ListSchedulesResponse, error)
+
+	// CreateScheduleWithBodyWithResponse Create Schedule
+	//
+	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+	CreateScheduleWithBodyWithResponse(ctx context.Context, params *CreateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateScheduleResponse, error)
+
+	// CreateScheduleWithResponse Create Schedule
+	//
+	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+	CreateScheduleWithResponse(ctx context.Context, params *CreateScheduleParams, body CreateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateScheduleResponse, error)
+
+	// PreviewScheduleWithBodyWithResponse Preview Schedule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+	PreviewScheduleWithBodyWithResponse(ctx context.Context, params *PreviewScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PreviewScheduleResponse, error)
+
+	// PreviewScheduleWithResponse Preview Schedule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+	PreviewScheduleWithResponse(ctx context.Context, params *PreviewScheduleParams, body PreviewScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*PreviewScheduleResponse, error)
+
+	// ArchiveScheduleWithResponse Archive Schedule
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/schedules/{schedule_id} (the `ArchiveSchedule` operationId).
+	ArchiveScheduleWithResponse(ctx context.Context, scheduleId string, params *ArchiveScheduleParams, reqEditors ...RequestEditorFn) (*ArchiveScheduleResponse, error)
+
+	// GetScheduleWithResponse Get Schedule
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id} (the `GetSchedule` operationId).
+	GetScheduleWithResponse(ctx context.Context, scheduleId string, params *GetScheduleParams, reqEditors ...RequestEditorFn) (*GetScheduleResponse, error)
+
+	// UpdateScheduleWithBodyWithResponse Update Schedule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+	UpdateScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *UpdateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateScheduleResponse, error)
+
+	// UpdateScheduleWithResponse Update Schedule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+	UpdateScheduleWithResponse(ctx context.Context, scheduleId string, params *UpdateScheduleParams, body UpdateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateScheduleResponse, error)
+
+	// DispatchScheduleWithBodyWithResponse Dispatch Schedule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+	DispatchScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *DispatchScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DispatchScheduleResponse, error)
+
+	// DispatchScheduleWithResponse Dispatch Schedule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+	DispatchScheduleWithResponse(ctx context.Context, scheduleId string, params *DispatchScheduleParams, body DispatchScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*DispatchScheduleResponse, error)
+
+	// EnableScheduleWithBodyWithResponse Enable Schedule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+	EnableScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *EnableScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EnableScheduleResponse, error)
+
+	// EnableScheduleWithResponse Enable Schedule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+	EnableScheduleWithResponse(ctx context.Context, scheduleId string, params *EnableScheduleParams, body EnableScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*EnableScheduleResponse, error)
+
+	// ListScheduleOccurrencesWithResponse List Schedule Occurrences
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences (the `ListScheduleOccurrences` operationId).
+	ListScheduleOccurrencesWithResponse(ctx context.Context, scheduleId string, params *ListScheduleOccurrencesParams, reqEditors ...RequestEditorFn) (*ListScheduleOccurrencesResponse, error)
+
+	// GetScheduleOccurrenceWithResponse Get Schedule Occurrence
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences/{occurrence_id} (the `GetScheduleOccurrence` operationId).
+	GetScheduleOccurrenceWithResponse(ctx context.Context, scheduleId string, occurrenceId string, params *GetScheduleOccurrenceParams, reqEditors ...RequestEditorFn) (*GetScheduleOccurrenceResponse, error)
+
+	// PauseScheduleWithBodyWithResponse Pause Schedule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+	PauseScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *PauseScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PauseScheduleResponse, error)
+
+	// PauseScheduleWithResponse Pause Schedule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+	PauseScheduleWithResponse(ctx context.Context, scheduleId string, params *PauseScheduleParams, body PauseScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*PauseScheduleResponse, error)
+
+	// GetScheduleStatusWithResponse Get Schedule Status
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/schedules/{schedule_id}/status (the `GetScheduleStatus` operationId).
+	GetScheduleStatusWithResponse(ctx context.Context, scheduleId string, params *GetScheduleStatusParams, reqEditors ...RequestEditorFn) (*GetScheduleStatusResponse, error)
+
 	// ListSessionsWithResponse List Sessions
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -42463,7 +44502,7 @@ type ClientWithResponsesInterface interface {
 	// SessionStreamWithResponse Session Stream
 	//
 	// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-	// frames. Every connection starts from a snapshot.
+	// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -55190,6 +57229,827 @@ func (r ResumeRunResponse) ContentType() string {
 	return ""
 }
 
+// ListSchedulesResponse400Headers the declared response headers of an HTTP 400 response for ListSchedules
+type ListSchedulesResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSchedulesResponseDefaultHeaders the declared response headers of an HTTP default response for ListSchedules
+type ListSchedulesResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSchedulesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SchedulePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSchedulesResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSchedulesResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSchedulesResponse) GetJSON200() *SchedulePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSchedulesResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSchedulesResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSchedulesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSchedulesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSchedulesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSchedulesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateScheduleResponse400Headers the declared response headers of an HTTP 400 response for CreateSchedule
+type CreateScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for CreateSchedule
+type CreateScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Schedule
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateScheduleResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateScheduleResponse) GetJSON201() *Schedule {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PreviewScheduleResponse400Headers the declared response headers of an HTTP 400 response for PreviewSchedule
+type PreviewScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// PreviewScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for PreviewSchedule
+type PreviewScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type PreviewScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SchedulePreview
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PreviewScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PreviewScheduleResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PreviewScheduleResponse) GetJSON200() *SchedulePreview {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PreviewScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PreviewScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PreviewScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PreviewScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PreviewScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PreviewScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ArchiveScheduleResponse400Headers the declared response headers of an HTTP 400 response for ArchiveSchedule
+type ArchiveScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// ArchiveScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for ArchiveSchedule
+type ArchiveScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ArchiveScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ArchiveScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ArchiveScheduleResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ArchiveScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ArchiveScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ArchiveScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ArchiveScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ArchiveScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ArchiveScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetScheduleResponse400Headers the declared response headers of an HTTP 400 response for GetSchedule
+type GetScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for GetSchedule
+type GetScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Schedule
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetScheduleResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetScheduleResponse) GetJSON200() *Schedule {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateScheduleResponse400Headers the declared response headers of an HTTP 400 response for UpdateSchedule
+type UpdateScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateSchedule
+type UpdateScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Schedule
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateScheduleResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateScheduleResponse) GetJSON200() *Schedule {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DispatchScheduleResponse400Headers the declared response headers of an HTTP 400 response for DispatchSchedule
+type DispatchScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// DispatchScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for DispatchSchedule
+type DispatchScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DispatchScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Occurrence
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DispatchScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DispatchScheduleResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r DispatchScheduleResponse) GetJSON202() *Occurrence {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DispatchScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DispatchScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DispatchScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DispatchScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DispatchScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DispatchScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// EnableScheduleResponse400Headers the declared response headers of an HTTP 400 response for EnableSchedule
+type EnableScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// EnableScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for EnableSchedule
+type EnableScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type EnableScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Schedule
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *EnableScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *EnableScheduleResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r EnableScheduleResponse) GetJSON200() *Schedule {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r EnableScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r EnableScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r EnableScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r EnableScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EnableScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EnableScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListScheduleOccurrencesResponse400Headers the declared response headers of an HTTP 400 response for ListScheduleOccurrences
+type ListScheduleOccurrencesResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListScheduleOccurrencesResponseDefaultHeaders the declared response headers of an HTTP default response for ListScheduleOccurrences
+type ListScheduleOccurrencesResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListScheduleOccurrencesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *OccurrencePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListScheduleOccurrencesResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListScheduleOccurrencesResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListScheduleOccurrencesResponse) GetJSON200() *OccurrencePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListScheduleOccurrencesResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListScheduleOccurrencesResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListScheduleOccurrencesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListScheduleOccurrencesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListScheduleOccurrencesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListScheduleOccurrencesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetScheduleOccurrenceResponse400Headers the declared response headers of an HTTP 400 response for GetScheduleOccurrence
+type GetScheduleOccurrenceResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetScheduleOccurrenceResponseDefaultHeaders the declared response headers of an HTTP default response for GetScheduleOccurrence
+type GetScheduleOccurrenceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetScheduleOccurrenceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Occurrence
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetScheduleOccurrenceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetScheduleOccurrenceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetScheduleOccurrenceResponse) GetJSON200() *Occurrence {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetScheduleOccurrenceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetScheduleOccurrenceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetScheduleOccurrenceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetScheduleOccurrenceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetScheduleOccurrenceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetScheduleOccurrenceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PauseScheduleResponse400Headers the declared response headers of an HTTP 400 response for PauseSchedule
+type PauseScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// PauseScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for PauseSchedule
+type PauseScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type PauseScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Schedule
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *PauseScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *PauseScheduleResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PauseScheduleResponse) GetJSON200() *Schedule {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r PauseScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PauseScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PauseScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PauseScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PauseScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PauseScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetScheduleStatusResponse400Headers the declared response headers of an HTTP 400 response for GetScheduleStatus
+type GetScheduleStatusResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetScheduleStatusResponseDefaultHeaders the declared response headers of an HTTP default response for GetScheduleStatus
+type GetScheduleStatusResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetScheduleStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ScheduleStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetScheduleStatusResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetScheduleStatusResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetScheduleStatusResponse) GetJSON200() *ScheduleStatus {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetScheduleStatusResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetScheduleStatusResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetScheduleStatusResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetScheduleStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetScheduleStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetScheduleStatusResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListSessionsResponse400Headers the declared response headers of an HTTP 400 response for ListSessions
 type ListSessionsResponse400Headers struct {
 	XRequestId *string
@@ -65563,6 +68423,244 @@ func (c *ClientWithResponses) ResumeRunWithResponse(ctx context.Context, runId s
 	return ParseResumeRunResponse(rsp)
 }
 
+// ListSchedulesWithResponse List Schedules
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/schedules (the `ListSchedules` operationId).
+func (c *ClientWithResponses) ListSchedulesWithResponse(ctx context.Context, params *ListSchedulesParams, reqEditors ...RequestEditorFn) (*ListSchedulesResponse, error) {
+	rsp, err := c.ListSchedules(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSchedulesResponse(rsp)
+}
+
+// CreateScheduleWithBodyWithResponse Create Schedule
+//
+// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+func (c *ClientWithResponses) CreateScheduleWithBodyWithResponse(ctx context.Context, params *CreateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateScheduleResponse, error) {
+	rsp, err := c.CreateScheduleWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateScheduleResponse(rsp)
+}
+
+// CreateScheduleWithResponse Create Schedule
+//
+// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules (the `CreateSchedule` operationId).
+func (c *ClientWithResponses) CreateScheduleWithResponse(ctx context.Context, params *CreateScheduleParams, body CreateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateScheduleResponse, error) {
+	rsp, err := c.CreateSchedule(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateScheduleResponse(rsp)
+}
+
+// PreviewScheduleWithBodyWithResponse Preview Schedule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+func (c *ClientWithResponses) PreviewScheduleWithBodyWithResponse(ctx context.Context, params *PreviewScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PreviewScheduleResponse, error) {
+	rsp, err := c.PreviewScheduleWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePreviewScheduleResponse(rsp)
+}
+
+// PreviewScheduleWithResponse Preview Schedule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/preview (the `PreviewSchedule` operationId).
+func (c *ClientWithResponses) PreviewScheduleWithResponse(ctx context.Context, params *PreviewScheduleParams, body PreviewScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*PreviewScheduleResponse, error) {
+	rsp, err := c.PreviewSchedule(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePreviewScheduleResponse(rsp)
+}
+
+// ArchiveScheduleWithResponse Archive Schedule
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/schedules/{schedule_id} (the `ArchiveSchedule` operationId).
+func (c *ClientWithResponses) ArchiveScheduleWithResponse(ctx context.Context, scheduleId string, params *ArchiveScheduleParams, reqEditors ...RequestEditorFn) (*ArchiveScheduleResponse, error) {
+	rsp, err := c.ArchiveSchedule(ctx, scheduleId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseArchiveScheduleResponse(rsp)
+}
+
+// GetScheduleWithResponse Get Schedule
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id} (the `GetSchedule` operationId).
+func (c *ClientWithResponses) GetScheduleWithResponse(ctx context.Context, scheduleId string, params *GetScheduleParams, reqEditors ...RequestEditorFn) (*GetScheduleResponse, error) {
+	rsp, err := c.GetSchedule(ctx, scheduleId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetScheduleResponse(rsp)
+}
+
+// UpdateScheduleWithBodyWithResponse Update Schedule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+func (c *ClientWithResponses) UpdateScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *UpdateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateScheduleResponse, error) {
+	rsp, err := c.UpdateScheduleWithBody(ctx, scheduleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateScheduleResponse(rsp)
+}
+
+// UpdateScheduleWithResponse Update Schedule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/schedules/{schedule_id} (the `UpdateSchedule` operationId).
+func (c *ClientWithResponses) UpdateScheduleWithResponse(ctx context.Context, scheduleId string, params *UpdateScheduleParams, body UpdateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateScheduleResponse, error) {
+	rsp, err := c.UpdateSchedule(ctx, scheduleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateScheduleResponse(rsp)
+}
+
+// DispatchScheduleWithBodyWithResponse Dispatch Schedule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+func (c *ClientWithResponses) DispatchScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *DispatchScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DispatchScheduleResponse, error) {
+	rsp, err := c.DispatchScheduleWithBody(ctx, scheduleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDispatchScheduleResponse(rsp)
+}
+
+// DispatchScheduleWithResponse Dispatch Schedule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
+func (c *ClientWithResponses) DispatchScheduleWithResponse(ctx context.Context, scheduleId string, params *DispatchScheduleParams, body DispatchScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*DispatchScheduleResponse, error) {
+	rsp, err := c.DispatchSchedule(ctx, scheduleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDispatchScheduleResponse(rsp)
+}
+
+// EnableScheduleWithBodyWithResponse Enable Schedule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+func (c *ClientWithResponses) EnableScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *EnableScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EnableScheduleResponse, error) {
+	rsp, err := c.EnableScheduleWithBody(ctx, scheduleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEnableScheduleResponse(rsp)
+}
+
+// EnableScheduleWithResponse Enable Schedule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/enable (the `EnableSchedule` operationId).
+func (c *ClientWithResponses) EnableScheduleWithResponse(ctx context.Context, scheduleId string, params *EnableScheduleParams, body EnableScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*EnableScheduleResponse, error) {
+	rsp, err := c.EnableSchedule(ctx, scheduleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEnableScheduleResponse(rsp)
+}
+
+// ListScheduleOccurrencesWithResponse List Schedule Occurrences
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences (the `ListScheduleOccurrences` operationId).
+func (c *ClientWithResponses) ListScheduleOccurrencesWithResponse(ctx context.Context, scheduleId string, params *ListScheduleOccurrencesParams, reqEditors ...RequestEditorFn) (*ListScheduleOccurrencesResponse, error) {
+	rsp, err := c.ListScheduleOccurrences(ctx, scheduleId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListScheduleOccurrencesResponse(rsp)
+}
+
+// GetScheduleOccurrenceWithResponse Get Schedule Occurrence
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id}/occurrences/{occurrence_id} (the `GetScheduleOccurrence` operationId).
+func (c *ClientWithResponses) GetScheduleOccurrenceWithResponse(ctx context.Context, scheduleId string, occurrenceId string, params *GetScheduleOccurrenceParams, reqEditors ...RequestEditorFn) (*GetScheduleOccurrenceResponse, error) {
+	rsp, err := c.GetScheduleOccurrence(ctx, scheduleId, occurrenceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetScheduleOccurrenceResponse(rsp)
+}
+
+// PauseScheduleWithBodyWithResponse Pause Schedule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+func (c *ClientWithResponses) PauseScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *PauseScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PauseScheduleResponse, error) {
+	rsp, err := c.PauseScheduleWithBody(ctx, scheduleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePauseScheduleResponse(rsp)
+}
+
+// PauseScheduleWithResponse Pause Schedule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/pause (the `PauseSchedule` operationId).
+func (c *ClientWithResponses) PauseScheduleWithResponse(ctx context.Context, scheduleId string, params *PauseScheduleParams, body PauseScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*PauseScheduleResponse, error) {
+	rsp, err := c.PauseSchedule(ctx, scheduleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePauseScheduleResponse(rsp)
+}
+
+// GetScheduleStatusWithResponse Get Schedule Status
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/schedules/{schedule_id}/status (the `GetScheduleStatus` operationId).
+func (c *ClientWithResponses) GetScheduleStatusWithResponse(ctx context.Context, scheduleId string, params *GetScheduleStatusParams, reqEditors ...RequestEditorFn) (*GetScheduleStatusResponse, error) {
+	rsp, err := c.GetScheduleStatus(ctx, scheduleId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetScheduleStatusResponse(rsp)
+}
+
 // ListSessionsWithResponse List Sessions
 //
 // Returns a wrapper object for the known response body format(s).
@@ -65657,7 +68755,7 @@ func (c *ClientWithResponses) GetMessageAuthorsWithResponse(ctx context.Context,
 // SessionStreamWithResponse Session Stream
 //
 // The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-// frames. Every connection starts from a snapshot.
+// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -78142,6 +81240,758 @@ func ParseResumeRunResponse(rsp *http.Response) (*ResumeRunResponse, error) {
 		response.Headers400 = &headers
 	case true:
 		var headers ResumeRunResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSchedulesResponse parses an HTTP response from a ListSchedulesWithResponse call
+func ParseListSchedulesResponse(rsp *http.Response) (*ListSchedulesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSchedulesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SchedulePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSchedulesResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSchedulesResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateScheduleResponse parses an HTTP response from a CreateScheduleWithResponse call
+func ParseCreateScheduleResponse(rsp *http.Response) (*CreateScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Schedule
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePreviewScheduleResponse parses an HTTP response from a PreviewScheduleWithResponse call
+func ParsePreviewScheduleResponse(rsp *http.Response) (*PreviewScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PreviewScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SchedulePreview
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers PreviewScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PreviewScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseArchiveScheduleResponse parses an HTTP response from a ArchiveScheduleWithResponse call
+func ParseArchiveScheduleResponse(rsp *http.Response) (*ArchiveScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ArchiveScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ArchiveScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ArchiveScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetScheduleResponse parses an HTTP response from a GetScheduleWithResponse call
+func ParseGetScheduleResponse(rsp *http.Response) (*GetScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Schedule
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateScheduleResponse parses an HTTP response from a UpdateScheduleWithResponse call
+func ParseUpdateScheduleResponse(rsp *http.Response) (*UpdateScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Schedule
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDispatchScheduleResponse parses an HTTP response from a DispatchScheduleWithResponse call
+func ParseDispatchScheduleResponse(rsp *http.Response) (*DispatchScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DispatchScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Occurrence
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DispatchScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DispatchScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseEnableScheduleResponse parses an HTTP response from a EnableScheduleWithResponse call
+func ParseEnableScheduleResponse(rsp *http.Response) (*EnableScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EnableScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Schedule
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers EnableScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers EnableScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListScheduleOccurrencesResponse parses an HTTP response from a ListScheduleOccurrencesWithResponse call
+func ParseListScheduleOccurrencesResponse(rsp *http.Response) (*ListScheduleOccurrencesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListScheduleOccurrencesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OccurrencePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListScheduleOccurrencesResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListScheduleOccurrencesResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetScheduleOccurrenceResponse parses an HTTP response from a GetScheduleOccurrenceWithResponse call
+func ParseGetScheduleOccurrenceResponse(rsp *http.Response) (*GetScheduleOccurrenceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetScheduleOccurrenceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Occurrence
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetScheduleOccurrenceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetScheduleOccurrenceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePauseScheduleResponse parses an HTTP response from a PauseScheduleWithResponse call
+func ParsePauseScheduleResponse(rsp *http.Response) (*PauseScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PauseScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Schedule
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers PauseScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers PauseScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetScheduleStatusResponse parses an HTTP response from a GetScheduleStatusWithResponse call
+func ParseGetScheduleStatusResponse(rsp *http.Response) (*GetScheduleStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetScheduleStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ScheduleStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetScheduleStatusResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetScheduleStatusResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
