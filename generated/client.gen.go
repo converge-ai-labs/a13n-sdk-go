@@ -4454,8 +4454,10 @@ type HistoryPurge struct {
 
 // ImageInputPolicy Preparation limits for one model's image input, not native ModelSettings.
 type ImageInputPolicy struct {
-	ImageSplitMaxHeight *int `json:"image_split_max_height,omitempty"`
-	ImageSplitOverlap   *int `json:"image_split_overlap,omitempty"`
+	// ImageRetentionRatio Fraction of max_images retained at the first overflow; one evicts only the excess images.
+	ImageRetentionRatio *float32 `json:"image_retention_ratio,omitempty"`
+	ImageSplitMaxHeight *int     `json:"image_split_max_height,omitempty"`
+	ImageSplitOverlap   *int     `json:"image_split_overlap,omitempty"`
 
 	// MaxImageBytes Maximum base64-encoded bytes per image; zero disables this byte limit.
 	MaxImageBytes *int `json:"max_image_bytes,omitempty"`
@@ -4463,7 +4465,7 @@ type ImageInputPolicy struct {
 	// MaxImageDimension Maximum image axis; zero disables this limit.
 	MaxImageDimension *int `json:"max_image_dimension,omitempty"`
 
-	// MaxImages Keep the newest images; zero removes all image input.
+	// MaxImages Maximum retained images; zero removes all image input.
 	MaxImages        *int  `json:"max_images,omitempty"`
 	SplitLargeImages *bool `json:"split_large_images,omitempty"`
 	SupportGif       *bool `json:"support_gif,omitempty"`
