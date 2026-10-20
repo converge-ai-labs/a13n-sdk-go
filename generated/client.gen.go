@@ -494,6 +494,96 @@ func (e ClientToolDefinitionPermission) Valid() bool {
 	}
 }
 
+// Defines values for Collection.
+const (
+	CollectionExternal Collection = "external"
+	CollectionNative   Collection = "native"
+	CollectionProxy    Collection = "proxy"
+	CollectionPull     Collection = "pull"
+)
+
+// Valid indicates whether the value is a known member of the Collection enum.
+func (e Collection) Valid() bool {
+	switch e {
+	case CollectionExternal:
+		return true
+	case CollectionNative:
+		return true
+	case CollectionProxy:
+		return true
+	case CollectionPull:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for Collector.
+const (
+	Alloy   Collector = "alloy"
+	Vmagent Collector = "vmagent"
+)
+
+// Valid indicates whether the value is a known member of the Collector enum.
+func (e Collector) Valid() bool {
+	switch e {
+	case Alloy:
+		return true
+	case Vmagent:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CollectorCapabilityReason.
+const (
+	CollectorCapabilityReasonMonitoringDisabled CollectorCapabilityReason = "monitoring_disabled"
+	CollectorCapabilityReasonNotConfigured      CollectorCapabilityReason = "not_configured"
+)
+
+// Valid indicates whether the value is a known member of the CollectorCapabilityReason enum.
+func (e CollectorCapabilityReason) Valid() bool {
+	switch e {
+	case CollectorCapabilityReasonMonitoringDisabled:
+		return true
+	case CollectorCapabilityReasonNotConfigured:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CollectorStatusState1.
+const (
+	CollectorStatusState1Capacity      CollectorStatusState1 = "capacity"
+	CollectorStatusState1Failed        CollectorStatusState1 = "failed"
+	CollectorStatusState1NotConfigured CollectorStatusState1 = "not_configured"
+	CollectorStatusState1NotSelected   CollectorStatusState1 = "not_selected"
+	CollectorStatusState1Pending       CollectorStatusState1 = "pending"
+	CollectorStatusState1Unavailable   CollectorStatusState1 = "unavailable"
+)
+
+// Valid indicates whether the value is a known member of the CollectorStatusState1 enum.
+func (e CollectorStatusState1) Valid() bool {
+	switch e {
+	case CollectorStatusState1Capacity:
+		return true
+	case CollectorStatusState1Failed:
+		return true
+	case CollectorStatusState1NotConfigured:
+		return true
+	case CollectorStatusState1NotSelected:
+		return true
+	case CollectorStatusState1Pending:
+		return true
+	case CollectorStatusState1Unavailable:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CompletionOutcome.
 const (
 	CompletionOutcomeAbandoned CompletionOutcome = "abandoned"
@@ -782,6 +872,48 @@ const (
 func (e CronScheduleType) Valid() bool {
 	switch e {
 	case Cron:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DashboardConfigRefreshSeconds.
+const (
+	N0   DashboardConfigRefreshSeconds = 0
+	N10  DashboardConfigRefreshSeconds = 10
+	N30  DashboardConfigRefreshSeconds = 30
+	N300 DashboardConfigRefreshSeconds = 300
+	N60  DashboardConfigRefreshSeconds = 60
+)
+
+// Valid indicates whether the value is a known member of the DashboardConfigRefreshSeconds enum.
+func (e DashboardConfigRefreshSeconds) Valid() bool {
+	switch e {
+	case N0:
+		return true
+	case N10:
+		return true
+	case N30:
+		return true
+	case N300:
+		return true
+	case N60:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DashboardConfigSchemaVersion.
+const (
+	N1 DashboardConfigSchemaVersion = 1
+)
+
+// Valid indicates whether the value is a known member of the DashboardConfigSchemaVersion enum.
+func (e DashboardConfigSchemaVersion) Valid() bool {
+	switch e {
+	case N1:
 		return true
 	default:
 		return false
@@ -1094,6 +1226,147 @@ func (e EnvironmentAction) Valid() bool {
 	}
 }
 
+// Defines values for EnvironmentQueryHistory.
+const (
+	EnvironmentQueryHistoryConfigured EnvironmentQueryHistory = "configured"
+	EnvironmentQueryHistoryTemporary  EnvironmentQueryHistory = "temporary"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentQueryHistory enum.
+func (e EnvironmentQueryHistory) Valid() bool {
+	switch e {
+	case EnvironmentQueryHistoryConfigured:
+		return true
+	case EnvironmentQueryHistoryTemporary:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EnvironmentQueryMetric0.
+const (
+	EnvironmentQueryMetric0CgroupMemoryCurrentBytes    EnvironmentQueryMetric0 = "cgroup_memory_current_bytes"
+	EnvironmentQueryMetric0CgroupPidsCurrent           EnvironmentQueryMetric0 = "cgroup_pids_current"
+	EnvironmentQueryMetric0DaemonConnections           EnvironmentQueryMetric0 = "daemon_connections"
+	EnvironmentQueryMetric0DaemonProcesses             EnvironmentQueryMetric0 = "daemon_processes"
+	EnvironmentQueryMetric0DaemonRetainedOutputBytes   EnvironmentQueryMetric0 = "daemon_retained_output_bytes"
+	EnvironmentQueryMetric0DaemonSessions              EnvironmentQueryMetric0 = "daemon_sessions"
+	EnvironmentQueryMetric0DaemonTransfers             EnvironmentQueryMetric0 = "daemon_transfers"
+	EnvironmentQueryMetric0SystemCommitLimitBytes      EnvironmentQueryMetric0 = "system_commit_limit_bytes"
+	EnvironmentQueryMetric0SystemCommitTotalBytes      EnvironmentQueryMetric0 = "system_commit_total_bytes"
+	EnvironmentQueryMetric0SystemCpuBusyRatio          EnvironmentQueryMetric0 = "system_cpu_busy_ratio"
+	EnvironmentQueryMetric0SystemHandles               EnvironmentQueryMetric0 = "system_handles"
+	EnvironmentQueryMetric0SystemMemoryAvailableBytes  EnvironmentQueryMetric0 = "system_memory_available_bytes"
+	EnvironmentQueryMetric0SystemMemoryCacheBytes      EnvironmentQueryMetric0 = "system_memory_cache_bytes"
+	EnvironmentQueryMetric0SystemMemoryCompressedBytes EnvironmentQueryMetric0 = "system_memory_compressed_bytes"
+	EnvironmentQueryMetric0SystemMemoryTotalBytes      EnvironmentQueryMetric0 = "system_memory_total_bytes"
+	EnvironmentQueryMetric0SystemMemoryUsedBytes       EnvironmentQueryMetric0 = "system_memory_used_bytes"
+	EnvironmentQueryMetric0SystemMemoryWiredBytes      EnvironmentQueryMetric0 = "system_memory_wired_bytes"
+	EnvironmentQueryMetric0SystemProcesses             EnvironmentQueryMetric0 = "system_processes"
+	EnvironmentQueryMetric0SystemSwapTotalBytes        EnvironmentQueryMetric0 = "system_swap_total_bytes"
+	EnvironmentQueryMetric0SystemSwapUsedBytes         EnvironmentQueryMetric0 = "system_swap_used_bytes"
+	EnvironmentQueryMetric0SystemThreads               EnvironmentQueryMetric0 = "system_threads"
+	EnvironmentQueryMetric0TcpConnections              EnvironmentQueryMetric0 = "tcp_connections"
+	EnvironmentQueryMetric0UdpSockets                  EnvironmentQueryMetric0 = "udp_sockets"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentQueryMetric0 enum.
+func (e EnvironmentQueryMetric0) Valid() bool {
+	switch e {
+	case EnvironmentQueryMetric0CgroupMemoryCurrentBytes:
+		return true
+	case EnvironmentQueryMetric0CgroupPidsCurrent:
+		return true
+	case EnvironmentQueryMetric0DaemonConnections:
+		return true
+	case EnvironmentQueryMetric0DaemonProcesses:
+		return true
+	case EnvironmentQueryMetric0DaemonRetainedOutputBytes:
+		return true
+	case EnvironmentQueryMetric0DaemonSessions:
+		return true
+	case EnvironmentQueryMetric0DaemonTransfers:
+		return true
+	case EnvironmentQueryMetric0SystemCommitLimitBytes:
+		return true
+	case EnvironmentQueryMetric0SystemCommitTotalBytes:
+		return true
+	case EnvironmentQueryMetric0SystemCpuBusyRatio:
+		return true
+	case EnvironmentQueryMetric0SystemHandles:
+		return true
+	case EnvironmentQueryMetric0SystemMemoryAvailableBytes:
+		return true
+	case EnvironmentQueryMetric0SystemMemoryCacheBytes:
+		return true
+	case EnvironmentQueryMetric0SystemMemoryCompressedBytes:
+		return true
+	case EnvironmentQueryMetric0SystemMemoryTotalBytes:
+		return true
+	case EnvironmentQueryMetric0SystemMemoryUsedBytes:
+		return true
+	case EnvironmentQueryMetric0SystemMemoryWiredBytes:
+		return true
+	case EnvironmentQueryMetric0SystemProcesses:
+		return true
+	case EnvironmentQueryMetric0SystemSwapTotalBytes:
+		return true
+	case EnvironmentQueryMetric0SystemSwapUsedBytes:
+		return true
+	case EnvironmentQueryMetric0SystemThreads:
+		return true
+	case EnvironmentQueryMetric0TcpConnections:
+		return true
+	case EnvironmentQueryMetric0UdpSockets:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EnvironmentQueryMetric1.
+const (
+	EnvironmentQueryMetric1CgroupIoReadBytesPerSecond       EnvironmentQueryMetric1 = "cgroup_io_read_bytes_per_second"
+	EnvironmentQueryMetric1CgroupIoReadOperationsPerSecond  EnvironmentQueryMetric1 = "cgroup_io_read_operations_per_second"
+	EnvironmentQueryMetric1CgroupIoWriteOperationsPerSecond EnvironmentQueryMetric1 = "cgroup_io_write_operations_per_second"
+	EnvironmentQueryMetric1CgroupIoWrittenBytesPerSecond    EnvironmentQueryMetric1 = "cgroup_io_written_bytes_per_second"
+	EnvironmentQueryMetric1DiskReadBytesPerSecond           EnvironmentQueryMetric1 = "disk_read_bytes_per_second"
+	EnvironmentQueryMetric1DiskReadOperationsPerSecond      EnvironmentQueryMetric1 = "disk_read_operations_per_second"
+	EnvironmentQueryMetric1DiskWriteOperationsPerSecond     EnvironmentQueryMetric1 = "disk_write_operations_per_second"
+	EnvironmentQueryMetric1DiskWrittenBytesPerSecond        EnvironmentQueryMetric1 = "disk_written_bytes_per_second"
+	EnvironmentQueryMetric1NetworkReceivedBytesPerSecond    EnvironmentQueryMetric1 = "network_received_bytes_per_second"
+	EnvironmentQueryMetric1NetworkTransmittedBytesPerSecond EnvironmentQueryMetric1 = "network_transmitted_bytes_per_second"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentQueryMetric1 enum.
+func (e EnvironmentQueryMetric1) Valid() bool {
+	switch e {
+	case EnvironmentQueryMetric1CgroupIoReadBytesPerSecond:
+		return true
+	case EnvironmentQueryMetric1CgroupIoReadOperationsPerSecond:
+		return true
+	case EnvironmentQueryMetric1CgroupIoWriteOperationsPerSecond:
+		return true
+	case EnvironmentQueryMetric1CgroupIoWrittenBytesPerSecond:
+		return true
+	case EnvironmentQueryMetric1DiskReadBytesPerSecond:
+		return true
+	case EnvironmentQueryMetric1DiskReadOperationsPerSecond:
+		return true
+	case EnvironmentQueryMetric1DiskWriteOperationsPerSecond:
+		return true
+	case EnvironmentQueryMetric1DiskWrittenBytesPerSecond:
+		return true
+	case EnvironmentQueryMetric1NetworkReceivedBytesPerSecond:
+		return true
+	case EnvironmentQueryMetric1NetworkTransmittedBytesPerSecond:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ErrorCode.
 const (
 	ErrorCodeAlreadyExists        ErrorCode = "already_exists"
@@ -1151,6 +1424,24 @@ func (e ErrorCode) Valid() bool {
 	}
 }
 
+// Defines values for ExportProtocol.
+const (
+	Grpc         ExportProtocol = "grpc"
+	Httpprotobuf ExportProtocol = "http/protobuf"
+)
+
+// Valid indicates whether the value is a known member of the ExportProtocol enum.
+func (e ExportProtocol) Valid() bool {
+	switch e {
+	case Grpc:
+		return true
+	case Httpprotobuf:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for FailedStatus.
 const (
 	FailedStatusFailed FailedStatus = "failed"
@@ -1196,6 +1487,36 @@ func (e GitHubSourceKind) Valid() bool {
 	}
 }
 
+// Defines values for HistorySource.
+const (
+	HistorySourceTemporary HistorySource = "temporary"
+)
+
+// Valid indicates whether the value is a known member of the HistorySource enum.
+func (e HistorySource) Valid() bool {
+	switch e {
+	case HistorySourceTemporary:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for InstantQueryKind.
+const (
+	Instant InstantQueryKind = "instant"
+)
+
+// Valid indicates whether the value is a known member of the InstantQueryKind enum.
+func (e InstantQueryKind) Valid() bool {
+	switch e {
+	case Instant:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for InvitationReceiptDelivery.
 const (
 	InvitationReceiptDeliveryManual InvitationReceiptDelivery = "manual"
@@ -1231,22 +1552,22 @@ func (e IsolatedSkillSyncMode) Valid() bool {
 
 // Defines values for ItemKind.
 const (
-	Observation      ItemKind = "observation"
-	ReasoningMessage ItemKind = "reasoning_message"
-	TextMessage      ItemKind = "text_message"
-	ToolCall         ItemKind = "tool_call"
+	ItemKindObservation      ItemKind = "observation"
+	ItemKindReasoningMessage ItemKind = "reasoning_message"
+	ItemKindTextMessage      ItemKind = "text_message"
+	ItemKindToolCall         ItemKind = "tool_call"
 )
 
 // Valid indicates whether the value is a known member of the ItemKind enum.
 func (e ItemKind) Valid() bool {
 	switch e {
-	case Observation:
+	case ItemKindObservation:
 		return true
-	case ReasoningMessage:
+	case ItemKindReasoningMessage:
 		return true
-	case TextMessage:
+	case ItemKindTextMessage:
 		return true
-	case ToolCall:
+	case ItemKindToolCall:
 		return true
 	default:
 		return false
@@ -1385,6 +1706,36 @@ func (e LifecycleKind) Valid() bool {
 	}
 }
 
+// Defines values for LimitedCpuLimitKind.
+const (
+	LimitedCpuLimitKindLimited LimitedCpuLimitKind = "limited"
+)
+
+// Valid indicates whether the value is a known member of the LimitedCpuLimitKind enum.
+func (e LimitedCpuLimitKind) Valid() bool {
+	switch e {
+	case LimitedCpuLimitKindLimited:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LimitedMemoryLimitKind.
+const (
+	LimitedMemoryLimitKindLimited LimitedMemoryLimitKind = "limited"
+)
+
+// Valid indicates whether the value is a known member of the LimitedMemoryLimitKind enum.
+func (e LimitedMemoryLimitKind) Valid() bool {
+	switch e {
+	case LimitedMemoryLimitKindLimited:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Lineage.
 const (
 	LineageContinue Lineage = "continue"
@@ -1400,6 +1751,21 @@ func (e Lineage) Valid() bool {
 	case LineageFork:
 		return true
 	case LineageRoot:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LocalResultSource.
+const (
+	LocalResultSourceTemporary LocalResultSource = "temporary"
+)
+
+// Valid indicates whether the value is a known member of the LocalResultSource enum.
+func (e LocalResultSource) Valid() bool {
+	switch e {
+	case LocalResultSourceTemporary:
 		return true
 	default:
 		return false
@@ -1535,6 +1901,27 @@ func (e MessageKind) Valid() bool {
 	}
 }
 
+// Defines values for MetricsApplicationCollection.
+const (
+	MetricsApplicationCollectionNative MetricsApplicationCollection = "native"
+	MetricsApplicationCollectionProxy  MetricsApplicationCollection = "proxy"
+	MetricsApplicationCollectionPull   MetricsApplicationCollection = "pull"
+)
+
+// Valid indicates whether the value is a known member of the MetricsApplicationCollection enum.
+func (e MetricsApplicationCollection) Valid() bool {
+	switch e {
+	case MetricsApplicationCollectionNative:
+		return true
+	case MetricsApplicationCollectionProxy:
+		return true
+	case MetricsApplicationCollectionPull:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ModelCapability.
 const (
 	AudioUnderstanding    ModelCapability = "audio_understanding"
@@ -1618,13 +2005,13 @@ func (e ModelSummaryView) Valid() bool {
 
 // Defines values for NativeToolSearchConfigMode.
 const (
-	Native NativeToolSearchConfigMode = "native"
+	NativeToolSearchConfigModeNative NativeToolSearchConfigMode = "native"
 )
 
 // Valid indicates whether the value is a known member of the NativeToolSearchConfigMode enum.
 func (e NativeToolSearchConfigMode) Valid() bool {
 	switch e {
-	case Native:
+	case NativeToolSearchConfigModeNative:
 		return true
 	default:
 		return false
@@ -1769,6 +2156,27 @@ func (e OnceScheduleType) Valid() bool {
 	}
 }
 
+// Defines values for OperatingSystem.
+const (
+	Linux   OperatingSystem = "linux"
+	Macos   OperatingSystem = "macos"
+	Windows OperatingSystem = "windows"
+)
+
+// Valid indicates whether the value is a known member of the OperatingSystem enum.
+func (e OperatingSystem) Valid() bool {
+	switch e {
+	case Linux:
+		return true
+	case Macos:
+		return true
+	case Windows:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OperationKind.
 const (
 	Complete OperationKind = "complete"
@@ -1787,6 +2195,57 @@ func (e OperationKind) Valid() bool {
 	case Revoke:
 		return true
 	case Setup:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PanelUnit.
+const (
+	Auto                PanelUnit = "auto"
+	Bytes               PanelUnit = "bytes"
+	BytesPerSecond      PanelUnit = "bytes_per_second"
+	Count               PanelUnit = "count"
+	OperationsPerSecond PanelUnit = "operations_per_second"
+	Ratio               PanelUnit = "ratio"
+	Seconds             PanelUnit = "seconds"
+)
+
+// Valid indicates whether the value is a known member of the PanelUnit enum.
+func (e PanelUnit) Valid() bool {
+	switch e {
+	case Auto:
+		return true
+	case Bytes:
+		return true
+	case BytesPerSecond:
+		return true
+	case Count:
+		return true
+	case OperationsPerSecond:
+		return true
+	case Ratio:
+		return true
+	case Seconds:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PanelVisualization.
+const (
+	Stat       PanelVisualization = "stat"
+	Timeseries PanelVisualization = "timeseries"
+)
+
+// Valid indicates whether the value is a known member of the PanelVisualization enum.
+func (e PanelVisualization) Valid() bool {
+	switch e {
+	case Stat:
+		return true
+	case Timeseries:
 		return true
 	default:
 		return false
@@ -1889,6 +2348,21 @@ func (e PricingConstraintKind) Valid() bool {
 	}
 }
 
+// Defines values for PromQLQueryKind.
+const (
+	Promql PromQLQueryKind = "promql"
+)
+
+// Valid indicates whether the value is a known member of the PromQLQueryKind enum.
+func (e PromQLQueryKind) Valid() bool {
+	switch e {
+	case Promql:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ProviderTestStatus.
 const (
 	ProviderTestStatusFailed      ProviderTestStatus = "failed"
@@ -1912,13 +2386,67 @@ func (e ProviderTestStatus) Valid() bool {
 
 // Defines values for ProxyToolSearchConfigMode.
 const (
-	Proxy ProxyToolSearchConfigMode = "proxy"
+	ProxyToolSearchConfigModeProxy ProxyToolSearchConfigMode = "proxy"
 )
 
 // Valid indicates whether the value is a known member of the ProxyToolSearchConfigMode enum.
 func (e ProxyToolSearchConfigMode) Valid() bool {
 	switch e {
-	case Proxy:
+	case ProxyToolSearchConfigModeProxy:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for QueryDataResultType.
+const (
+	Matrix QueryDataResultType = "matrix"
+	Scalar QueryDataResultType = "scalar"
+	String QueryDataResultType = "string"
+	Vector QueryDataResultType = "vector"
+)
+
+// Valid indicates whether the value is a known member of the QueryDataResultType enum.
+func (e QueryDataResultType) Valid() bool {
+	switch e {
+	case Matrix:
+		return true
+	case Scalar:
+		return true
+	case String:
+		return true
+	case Vector:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for QueryResultStatus.
+const (
+	Success QueryResultStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the QueryResultStatus enum.
+func (e QueryResultStatus) Valid() bool {
+	switch e {
+	case Success:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RangeQueryKind.
+const (
+	Range RangeQueryKind = "range"
+)
+
+// Valid indicates whether the value is a known member of the RangeQueryKind enum.
+func (e RangeQueryKind) Valid() bool {
+	switch e {
+	case Range:
 		return true
 	default:
 		return false
@@ -2357,6 +2885,72 @@ func (e SpanSummaryView) Valid() bool {
 	}
 }
 
+// Defines values for State.
+const (
+	StateChanged         State = "changed"
+	StateDisabled        State = "disabled"
+	StateDiscoveryFailed State = "discovery_failed"
+	StateNotReady        State = "not_ready"
+	StateReloadRequested State = "reload_requested"
+	StateUnsupported     State = "unsupported"
+)
+
+// Valid indicates whether the value is a known member of the State enum.
+func (e State) Valid() bool {
+	switch e {
+	case StateChanged:
+		return true
+	case StateDisabled:
+		return true
+	case StateDiscoveryFailed:
+		return true
+	case StateNotReady:
+		return true
+	case StateReloadRequested:
+		return true
+	case StateUnsupported:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for Status.
+const (
+	StatusCapacity    Status = "capacity"
+	StatusDisabled    Status = "disabled"
+	StatusNotReady    Status = "not_ready"
+	StatusOffline     Status = "offline"
+	StatusReady       Status = "ready"
+	StatusStale       Status = "stale"
+	StatusUnsupported Status = "unsupported"
+	StatusWaiting     Status = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the Status enum.
+func (e Status) Valid() bool {
+	switch e {
+	case StatusCapacity:
+		return true
+	case StatusDisabled:
+		return true
+	case StatusNotReady:
+		return true
+	case StatusOffline:
+		return true
+	case StatusReady:
+		return true
+	case StatusStale:
+		return true
+	case StatusUnsupported:
+		return true
+	case StatusWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TextPartType.
 const (
 	TextPartTypeText TextPartType = "text"
@@ -2636,6 +3230,192 @@ func (e Trigger) Valid() bool {
 	case TriggerResume:
 		return true
 	case TriggerSpawned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TypedQueryHistory.
+const (
+	TypedQueryHistoryConfigured TypedQueryHistory = "configured"
+	TypedQueryHistoryTemporary  TypedQueryHistory = "temporary"
+)
+
+// Valid indicates whether the value is a known member of the TypedQueryHistory enum.
+func (e TypedQueryHistory) Valid() bool {
+	switch e {
+	case TypedQueryHistoryConfigured:
+		return true
+	case TypedQueryHistoryTemporary:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TypedQueryKind.
+const (
+	Metric TypedQueryKind = "metric"
+)
+
+// Valid indicates whether the value is a known member of the TypedQueryKind enum.
+func (e TypedQueryKind) Valid() bool {
+	switch e {
+	case Metric:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TypedQueryMetric0.
+const (
+	TypedQueryMetric0CgroupMemoryCurrentBytes    TypedQueryMetric0 = "cgroup_memory_current_bytes"
+	TypedQueryMetric0CgroupPidsCurrent           TypedQueryMetric0 = "cgroup_pids_current"
+	TypedQueryMetric0DaemonConnections           TypedQueryMetric0 = "daemon_connections"
+	TypedQueryMetric0DaemonProcesses             TypedQueryMetric0 = "daemon_processes"
+	TypedQueryMetric0DaemonRetainedOutputBytes   TypedQueryMetric0 = "daemon_retained_output_bytes"
+	TypedQueryMetric0DaemonSessions              TypedQueryMetric0 = "daemon_sessions"
+	TypedQueryMetric0DaemonTransfers             TypedQueryMetric0 = "daemon_transfers"
+	TypedQueryMetric0SystemCommitLimitBytes      TypedQueryMetric0 = "system_commit_limit_bytes"
+	TypedQueryMetric0SystemCommitTotalBytes      TypedQueryMetric0 = "system_commit_total_bytes"
+	TypedQueryMetric0SystemCpuBusyRatio          TypedQueryMetric0 = "system_cpu_busy_ratio"
+	TypedQueryMetric0SystemHandles               TypedQueryMetric0 = "system_handles"
+	TypedQueryMetric0SystemMemoryAvailableBytes  TypedQueryMetric0 = "system_memory_available_bytes"
+	TypedQueryMetric0SystemMemoryCacheBytes      TypedQueryMetric0 = "system_memory_cache_bytes"
+	TypedQueryMetric0SystemMemoryCompressedBytes TypedQueryMetric0 = "system_memory_compressed_bytes"
+	TypedQueryMetric0SystemMemoryTotalBytes      TypedQueryMetric0 = "system_memory_total_bytes"
+	TypedQueryMetric0SystemMemoryUsedBytes       TypedQueryMetric0 = "system_memory_used_bytes"
+	TypedQueryMetric0SystemMemoryWiredBytes      TypedQueryMetric0 = "system_memory_wired_bytes"
+	TypedQueryMetric0SystemProcesses             TypedQueryMetric0 = "system_processes"
+	TypedQueryMetric0SystemSwapTotalBytes        TypedQueryMetric0 = "system_swap_total_bytes"
+	TypedQueryMetric0SystemSwapUsedBytes         TypedQueryMetric0 = "system_swap_used_bytes"
+	TypedQueryMetric0SystemThreads               TypedQueryMetric0 = "system_threads"
+	TypedQueryMetric0TcpConnections              TypedQueryMetric0 = "tcp_connections"
+	TypedQueryMetric0UdpSockets                  TypedQueryMetric0 = "udp_sockets"
+)
+
+// Valid indicates whether the value is a known member of the TypedQueryMetric0 enum.
+func (e TypedQueryMetric0) Valid() bool {
+	switch e {
+	case TypedQueryMetric0CgroupMemoryCurrentBytes:
+		return true
+	case TypedQueryMetric0CgroupPidsCurrent:
+		return true
+	case TypedQueryMetric0DaemonConnections:
+		return true
+	case TypedQueryMetric0DaemonProcesses:
+		return true
+	case TypedQueryMetric0DaemonRetainedOutputBytes:
+		return true
+	case TypedQueryMetric0DaemonSessions:
+		return true
+	case TypedQueryMetric0DaemonTransfers:
+		return true
+	case TypedQueryMetric0SystemCommitLimitBytes:
+		return true
+	case TypedQueryMetric0SystemCommitTotalBytes:
+		return true
+	case TypedQueryMetric0SystemCpuBusyRatio:
+		return true
+	case TypedQueryMetric0SystemHandles:
+		return true
+	case TypedQueryMetric0SystemMemoryAvailableBytes:
+		return true
+	case TypedQueryMetric0SystemMemoryCacheBytes:
+		return true
+	case TypedQueryMetric0SystemMemoryCompressedBytes:
+		return true
+	case TypedQueryMetric0SystemMemoryTotalBytes:
+		return true
+	case TypedQueryMetric0SystemMemoryUsedBytes:
+		return true
+	case TypedQueryMetric0SystemMemoryWiredBytes:
+		return true
+	case TypedQueryMetric0SystemProcesses:
+		return true
+	case TypedQueryMetric0SystemSwapTotalBytes:
+		return true
+	case TypedQueryMetric0SystemSwapUsedBytes:
+		return true
+	case TypedQueryMetric0SystemThreads:
+		return true
+	case TypedQueryMetric0TcpConnections:
+		return true
+	case TypedQueryMetric0UdpSockets:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TypedQueryMetric1.
+const (
+	TypedQueryMetric1CgroupIoReadBytesPerSecond       TypedQueryMetric1 = "cgroup_io_read_bytes_per_second"
+	TypedQueryMetric1CgroupIoReadOperationsPerSecond  TypedQueryMetric1 = "cgroup_io_read_operations_per_second"
+	TypedQueryMetric1CgroupIoWriteOperationsPerSecond TypedQueryMetric1 = "cgroup_io_write_operations_per_second"
+	TypedQueryMetric1CgroupIoWrittenBytesPerSecond    TypedQueryMetric1 = "cgroup_io_written_bytes_per_second"
+	TypedQueryMetric1DiskReadBytesPerSecond           TypedQueryMetric1 = "disk_read_bytes_per_second"
+	TypedQueryMetric1DiskReadOperationsPerSecond      TypedQueryMetric1 = "disk_read_operations_per_second"
+	TypedQueryMetric1DiskWriteOperationsPerSecond     TypedQueryMetric1 = "disk_write_operations_per_second"
+	TypedQueryMetric1DiskWrittenBytesPerSecond        TypedQueryMetric1 = "disk_written_bytes_per_second"
+	TypedQueryMetric1NetworkReceivedBytesPerSecond    TypedQueryMetric1 = "network_received_bytes_per_second"
+	TypedQueryMetric1NetworkTransmittedBytesPerSecond TypedQueryMetric1 = "network_transmitted_bytes_per_second"
+)
+
+// Valid indicates whether the value is a known member of the TypedQueryMetric1 enum.
+func (e TypedQueryMetric1) Valid() bool {
+	switch e {
+	case TypedQueryMetric1CgroupIoReadBytesPerSecond:
+		return true
+	case TypedQueryMetric1CgroupIoReadOperationsPerSecond:
+		return true
+	case TypedQueryMetric1CgroupIoWriteOperationsPerSecond:
+		return true
+	case TypedQueryMetric1CgroupIoWrittenBytesPerSecond:
+		return true
+	case TypedQueryMetric1DiskReadBytesPerSecond:
+		return true
+	case TypedQueryMetric1DiskReadOperationsPerSecond:
+		return true
+	case TypedQueryMetric1DiskWriteOperationsPerSecond:
+		return true
+	case TypedQueryMetric1DiskWrittenBytesPerSecond:
+		return true
+	case TypedQueryMetric1NetworkReceivedBytesPerSecond:
+		return true
+	case TypedQueryMetric1NetworkTransmittedBytesPerSecond:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UnlimitedCpuLimitKind.
+const (
+	UnlimitedCpuLimitKindUnlimited UnlimitedCpuLimitKind = "unlimited"
+)
+
+// Valid indicates whether the value is a known member of the UnlimitedCpuLimitKind enum.
+func (e UnlimitedCpuLimitKind) Valid() bool {
+	switch e {
+	case UnlimitedCpuLimitKindUnlimited:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UnlimitedMemoryLimitKind.
+const (
+	UnlimitedMemoryLimitKindUnlimited UnlimitedMemoryLimitKind = "unlimited"
+)
+
+// Valid indicates whether the value is a known member of the UnlimitedMemoryLimitKind enum.
+func (e UnlimitedMemoryLimitKind) Valid() bool {
+	switch e {
+	case UnlimitedMemoryLimitKindUnlimited:
 		return true
 	default:
 		return false
@@ -3942,6 +4722,12 @@ type CallbackOutcome struct {
 	Status       ConnectionStatus          `json:"status"`
 }
 
+// Capabilities defines model for Capabilities.
+type Capabilities struct {
+	Collectors []CollectorCapability `json:"collectors"`
+	Proxy      bool                  `json:"proxy"`
+}
+
 // CatalogIndex defines model for CatalogIndex.
 type CatalogIndex struct {
 	Items           []CatalogIndexItem        `json:"items"`
@@ -3986,6 +4772,25 @@ type Category string
 // Certainty defines model for Certainty.
 type Certainty string
 
+// CgroupMetrics defines model for CgroupMetrics.
+type CgroupMetrics struct {
+	CpuMax                   nullable.Nullable[CpuLimit]    `json:"cpu_max,omitempty"`
+	CpuPeriodsTotal          nullable.Nullable[int]         `json:"cpu_periods_total,omitempty"`
+	CpuSystemUsec            nullable.Nullable[int]         `json:"cpu_system_usec,omitempty"`
+	CpuThrottledPeriodsTotal nullable.Nullable[int]         `json:"cpu_throttled_periods_total,omitempty"`
+	CpuThrottledUsec         nullable.Nullable[int]         `json:"cpu_throttled_usec,omitempty"`
+	CpuUsageUsec             nullable.Nullable[int]         `json:"cpu_usage_usec,omitempty"`
+	CpuUserUsec              nullable.Nullable[int]         `json:"cpu_user_usec,omitempty"`
+	Io                       nullable.Nullable[DiskMetrics] `json:"io,omitempty"`
+	MemoryCurrentBytes       nullable.Nullable[int]         `json:"memory_current_bytes,omitempty"`
+	MemoryEvents             MemoryEvents                   `json:"memory_events"`
+	MemoryMax                nullable.Nullable[MemoryLimit] `json:"memory_max,omitempty"`
+	PidsCurrent              nullable.Nullable[int]         `json:"pids_current,omitempty"`
+	PidsLimit                nullable.Nullable[int]         `json:"pids_limit,omitempty"`
+	PidsUnlimited            nullable.Nullable[bool]        `json:"pids_unlimited,omitempty"`
+	Pressure                 Pressures                      `json:"pressure"`
+}
+
 // ChangeCountTrigger defines model for ChangeCountTrigger.
 type ChangeCountTrigger struct {
 	Count int                     `json:"count"`
@@ -4019,6 +4824,37 @@ type ClientToolDefinition struct {
 
 // ClientToolDefinitionPermission defines model for ClientToolDefinition.Permission.
 type ClientToolDefinitionPermission string
+
+// Collection defines model for Collection.
+type Collection string
+
+// Collector defines model for Collector.
+type Collector string
+
+// CollectorCapability defines model for CollectorCapability.
+type CollectorCapability struct {
+	Available bool                                         `json:"available"`
+	Kind      Collector                                    `json:"kind"`
+	Reason    nullable.Nullable[CollectorCapabilityReason] `json:"reason,omitempty"`
+}
+
+// CollectorCapabilityReason defines model for CollectorCapability.Reason.
+type CollectorCapabilityReason string
+
+// CollectorStatus defines model for CollectorStatus.
+type CollectorStatus struct {
+	CheckedAt nullable.Nullable[float32]   `json:"checked_at,omitempty"`
+	Collector nullable.Nullable[Collector] `json:"collector,omitempty"`
+	State     CollectorStatus_State        `json:"state"`
+}
+
+// CollectorStatusState1 defines model for CollectorStatus.State.1.
+type CollectorStatusState1 string
+
+// CollectorStatus_State defines model for CollectorStatus.State.
+type CollectorStatus_State struct {
+	union json.RawMessage
+}
 
 // Completion defines model for Completion.
 type Completion struct {
@@ -4054,6 +4890,14 @@ type ConfigSummary struct {
 	SkillCount      int       `json:"skill_count"`
 	SubagentCount   int       `json:"subagent_count"`
 	Toolsets        []string  `json:"toolsets"`
+}
+
+// Configuration defines model for Configuration.
+type Configuration struct {
+	Collection Collection                   `json:"collection"`
+	Collector  nullable.Nullable[Collector] `json:"collector,omitempty"`
+	Export     nullable.Nullable[Export]    `json:"export,omitempty"`
+	Query      nullable.Nullable[Query]     `json:"query,omitempty"`
 }
 
 // Connection defines model for Connection.
@@ -4109,6 +4953,13 @@ type ConnectionFailure struct {
 
 // ConnectionFailureReason defines model for ConnectionFailure.Reason.
 type ConnectionFailureReason string
+
+// ConnectionMetrics defines model for ConnectionMetrics.
+type ConnectionMetrics struct {
+	TcpStates  *map[string]int        `json:"tcp_states,omitempty"`
+	TcpTotal   nullable.Nullable[int] `json:"tcp_total,omitempty"`
+	UdpSockets nullable.Nullable[int] `json:"udp_sockets,omitempty"`
+}
 
 // ConnectionPage defines model for ConnectionPage.
 type ConnectionPage struct {
@@ -4233,6 +5084,23 @@ type Control struct {
 	SessionId string `json:"session_id"`
 }
 
+// CpuLimit defines model for CpuLimit.
+type CpuLimit struct {
+	union json.RawMessage
+}
+
+// CpuTimeSeconds defines model for CpuTimeSeconds.
+type CpuTimeSeconds struct {
+	Idle    nullable.Nullable[float32] `json:"idle,omitempty"`
+	Iowait  nullable.Nullable[float32] `json:"iowait,omitempty"`
+	Irq     nullable.Nullable[float32] `json:"irq,omitempty"`
+	Nice    nullable.Nullable[float32] `json:"nice,omitempty"`
+	Softirq nullable.Nullable[float32] `json:"softirq,omitempty"`
+	Steal   nullable.Nullable[float32] `json:"steal,omitempty"`
+	System  nullable.Nullable[float32] `json:"system,omitempty"`
+	User    nullable.Nullable[float32] `json:"user,omitempty"`
+}
+
 // CreatedSubscription defines model for CreatedSubscription.
 type CreatedSubscription struct {
 	CreatedAt   time.Time `json:"created_at"`
@@ -4255,6 +5123,11 @@ type CreatedSubscription struct {
 // CredentialMode defines model for CredentialMode.
 type CredentialMode string
 
+// Credentials defines model for Credentials.
+type Credentials struct {
+	Headers *map[string]string `json:"headers,omitempty"`
+}
+
 // CronSchedule defines model for CronSchedule.
 type CronSchedule struct {
 	Expression string            `json:"expression"`
@@ -4265,10 +5138,110 @@ type CronSchedule struct {
 // CronScheduleType defines model for CronSchedule.Type.
 type CronScheduleType string
 
+// DaemonMetrics defines model for DaemonMetrics.
+type DaemonMetrics struct {
+	Connections         int                    `json:"connections"`
+	Processes           nullable.Nullable[int] `json:"processes,omitempty"`
+	RetainedOutputBytes nullable.Nullable[int] `json:"retained_output_bytes,omitempty"`
+	Sessions            int                    `json:"sessions"`
+	Transfers           nullable.Nullable[int] `json:"transfers,omitempty"`
+}
+
 // DailyUsage defines model for DailyUsage.
 type DailyUsage struct {
 	Date  openapi_types.Date `json:"date"`
 	Usage ModelMetrics       `json:"usage"`
+}
+
+// Dashboard defines model for Dashboard.
+type Dashboard struct {
+	Builtin        bool            `json:"builtin"`
+	Config         DashboardConfig `json:"config"`
+	CreatedAt      time.Time       `json:"created_at"`
+	CreatedById    string          `json:"created_by_id"`
+	Id             string          `json:"id"`
+	Name           string          `json:"name"`
+	OrganizationId string          `json:"organization_id"`
+	UpdatedAt      time.Time       `json:"updated_at"`
+	UpdatedById    string          `json:"updated_by_id"`
+	Version        int             `json:"version"`
+	WorkspaceId    string          `json:"workspace_id"`
+}
+
+// DashboardConfig defines model for DashboardConfig.
+type DashboardConfig struct {
+	Panels         *[]Panel                       `json:"panels,omitempty"`
+	RangeSeconds   *int                           `json:"range_seconds,omitempty"`
+	RefreshSeconds *DashboardConfigRefreshSeconds `json:"refresh_seconds,omitempty"`
+	SchemaVersion  *DashboardConfigSchemaVersion  `json:"schema_version,omitempty"`
+}
+
+// DashboardConfigRefreshSeconds defines model for DashboardConfig.RefreshSeconds.
+type DashboardConfigRefreshSeconds int
+
+// DashboardConfigSchemaVersion defines model for DashboardConfig.SchemaVersion.
+type DashboardConfigSchemaVersion int
+
+// DashboardCreate defines model for DashboardCreate.
+type DashboardCreate struct {
+	Config DashboardConfig `json:"config"`
+	Name   string          `json:"name"`
+}
+
+// DashboardPage defines model for DashboardPage.
+type DashboardPage struct {
+	Items      []Dashboard               `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// DashboardUpdate defines model for DashboardUpdate.
+type DashboardUpdate struct {
+	Config nullable.Nullable[DashboardConfig] `json:"config,omitempty"`
+	Name   nullable.Nullable[string]          `json:"name,omitempty"`
+}
+
+// DataSource defines model for DataSource.
+type DataSource struct {
+	Builtin              bool          `json:"builtin"`
+	Config               Configuration `json:"config"`
+	CreatedAt            time.Time     `json:"created_at"`
+	CreatedById          string        `json:"created_by_id"`
+	Enabled              bool          `json:"enabled"`
+	HasExportCredentials bool          `json:"has_export_credentials"`
+	HasQueryCredentials  bool          `json:"has_query_credentials"`
+	Id                   string        `json:"id"`
+	Name                 string        `json:"name"`
+	OrganizationId       string        `json:"organization_id"`
+	UpdatedAt            time.Time     `json:"updated_at"`
+	UpdatedById          string        `json:"updated_by_id"`
+	Version              int           `json:"version"`
+	WorkspaceId          string        `json:"workspace_id"`
+}
+
+// DataSourceCreate defines model for DataSourceCreate.
+type DataSourceCreate struct {
+	Config                        Configuration                  `json:"config"`
+	DeploymentPresetRevision      nullable.Nullable[string]      `json:"deployment_preset_revision,omitempty"`
+	Enabled                       *bool                          `json:"enabled,omitempty"`
+	ExportCredentials             nullable.Nullable[Credentials] `json:"export_credentials,omitempty"`
+	Name                          string                         `json:"name"`
+	QueryCredentials              nullable.Nullable[Credentials] `json:"query_credentials,omitempty"`
+	UseDeploymentQueryCredentials *bool                          `json:"use_deployment_query_credentials,omitempty"`
+}
+
+// DataSourcePage defines model for DataSourcePage.
+type DataSourcePage struct {
+	Items      []DataSource              `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// DataSourceUpdate defines model for DataSourceUpdate.
+type DataSourceUpdate struct {
+	Config            nullable.Nullable[Configuration] `json:"config,omitempty"`
+	Enabled           nullable.Nullable[bool]          `json:"enabled,omitempty"`
+	ExportCredentials nullable.Nullable[Credentials]   `json:"export_credentials,omitempty"`
+	Name              nullable.Nullable[string]        `json:"name,omitempty"`
+	QueryCredentials  nullable.Nullable[Credentials]   `json:"query_credentials,omitempty"`
 }
 
 // Definition defines model for Definition.
@@ -4322,6 +5295,74 @@ type Deny struct {
 
 // DenyAction defines model for Deny.Action.
 type DenyAction string
+
+// DeploymentPreset defines model for DeploymentPreset.
+type DeploymentPreset struct {
+	Config              Configuration `json:"config"`
+	HasQueryCredentials bool          `json:"has_query_credentials"`
+	Name                string        `json:"name"`
+	Revision            string        `json:"revision"`
+}
+
+// Device defines model for Device.
+type Device struct {
+	CreatedAt           time.Time                 `json:"created_at"`
+	DeviceId            string                    `json:"device_id"`
+	Enabled             bool                      `json:"enabled"`
+	Id                  string                    `json:"id"`
+	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id"`
+	Name                string                    `json:"name"`
+	OrganizationId      string                    `json:"organization_id"`
+	UpdatedAt           time.Time                 `json:"updated_at"`
+	Version             int                       `json:"version"`
+	WorkspaceId         string                    `json:"workspace_id"`
+}
+
+// DeviceCreate defines model for DeviceCreate.
+type DeviceCreate struct {
+	DeviceId            string                    `json:"device_id"`
+	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id,omitempty"`
+	Name                string                    `json:"name"`
+}
+
+// DeviceCredential defines model for DeviceCredential.
+type DeviceCredential struct {
+	Device Device `json:"device"`
+	Token  string `json:"token"`
+}
+
+// DevicePage defines model for DevicePage.
+type DevicePage struct {
+	Items      []Device                  `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// DeviceUpdate defines model for DeviceUpdate.
+type DeviceUpdate struct {
+	Enabled             nullable.Nullable[bool]   `json:"enabled,omitempty"`
+	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id,omitempty"`
+	Name                nullable.Nullable[string] `json:"name,omitempty"`
+}
+
+// DiskIoMetrics defines model for DiskIoMetrics.
+type DiskIoMetrics struct {
+	BusyTimeMs      nullable.Nullable[int] `json:"busy_time_ms,omitempty"`
+	Identity        string                 `json:"identity"`
+	InProgress      nullable.Nullable[int] `json:"in_progress,omitempty"`
+	ReadBytes       nullable.Nullable[int] `json:"read_bytes,omitempty"`
+	ReadOperations  nullable.Nullable[int] `json:"read_operations,omitempty"`
+	ReadTimeMs      nullable.Nullable[int] `json:"read_time_ms,omitempty"`
+	WeightedTimeMs  nullable.Nullable[int] `json:"weighted_time_ms,omitempty"`
+	WriteOperations nullable.Nullable[int] `json:"write_operations,omitempty"`
+	WriteTimeMs     nullable.Nullable[int] `json:"write_time_ms,omitempty"`
+	WrittenBytes    nullable.Nullable[int] `json:"written_bytes,omitempty"`
+}
+
+// DiskMetrics defines model for DiskMetrics.
+type DiskMetrics struct {
+	Devices   *map[string]DiskIoMetrics `json:"devices,omitempty"`
+	Truncated bool                      `json:"truncated"`
+}
 
 // EmailChangeConfirm defines model for EmailChangeConfirm.
 type EmailChangeConfirm struct {
@@ -4463,6 +5504,30 @@ type EnvironmentProviderReferences struct {
 	Templates        []ProviderReference `json:"templates"`
 }
 
+// EnvironmentQuery defines model for EnvironmentQuery.
+type EnvironmentQuery struct {
+	End             float32                  `json:"end"`
+	History         *EnvironmentQueryHistory `json:"history,omitempty"`
+	IncludeSnapshot *bool                    `json:"include_snapshot,omitempty"`
+	Metric          EnvironmentQuery_Metric  `json:"metric"`
+	Start           float32                  `json:"start"`
+	Step            float32                  `json:"step"`
+}
+
+// EnvironmentQueryHistory defines model for EnvironmentQuery.History.
+type EnvironmentQueryHistory string
+
+// EnvironmentQueryMetric0 defines model for EnvironmentQuery.Metric.0.
+type EnvironmentQueryMetric0 string
+
+// EnvironmentQueryMetric1 defines model for EnvironmentQuery.Metric.1.
+type EnvironmentQueryMetric1 string
+
+// EnvironmentQuery_Metric defines model for EnvironmentQuery.Metric.
+type EnvironmentQuery_Metric struct {
+	union json.RawMessage
+}
+
 // EnvironmentUpdate Fields left out stay unchanged. Only an external target has an endpoint and token; a new endpoint comes with
 // its token, so a stored token never reaches an endpoint it was not entered for.
 type EnvironmentUpdate struct {
@@ -4473,24 +5538,27 @@ type EnvironmentUpdate struct {
 
 // EnvironmentView defines model for EnvironmentView.
 type EnvironmentView struct {
-	CreatedAt          time.Time                             `json:"created_at"`
-	CreatedById        string                                `json:"created_by_id"`
-	DeviceId           nullable.Nullable[string]             `json:"device_id"`
-	Endpoint           nullable.Nullable[string]             `json:"endpoint"`
-	Failure            nullable.Nullable[EnvironmentFailure] `json:"failure"`
-	Id                 string                                `json:"id"`
-	LastUsedAt         nullable.Nullable[time.Time]          `json:"last_used_at"`
-	Name               string                                `json:"name"`
-	OperationId        nullable.Nullable[string]             `json:"operation_id"`
-	OperationStartedAt nullable.Nullable[time.Time]          `json:"operation_started_at"`
-	OrganizationId     string                                `json:"organization_id"`
-	OwnerPrincipalId   nullable.Nullable[string]             `json:"owner_principal_id"`
-	ProviderId         nullable.Nullable[string]             `json:"provider_id"`
-	Status             string                                `json:"status"`
-	TemplateId         nullable.Nullable[string]             `json:"template_id"`
-	UpdatedAt          time.Time                             `json:"updated_at"`
-	Version            int                                   `json:"version"`
-	WorkspaceId        string                                `json:"workspace_id"`
+	CreatedAt           time.Time                             `json:"created_at"`
+	CreatedById         string                                `json:"created_by_id"`
+	DeviceId            nullable.Nullable[string]             `json:"device_id"`
+	Endpoint            nullable.Nullable[string]             `json:"endpoint"`
+	Failure             nullable.Nullable[EnvironmentFailure] `json:"failure"`
+	Id                  string                                `json:"id"`
+	LastUsedAt          nullable.Nullable[time.Time]          `json:"last_used_at"`
+	MetricsApplication  nullable.Nullable[MetricsApplication] `json:"metrics_application,omitempty"`
+	MetricsDataSourceId nullable.Nullable[string]             `json:"metrics_data_source_id,omitempty"`
+	MetricsLabels       *map[string]interface{}               `json:"metrics_labels,omitempty"`
+	Name                string                                `json:"name"`
+	OperationId         nullable.Nullable[string]             `json:"operation_id"`
+	OperationStartedAt  nullable.Nullable[time.Time]          `json:"operation_started_at"`
+	OrganizationId      string                                `json:"organization_id"`
+	OwnerPrincipalId    nullable.Nullable[string]             `json:"owner_principal_id"`
+	ProviderId          nullable.Nullable[string]             `json:"provider_id"`
+	Status              string                                `json:"status"`
+	TemplateId          nullable.Nullable[string]             `json:"template_id"`
+	UpdatedAt           time.Time                             `json:"updated_at"`
+	Version             int                                   `json:"version"`
+	WorkspaceId         string                                `json:"workspace_id"`
 }
 
 // ErrorBody defines model for ErrorBody.
@@ -4516,11 +5584,32 @@ type Evidence struct {
 	TraceId string    `json:"trace_id"`
 }
 
+// Export defines model for Export.
+type Export struct {
+	Endpoint        string          `json:"endpoint"`
+	IntervalSeconds *int            `json:"interval_seconds,omitempty"`
+	Protocol        *ExportProtocol `json:"protocol,omitempty"`
+}
+
+// ExportProtocol defines model for Export.Protocol.
+type ExportProtocol string
+
+// ExportHealth defines model for ExportHealth.
+type ExportHealth struct {
+	Dropped       *int                         `json:"dropped,omitempty"`
+	Exported      *int                         `json:"exported,omitempty"`
+	Failed        *int                         `json:"failed,omitempty"`
+	LastSuccessAt nullable.Nullable[time.Time] `json:"last_success_at,omitempty"`
+	Queued        *int                         `json:"queued,omitempty"`
+}
+
 // ExternalTargetCreate An envd daemon someone runs, registered by its endpoint and the token it accepts.
 type ExternalTargetCreate struct {
-	Endpoint string                    `json:"endpoint"`
-	Name     nullable.Nullable[string] `json:"name,omitempty"`
-	Token    *string                   `json:"token,omitempty"`
+	Endpoint            string                    `json:"endpoint"`
+	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id,omitempty"`
+	MetricsLabels       *map[string]interface{}   `json:"metrics_labels,omitempty"`
+	Name                nullable.Nullable[string] `json:"name,omitempty"`
+	Token               *string                   `json:"token,omitempty"`
 }
 
 // Failed An explicit external tool failure, including an intentional unanswered question.
@@ -4542,6 +5631,27 @@ type Failure struct {
 type FailureSummary struct {
 	Code    string  `json:"code"`
 	Message Preview `json:"message"`
+}
+
+// FilesystemInventory defines model for FilesystemInventory.
+type FilesystemInventory struct {
+	Filesystems *map[string]FilesystemObservation `json:"filesystems,omitempty"`
+	Truncated   bool                              `json:"truncated"`
+}
+
+// FilesystemMetrics defines model for FilesystemMetrics.
+type FilesystemMetrics struct {
+	AvailableBytes  int                    `json:"available_bytes"`
+	AvailableInodes nullable.Nullable[int] `json:"available_inodes,omitempty"`
+	FreeBytes       int                    `json:"free_bytes"`
+	FreeInodes      nullable.Nullable[int] `json:"free_inodes,omitempty"`
+	TotalBytes      int                    `json:"total_bytes"`
+	TotalInodes     nullable.Nullable[int] `json:"total_inodes,omitempty"`
+}
+
+// FilesystemObservation defines model for FilesystemObservation.
+type FilesystemObservation struct {
+	Metrics nullable.Nullable[FilesystemMetrics] `json:"metrics,omitempty"`
 }
 
 // Finding defines model for Finding.
@@ -4710,6 +5820,22 @@ type HeadersCredential struct {
 	Headers map[string]string `json:"headers"`
 }
 
+// History defines model for History.
+type History struct {
+	AvailableFrom      nullable.Nullable[int] `json:"available_from"`
+	AvailableUntil     nullable.Nullable[int] `json:"available_until"`
+	InventoryTruncated *bool                  `json:"inventory_truncated,omitempty"`
+	OmittedSources     *int                   `json:"omitted_sources,omitempty"`
+	ResolutionSeconds  int                    `json:"resolution_seconds"`
+	RetentionSeconds   int                    `json:"retention_seconds"`
+	Series             []Series               `json:"series"`
+	Source             *HistorySource         `json:"source,omitempty"`
+	Temporary          *bool                  `json:"temporary,omitempty"`
+}
+
+// HistorySource defines model for History.Source.
+type HistorySource string
+
 // HistoryPurge defines model for HistoryPurge.
 type HistoryPurge struct {
 	Purged int `json:"purged"`
@@ -4747,6 +5873,16 @@ type InitialRun struct {
 	Id     string    `json:"id"`
 	Status RunStatus `json:"status"`
 }
+
+// InstantQuery defines model for InstantQuery.
+type InstantQuery struct {
+	Expression string                     `json:"expression"`
+	Kind       *InstantQueryKind          `json:"kind,omitempty"`
+	Time       nullable.Nullable[float32] `json:"time,omitempty"`
+}
+
+// InstantQueryKind defines model for InstantQuery.Kind.
+type InstantQueryKind string
 
 // InstrumentationScope The instrumentation library that recorded the span.
 type InstrumentationScope struct {
@@ -4892,8 +6028,38 @@ type KeyCreate struct {
 // LifecycleKind defines model for LifecycleKind.
 type LifecycleKind string
 
+// LimitedCpuLimit defines model for LimitedCpuLimit.
+type LimitedCpuLimit struct {
+	Kind       LimitedCpuLimitKind `json:"kind"`
+	PeriodUsec int                 `json:"period_usec"`
+	QuotaUsec  int                 `json:"quota_usec"`
+}
+
+// LimitedCpuLimitKind defines model for LimitedCpuLimit.Kind.
+type LimitedCpuLimitKind string
+
+// LimitedMemoryLimit defines model for LimitedMemoryLimit.
+type LimitedMemoryLimit struct {
+	Bytes int                    `json:"bytes"`
+	Kind  LimitedMemoryLimitKind `json:"kind"`
+}
+
+// LimitedMemoryLimitKind defines model for LimitedMemoryLimit.Kind.
+type LimitedMemoryLimitKind string
+
 // Lineage defines model for Lineage.
 type Lineage string
+
+// LocalResult defines model for LocalResult.
+type LocalResult struct {
+	Export      nullable.Nullable[ExportHealth] `json:"export,omitempty"`
+	History     History                         `json:"history"`
+	Observation Observation                     `json:"observation"`
+	Source      *LocalResultSource              `json:"source,omitempty"`
+}
+
+// LocalResultSource defines model for LocalResult.Source.
+type LocalResultSource string
 
 // LoginInput defines model for LoginInput.
 type LoginInput struct {
@@ -4923,8 +6089,10 @@ type LoginSessionPage struct {
 
 // ManagedEnvironmentCreate A workspace-managed sandbox reserved from a template, for threads to mount; maintenance creates it.
 type ManagedEnvironmentCreate struct {
-	Name       nullable.Nullable[string] `json:"name,omitempty"`
-	TemplateId string                    `json:"template_id"`
+	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id,omitempty"`
+	MetricsLabels       *map[string]interface{}   `json:"metrics_labels,omitempty"`
+	Name                nullable.Nullable[string] `json:"name,omitempty"`
+	TemplateId          string                    `json:"template_id"`
 }
 
 // McpAuth defines model for McpAuth.
@@ -5023,6 +6191,16 @@ type MemoryCreate struct {
 	Type        *string                   `json:"type,omitempty"`
 }
 
+// MemoryEvents defines model for MemoryEvents.
+type MemoryEvents struct {
+	High         nullable.Nullable[int] `json:"high,omitempty"`
+	Low          nullable.Nullable[int] `json:"low,omitempty"`
+	Max          nullable.Nullable[int] `json:"max,omitempty"`
+	Oom          nullable.Nullable[int] `json:"oom,omitempty"`
+	OomGroupKill nullable.Nullable[int] `json:"oom_group_kill,omitempty"`
+	OomKill      nullable.Nullable[int] `json:"oom_kill,omitempty"`
+}
+
 // MemoryFile defines model for MemoryFile.
 type MemoryFile struct {
 	Content              string                    `json:"content"`
@@ -5081,6 +6259,11 @@ type MemoryFileState struct {
 
 // MemoryKind defines model for MemoryKind.
 type MemoryKind string
+
+// MemoryLimit defines model for MemoryLimit.
+type MemoryLimit struct {
+	union json.RawMessage
+}
 
 // MemoryMount A memory under the name the model addresses it by, exposing the tools its access allows. `recall` lets a
 // record memory recall records into each run's first input; file memories ignore it.
@@ -5287,6 +6470,34 @@ type MessageHistory = []json.RawMessage
 // MessagePayload defines model for MessagePayload.
 type MessagePayload struct {
 	Content []Part `json:"content"`
+}
+
+// MetricsApplication The frozen sampler/exporter selection; applied_at confirms creation, not delivery.
+type MetricsApplication struct {
+	AppliedAt        nullable.Nullable[time.Time] `json:"applied_at,omitempty"`
+	Collection       MetricsApplicationCollection `json:"collection"`
+	SampleIntervalMs int                          `json:"sample_interval_ms"`
+	SourceId         string                       `json:"source_id"`
+	SourceVersion    int                          `json:"source_version"`
+}
+
+// MetricsApplicationCollection defines model for MetricsApplication.Collection.
+type MetricsApplicationCollection string
+
+// MetricsSample defines model for MetricsSample.
+type MetricsSample struct {
+	CgroupV2             nullable.Nullable[CgroupMetrics]       `json:"cgroup_v2,omitempty"`
+	CollectionDurationMs int                                    `json:"collection_duration_ms"`
+	Connections          nullable.Nullable[ConnectionMetrics]   `json:"connections,omitempty"`
+	Daemon               nullable.Nullable[DaemonMetrics]       `json:"daemon,omitempty"`
+	Disks                nullable.Nullable[DiskMetrics]         `json:"disks,omitempty"`
+	Filesystems          *map[string]FilesystemObservation      `json:"filesystems,omitempty"`
+	LocalFilesystems     nullable.Nullable[FilesystemInventory] `json:"local_filesystems,omitempty"`
+	Network              nullable.Nullable[NetworkMetrics]      `json:"network,omitempty"`
+	SampleAgeMs          int                                    `json:"sample_age_ms"`
+	SampledAt            time.Time                              `json:"sampled_at"`
+	Sequence             int                                    `json:"sequence"`
+	System               SystemMetrics                          `json:"system"`
 }
 
 // Model defines model for Model.
@@ -5532,6 +6743,25 @@ type NativeToolSearchConfigMode string
 // NativeToolSearchConfigStrategy defines model for NativeToolSearchConfig.Strategy.
 type NativeToolSearchConfigStrategy string
 
+// NetworkInterfaceMetrics defines model for NetworkInterfaceMetrics.
+type NetworkInterfaceMetrics struct {
+	Identity           string                 `json:"identity"`
+	ReceiveDrops       nullable.Nullable[int] `json:"receive_drops,omitempty"`
+	ReceiveErrors      nullable.Nullable[int] `json:"receive_errors,omitempty"`
+	ReceivedBytes      nullable.Nullable[int] `json:"received_bytes,omitempty"`
+	ReceivedPackets    nullable.Nullable[int] `json:"received_packets,omitempty"`
+	TransmitDrops      nullable.Nullable[int] `json:"transmit_drops,omitempty"`
+	TransmitErrors     nullable.Nullable[int] `json:"transmit_errors,omitempty"`
+	TransmittedBytes   nullable.Nullable[int] `json:"transmitted_bytes,omitempty"`
+	TransmittedPackets nullable.Nullable[int] `json:"transmitted_packets,omitempty"`
+}
+
+// NetworkMetrics defines model for NetworkMetrics.
+type NetworkMetrics struct {
+	Interfaces *map[string]NetworkInterfaceMetrics `json:"interfaces,omitempty"`
+	Truncated  bool                                `json:"truncated"`
+}
+
 // NewThread defines model for NewThread.
 type NewThread struct {
 	AgentId         string                    `json:"agent_id"`
@@ -5568,6 +6798,19 @@ type OAuthSettings struct {
 	GrantType               *OAuthGrant               `json:"grant_type,omitempty"`
 	Scopes                  *[]string                 `json:"scopes,omitempty"`
 	TokenEndpointAuthMethod *ClientAuthentication     `json:"token_endpoint_auth_method,omitempty"`
+}
+
+// Observation defines model for Observation.
+type Observation struct {
+	AgeMs            nullable.Nullable[int]           `json:"age_ms,omitempty"`
+	DeviceId         string                           `json:"device_id"`
+	Generation       nullable.Nullable[int]           `json:"generation,omitempty"`
+	LastSampleAt     nullable.Nullable[time.Time]     `json:"last_sample_at,omitempty"`
+	ReceivedAt       nullable.Nullable[time.Time]     `json:"received_at,omitempty"`
+	Sample           nullable.Nullable[MetricsSample] `json:"sample,omitempty"`
+	SampleIntervalMs nullable.Nullable[int]           `json:"sample_interval_ms,omitempty"`
+	Status           Status                           `json:"status"`
+	SystemInfo       nullable.Nullable[SystemInfo]    `json:"system_info,omitempty"`
 }
 
 // Occurrence defines model for Occurrence.
@@ -5669,6 +6912,9 @@ type OnceSchedule struct {
 // OnceScheduleType defines model for OnceSchedule.Type.
 type OnceScheduleType string
 
+// OperatingSystem defines model for OperatingSystem.
+type OperatingSystem string
+
 // OperationKind defines model for OperationKind.
 type OperationKind string
 
@@ -5727,6 +6973,29 @@ type OutputVariant struct {
 	Schema      map[string]JsonValue      `json:"schema"`
 }
 
+// Panel defines model for Panel.
+type Panel struct {
+	Description   *string             `json:"description,omitempty"`
+	Id            string              `json:"id"`
+	Legend        *bool               `json:"legend,omitempty"`
+	Position      Position            `json:"position"`
+	Queries       []PanelQuery        `json:"queries"`
+	Title         string              `json:"title"`
+	Unit          *PanelUnit          `json:"unit,omitempty"`
+	Visualization *PanelVisualization `json:"visualization,omitempty"`
+}
+
+// PanelUnit defines model for Panel.Unit.
+type PanelUnit string
+
+// PanelVisualization defines model for Panel.Visualization.
+type PanelVisualization string
+
+// PanelQuery defines model for PanelQuery.
+type PanelQuery struct {
+	union json.RawMessage
+}
+
 // Part defines model for Part.
 type Part struct {
 	union json.RawMessage
@@ -5774,11 +7043,40 @@ type PluginSelection struct {
 	PluginKey    string                `json:"plugin_key"`
 }
 
+// Position defines model for Position.
+type Position struct {
+	H int `json:"h"`
+	W int `json:"w"`
+	X int `json:"x"`
+	Y int `json:"y"`
+}
+
 // Preset defines model for Preset.
 type Preset string
 
 // PresetKind defines model for PresetKind.
 type PresetKind string
+
+// Pressure defines model for Pressure.
+type Pressure struct {
+	Full nullable.Nullable[PressureLevel] `json:"full,omitempty"`
+	Some nullable.Nullable[PressureLevel] `json:"some,omitempty"`
+}
+
+// PressureLevel defines model for PressureLevel.
+type PressureLevel struct {
+	Avg10Percent  float32 `json:"avg10_percent"`
+	Avg300Percent float32 `json:"avg300_percent"`
+	Avg60Percent  float32 `json:"avg60_percent"`
+	TotalUsec     int     `json:"total_usec"`
+}
+
+// Pressures defines model for Pressures.
+type Pressures struct {
+	Cpu    nullable.Nullable[Pressure] `json:"cpu,omitempty"`
+	Io     nullable.Nullable[Pressure] `json:"io,omitempty"`
+	Memory nullable.Nullable[Pressure] `json:"memory,omitempty"`
+}
 
 // Preview defines model for Preview.
 type Preview struct {
@@ -5875,6 +7173,16 @@ type ProfileUpdate struct {
 	Email           nullable.Nullable[openapi_types.Email] `json:"email,omitempty"`
 	Name            nullable.Nullable[string]              `json:"name,omitempty"`
 }
+
+// PromQLQuery defines model for PromQLQuery.
+type PromQLQuery struct {
+	Expression string           `json:"expression"`
+	Kind       *PromQLQueryKind `json:"kind,omitempty"`
+	SourceId   string           `json:"source_id"`
+}
+
+// PromQLQueryKind defines model for PromQLQuery.Kind.
+type PromQLQueryKind string
 
 // Provider defines model for Provider.
 type Provider struct {
@@ -5989,6 +7297,44 @@ type ProxyToolSearchConfig struct {
 
 // ProxyToolSearchConfigMode defines model for ProxyToolSearchConfig.Mode.
 type ProxyToolSearchConfigMode string
+
+// Query defines model for Query.
+type Query struct {
+	Endpoint    string                  `json:"endpoint"`
+	ScopeLabels *map[string]interface{} `json:"scope_labels,omitempty"`
+}
+
+// QueryData defines model for QueryData.
+type QueryData struct {
+	Result     []JsonValue         `json:"result"`
+	ResultType QueryDataResultType `json:"resultType"`
+}
+
+// QueryDataResultType defines model for QueryData.ResultType.
+type QueryDataResultType string
+
+// QueryResult defines model for QueryResult.
+type QueryResult struct {
+	Data     QueryData         `json:"data"`
+	Infos    *[]string         `json:"infos,omitempty"`
+	Status   QueryResultStatus `json:"status"`
+	Warnings *[]string         `json:"warnings,omitempty"`
+}
+
+// QueryResultStatus defines model for QueryResult.Status.
+type QueryResultStatus string
+
+// RangeQuery defines model for RangeQuery.
+type RangeQuery struct {
+	End        float32         `json:"end"`
+	Expression string          `json:"expression"`
+	Kind       *RangeQueryKind `json:"kind,omitempty"`
+	Start      float32         `json:"start"`
+	Step       float32         `json:"step"`
+}
+
+// RangeQueryKind defines model for RangeQuery.Kind.
+type RangeQueryKind string
 
 // ReadView defines model for ReadView.
 type ReadView string
@@ -6415,6 +7761,19 @@ type SelectedTrace struct {
 	TraceId string `json:"trace_id"`
 }
 
+// Selection defines model for Selection.
+type Selection struct {
+	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id"`
+	MetricsLabels       *map[string]interface{}   `json:"metrics_labels,omitempty"`
+}
+
+// Series defines model for Series.
+type Series struct {
+	Labels *map[string]string `json:"labels,omitempty"`
+	Metric string             `json:"metric"`
+	Points [][]interface{}    `json:"points"`
+}
+
 // ServiceAccount defines model for ServiceAccount.
 type ServiceAccount struct {
 	CreatedAt      time.Time                 `json:"created_at"`
@@ -6780,6 +8139,12 @@ type SpanSummaryStatus string
 // SpanSummaryView defines model for SpanSummary.View.
 type SpanSummaryView string
 
+// State defines model for State.
+type State string
+
+// Status defines model for Status.
+type Status string
+
 // SubagentOverrideInput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
 type SubagentOverrideInput struct {
 	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
@@ -6883,6 +8248,35 @@ type SubscriptionUpdate struct {
 	Name          nullable.Nullable[string]             `json:"name,omitempty"`
 	SigningSecret nullable.Nullable[string]             `json:"signing_secret,omitempty"`
 	Url           nullable.Nullable[string]             `json:"url,omitempty"`
+}
+
+// SystemInfo defines model for SystemInfo.
+type SystemInfo struct {
+	Architecture  nullable.Nullable[string] `json:"architecture,omitempty"`
+	CpuModel      nullable.Nullable[string] `json:"cpu_model,omitempty"`
+	KernelVersion nullable.Nullable[string] `json:"kernel_version,omitempty"`
+	Os            OperatingSystem           `json:"os"`
+	OsVersion     nullable.Nullable[string] `json:"os_version,omitempty"`
+}
+
+// SystemMetrics defines model for SystemMetrics.
+type SystemMetrics struct {
+	CommitLimitBytes      nullable.Nullable[int]            `json:"commit_limit_bytes,omitempty"`
+	CommitTotalBytes      nullable.Nullable[int]            `json:"commit_total_bytes,omitempty"`
+	CpuBusyPercent        nullable.Nullable[float32]        `json:"cpu_busy_percent,omitempty"`
+	CpuTimeSeconds        nullable.Nullable[CpuTimeSeconds] `json:"cpu_time_seconds,omitempty"`
+	HandleCount           nullable.Nullable[int]            `json:"handle_count,omitempty"`
+	LogicalCpuCount       nullable.Nullable[int]            `json:"logical_cpu_count,omitempty"`
+	MemoryAvailableBytes  nullable.Nullable[int]            `json:"memory_available_bytes,omitempty"`
+	MemoryCacheBytes      nullable.Nullable[int]            `json:"memory_cache_bytes,omitempty"`
+	MemoryCompressedBytes nullable.Nullable[int]            `json:"memory_compressed_bytes,omitempty"`
+	MemoryTotalBytes      nullable.Nullable[int]            `json:"memory_total_bytes,omitempty"`
+	MemoryWiredBytes      nullable.Nullable[int]            `json:"memory_wired_bytes,omitempty"`
+	Pressure              nullable.Nullable[Pressures]      `json:"pressure,omitempty"`
+	ProcessCount          nullable.Nullable[int]            `json:"process_count,omitempty"`
+	SwapTotalBytes        nullable.Nullable[int]            `json:"swap_total_bytes,omitempty"`
+	SwapUsedBytes         nullable.Nullable[int]            `json:"swap_used_bytes,omitempty"`
+	ThreadCount           nullable.Nullable[int]            `json:"thread_count,omitempty"`
 }
 
 // Template defines model for Template.
@@ -7147,6 +8541,46 @@ type TraceBackendType string
 
 // Trigger defines model for Trigger.
 type Trigger string
+
+// TypedQuery defines model for TypedQuery.
+type TypedQuery struct {
+	History *TypedQueryHistory `json:"history,omitempty"`
+	Kind    *TypedQueryKind    `json:"kind,omitempty"`
+	Metric  TypedQuery_Metric  `json:"metric"`
+}
+
+// TypedQueryHistory defines model for TypedQuery.History.
+type TypedQueryHistory string
+
+// TypedQueryKind defines model for TypedQuery.Kind.
+type TypedQueryKind string
+
+// TypedQueryMetric0 defines model for TypedQuery.Metric.0.
+type TypedQueryMetric0 string
+
+// TypedQueryMetric1 defines model for TypedQuery.Metric.1.
+type TypedQueryMetric1 string
+
+// TypedQuery_Metric defines model for TypedQuery.Metric.
+type TypedQuery_Metric struct {
+	union json.RawMessage
+}
+
+// UnlimitedCpuLimit defines model for UnlimitedCpuLimit.
+type UnlimitedCpuLimit struct {
+	Kind UnlimitedCpuLimitKind `json:"kind"`
+}
+
+// UnlimitedCpuLimitKind defines model for UnlimitedCpuLimit.Kind.
+type UnlimitedCpuLimitKind string
+
+// UnlimitedMemoryLimit defines model for UnlimitedMemoryLimit.
+type UnlimitedMemoryLimit struct {
+	Kind UnlimitedMemoryLimitKind `json:"kind"`
+}
+
+// UnlimitedMemoryLimitKind defines model for UnlimitedMemoryLimit.Kind.
+type UnlimitedMemoryLimitKind string
 
 // Upload defines model for Upload.
 type Upload struct {
@@ -7799,6 +9233,65 @@ type ViewDesktopParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListDevicesParams defines parameters for ListDevices.
+type ListDevicesParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateDeviceParams defines parameters for CreateDevice.
+type CreateDeviceParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DeleteDeviceParams defines parameters for DeleteDevice.
+type DeleteDeviceParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetDeviceParams defines parameters for GetDevice.
+type GetDeviceParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateDeviceParams defines parameters for UpdateDevice.
+type UpdateDeviceParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// QueryDeviceMetricsParams defines parameters for QueryDeviceMetrics.
+type QueryDeviceMetricsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// QueryDeviceMetrics200JSONResponseBody defines parameters for QueryDeviceMetrics.
+type QueryDeviceMetrics200JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// RotateDeviceCredentialParams defines parameters for RotateDeviceCredential.
+type RotateDeviceCredentialParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListEnvironmentProvidersParams defines parameters for ListEnvironmentProviders.
 type ListEnvironmentProvidersParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -7930,6 +9423,32 @@ type UpdateEnvironmentParams struct {
 type CheckComputerParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// SelectMetricsSourceParams defines parameters for SelectMetricsSource.
+type SelectMetricsSourceParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetCollectorStatusParams defines parameters for GetCollectorStatus.
+type GetCollectorStatusParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// QueryEnvironmentMetricsParams defines parameters for QueryEnvironmentMetrics.
+type QueryEnvironmentMetricsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// QueryEnvironmentMetrics200JSONResponseBody defines parameters for QueryEnvironmentMetrics.
+type QueryEnvironmentMetrics200JSONResponseBody struct {
+	union json.RawMessage
 }
 
 // StopEnvironmentParams defines parameters for StopEnvironment.
@@ -8285,6 +9804,113 @@ type ListSpaceSessionsParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListDashboardsParams defines parameters for ListDashboards.
+type ListDashboardsParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateDashboardParams defines parameters for CreateDashboard.
+type CreateDashboardParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetDashboardPresetParams defines parameters for GetDashboardPreset.
+type GetDashboardPresetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DeleteDashboardParams defines parameters for DeleteDashboard.
+type DeleteDashboardParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetDashboardParams defines parameters for GetDashboard.
+type GetDashboardParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateDashboardParams defines parameters for UpdateDashboard.
+type UpdateDashboardParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListMetricsDataSourcesParams defines parameters for ListMetricsDataSources.
+type ListMetricsDataSourcesParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateMetricsDataSourceParams defines parameters for CreateMetricsDataSource.
+type CreateMetricsDataSourceParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetMetricsCapabilitiesParams defines parameters for GetMetricsCapabilities.
+type GetMetricsCapabilitiesParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetMetricsDeploymentPresetParams defines parameters for GetMetricsDeploymentPreset.
+type GetMetricsDeploymentPresetParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DeleteMetricsDataSourceParams defines parameters for DeleteMetricsDataSource.
+type DeleteMetricsDataSourceParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetMetricsDataSourceParams defines parameters for GetMetricsDataSource.
+type GetMetricsDataSourceParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateMetricsDataSourceParams defines parameters for UpdateMetricsDataSource.
+type UpdateMetricsDataSourceParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// QueryMetricsDataSourceJSONBody defines parameters for QueryMetricsDataSource.
+type QueryMetricsDataSourceJSONBody struct {
+	union json.RawMessage
+}
+
+// QueryMetricsDataSourceParams defines parameters for QueryMetricsDataSource.
+type QueryMetricsDataSourceParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -9780,6 +11406,15 @@ type DisconnectDesktopJSONRequestBody = Control
 // ViewDesktopJSONRequestBody defines body for ViewDesktop for application/json ContentType.
 type ViewDesktopJSONRequestBody = Control
 
+// CreateDeviceJSONRequestBody defines body for CreateDevice for application/json ContentType.
+type CreateDeviceJSONRequestBody = DeviceCreate
+
+// UpdateDeviceJSONRequestBody defines body for UpdateDevice for application/json ContentType.
+type UpdateDeviceJSONRequestBody = DeviceUpdate
+
+// QueryDeviceMetricsJSONRequestBody defines body for QueryDeviceMetrics for application/json ContentType.
+type QueryDeviceMetricsJSONRequestBody = EnvironmentQuery
+
 // CreateEnvironmentProviderJSONRequestBody defines body for CreateEnvironmentProvider for application/json ContentType.
 type CreateEnvironmentProviderJSONRequestBody = ProviderCreate
 
@@ -9797,6 +11432,12 @@ type CreateEnvironmentJSONRequestBody CreateEnvironmentJSONBody
 
 // UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
 type UpdateEnvironmentJSONRequestBody = EnvironmentUpdate
+
+// SelectMetricsSourceJSONRequestBody defines body for SelectMetricsSource for application/json ContentType.
+type SelectMetricsSourceJSONRequestBody = Selection
+
+// QueryEnvironmentMetricsJSONRequestBody defines body for QueryEnvironmentMetrics for application/json ContentType.
+type QueryEnvironmentMetricsJSONRequestBody = EnvironmentQuery
 
 // StartAnalysisJSONRequestBody defines body for StartAnalysis for application/json ContentType.
 type StartAnalysisJSONRequestBody = AnalysisCreate
@@ -9848,6 +11489,21 @@ type CreateSpaceJSONRequestBody = MemorySpaceCreate
 
 // UpdateSpaceJSONRequestBody defines body for UpdateSpace for application/json ContentType.
 type UpdateSpaceJSONRequestBody = MemorySpaceUpdate
+
+// CreateDashboardJSONRequestBody defines body for CreateDashboard for application/json ContentType.
+type CreateDashboardJSONRequestBody = DashboardCreate
+
+// UpdateDashboardJSONRequestBody defines body for UpdateDashboard for application/json ContentType.
+type UpdateDashboardJSONRequestBody = DashboardUpdate
+
+// CreateMetricsDataSourceJSONRequestBody defines body for CreateMetricsDataSource for application/json ContentType.
+type CreateMetricsDataSourceJSONRequestBody = DataSourceCreate
+
+// UpdateMetricsDataSourceJSONRequestBody defines body for UpdateMetricsDataSource for application/json ContentType.
+type UpdateMetricsDataSourceJSONRequestBody = DataSourceUpdate
+
+// QueryMetricsDataSourceJSONRequestBody defines body for QueryMetricsDataSource for application/json ContentType.
+type QueryMetricsDataSourceJSONRequestBody QueryMetricsDataSourceJSONBody
 
 // CreateModelProviderJSONRequestBody defines body for CreateModelProvider for application/json ContentType.
 type CreateModelProviderJSONRequestBody = ProviderCreate
@@ -10295,6 +11951,68 @@ func (t *CallResult) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsState returns the union data inside the CollectorStatus_State as a State
+func (t CollectorStatus_State) AsState() (State, error) {
+	var body State
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromState overwrites any union data inside the CollectorStatus_State as the provided State
+func (t *CollectorStatus_State) FromState(v State) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeState performs a merge with any union data inside the CollectorStatus_State, using the provided State
+func (t *CollectorStatus_State) MergeState(v State) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCollectorStatusState1 returns the union data inside the CollectorStatus_State as a CollectorStatusState1
+func (t CollectorStatus_State) AsCollectorStatusState1() (CollectorStatusState1, error) {
+	var body CollectorStatusState1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCollectorStatusState1 overwrites any union data inside the CollectorStatus_State as the provided CollectorStatusState1
+func (t *CollectorStatus_State) FromCollectorStatusState1(v CollectorStatusState1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCollectorStatusState1 performs a merge with any union data inside the CollectorStatus_State, using the provided CollectorStatusState1
+func (t *CollectorStatus_State) MergeCollectorStatusState1(v CollectorStatusState1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CollectorStatus_State) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CollectorStatus_State) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsMcpConfig returns the union data inside the ConnectionConfig as a McpConfig
 func (t ConnectionConfig) AsMcpConfig() (McpConfig, error) {
 	var body McpConfig
@@ -10353,6 +12071,107 @@ func (t ConnectionConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (t *ConnectionConfig) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsUnlimitedCpuLimit returns the union data inside the CpuLimit as a UnlimitedCpuLimit
+func (t CpuLimit) AsUnlimitedCpuLimit() (UnlimitedCpuLimit, error) {
+	var body UnlimitedCpuLimit
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUnlimitedCpuLimit overwrites any union data inside the CpuLimit as the provided UnlimitedCpuLimit
+func (t *CpuLimit) FromUnlimitedCpuLimit(v UnlimitedCpuLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"unlimited"}`))
+	t.union = b
+	return err
+}
+
+// MergeUnlimitedCpuLimit performs a merge with any union data inside the CpuLimit, using the provided UnlimitedCpuLimit
+func (t *CpuLimit) MergeUnlimitedCpuLimit(v UnlimitedCpuLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"unlimited"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsLimitedCpuLimit returns the union data inside the CpuLimit as a LimitedCpuLimit
+func (t CpuLimit) AsLimitedCpuLimit() (LimitedCpuLimit, error) {
+	var body LimitedCpuLimit
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromLimitedCpuLimit overwrites any union data inside the CpuLimit as the provided LimitedCpuLimit
+func (t *CpuLimit) FromLimitedCpuLimit(v LimitedCpuLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"limited"}`))
+	t.union = b
+	return err
+}
+
+// MergeLimitedCpuLimit performs a merge with any union data inside the CpuLimit, using the provided LimitedCpuLimit
+func (t *CpuLimit) MergeLimitedCpuLimit(v LimitedCpuLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"limited"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CpuLimit) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t CpuLimit) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "limited":
+		return t.AsLimitedCpuLimit()
+	case "unlimited":
+		return t.AsUnlimitedCpuLimit()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t CpuLimit) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CpuLimit) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -10419,6 +12238,68 @@ func (t *EnteredCredential) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsEnvironmentQueryMetric0 returns the union data inside the EnvironmentQuery_Metric as a EnvironmentQueryMetric0
+func (t EnvironmentQuery_Metric) AsEnvironmentQueryMetric0() (EnvironmentQueryMetric0, error) {
+	var body EnvironmentQueryMetric0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromEnvironmentQueryMetric0 overwrites any union data inside the EnvironmentQuery_Metric as the provided EnvironmentQueryMetric0
+func (t *EnvironmentQuery_Metric) FromEnvironmentQueryMetric0(v EnvironmentQueryMetric0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeEnvironmentQueryMetric0 performs a merge with any union data inside the EnvironmentQuery_Metric, using the provided EnvironmentQueryMetric0
+func (t *EnvironmentQuery_Metric) MergeEnvironmentQueryMetric0(v EnvironmentQueryMetric0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsEnvironmentQueryMetric1 returns the union data inside the EnvironmentQuery_Metric as a EnvironmentQueryMetric1
+func (t EnvironmentQuery_Metric) AsEnvironmentQueryMetric1() (EnvironmentQueryMetric1, error) {
+	var body EnvironmentQueryMetric1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromEnvironmentQueryMetric1 overwrites any union data inside the EnvironmentQuery_Metric as the provided EnvironmentQueryMetric1
+func (t *EnvironmentQuery_Metric) FromEnvironmentQueryMetric1(v EnvironmentQueryMetric1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeEnvironmentQueryMetric1 performs a merge with any union data inside the EnvironmentQuery_Metric, using the provided EnvironmentQueryMetric1
+func (t *EnvironmentQuery_Metric) MergeEnvironmentQueryMetric1(v EnvironmentQueryMetric1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t EnvironmentQuery_Metric) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *EnvironmentQuery_Metric) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsItemSummary returns the union data inside the ItemPage_Items_Item as a ItemSummary
 func (t ItemPage_Items_Item) AsItemSummary() (ItemSummary, error) {
 	var body ItemSummary
@@ -10477,6 +12358,107 @@ func (t ItemPage_Items_Item) MarshalJSON() ([]byte, error) {
 }
 
 func (t *ItemPage_Items_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsUnlimitedMemoryLimit returns the union data inside the MemoryLimit as a UnlimitedMemoryLimit
+func (t MemoryLimit) AsUnlimitedMemoryLimit() (UnlimitedMemoryLimit, error) {
+	var body UnlimitedMemoryLimit
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUnlimitedMemoryLimit overwrites any union data inside the MemoryLimit as the provided UnlimitedMemoryLimit
+func (t *MemoryLimit) FromUnlimitedMemoryLimit(v UnlimitedMemoryLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"unlimited"}`))
+	t.union = b
+	return err
+}
+
+// MergeUnlimitedMemoryLimit performs a merge with any union data inside the MemoryLimit, using the provided UnlimitedMemoryLimit
+func (t *MemoryLimit) MergeUnlimitedMemoryLimit(v UnlimitedMemoryLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"unlimited"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsLimitedMemoryLimit returns the union data inside the MemoryLimit as a LimitedMemoryLimit
+func (t MemoryLimit) AsLimitedMemoryLimit() (LimitedMemoryLimit, error) {
+	var body LimitedMemoryLimit
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromLimitedMemoryLimit overwrites any union data inside the MemoryLimit as the provided LimitedMemoryLimit
+func (t *MemoryLimit) FromLimitedMemoryLimit(v LimitedMemoryLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"limited"}`))
+	t.union = b
+	return err
+}
+
+// MergeLimitedMemoryLimit performs a merge with any union data inside the MemoryLimit, using the provided LimitedMemoryLimit
+func (t *MemoryLimit) MergeLimitedMemoryLimit(v LimitedMemoryLimit) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"limited"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t MemoryLimit) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t MemoryLimit) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "limited":
+		return t.AsLimitedMemoryLimit()
+	case "unlimited":
+		return t.AsUnlimitedMemoryLimit()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t MemoryLimit) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *MemoryLimit) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -10640,6 +12622,107 @@ func (t OrganizationPolicy_Trigger) MarshalJSON() ([]byte, error) {
 }
 
 func (t *OrganizationPolicy_Trigger) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsTypedQuery returns the union data inside the PanelQuery as a TypedQuery
+func (t PanelQuery) AsTypedQuery() (TypedQuery, error) {
+	var body TypedQuery
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTypedQuery overwrites any union data inside the PanelQuery as the provided TypedQuery
+func (t *PanelQuery) FromTypedQuery(v TypedQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"metric"}`))
+	t.union = b
+	return err
+}
+
+// MergeTypedQuery performs a merge with any union data inside the PanelQuery, using the provided TypedQuery
+func (t *PanelQuery) MergeTypedQuery(v TypedQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"metric"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsPromQLQuery returns the union data inside the PanelQuery as a PromQLQuery
+func (t PanelQuery) AsPromQLQuery() (PromQLQuery, error) {
+	var body PromQLQuery
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPromQLQuery overwrites any union data inside the PanelQuery as the provided PromQLQuery
+func (t *PanelQuery) FromPromQLQuery(v PromQLQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"promql"}`))
+	t.union = b
+	return err
+}
+
+// MergePromQLQuery performs a merge with any union data inside the PanelQuery, using the provided PromQLQuery
+func (t *PanelQuery) MergePromQLQuery(v PromQLQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"promql"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t PanelQuery) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t PanelQuery) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "metric":
+		return t.AsTypedQuery()
+	case "promql":
+		return t.AsPromQLQuery()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t PanelQuery) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *PanelQuery) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -11963,6 +14046,68 @@ func (t *ToolsetKey) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsTypedQueryMetric0 returns the union data inside the TypedQuery_Metric as a TypedQueryMetric0
+func (t TypedQuery_Metric) AsTypedQueryMetric0() (TypedQueryMetric0, error) {
+	var body TypedQueryMetric0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTypedQueryMetric0 overwrites any union data inside the TypedQuery_Metric as the provided TypedQueryMetric0
+func (t *TypedQuery_Metric) FromTypedQueryMetric0(v TypedQueryMetric0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTypedQueryMetric0 performs a merge with any union data inside the TypedQuery_Metric, using the provided TypedQueryMetric0
+func (t *TypedQuery_Metric) MergeTypedQueryMetric0(v TypedQueryMetric0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsTypedQueryMetric1 returns the union data inside the TypedQuery_Metric as a TypedQueryMetric1
+func (t TypedQuery_Metric) AsTypedQueryMetric1() (TypedQueryMetric1, error) {
+	var body TypedQueryMetric1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromTypedQueryMetric1 overwrites any union data inside the TypedQuery_Metric as the provided TypedQueryMetric1
+func (t *TypedQuery_Metric) FromTypedQueryMetric1(v TypedQueryMetric1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeTypedQueryMetric1 performs a merge with any union data inside the TypedQuery_Metric, using the provided TypedQueryMetric1
+func (t *TypedQuery_Metric) MergeTypedQueryMetric1(v TypedQueryMetric1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t TypedQuery_Metric) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *TypedQuery_Metric) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsUsageLimitsInputCostLimit0 returns the union data inside the UsageLimitsInput_CostLimit as a UsageLimitsInputCostLimit0
 func (t UsageLimitsInput_CostLimit) AsUsageLimitsInputCostLimit0() (UsageLimitsInputCostLimit0, error) {
 	var body UsageLimitsInputCostLimit0
@@ -12299,6 +14444,68 @@ func (t *DefineConnectorActions200JSONResponseBody) UnmarshalJSON(b []byte) erro
 	return err
 }
 
+// AsQueryResult returns the union data inside the QueryDeviceMetrics200JSONResponseBody as a QueryResult
+func (t QueryDeviceMetrics200JSONResponseBody) AsQueryResult() (QueryResult, error) {
+	var body QueryResult
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromQueryResult overwrites any union data inside the QueryDeviceMetrics200JSONResponseBody as the provided QueryResult
+func (t *QueryDeviceMetrics200JSONResponseBody) FromQueryResult(v QueryResult) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeQueryResult performs a merge with any union data inside the QueryDeviceMetrics200JSONResponseBody, using the provided QueryResult
+func (t *QueryDeviceMetrics200JSONResponseBody) MergeQueryResult(v QueryResult) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsLocalResult returns the union data inside the QueryDeviceMetrics200JSONResponseBody as a LocalResult
+func (t QueryDeviceMetrics200JSONResponseBody) AsLocalResult() (LocalResult, error) {
+	var body LocalResult
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromLocalResult overwrites any union data inside the QueryDeviceMetrics200JSONResponseBody as the provided LocalResult
+func (t *QueryDeviceMetrics200JSONResponseBody) FromLocalResult(v LocalResult) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeLocalResult performs a merge with any union data inside the QueryDeviceMetrics200JSONResponseBody, using the provided LocalResult
+func (t *QueryDeviceMetrics200JSONResponseBody) MergeLocalResult(v LocalResult) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t QueryDeviceMetrics200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *QueryDeviceMetrics200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsManagedEnvironmentCreate returns the union data inside the CreateEnvironmentJSONBody as a ManagedEnvironmentCreate
 func (t CreateEnvironmentJSONBody) AsManagedEnvironmentCreate() (ManagedEnvironmentCreate, error) {
 	var body ManagedEnvironmentCreate
@@ -12357,6 +14564,169 @@ func (t CreateEnvironmentJSONBody) MarshalJSON() ([]byte, error) {
 }
 
 func (t *CreateEnvironmentJSONBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsQueryResult returns the union data inside the QueryEnvironmentMetrics200JSONResponseBody as a QueryResult
+func (t QueryEnvironmentMetrics200JSONResponseBody) AsQueryResult() (QueryResult, error) {
+	var body QueryResult
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromQueryResult overwrites any union data inside the QueryEnvironmentMetrics200JSONResponseBody as the provided QueryResult
+func (t *QueryEnvironmentMetrics200JSONResponseBody) FromQueryResult(v QueryResult) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeQueryResult performs a merge with any union data inside the QueryEnvironmentMetrics200JSONResponseBody, using the provided QueryResult
+func (t *QueryEnvironmentMetrics200JSONResponseBody) MergeQueryResult(v QueryResult) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsLocalResult returns the union data inside the QueryEnvironmentMetrics200JSONResponseBody as a LocalResult
+func (t QueryEnvironmentMetrics200JSONResponseBody) AsLocalResult() (LocalResult, error) {
+	var body LocalResult
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromLocalResult overwrites any union data inside the QueryEnvironmentMetrics200JSONResponseBody as the provided LocalResult
+func (t *QueryEnvironmentMetrics200JSONResponseBody) FromLocalResult(v LocalResult) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeLocalResult performs a merge with any union data inside the QueryEnvironmentMetrics200JSONResponseBody, using the provided LocalResult
+func (t *QueryEnvironmentMetrics200JSONResponseBody) MergeLocalResult(v LocalResult) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t QueryEnvironmentMetrics200JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *QueryEnvironmentMetrics200JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsInstantQuery returns the union data inside the QueryMetricsDataSourceJSONBody as a InstantQuery
+func (t QueryMetricsDataSourceJSONBody) AsInstantQuery() (InstantQuery, error) {
+	var body InstantQuery
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromInstantQuery overwrites any union data inside the QueryMetricsDataSourceJSONBody as the provided InstantQuery
+func (t *QueryMetricsDataSourceJSONBody) FromInstantQuery(v InstantQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"instant"}`))
+	t.union = b
+	return err
+}
+
+// MergeInstantQuery performs a merge with any union data inside the QueryMetricsDataSourceJSONBody, using the provided InstantQuery
+func (t *QueryMetricsDataSourceJSONBody) MergeInstantQuery(v InstantQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"instant"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRangeQuery returns the union data inside the QueryMetricsDataSourceJSONBody as a RangeQuery
+func (t QueryMetricsDataSourceJSONBody) AsRangeQuery() (RangeQuery, error) {
+	var body RangeQuery
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRangeQuery overwrites any union data inside the QueryMetricsDataSourceJSONBody as the provided RangeQuery
+func (t *QueryMetricsDataSourceJSONBody) FromRangeQuery(v RangeQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"range"}`))
+	t.union = b
+	return err
+}
+
+// MergeRangeQuery performs a merge with any union data inside the QueryMetricsDataSourceJSONBody, using the provided RangeQuery
+func (t *QueryMetricsDataSourceJSONBody) MergeRangeQuery(v RangeQuery) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"range"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t QueryMetricsDataSourceJSONBody) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t QueryMetricsDataSourceJSONBody) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "instant":
+		return t.AsInstantQuery()
+	case "range":
+		return t.AsRangeQuery()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t QueryMetricsDataSourceJSONBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *QueryMetricsDataSourceJSONBody) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -14039,6 +16409,68 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
 	ViewDesktop(ctx context.Context, assistanceId string, params *ViewDesktopParams, body ViewDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListDevices List Devices
+	//
+	// Corresponds with GET /api/v1/devices (the `ListDevices` operationId).
+	ListDevices(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDeviceWithBody Create Device
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+	CreateDeviceWithBody(ctx context.Context, params *CreateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDevice Create Device
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+	CreateDevice(ctx context.Context, params *CreateDeviceParams, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteDevice Delete Device
+	//
+	// Corresponds with DELETE /api/v1/devices/{device_id} (the `DeleteDevice` operationId).
+	DeleteDevice(ctx context.Context, deviceId string, params *DeleteDeviceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetDevice Get Device
+	//
+	// Corresponds with GET /api/v1/devices/{device_id} (the `GetDevice` operationId).
+	GetDevice(ctx context.Context, deviceId string, params *GetDeviceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateDeviceWithBody Update Device
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+	UpdateDeviceWithBody(ctx context.Context, deviceId string, params *UpdateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateDevice Update Device
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+	UpdateDevice(ctx context.Context, deviceId string, params *UpdateDeviceParams, body UpdateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// QueryDeviceMetricsWithBody Query Device Metrics
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+	QueryDeviceMetricsWithBody(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// QueryDeviceMetrics Query Device Metrics
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+	QueryDeviceMetrics(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, body QueryDeviceMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RotateDeviceCredential Rotate Device Credential
+	//
+	// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
+	RotateDeviceCredential(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListEnvironmentProviders List environment providers
 	//
 	// Corresponds with GET /api/v1/environment-providers (the `ListEnvironmentProviders` operationId).
@@ -14187,6 +16619,39 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputer` operationId).
 	CheckComputer(ctx context.Context, environmentId string, params *CheckComputerParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SelectMetricsSourceWithBody Select Metrics Source
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+	SelectMetricsSourceWithBody(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SelectMetricsSource Select Metrics Source
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+	SelectMetricsSource(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, body SelectMetricsSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetCollectorStatus Get Collector Status
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/metrics/collector (the `GetCollectorStatus` operationId).
+	GetCollectorStatus(ctx context.Context, environmentId string, params *GetCollectorStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// QueryEnvironmentMetricsWithBody Query Environment Metrics
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+	QueryEnvironmentMetricsWithBody(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// QueryEnvironmentMetrics Query Environment Metrics
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+	QueryEnvironmentMetrics(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, body QueryEnvironmentMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// StopEnvironment Stop Environment
 	//
@@ -14606,6 +17071,121 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessions` operationId).
 	ListSpaceSessions(ctx context.Context, spaceId string, params *ListSpaceSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListDashboards List Dashboards
+	//
+	// Corresponds with GET /api/v1/metrics-dashboards (the `ListDashboards` operationId).
+	ListDashboards(ctx context.Context, params *ListDashboardsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDashboardWithBody Create Dashboard
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+	CreateDashboardWithBody(ctx context.Context, params *CreateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDashboard Create Dashboard
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+	CreateDashboard(ctx context.Context, params *CreateDashboardParams, body CreateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetDashboardPreset Get Dashboard Preset
+	//
+	// Corresponds with GET /api/v1/metrics-dashboards/preset (the `GetDashboardPreset` operationId).
+	GetDashboardPreset(ctx context.Context, params *GetDashboardPresetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteDashboard Delete Dashboard
+	//
+	// Corresponds with DELETE /api/v1/metrics-dashboards/{dashboard_id} (the `DeleteDashboard` operationId).
+	DeleteDashboard(ctx context.Context, dashboardId string, params *DeleteDashboardParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetDashboard Get Dashboard
+	//
+	// Corresponds with GET /api/v1/metrics-dashboards/{dashboard_id} (the `GetDashboard` operationId).
+	GetDashboard(ctx context.Context, dashboardId string, params *GetDashboardParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateDashboardWithBody Update Dashboard
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+	UpdateDashboardWithBody(ctx context.Context, dashboardId string, params *UpdateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateDashboard Update Dashboard
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+	UpdateDashboard(ctx context.Context, dashboardId string, params *UpdateDashboardParams, body UpdateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListMetricsDataSources List Metrics Data Sources
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources (the `ListMetricsDataSources` operationId).
+	ListMetricsDataSources(ctx context.Context, params *ListMetricsDataSourcesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateMetricsDataSourceWithBody Create Metrics Data Source
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+	CreateMetricsDataSourceWithBody(ctx context.Context, params *CreateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateMetricsDataSource Create Metrics Data Source
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+	CreateMetricsDataSource(ctx context.Context, params *CreateMetricsDataSourceParams, body CreateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMetricsCapabilities Get Metrics Capabilities
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources/capabilities (the `GetMetricsCapabilities` operationId).
+	GetMetricsCapabilities(ctx context.Context, params *GetMetricsCapabilitiesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMetricsDeploymentPreset Get Metrics Deployment Preset
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources/deployment-preset (the `GetMetricsDeploymentPreset` operationId).
+	GetMetricsDeploymentPreset(ctx context.Context, params *GetMetricsDeploymentPresetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteMetricsDataSource Delete Metrics Data Source
+	//
+	// Corresponds with DELETE /api/v1/metrics-data-sources/{source_id} (the `DeleteMetricsDataSource` operationId).
+	DeleteMetricsDataSource(ctx context.Context, sourceId string, params *DeleteMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMetricsDataSource Get Metrics Data Source
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources/{source_id} (the `GetMetricsDataSource` operationId).
+	GetMetricsDataSource(ctx context.Context, sourceId string, params *GetMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMetricsDataSourceWithBody Update Metrics Data Source
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+	UpdateMetricsDataSourceWithBody(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMetricsDataSource Update Metrics Data Source
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+	UpdateMetricsDataSource(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, body UpdateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// QueryMetricsDataSourceWithBody Query Metrics Data Source
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+	QueryMetricsDataSourceWithBody(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// QueryMetricsDataSource Query Metrics Data Source
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+	QueryMetricsDataSource(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, body QueryMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetModelCatalog Get Model Catalog
 	//
@@ -17363,6 +19943,168 @@ func (c *Client) ViewDesktop(ctx context.Context, assistanceId string, params *V
 	return c.Client.Do(req)
 }
 
+// ListDevices List Devices
+//
+// Corresponds with GET /api/v1/devices (the `ListDevices` operationId).
+func (c *Client) ListDevices(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDevicesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateDeviceWithBody Create Device
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+func (c *Client) CreateDeviceWithBody(ctx context.Context, params *CreateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateDevice Create Device
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+func (c *Client) CreateDevice(ctx context.Context, params *CreateDeviceParams, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDeviceRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteDevice Delete Device
+//
+// Corresponds with DELETE /api/v1/devices/{device_id} (the `DeleteDevice` operationId).
+func (c *Client) DeleteDevice(ctx context.Context, deviceId string, params *DeleteDeviceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteDeviceRequest(c.Server, deviceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetDevice Get Device
+//
+// Corresponds with GET /api/v1/devices/{device_id} (the `GetDevice` operationId).
+func (c *Client) GetDevice(ctx context.Context, deviceId string, params *GetDeviceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDeviceRequest(c.Server, deviceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateDeviceWithBody Update Device
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+func (c *Client) UpdateDeviceWithBody(ctx context.Context, deviceId string, params *UpdateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDeviceRequestWithBody(c.Server, deviceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateDevice Update Device
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+func (c *Client) UpdateDevice(ctx context.Context, deviceId string, params *UpdateDeviceParams, body UpdateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDeviceRequest(c.Server, deviceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// QueryDeviceMetricsWithBody Query Device Metrics
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+func (c *Client) QueryDeviceMetricsWithBody(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryDeviceMetricsRequestWithBody(c.Server, deviceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// QueryDeviceMetrics Query Device Metrics
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+func (c *Client) QueryDeviceMetrics(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, body QueryDeviceMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryDeviceMetricsRequest(c.Server, deviceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RotateDeviceCredential Rotate Device Credential
+//
+// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
+func (c *Client) RotateDeviceCredential(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRotateDeviceCredentialRequest(c.Server, deviceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListEnvironmentProviders List environment providers
 //
 // Corresponds with GET /api/v1/environment-providers (the `ListEnvironmentProviders` operationId).
@@ -17732,6 +20474,89 @@ func (c *Client) UpdateEnvironment(ctx context.Context, environmentId string, pa
 // Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputer` operationId).
 func (c *Client) CheckComputer(ctx context.Context, environmentId string, params *CheckComputerParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCheckComputerRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SelectMetricsSourceWithBody Select Metrics Source
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+func (c *Client) SelectMetricsSourceWithBody(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSelectMetricsSourceRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SelectMetricsSource Select Metrics Source
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+func (c *Client) SelectMetricsSource(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, body SelectMetricsSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSelectMetricsSourceRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetCollectorStatus Get Collector Status
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/metrics/collector (the `GetCollectorStatus` operationId).
+func (c *Client) GetCollectorStatus(ctx context.Context, environmentId string, params *GetCollectorStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCollectorStatusRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// QueryEnvironmentMetricsWithBody Query Environment Metrics
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+func (c *Client) QueryEnvironmentMetricsWithBody(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryEnvironmentMetricsRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// QueryEnvironmentMetrics Query Environment Metrics
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+func (c *Client) QueryEnvironmentMetrics(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, body QueryEnvironmentMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryEnvironmentMetricsRequest(c.Server, environmentId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -18781,6 +21606,311 @@ func (c *Client) OrganizeSpace(ctx context.Context, spaceId string, params *Orga
 // Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessions` operationId).
 func (c *Client) ListSpaceSessions(ctx context.Context, spaceId string, params *ListSpaceSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListSpaceSessionsRequest(c.Server, spaceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListDashboards List Dashboards
+//
+// Corresponds with GET /api/v1/metrics-dashboards (the `ListDashboards` operationId).
+func (c *Client) ListDashboards(ctx context.Context, params *ListDashboardsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDashboardsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateDashboardWithBody Create Dashboard
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+func (c *Client) CreateDashboardWithBody(ctx context.Context, params *CreateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDashboardRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateDashboard Create Dashboard
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+func (c *Client) CreateDashboard(ctx context.Context, params *CreateDashboardParams, body CreateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDashboardRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetDashboardPreset Get Dashboard Preset
+//
+// Corresponds with GET /api/v1/metrics-dashboards/preset (the `GetDashboardPreset` operationId).
+func (c *Client) GetDashboardPreset(ctx context.Context, params *GetDashboardPresetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDashboardPresetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteDashboard Delete Dashboard
+//
+// Corresponds with DELETE /api/v1/metrics-dashboards/{dashboard_id} (the `DeleteDashboard` operationId).
+func (c *Client) DeleteDashboard(ctx context.Context, dashboardId string, params *DeleteDashboardParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteDashboardRequest(c.Server, dashboardId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetDashboard Get Dashboard
+//
+// Corresponds with GET /api/v1/metrics-dashboards/{dashboard_id} (the `GetDashboard` operationId).
+func (c *Client) GetDashboard(ctx context.Context, dashboardId string, params *GetDashboardParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDashboardRequest(c.Server, dashboardId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateDashboardWithBody Update Dashboard
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+func (c *Client) UpdateDashboardWithBody(ctx context.Context, dashboardId string, params *UpdateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDashboardRequestWithBody(c.Server, dashboardId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateDashboard Update Dashboard
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+func (c *Client) UpdateDashboard(ctx context.Context, dashboardId string, params *UpdateDashboardParams, body UpdateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDashboardRequest(c.Server, dashboardId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListMetricsDataSources List Metrics Data Sources
+//
+// Corresponds with GET /api/v1/metrics-data-sources (the `ListMetricsDataSources` operationId).
+func (c *Client) ListMetricsDataSources(ctx context.Context, params *ListMetricsDataSourcesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListMetricsDataSourcesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateMetricsDataSourceWithBody Create Metrics Data Source
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+func (c *Client) CreateMetricsDataSourceWithBody(ctx context.Context, params *CreateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMetricsDataSourceRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateMetricsDataSource Create Metrics Data Source
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+func (c *Client) CreateMetricsDataSource(ctx context.Context, params *CreateMetricsDataSourceParams, body CreateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMetricsDataSourceRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetMetricsCapabilities Get Metrics Capabilities
+//
+// Corresponds with GET /api/v1/metrics-data-sources/capabilities (the `GetMetricsCapabilities` operationId).
+func (c *Client) GetMetricsCapabilities(ctx context.Context, params *GetMetricsCapabilitiesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMetricsCapabilitiesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetMetricsDeploymentPreset Get Metrics Deployment Preset
+//
+// Corresponds with GET /api/v1/metrics-data-sources/deployment-preset (the `GetMetricsDeploymentPreset` operationId).
+func (c *Client) GetMetricsDeploymentPreset(ctx context.Context, params *GetMetricsDeploymentPresetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMetricsDeploymentPresetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteMetricsDataSource Delete Metrics Data Source
+//
+// Corresponds with DELETE /api/v1/metrics-data-sources/{source_id} (the `DeleteMetricsDataSource` operationId).
+func (c *Client) DeleteMetricsDataSource(ctx context.Context, sourceId string, params *DeleteMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteMetricsDataSourceRequest(c.Server, sourceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetMetricsDataSource Get Metrics Data Source
+//
+// Corresponds with GET /api/v1/metrics-data-sources/{source_id} (the `GetMetricsDataSource` operationId).
+func (c *Client) GetMetricsDataSource(ctx context.Context, sourceId string, params *GetMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMetricsDataSourceRequest(c.Server, sourceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateMetricsDataSourceWithBody Update Metrics Data Source
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+func (c *Client) UpdateMetricsDataSourceWithBody(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMetricsDataSourceRequestWithBody(c.Server, sourceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateMetricsDataSource Update Metrics Data Source
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+func (c *Client) UpdateMetricsDataSource(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, body UpdateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMetricsDataSourceRequest(c.Server, sourceId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// QueryMetricsDataSourceWithBody Query Metrics Data Source
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+func (c *Client) QueryMetricsDataSourceWithBody(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryMetricsDataSourceRequestWithBody(c.Server, sourceId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// QueryMetricsDataSource Query Metrics Data Source
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+func (c *Client) QueryMetricsDataSource(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, body QueryMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewQueryMetricsDataSourceRequest(c.Server, sourceId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -26325,6 +29455,446 @@ func NewViewDesktopRequestWithBody(server string, assistanceId string, params *V
 	return req, nil
 }
 
+// NewListDevicesRequest constructs an http.Request for the ListDevices method
+func NewListDevicesRequest(server string, params *ListDevicesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateDeviceRequest calls the generic CreateDevice builder with application/json body
+func NewCreateDeviceRequest(server string, params *CreateDeviceParams, body CreateDeviceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDeviceRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateDeviceRequestWithBody constructs an http.Request for the CreateDevice method, with any body, and a specified content type
+func NewCreateDeviceRequestWithBody(server string, params *CreateDeviceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteDeviceRequest constructs an http.Request for the DeleteDevice method
+func NewDeleteDeviceRequest(server string, deviceId string, params *DeleteDeviceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "device_id", deviceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetDeviceRequest constructs an http.Request for the GetDevice method
+func NewGetDeviceRequest(server string, deviceId string, params *GetDeviceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "device_id", deviceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateDeviceRequest calls the generic UpdateDevice builder with application/json body
+func NewUpdateDeviceRequest(server string, deviceId string, params *UpdateDeviceParams, body UpdateDeviceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateDeviceRequestWithBody(server, deviceId, params, "application/json", bodyReader)
+}
+
+// NewUpdateDeviceRequestWithBody constructs an http.Request for the UpdateDevice method, with any body, and a specified content type
+func NewUpdateDeviceRequestWithBody(server string, deviceId string, params *UpdateDeviceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "device_id", deviceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewQueryDeviceMetricsRequest calls the generic QueryDeviceMetrics builder with application/json body
+func NewQueryDeviceMetricsRequest(server string, deviceId string, params *QueryDeviceMetricsParams, body QueryDeviceMetricsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewQueryDeviceMetricsRequestWithBody(server, deviceId, params, "application/json", bodyReader)
+}
+
+// NewQueryDeviceMetricsRequestWithBody constructs an http.Request for the QueryDeviceMetrics method, with any body, and a specified content type
+func NewQueryDeviceMetricsRequestWithBody(server string, deviceId string, params *QueryDeviceMetricsParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "device_id", deviceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/metrics/query", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRotateDeviceCredentialRequest constructs an http.Request for the RotateDeviceCredential method
+func NewRotateDeviceCredentialRequest(server string, deviceId string, params *RotateDeviceCredentialParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "device_id", deviceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/devices/%s/rotate-credential", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListEnvironmentProvidersRequest constructs an http.Request for the ListEnvironmentProviders method
 func NewListEnvironmentProvidersRequest(server string, params *ListEnvironmentProvidersParams) (*http.Request, error) {
 	var err error
@@ -27371,6 +30941,190 @@ func NewCheckComputerRequest(server string, environmentId string, params *CheckC
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewSelectMetricsSourceRequest calls the generic SelectMetricsSource builder with application/json body
+func NewSelectMetricsSourceRequest(server string, environmentId string, params *SelectMetricsSourceParams, body SelectMetricsSourceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSelectMetricsSourceRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewSelectMetricsSourceRequestWithBody constructs an http.Request for the SelectMetricsSource method, with any body, and a specified content type
+func NewSelectMetricsSourceRequestWithBody(server string, environmentId string, params *SelectMetricsSourceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/metrics-binding", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetCollectorStatusRequest constructs an http.Request for the GetCollectorStatus method
+func NewGetCollectorStatusRequest(server string, environmentId string, params *GetCollectorStatusParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/metrics/collector", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewQueryEnvironmentMetricsRequest calls the generic QueryEnvironmentMetrics builder with application/json body
+func NewQueryEnvironmentMetricsRequest(server string, environmentId string, params *QueryEnvironmentMetricsParams, body QueryEnvironmentMetricsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewQueryEnvironmentMetricsRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewQueryEnvironmentMetricsRequestWithBody constructs an http.Request for the QueryEnvironmentMetrics method, with any body, and a specified content type
+func NewQueryEnvironmentMetricsRequestWithBody(server string, environmentId string, params *QueryEnvironmentMetricsParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/metrics/query", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -30528,6 +34282,830 @@ func NewListSpaceSessionsRequest(server string, spaceId string, params *ListSpac
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListDashboardsRequest constructs an http.Request for the ListDashboards method
+func NewListDashboardsRequest(server string, params *ListDashboardsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-dashboards")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateDashboardRequest calls the generic CreateDashboard builder with application/json body
+func NewCreateDashboardRequest(server string, params *CreateDashboardParams, body CreateDashboardJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDashboardRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateDashboardRequestWithBody constructs an http.Request for the CreateDashboard method, with any body, and a specified content type
+func NewCreateDashboardRequestWithBody(server string, params *CreateDashboardParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-dashboards")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetDashboardPresetRequest constructs an http.Request for the GetDashboardPreset method
+func NewGetDashboardPresetRequest(server string, params *GetDashboardPresetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-dashboards/preset")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteDashboardRequest constructs an http.Request for the DeleteDashboard method
+func NewDeleteDashboardRequest(server string, dashboardId string, params *DeleteDashboardParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "dashboard_id", dashboardId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-dashboards/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetDashboardRequest constructs an http.Request for the GetDashboard method
+func NewGetDashboardRequest(server string, dashboardId string, params *GetDashboardParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "dashboard_id", dashboardId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-dashboards/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateDashboardRequest calls the generic UpdateDashboard builder with application/json body
+func NewUpdateDashboardRequest(server string, dashboardId string, params *UpdateDashboardParams, body UpdateDashboardJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateDashboardRequestWithBody(server, dashboardId, params, "application/json", bodyReader)
+}
+
+// NewUpdateDashboardRequestWithBody constructs an http.Request for the UpdateDashboard method, with any body, and a specified content type
+func NewUpdateDashboardRequestWithBody(server string, dashboardId string, params *UpdateDashboardParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "dashboard_id", dashboardId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-dashboards/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListMetricsDataSourcesRequest constructs an http.Request for the ListMetricsDataSources method
+func NewListMetricsDataSourcesRequest(server string, params *ListMetricsDataSourcesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateMetricsDataSourceRequest calls the generic CreateMetricsDataSource builder with application/json body
+func NewCreateMetricsDataSourceRequest(server string, params *CreateMetricsDataSourceParams, body CreateMetricsDataSourceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateMetricsDataSourceRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateMetricsDataSourceRequestWithBody constructs an http.Request for the CreateMetricsDataSource method, with any body, and a specified content type
+func NewCreateMetricsDataSourceRequestWithBody(server string, params *CreateMetricsDataSourceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetMetricsCapabilitiesRequest constructs an http.Request for the GetMetricsCapabilities method
+func NewGetMetricsCapabilitiesRequest(server string, params *GetMetricsCapabilitiesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources/capabilities")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetMetricsDeploymentPresetRequest constructs an http.Request for the GetMetricsDeploymentPreset method
+func NewGetMetricsDeploymentPresetRequest(server string, params *GetMetricsDeploymentPresetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources/deployment-preset")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteMetricsDataSourceRequest constructs an http.Request for the DeleteMetricsDataSource method
+func NewDeleteMetricsDataSourceRequest(server string, sourceId string, params *DeleteMetricsDataSourceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "source_id", sourceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetMetricsDataSourceRequest constructs an http.Request for the GetMetricsDataSource method
+func NewGetMetricsDataSourceRequest(server string, sourceId string, params *GetMetricsDataSourceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "source_id", sourceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateMetricsDataSourceRequest calls the generic UpdateMetricsDataSource builder with application/json body
+func NewUpdateMetricsDataSourceRequest(server string, sourceId string, params *UpdateMetricsDataSourceParams, body UpdateMetricsDataSourceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMetricsDataSourceRequestWithBody(server, sourceId, params, "application/json", bodyReader)
+}
+
+// NewUpdateMetricsDataSourceRequestWithBody constructs an http.Request for the UpdateMetricsDataSource method, with any body, and a specified content type
+func NewUpdateMetricsDataSourceRequestWithBody(server string, sourceId string, params *UpdateMetricsDataSourceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "source_id", sourceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewQueryMetricsDataSourceRequest calls the generic QueryMetricsDataSource builder with application/json body
+func NewQueryMetricsDataSourceRequest(server string, sourceId string, params *QueryMetricsDataSourceParams, body QueryMetricsDataSourceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewQueryMetricsDataSourceRequestWithBody(server, sourceId, params, "application/json", bodyReader)
+}
+
+// NewQueryMetricsDataSourceRequestWithBody constructs an http.Request for the QueryMetricsDataSource method, with any body, and a specified content type
+func NewQueryMetricsDataSourceRequestWithBody(server string, sourceId string, params *QueryMetricsDataSourceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "source_id", sourceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/metrics-data-sources/%s/query", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -43332,6 +47910,76 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
 	ViewDesktopWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopParams, body ViewDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*ViewDesktopResponse, error)
 
+	// ListDevicesWithResponse List Devices
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/devices (the `ListDevices` operationId).
+	ListDevicesWithResponse(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*ListDevicesResponse, error)
+
+	// CreateDeviceWithBodyWithResponse Create Device
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+	CreateDeviceWithBodyWithResponse(ctx context.Context, params *CreateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error)
+
+	// CreateDeviceWithResponse Create Device
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+	CreateDeviceWithResponse(ctx context.Context, params *CreateDeviceParams, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error)
+
+	// DeleteDeviceWithResponse Delete Device
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/devices/{device_id} (the `DeleteDevice` operationId).
+	DeleteDeviceWithResponse(ctx context.Context, deviceId string, params *DeleteDeviceParams, reqEditors ...RequestEditorFn) (*DeleteDeviceResponse, error)
+
+	// GetDeviceWithResponse Get Device
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/devices/{device_id} (the `GetDevice` operationId).
+	GetDeviceWithResponse(ctx context.Context, deviceId string, params *GetDeviceParams, reqEditors ...RequestEditorFn) (*GetDeviceResponse, error)
+
+	// UpdateDeviceWithBodyWithResponse Update Device
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+	UpdateDeviceWithBodyWithResponse(ctx context.Context, deviceId string, params *UpdateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDeviceResponse, error)
+
+	// UpdateDeviceWithResponse Update Device
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+	UpdateDeviceWithResponse(ctx context.Context, deviceId string, params *UpdateDeviceParams, body UpdateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDeviceResponse, error)
+
+	// QueryDeviceMetricsWithBodyWithResponse Query Device Metrics
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+	QueryDeviceMetricsWithBodyWithResponse(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*QueryDeviceMetricsResponse, error)
+
+	// QueryDeviceMetricsWithResponse Query Device Metrics
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+	QueryDeviceMetricsWithResponse(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, body QueryDeviceMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*QueryDeviceMetricsResponse, error)
+
+	// RotateDeviceCredentialWithResponse Rotate Device Credential
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
+	RotateDeviceCredentialWithResponse(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*RotateDeviceCredentialResponse, error)
+
 	// ListEnvironmentProvidersWithResponse List environment providers
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -43502,6 +48150,41 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/computer/check (the `CheckComputer` operationId).
 	CheckComputerWithResponse(ctx context.Context, environmentId string, params *CheckComputerParams, reqEditors ...RequestEditorFn) (*CheckComputerResponse, error)
+
+	// SelectMetricsSourceWithBodyWithResponse Select Metrics Source
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+	SelectMetricsSourceWithBodyWithResponse(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SelectMetricsSourceResponse, error)
+
+	// SelectMetricsSourceWithResponse Select Metrics Source
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+	SelectMetricsSourceWithResponse(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, body SelectMetricsSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*SelectMetricsSourceResponse, error)
+
+	// GetCollectorStatusWithResponse Get Collector Status
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/metrics/collector (the `GetCollectorStatus` operationId).
+	GetCollectorStatusWithResponse(ctx context.Context, environmentId string, params *GetCollectorStatusParams, reqEditors ...RequestEditorFn) (*GetCollectorStatusResponse, error)
+
+	// QueryEnvironmentMetricsWithBodyWithResponse Query Environment Metrics
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+	QueryEnvironmentMetricsWithBodyWithResponse(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*QueryEnvironmentMetricsResponse, error)
+
+	// QueryEnvironmentMetricsWithResponse Query Environment Metrics
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+	QueryEnvironmentMetricsWithResponse(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, body QueryEnvironmentMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*QueryEnvironmentMetricsResponse, error)
 
 	// StopEnvironmentWithResponse Stop Environment
 	//
@@ -43979,6 +48662,139 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/memory-spaces/{space_id}/sessions (the `ListSpaceSessions` operationId).
 	ListSpaceSessionsWithResponse(ctx context.Context, spaceId string, params *ListSpaceSessionsParams, reqEditors ...RequestEditorFn) (*ListSpaceSessionsResponse, error)
+
+	// ListDashboardsWithResponse List Dashboards
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/metrics-dashboards (the `ListDashboards` operationId).
+	ListDashboardsWithResponse(ctx context.Context, params *ListDashboardsParams, reqEditors ...RequestEditorFn) (*ListDashboardsResponse, error)
+
+	// CreateDashboardWithBodyWithResponse Create Dashboard
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+	CreateDashboardWithBodyWithResponse(ctx context.Context, params *CreateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDashboardResponse, error)
+
+	// CreateDashboardWithResponse Create Dashboard
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+	CreateDashboardWithResponse(ctx context.Context, params *CreateDashboardParams, body CreateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDashboardResponse, error)
+
+	// GetDashboardPresetWithResponse Get Dashboard Preset
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/metrics-dashboards/preset (the `GetDashboardPreset` operationId).
+	GetDashboardPresetWithResponse(ctx context.Context, params *GetDashboardPresetParams, reqEditors ...RequestEditorFn) (*GetDashboardPresetResponse, error)
+
+	// DeleteDashboardWithResponse Delete Dashboard
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/metrics-dashboards/{dashboard_id} (the `DeleteDashboard` operationId).
+	DeleteDashboardWithResponse(ctx context.Context, dashboardId string, params *DeleteDashboardParams, reqEditors ...RequestEditorFn) (*DeleteDashboardResponse, error)
+
+	// GetDashboardWithResponse Get Dashboard
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/metrics-dashboards/{dashboard_id} (the `GetDashboard` operationId).
+	GetDashboardWithResponse(ctx context.Context, dashboardId string, params *GetDashboardParams, reqEditors ...RequestEditorFn) (*GetDashboardResponse, error)
+
+	// UpdateDashboardWithBodyWithResponse Update Dashboard
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+	UpdateDashboardWithBodyWithResponse(ctx context.Context, dashboardId string, params *UpdateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDashboardResponse, error)
+
+	// UpdateDashboardWithResponse Update Dashboard
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+	UpdateDashboardWithResponse(ctx context.Context, dashboardId string, params *UpdateDashboardParams, body UpdateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDashboardResponse, error)
+
+	// ListMetricsDataSourcesWithResponse List Metrics Data Sources
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources (the `ListMetricsDataSources` operationId).
+	ListMetricsDataSourcesWithResponse(ctx context.Context, params *ListMetricsDataSourcesParams, reqEditors ...RequestEditorFn) (*ListMetricsDataSourcesResponse, error)
+
+	// CreateMetricsDataSourceWithBodyWithResponse Create Metrics Data Source
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+	CreateMetricsDataSourceWithBodyWithResponse(ctx context.Context, params *CreateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMetricsDataSourceResponse, error)
+
+	// CreateMetricsDataSourceWithResponse Create Metrics Data Source
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+	CreateMetricsDataSourceWithResponse(ctx context.Context, params *CreateMetricsDataSourceParams, body CreateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMetricsDataSourceResponse, error)
+
+	// GetMetricsCapabilitiesWithResponse Get Metrics Capabilities
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources/capabilities (the `GetMetricsCapabilities` operationId).
+	GetMetricsCapabilitiesWithResponse(ctx context.Context, params *GetMetricsCapabilitiesParams, reqEditors ...RequestEditorFn) (*GetMetricsCapabilitiesResponse, error)
+
+	// GetMetricsDeploymentPresetWithResponse Get Metrics Deployment Preset
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources/deployment-preset (the `GetMetricsDeploymentPreset` operationId).
+	GetMetricsDeploymentPresetWithResponse(ctx context.Context, params *GetMetricsDeploymentPresetParams, reqEditors ...RequestEditorFn) (*GetMetricsDeploymentPresetResponse, error)
+
+	// DeleteMetricsDataSourceWithResponse Delete Metrics Data Source
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/metrics-data-sources/{source_id} (the `DeleteMetricsDataSource` operationId).
+	DeleteMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *DeleteMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*DeleteMetricsDataSourceResponse, error)
+
+	// GetMetricsDataSourceWithResponse Get Metrics Data Source
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/metrics-data-sources/{source_id} (the `GetMetricsDataSource` operationId).
+	GetMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *GetMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*GetMetricsDataSourceResponse, error)
+
+	// UpdateMetricsDataSourceWithBodyWithResponse Update Metrics Data Source
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+	UpdateMetricsDataSourceWithBodyWithResponse(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMetricsDataSourceResponse, error)
+
+	// UpdateMetricsDataSourceWithResponse Update Metrics Data Source
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+	UpdateMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, body UpdateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMetricsDataSourceResponse, error)
+
+	// QueryMetricsDataSourceWithBodyWithResponse Query Metrics Data Source
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+	QueryMetricsDataSourceWithBodyWithResponse(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*QueryMetricsDataSourceResponse, error)
+
+	// QueryMetricsDataSourceWithResponse Query Metrics Data Source
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+	QueryMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, body QueryMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*QueryMetricsDataSourceResponse, error)
 
 	// GetModelCatalogWithResponse Get Model Catalog
 	//
@@ -49515,6 +54331,482 @@ func (r ViewDesktopResponse) ContentType() string {
 	return ""
 }
 
+// ListDevicesResponse400Headers the declared response headers of an HTTP 400 response for ListDevices
+type ListDevicesResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListDevicesResponseDefaultHeaders the declared response headers of an HTTP default response for ListDevices
+type ListDevicesResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListDevicesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DevicePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListDevicesResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListDevicesResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListDevicesResponse) GetJSON200() *DevicePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListDevicesResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListDevicesResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListDevicesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDevicesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDevicesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListDevicesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateDeviceResponse400Headers the declared response headers of an HTTP 400 response for CreateDevice
+type CreateDeviceResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateDeviceResponseDefaultHeaders the declared response headers of an HTTP default response for CreateDevice
+type CreateDeviceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateDeviceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *DeviceCredential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateDeviceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateDeviceResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateDeviceResponse) GetJSON201() *DeviceCredential {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateDeviceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateDeviceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateDeviceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDeviceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDeviceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateDeviceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteDeviceResponse400Headers the declared response headers of an HTTP 400 response for DeleteDevice
+type DeleteDeviceResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteDeviceResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteDevice
+type DeleteDeviceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteDeviceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteDeviceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteDeviceResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteDeviceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteDeviceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteDeviceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteDeviceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteDeviceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteDeviceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetDeviceResponse400Headers the declared response headers of an HTTP 400 response for GetDevice
+type GetDeviceResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetDeviceResponseDefaultHeaders the declared response headers of an HTTP default response for GetDevice
+type GetDeviceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetDeviceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Device
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetDeviceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetDeviceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetDeviceResponse) GetJSON200() *Device {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetDeviceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetDeviceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetDeviceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetDeviceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetDeviceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetDeviceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateDeviceResponse400Headers the declared response headers of an HTTP 400 response for UpdateDevice
+type UpdateDeviceResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateDeviceResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateDevice
+type UpdateDeviceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateDeviceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Device
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateDeviceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateDeviceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateDeviceResponse) GetJSON200() *Device {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateDeviceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateDeviceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateDeviceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateDeviceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateDeviceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateDeviceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// QueryDeviceMetricsResponse400Headers the declared response headers of an HTTP 400 response for QueryDeviceMetrics
+type QueryDeviceMetricsResponse400Headers struct {
+	XRequestId *string
+}
+
+// QueryDeviceMetricsResponseDefaultHeaders the declared response headers of an HTTP default response for QueryDeviceMetrics
+type QueryDeviceMetricsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type QueryDeviceMetricsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *QueryDeviceMetrics200JSONResponseBody
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *QueryDeviceMetricsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *QueryDeviceMetricsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r QueryDeviceMetricsResponse) GetJSON200() *QueryDeviceMetrics200JSONResponseBody {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r QueryDeviceMetricsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r QueryDeviceMetricsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r QueryDeviceMetricsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r QueryDeviceMetricsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r QueryDeviceMetricsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r QueryDeviceMetricsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RotateDeviceCredentialResponse400Headers the declared response headers of an HTTP 400 response for RotateDeviceCredential
+type RotateDeviceCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// RotateDeviceCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for RotateDeviceCredential
+type RotateDeviceCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RotateDeviceCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DeviceCredential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RotateDeviceCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RotateDeviceCredentialResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RotateDeviceCredentialResponse) GetJSON200() *DeviceCredential {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RotateDeviceCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RotateDeviceCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RotateDeviceCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RotateDeviceCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RotateDeviceCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RotateDeviceCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListEnvironmentProvidersResponse400Headers the declared response headers of an HTTP 400 response for ListEnvironmentProviders
 type ListEnvironmentProvidersResponse400Headers struct {
 	XRequestId *string
@@ -50675,6 +55967,213 @@ func (r CheckComputerResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CheckComputerResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// SelectMetricsSourceResponse400Headers the declared response headers of an HTTP 400 response for SelectMetricsSource
+type SelectMetricsSourceResponse400Headers struct {
+	XRequestId *string
+}
+
+// SelectMetricsSourceResponseDefaultHeaders the declared response headers of an HTTP default response for SelectMetricsSource
+type SelectMetricsSourceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type SelectMetricsSourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EnvironmentView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *SelectMetricsSourceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *SelectMetricsSourceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r SelectMetricsSourceResponse) GetJSON200() *EnvironmentView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r SelectMetricsSourceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r SelectMetricsSourceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r SelectMetricsSourceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SelectMetricsSourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SelectMetricsSourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SelectMetricsSourceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetCollectorStatusResponse400Headers the declared response headers of an HTTP 400 response for GetCollectorStatus
+type GetCollectorStatusResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetCollectorStatusResponseDefaultHeaders the declared response headers of an HTTP default response for GetCollectorStatus
+type GetCollectorStatusResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetCollectorStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CollectorStatus
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetCollectorStatusResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetCollectorStatusResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetCollectorStatusResponse) GetJSON200() *CollectorStatus {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetCollectorStatusResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetCollectorStatusResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetCollectorStatusResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCollectorStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCollectorStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetCollectorStatusResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// QueryEnvironmentMetricsResponse400Headers the declared response headers of an HTTP 400 response for QueryEnvironmentMetrics
+type QueryEnvironmentMetricsResponse400Headers struct {
+	XRequestId *string
+}
+
+// QueryEnvironmentMetricsResponseDefaultHeaders the declared response headers of an HTTP default response for QueryEnvironmentMetrics
+type QueryEnvironmentMetricsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type QueryEnvironmentMetricsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *QueryEnvironmentMetrics200JSONResponseBody
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *QueryEnvironmentMetricsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *QueryEnvironmentMetricsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r QueryEnvironmentMetricsResponse) GetJSON200() *QueryEnvironmentMetrics200JSONResponseBody {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r QueryEnvironmentMetricsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r QueryEnvironmentMetricsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r QueryEnvironmentMetricsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r QueryEnvironmentMetricsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r QueryEnvironmentMetricsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r QueryEnvironmentMetricsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -53821,6 +59320,958 @@ func (r ListSpaceSessionsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ListSpaceSessionsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListDashboardsResponse400Headers the declared response headers of an HTTP 400 response for ListDashboards
+type ListDashboardsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListDashboardsResponseDefaultHeaders the declared response headers of an HTTP default response for ListDashboards
+type ListDashboardsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListDashboardsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DashboardPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListDashboardsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListDashboardsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListDashboardsResponse) GetJSON200() *DashboardPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListDashboardsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListDashboardsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListDashboardsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDashboardsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDashboardsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListDashboardsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateDashboardResponse400Headers the declared response headers of an HTTP 400 response for CreateDashboard
+type CreateDashboardResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateDashboardResponseDefaultHeaders the declared response headers of an HTTP default response for CreateDashboard
+type CreateDashboardResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateDashboardResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Dashboard
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateDashboardResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateDashboardResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateDashboardResponse) GetJSON201() *Dashboard {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateDashboardResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateDashboardResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateDashboardResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDashboardResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDashboardResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateDashboardResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetDashboardPresetResponse400Headers the declared response headers of an HTTP 400 response for GetDashboardPreset
+type GetDashboardPresetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetDashboardPresetResponseDefaultHeaders the declared response headers of an HTTP default response for GetDashboardPreset
+type GetDashboardPresetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetDashboardPresetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DashboardConfig
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetDashboardPresetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetDashboardPresetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetDashboardPresetResponse) GetJSON200() *DashboardConfig {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetDashboardPresetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetDashboardPresetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetDashboardPresetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetDashboardPresetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetDashboardPresetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetDashboardPresetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteDashboardResponse400Headers the declared response headers of an HTTP 400 response for DeleteDashboard
+type DeleteDashboardResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteDashboardResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteDashboard
+type DeleteDashboardResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteDashboardResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteDashboardResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteDashboardResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteDashboardResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteDashboardResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteDashboardResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteDashboardResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteDashboardResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteDashboardResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetDashboardResponse400Headers the declared response headers of an HTTP 400 response for GetDashboard
+type GetDashboardResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetDashboardResponseDefaultHeaders the declared response headers of an HTTP default response for GetDashboard
+type GetDashboardResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetDashboardResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Dashboard
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetDashboardResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetDashboardResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetDashboardResponse) GetJSON200() *Dashboard {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetDashboardResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetDashboardResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetDashboardResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetDashboardResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetDashboardResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetDashboardResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateDashboardResponse400Headers the declared response headers of an HTTP 400 response for UpdateDashboard
+type UpdateDashboardResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateDashboardResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateDashboard
+type UpdateDashboardResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateDashboardResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Dashboard
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateDashboardResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateDashboardResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateDashboardResponse) GetJSON200() *Dashboard {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateDashboardResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateDashboardResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateDashboardResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateDashboardResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateDashboardResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateDashboardResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListMetricsDataSourcesResponse400Headers the declared response headers of an HTTP 400 response for ListMetricsDataSources
+type ListMetricsDataSourcesResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListMetricsDataSourcesResponseDefaultHeaders the declared response headers of an HTTP default response for ListMetricsDataSources
+type ListMetricsDataSourcesResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListMetricsDataSourcesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DataSourcePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListMetricsDataSourcesResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListMetricsDataSourcesResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListMetricsDataSourcesResponse) GetJSON200() *DataSourcePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListMetricsDataSourcesResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListMetricsDataSourcesResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListMetricsDataSourcesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListMetricsDataSourcesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListMetricsDataSourcesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListMetricsDataSourcesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateMetricsDataSourceResponse400Headers the declared response headers of an HTTP 400 response for CreateMetricsDataSource
+type CreateMetricsDataSourceResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateMetricsDataSourceResponseDefaultHeaders the declared response headers of an HTTP default response for CreateMetricsDataSource
+type CreateMetricsDataSourceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateMetricsDataSourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *DataSource
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateMetricsDataSourceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateMetricsDataSourceResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateMetricsDataSourceResponse) GetJSON201() *DataSource {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateMetricsDataSourceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateMetricsDataSourceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateMetricsDataSourceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateMetricsDataSourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateMetricsDataSourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateMetricsDataSourceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetMetricsCapabilitiesResponse400Headers the declared response headers of an HTTP 400 response for GetMetricsCapabilities
+type GetMetricsCapabilitiesResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetMetricsCapabilitiesResponseDefaultHeaders the declared response headers of an HTTP default response for GetMetricsCapabilities
+type GetMetricsCapabilitiesResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetMetricsCapabilitiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Capabilities
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetMetricsCapabilitiesResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetMetricsCapabilitiesResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetMetricsCapabilitiesResponse) GetJSON200() *Capabilities {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetMetricsCapabilitiesResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetMetricsCapabilitiesResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetMetricsCapabilitiesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMetricsCapabilitiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMetricsCapabilitiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMetricsCapabilitiesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetMetricsDeploymentPresetResponse400Headers the declared response headers of an HTTP 400 response for GetMetricsDeploymentPreset
+type GetMetricsDeploymentPresetResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetMetricsDeploymentPresetResponseDefaultHeaders the declared response headers of an HTTP default response for GetMetricsDeploymentPreset
+type GetMetricsDeploymentPresetResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetMetricsDeploymentPresetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DeploymentPreset
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetMetricsDeploymentPresetResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetMetricsDeploymentPresetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetMetricsDeploymentPresetResponse) GetJSON200() *DeploymentPreset {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetMetricsDeploymentPresetResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetMetricsDeploymentPresetResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetMetricsDeploymentPresetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMetricsDeploymentPresetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMetricsDeploymentPresetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMetricsDeploymentPresetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteMetricsDataSourceResponse400Headers the declared response headers of an HTTP 400 response for DeleteMetricsDataSource
+type DeleteMetricsDataSourceResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteMetricsDataSourceResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteMetricsDataSource
+type DeleteMetricsDataSourceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteMetricsDataSourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteMetricsDataSourceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteMetricsDataSourceResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteMetricsDataSourceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteMetricsDataSourceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteMetricsDataSourceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteMetricsDataSourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteMetricsDataSourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteMetricsDataSourceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetMetricsDataSourceResponse400Headers the declared response headers of an HTTP 400 response for GetMetricsDataSource
+type GetMetricsDataSourceResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetMetricsDataSourceResponseDefaultHeaders the declared response headers of an HTTP default response for GetMetricsDataSource
+type GetMetricsDataSourceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetMetricsDataSourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DataSource
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetMetricsDataSourceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetMetricsDataSourceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetMetricsDataSourceResponse) GetJSON200() *DataSource {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetMetricsDataSourceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetMetricsDataSourceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetMetricsDataSourceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMetricsDataSourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMetricsDataSourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMetricsDataSourceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateMetricsDataSourceResponse400Headers the declared response headers of an HTTP 400 response for UpdateMetricsDataSource
+type UpdateMetricsDataSourceResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateMetricsDataSourceResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateMetricsDataSource
+type UpdateMetricsDataSourceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateMetricsDataSourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DataSource
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateMetricsDataSourceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateMetricsDataSourceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateMetricsDataSourceResponse) GetJSON200() *DataSource {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateMetricsDataSourceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateMetricsDataSourceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateMetricsDataSourceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMetricsDataSourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMetricsDataSourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateMetricsDataSourceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// QueryMetricsDataSourceResponse400Headers the declared response headers of an HTTP 400 response for QueryMetricsDataSource
+type QueryMetricsDataSourceResponse400Headers struct {
+	XRequestId *string
+}
+
+// QueryMetricsDataSourceResponseDefaultHeaders the declared response headers of an HTTP default response for QueryMetricsDataSource
+type QueryMetricsDataSourceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type QueryMetricsDataSourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *QueryResult
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *QueryMetricsDataSourceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *QueryMetricsDataSourceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r QueryMetricsDataSourceResponse) GetJSON200() *QueryResult {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r QueryMetricsDataSourceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r QueryMetricsDataSourceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r QueryMetricsDataSourceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r QueryMetricsDataSourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r QueryMetricsDataSourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r QueryMetricsDataSourceResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -66517,6 +72968,136 @@ func (c *ClientWithResponses) ViewDesktopWithResponse(ctx context.Context, assis
 	return ParseViewDesktopResponse(rsp)
 }
 
+// ListDevicesWithResponse List Devices
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/devices (the `ListDevices` operationId).
+func (c *ClientWithResponses) ListDevicesWithResponse(ctx context.Context, params *ListDevicesParams, reqEditors ...RequestEditorFn) (*ListDevicesResponse, error) {
+	rsp, err := c.ListDevices(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDevicesResponse(rsp)
+}
+
+// CreateDeviceWithBodyWithResponse Create Device
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+func (c *ClientWithResponses) CreateDeviceWithBodyWithResponse(ctx context.Context, params *CreateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error) {
+	rsp, err := c.CreateDeviceWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceResponse(rsp)
+}
+
+// CreateDeviceWithResponse Create Device
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/devices (the `CreateDevice` operationId).
+func (c *ClientWithResponses) CreateDeviceWithResponse(ctx context.Context, params *CreateDeviceParams, body CreateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDeviceResponse, error) {
+	rsp, err := c.CreateDevice(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDeviceResponse(rsp)
+}
+
+// DeleteDeviceWithResponse Delete Device
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/devices/{device_id} (the `DeleteDevice` operationId).
+func (c *ClientWithResponses) DeleteDeviceWithResponse(ctx context.Context, deviceId string, params *DeleteDeviceParams, reqEditors ...RequestEditorFn) (*DeleteDeviceResponse, error) {
+	rsp, err := c.DeleteDevice(ctx, deviceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteDeviceResponse(rsp)
+}
+
+// GetDeviceWithResponse Get Device
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/devices/{device_id} (the `GetDevice` operationId).
+func (c *ClientWithResponses) GetDeviceWithResponse(ctx context.Context, deviceId string, params *GetDeviceParams, reqEditors ...RequestEditorFn) (*GetDeviceResponse, error) {
+	rsp, err := c.GetDevice(ctx, deviceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetDeviceResponse(rsp)
+}
+
+// UpdateDeviceWithBodyWithResponse Update Device
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+func (c *ClientWithResponses) UpdateDeviceWithBodyWithResponse(ctx context.Context, deviceId string, params *UpdateDeviceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDeviceResponse, error) {
+	rsp, err := c.UpdateDeviceWithBody(ctx, deviceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDeviceResponse(rsp)
+}
+
+// UpdateDeviceWithResponse Update Device
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/devices/{device_id} (the `UpdateDevice` operationId).
+func (c *ClientWithResponses) UpdateDeviceWithResponse(ctx context.Context, deviceId string, params *UpdateDeviceParams, body UpdateDeviceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDeviceResponse, error) {
+	rsp, err := c.UpdateDevice(ctx, deviceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDeviceResponse(rsp)
+}
+
+// QueryDeviceMetricsWithBodyWithResponse Query Device Metrics
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+func (c *ClientWithResponses) QueryDeviceMetricsWithBodyWithResponse(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*QueryDeviceMetricsResponse, error) {
+	rsp, err := c.QueryDeviceMetricsWithBody(ctx, deviceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryDeviceMetricsResponse(rsp)
+}
+
+// QueryDeviceMetricsWithResponse Query Device Metrics
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/devices/{device_id}/metrics/query (the `QueryDeviceMetrics` operationId).
+func (c *ClientWithResponses) QueryDeviceMetricsWithResponse(ctx context.Context, deviceId string, params *QueryDeviceMetricsParams, body QueryDeviceMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*QueryDeviceMetricsResponse, error) {
+	rsp, err := c.QueryDeviceMetrics(ctx, deviceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryDeviceMetricsResponse(rsp)
+}
+
+// RotateDeviceCredentialWithResponse Rotate Device Credential
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
+func (c *ClientWithResponses) RotateDeviceCredentialWithResponse(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*RotateDeviceCredentialResponse, error) {
+	rsp, err := c.RotateDeviceCredential(ctx, deviceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRotateDeviceCredentialResponse(rsp)
+}
+
 // ListEnvironmentProvidersWithResponse List environment providers
 //
 // Returns a wrapper object for the known response body format(s).
@@ -66824,6 +73405,71 @@ func (c *ClientWithResponses) CheckComputerWithResponse(ctx context.Context, env
 		return nil, err
 	}
 	return ParseCheckComputerResponse(rsp)
+}
+
+// SelectMetricsSourceWithBodyWithResponse Select Metrics Source
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+func (c *ClientWithResponses) SelectMetricsSourceWithBodyWithResponse(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SelectMetricsSourceResponse, error) {
+	rsp, err := c.SelectMetricsSourceWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSelectMetricsSourceResponse(rsp)
+}
+
+// SelectMetricsSourceWithResponse Select Metrics Source
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/metrics-binding (the `SelectMetricsSource` operationId).
+func (c *ClientWithResponses) SelectMetricsSourceWithResponse(ctx context.Context, environmentId string, params *SelectMetricsSourceParams, body SelectMetricsSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*SelectMetricsSourceResponse, error) {
+	rsp, err := c.SelectMetricsSource(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSelectMetricsSourceResponse(rsp)
+}
+
+// GetCollectorStatusWithResponse Get Collector Status
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/metrics/collector (the `GetCollectorStatus` operationId).
+func (c *ClientWithResponses) GetCollectorStatusWithResponse(ctx context.Context, environmentId string, params *GetCollectorStatusParams, reqEditors ...RequestEditorFn) (*GetCollectorStatusResponse, error) {
+	rsp, err := c.GetCollectorStatus(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCollectorStatusResponse(rsp)
+}
+
+// QueryEnvironmentMetricsWithBodyWithResponse Query Environment Metrics
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+func (c *ClientWithResponses) QueryEnvironmentMetricsWithBodyWithResponse(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*QueryEnvironmentMetricsResponse, error) {
+	rsp, err := c.QueryEnvironmentMetricsWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryEnvironmentMetricsResponse(rsp)
+}
+
+// QueryEnvironmentMetricsWithResponse Query Environment Metrics
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/metrics/query (the `QueryEnvironmentMetrics` operationId).
+func (c *ClientWithResponses) QueryEnvironmentMetricsWithResponse(ctx context.Context, environmentId string, params *QueryEnvironmentMetricsParams, body QueryEnvironmentMetricsJSONRequestBody, reqEditors ...RequestEditorFn) (*QueryEnvironmentMetricsResponse, error) {
+	rsp, err := c.QueryEnvironmentMetrics(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryEnvironmentMetricsResponse(rsp)
 }
 
 // StopEnvironmentWithResponse Stop Environment
@@ -67679,6 +74325,253 @@ func (c *ClientWithResponses) ListSpaceSessionsWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseListSpaceSessionsResponse(rsp)
+}
+
+// ListDashboardsWithResponse List Dashboards
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/metrics-dashboards (the `ListDashboards` operationId).
+func (c *ClientWithResponses) ListDashboardsWithResponse(ctx context.Context, params *ListDashboardsParams, reqEditors ...RequestEditorFn) (*ListDashboardsResponse, error) {
+	rsp, err := c.ListDashboards(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDashboardsResponse(rsp)
+}
+
+// CreateDashboardWithBodyWithResponse Create Dashboard
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+func (c *ClientWithResponses) CreateDashboardWithBodyWithResponse(ctx context.Context, params *CreateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDashboardResponse, error) {
+	rsp, err := c.CreateDashboardWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDashboardResponse(rsp)
+}
+
+// CreateDashboardWithResponse Create Dashboard
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/metrics-dashboards (the `CreateDashboard` operationId).
+func (c *ClientWithResponses) CreateDashboardWithResponse(ctx context.Context, params *CreateDashboardParams, body CreateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDashboardResponse, error) {
+	rsp, err := c.CreateDashboard(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDashboardResponse(rsp)
+}
+
+// GetDashboardPresetWithResponse Get Dashboard Preset
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/metrics-dashboards/preset (the `GetDashboardPreset` operationId).
+func (c *ClientWithResponses) GetDashboardPresetWithResponse(ctx context.Context, params *GetDashboardPresetParams, reqEditors ...RequestEditorFn) (*GetDashboardPresetResponse, error) {
+	rsp, err := c.GetDashboardPreset(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetDashboardPresetResponse(rsp)
+}
+
+// DeleteDashboardWithResponse Delete Dashboard
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/metrics-dashboards/{dashboard_id} (the `DeleteDashboard` operationId).
+func (c *ClientWithResponses) DeleteDashboardWithResponse(ctx context.Context, dashboardId string, params *DeleteDashboardParams, reqEditors ...RequestEditorFn) (*DeleteDashboardResponse, error) {
+	rsp, err := c.DeleteDashboard(ctx, dashboardId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteDashboardResponse(rsp)
+}
+
+// GetDashboardWithResponse Get Dashboard
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/metrics-dashboards/{dashboard_id} (the `GetDashboard` operationId).
+func (c *ClientWithResponses) GetDashboardWithResponse(ctx context.Context, dashboardId string, params *GetDashboardParams, reqEditors ...RequestEditorFn) (*GetDashboardResponse, error) {
+	rsp, err := c.GetDashboard(ctx, dashboardId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetDashboardResponse(rsp)
+}
+
+// UpdateDashboardWithBodyWithResponse Update Dashboard
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+func (c *ClientWithResponses) UpdateDashboardWithBodyWithResponse(ctx context.Context, dashboardId string, params *UpdateDashboardParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDashboardResponse, error) {
+	rsp, err := c.UpdateDashboardWithBody(ctx, dashboardId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDashboardResponse(rsp)
+}
+
+// UpdateDashboardWithResponse Update Dashboard
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/metrics-dashboards/{dashboard_id} (the `UpdateDashboard` operationId).
+func (c *ClientWithResponses) UpdateDashboardWithResponse(ctx context.Context, dashboardId string, params *UpdateDashboardParams, body UpdateDashboardJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDashboardResponse, error) {
+	rsp, err := c.UpdateDashboard(ctx, dashboardId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDashboardResponse(rsp)
+}
+
+// ListMetricsDataSourcesWithResponse List Metrics Data Sources
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/metrics-data-sources (the `ListMetricsDataSources` operationId).
+func (c *ClientWithResponses) ListMetricsDataSourcesWithResponse(ctx context.Context, params *ListMetricsDataSourcesParams, reqEditors ...RequestEditorFn) (*ListMetricsDataSourcesResponse, error) {
+	rsp, err := c.ListMetricsDataSources(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListMetricsDataSourcesResponse(rsp)
+}
+
+// CreateMetricsDataSourceWithBodyWithResponse Create Metrics Data Source
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+func (c *ClientWithResponses) CreateMetricsDataSourceWithBodyWithResponse(ctx context.Context, params *CreateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMetricsDataSourceResponse, error) {
+	rsp, err := c.CreateMetricsDataSourceWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMetricsDataSourceResponse(rsp)
+}
+
+// CreateMetricsDataSourceWithResponse Create Metrics Data Source
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/metrics-data-sources (the `CreateMetricsDataSource` operationId).
+func (c *ClientWithResponses) CreateMetricsDataSourceWithResponse(ctx context.Context, params *CreateMetricsDataSourceParams, body CreateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMetricsDataSourceResponse, error) {
+	rsp, err := c.CreateMetricsDataSource(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMetricsDataSourceResponse(rsp)
+}
+
+// GetMetricsCapabilitiesWithResponse Get Metrics Capabilities
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/metrics-data-sources/capabilities (the `GetMetricsCapabilities` operationId).
+func (c *ClientWithResponses) GetMetricsCapabilitiesWithResponse(ctx context.Context, params *GetMetricsCapabilitiesParams, reqEditors ...RequestEditorFn) (*GetMetricsCapabilitiesResponse, error) {
+	rsp, err := c.GetMetricsCapabilities(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMetricsCapabilitiesResponse(rsp)
+}
+
+// GetMetricsDeploymentPresetWithResponse Get Metrics Deployment Preset
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/metrics-data-sources/deployment-preset (the `GetMetricsDeploymentPreset` operationId).
+func (c *ClientWithResponses) GetMetricsDeploymentPresetWithResponse(ctx context.Context, params *GetMetricsDeploymentPresetParams, reqEditors ...RequestEditorFn) (*GetMetricsDeploymentPresetResponse, error) {
+	rsp, err := c.GetMetricsDeploymentPreset(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMetricsDeploymentPresetResponse(rsp)
+}
+
+// DeleteMetricsDataSourceWithResponse Delete Metrics Data Source
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/metrics-data-sources/{source_id} (the `DeleteMetricsDataSource` operationId).
+func (c *ClientWithResponses) DeleteMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *DeleteMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*DeleteMetricsDataSourceResponse, error) {
+	rsp, err := c.DeleteMetricsDataSource(ctx, sourceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteMetricsDataSourceResponse(rsp)
+}
+
+// GetMetricsDataSourceWithResponse Get Metrics Data Source
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/metrics-data-sources/{source_id} (the `GetMetricsDataSource` operationId).
+func (c *ClientWithResponses) GetMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *GetMetricsDataSourceParams, reqEditors ...RequestEditorFn) (*GetMetricsDataSourceResponse, error) {
+	rsp, err := c.GetMetricsDataSource(ctx, sourceId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMetricsDataSourceResponse(rsp)
+}
+
+// UpdateMetricsDataSourceWithBodyWithResponse Update Metrics Data Source
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+func (c *ClientWithResponses) UpdateMetricsDataSourceWithBodyWithResponse(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMetricsDataSourceResponse, error) {
+	rsp, err := c.UpdateMetricsDataSourceWithBody(ctx, sourceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMetricsDataSourceResponse(rsp)
+}
+
+// UpdateMetricsDataSourceWithResponse Update Metrics Data Source
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/metrics-data-sources/{source_id} (the `UpdateMetricsDataSource` operationId).
+func (c *ClientWithResponses) UpdateMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *UpdateMetricsDataSourceParams, body UpdateMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMetricsDataSourceResponse, error) {
+	rsp, err := c.UpdateMetricsDataSource(ctx, sourceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMetricsDataSourceResponse(rsp)
+}
+
+// QueryMetricsDataSourceWithBodyWithResponse Query Metrics Data Source
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+func (c *ClientWithResponses) QueryMetricsDataSourceWithBodyWithResponse(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*QueryMetricsDataSourceResponse, error) {
+	rsp, err := c.QueryMetricsDataSourceWithBody(ctx, sourceId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryMetricsDataSourceResponse(rsp)
+}
+
+// QueryMetricsDataSourceWithResponse Query Metrics Data Source
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/metrics-data-sources/{source_id}/query (the `QueryMetricsDataSource` operationId).
+func (c *ClientWithResponses) QueryMetricsDataSourceWithResponse(ctx context.Context, sourceId string, params *QueryMetricsDataSourceParams, body QueryMetricsDataSourceJSONRequestBody, reqEditors ...RequestEditorFn) (*QueryMetricsDataSourceResponse, error) {
+	rsp, err := c.QueryMetricsDataSource(ctx, sourceId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseQueryMetricsDataSourceResponse(rsp)
 }
 
 // GetModelCatalogWithResponse Get Model Catalog
@@ -74211,6 +81104,443 @@ func ParseViewDesktopResponse(rsp *http.Response) (*ViewDesktopResponse, error) 
 	return response, nil
 }
 
+// ParseListDevicesResponse parses an HTTP response from a ListDevicesWithResponse call
+func ParseListDevicesResponse(rsp *http.Response) (*ListDevicesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDevicesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DevicePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListDevicesResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListDevicesResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateDeviceResponse parses an HTTP response from a CreateDeviceWithResponse call
+func ParseCreateDeviceResponse(rsp *http.Response) (*CreateDeviceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDeviceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DeviceCredential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateDeviceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateDeviceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteDeviceResponse parses an HTTP response from a DeleteDeviceWithResponse call
+func ParseDeleteDeviceResponse(rsp *http.Response) (*DeleteDeviceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteDeviceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteDeviceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteDeviceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetDeviceResponse parses an HTTP response from a GetDeviceWithResponse call
+func ParseGetDeviceResponse(rsp *http.Response) (*GetDeviceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetDeviceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Device
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetDeviceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetDeviceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateDeviceResponse parses an HTTP response from a UpdateDeviceWithResponse call
+func ParseUpdateDeviceResponse(rsp *http.Response) (*UpdateDeviceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateDeviceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Device
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateDeviceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateDeviceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseQueryDeviceMetricsResponse parses an HTTP response from a QueryDeviceMetricsWithResponse call
+func ParseQueryDeviceMetricsResponse(rsp *http.Response) (*QueryDeviceMetricsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &QueryDeviceMetricsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest QueryDeviceMetrics200JSONResponseBody
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers QueryDeviceMetricsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers QueryDeviceMetricsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRotateDeviceCredentialResponse parses an HTTP response from a RotateDeviceCredentialWithResponse call
+func ParseRotateDeviceCredentialResponse(rsp *http.Response) (*RotateDeviceCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RotateDeviceCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DeviceCredential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RotateDeviceCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RotateDeviceCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListEnvironmentProvidersResponse parses an HTTP response from a ListEnvironmentProvidersWithResponse call
 func ParseListEnvironmentProvidersResponse(rsp *http.Response) (*ListEnvironmentProvidersResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -75265,6 +82595,195 @@ func ParseCheckComputerResponse(rsp *http.Response) (*CheckComputerResponse, err
 		response.Headers400 = &headers
 	case true:
 		var headers CheckComputerResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseSelectMetricsSourceResponse parses an HTTP response from a SelectMetricsSourceWithResponse call
+func ParseSelectMetricsSourceResponse(rsp *http.Response) (*SelectMetricsSourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SelectMetricsSourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EnvironmentView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers SelectMetricsSourceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers SelectMetricsSourceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetCollectorStatusResponse parses an HTTP response from a GetCollectorStatusWithResponse call
+func ParseGetCollectorStatusResponse(rsp *http.Response) (*GetCollectorStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCollectorStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CollectorStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetCollectorStatusResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetCollectorStatusResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseQueryEnvironmentMetricsResponse parses an HTTP response from a QueryEnvironmentMetricsWithResponse call
+func ParseQueryEnvironmentMetricsResponse(rsp *http.Response) (*QueryEnvironmentMetricsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &QueryEnvironmentMetricsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest QueryEnvironmentMetrics200JSONResponseBody
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers QueryEnvironmentMetricsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers QueryEnvironmentMetricsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -78147,6 +85666,880 @@ func ParseListSpaceSessionsResponse(rsp *http.Response) (*ListSpaceSessionsRespo
 		response.Headers400 = &headers
 	case true:
 		var headers ListSpaceSessionsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListDashboardsResponse parses an HTTP response from a ListDashboardsWithResponse call
+func ParseListDashboardsResponse(rsp *http.Response) (*ListDashboardsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDashboardsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DashboardPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListDashboardsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListDashboardsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateDashboardResponse parses an HTTP response from a CreateDashboardWithResponse call
+func ParseCreateDashboardResponse(rsp *http.Response) (*CreateDashboardResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDashboardResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Dashboard
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateDashboardResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateDashboardResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetDashboardPresetResponse parses an HTTP response from a GetDashboardPresetWithResponse call
+func ParseGetDashboardPresetResponse(rsp *http.Response) (*GetDashboardPresetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetDashboardPresetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DashboardConfig
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetDashboardPresetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetDashboardPresetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteDashboardResponse parses an HTTP response from a DeleteDashboardWithResponse call
+func ParseDeleteDashboardResponse(rsp *http.Response) (*DeleteDashboardResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteDashboardResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteDashboardResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteDashboardResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetDashboardResponse parses an HTTP response from a GetDashboardWithResponse call
+func ParseGetDashboardResponse(rsp *http.Response) (*GetDashboardResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetDashboardResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Dashboard
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetDashboardResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetDashboardResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateDashboardResponse parses an HTTP response from a UpdateDashboardWithResponse call
+func ParseUpdateDashboardResponse(rsp *http.Response) (*UpdateDashboardResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateDashboardResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Dashboard
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateDashboardResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateDashboardResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListMetricsDataSourcesResponse parses an HTTP response from a ListMetricsDataSourcesWithResponse call
+func ParseListMetricsDataSourcesResponse(rsp *http.Response) (*ListMetricsDataSourcesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListMetricsDataSourcesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataSourcePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListMetricsDataSourcesResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListMetricsDataSourcesResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateMetricsDataSourceResponse parses an HTTP response from a CreateMetricsDataSourceWithResponse call
+func ParseCreateMetricsDataSourceResponse(rsp *http.Response) (*CreateMetricsDataSourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateMetricsDataSourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DataSource
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateMetricsDataSourceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateMetricsDataSourceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetMetricsCapabilitiesResponse parses an HTTP response from a GetMetricsCapabilitiesWithResponse call
+func ParseGetMetricsCapabilitiesResponse(rsp *http.Response) (*GetMetricsCapabilitiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMetricsCapabilitiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Capabilities
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetMetricsCapabilitiesResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetMetricsCapabilitiesResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetMetricsDeploymentPresetResponse parses an HTTP response from a GetMetricsDeploymentPresetWithResponse call
+func ParseGetMetricsDeploymentPresetResponse(rsp *http.Response) (*GetMetricsDeploymentPresetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMetricsDeploymentPresetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DeploymentPreset
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetMetricsDeploymentPresetResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetMetricsDeploymentPresetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteMetricsDataSourceResponse parses an HTTP response from a DeleteMetricsDataSourceWithResponse call
+func ParseDeleteMetricsDataSourceResponse(rsp *http.Response) (*DeleteMetricsDataSourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteMetricsDataSourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteMetricsDataSourceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteMetricsDataSourceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetMetricsDataSourceResponse parses an HTTP response from a GetMetricsDataSourceWithResponse call
+func ParseGetMetricsDataSourceResponse(rsp *http.Response) (*GetMetricsDataSourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMetricsDataSourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataSource
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetMetricsDataSourceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetMetricsDataSourceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateMetricsDataSourceResponse parses an HTTP response from a UpdateMetricsDataSourceWithResponse call
+func ParseUpdateMetricsDataSourceResponse(rsp *http.Response) (*UpdateMetricsDataSourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateMetricsDataSourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataSource
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateMetricsDataSourceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateMetricsDataSourceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseQueryMetricsDataSourceResponse parses an HTTP response from a QueryMetricsDataSourceWithResponse call
+func ParseQueryMetricsDataSourceResponse(rsp *http.Response) (*QueryMetricsDataSourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &QueryMetricsDataSourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest QueryResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers QueryMetricsDataSourceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers QueryMetricsDataSourceResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
