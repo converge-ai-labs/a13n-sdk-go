@@ -648,6 +648,7 @@ func (e NativeToolSearchConfigStrategy) Valid() bool {
 // Defines values for OccurrenceStatus.
 const (
 	OccurrenceStatusCancelled OccurrenceStatus = "cancelled"
+	OccurrenceStatusCompleted OccurrenceStatus = "completed"
 	OccurrenceStatusFailed    OccurrenceStatus = "failed"
 	OccurrenceStatusPending   OccurrenceStatus = "pending"
 	OccurrenceStatusSkipped   OccurrenceStatus = "skipped"
@@ -659,6 +660,8 @@ func (e OccurrenceStatus) Valid() bool {
 	switch e {
 	case OccurrenceStatusCancelled:
 		return true
+	case OccurrenceStatusCompleted:
+		return true
 	case OccurrenceStatusFailed:
 		return true
 	case OccurrenceStatusPending:
@@ -666,6 +669,27 @@ func (e OccurrenceStatus) Valid() bool {
 	case OccurrenceStatusSkipped:
 		return true
 	case OccurrenceStatusSubmitted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OccurrenceSummaryExecutionOutcome.
+const (
+	OccurrenceSummaryExecutionOutcomeCancelled OccurrenceSummaryExecutionOutcome = "cancelled"
+	OccurrenceSummaryExecutionOutcomeFailed    OccurrenceSummaryExecutionOutcome = "failed"
+	OccurrenceSummaryExecutionOutcomeSucceeded OccurrenceSummaryExecutionOutcome = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the OccurrenceSummaryExecutionOutcome enum.
+func (e OccurrenceSummaryExecutionOutcome) Valid() bool {
+	switch e {
+	case OccurrenceSummaryExecutionOutcomeCancelled:
+		return true
+	case OccurrenceSummaryExecutionOutcomeFailed:
+		return true
+	case OccurrenceSummaryExecutionOutcomeSucceeded:
 		return true
 	default:
 		return false
@@ -1531,7 +1555,7 @@ type OccurrenceEvent struct {
 	SessionId  string            `json:"session_id"`
 }
 
-// OccurrenceExecution Current execution facts, independent of the immutable submission result and its version.
+// OccurrenceExecution Current execution observations alongside the durable occurrence completion facts.
 type OccurrenceExecution struct {
 	HasUnfinishedWork  bool                           `json:"has_unfinished_work"`
 	InitialEntryStatus nullable.Nullable[EntryStatus] `json:"initial_entry_status"`
@@ -1544,27 +1568,33 @@ type OccurrenceStatus string
 
 // OccurrenceSummary defines model for OccurrenceSummary.
 type OccurrenceSummary struct {
-	CoveredFromAt    nullable.Nullable[time.Time]           `json:"covered_from_at"`
-	CreatedAt        time.Time                              `json:"created_at"`
-	DeadlineAt       time.Time                              `json:"deadline_at"`
-	DispatchAttempts int                                    `json:"dispatch_attempts"`
-	EntryId          nullable.Nullable[string]              `json:"entry_id"`
-	Execution        nullable.Nullable[OccurrenceExecution] `json:"execution,omitempty"`
-	FinishedAt       nullable.Nullable[time.Time]           `json:"finished_at"`
-	Id               string                                 `json:"id"`
-	LastError        nullable.Nullable[string]              `json:"last_error"`
-	NextAttemptAt    nullable.Nullable[time.Time]           `json:"next_attempt_at"`
-	Reason           nullable.Nullable[string]              `json:"reason"`
-	ScheduleId       string                                 `json:"schedule_id"`
-	ScheduleVersion  int                                    `json:"schedule_version"`
-	ScheduledAt      nullable.Nullable[time.Time]           `json:"scheduled_at"`
-	SessionId        string                                 `json:"session_id"`
-	Status           OccurrenceStatus                       `json:"status"`
-	ThreadId         nullable.Nullable[string]              `json:"thread_id"`
-	Trigger          ScheduleTrigger                        `json:"trigger"`
-	UpdatedAt        time.Time                              `json:"updated_at"`
-	Version          int                                    `json:"version"`
+	CompletedAt      nullable.Nullable[time.Time]                         `json:"completed_at,omitempty"`
+	CompletionRunId  nullable.Nullable[string]                            `json:"completion_run_id,omitempty"`
+	CoveredFromAt    nullable.Nullable[time.Time]                         `json:"covered_from_at"`
+	CreatedAt        time.Time                                            `json:"created_at"`
+	DeadlineAt       time.Time                                            `json:"deadline_at"`
+	DispatchAttempts int                                                  `json:"dispatch_attempts"`
+	EntryId          nullable.Nullable[string]                            `json:"entry_id"`
+	Execution        nullable.Nullable[OccurrenceExecution]               `json:"execution,omitempty"`
+	ExecutionOutcome nullable.Nullable[OccurrenceSummaryExecutionOutcome] `json:"execution_outcome,omitempty"`
+	FinishedAt       nullable.Nullable[time.Time]                         `json:"finished_at"`
+	Id               string                                               `json:"id"`
+	LastError        nullable.Nullable[string]                            `json:"last_error"`
+	NextAttemptAt    nullable.Nullable[time.Time]                         `json:"next_attempt_at"`
+	Reason           nullable.Nullable[string]                            `json:"reason"`
+	ScheduleId       string                                               `json:"schedule_id"`
+	ScheduleVersion  int                                                  `json:"schedule_version"`
+	ScheduledAt      nullable.Nullable[time.Time]                         `json:"scheduled_at"`
+	SessionId        string                                               `json:"session_id"`
+	Status           OccurrenceStatus                                     `json:"status"`
+	ThreadId         nullable.Nullable[string]                            `json:"thread_id"`
+	Trigger          ScheduleTrigger                                      `json:"trigger"`
+	UpdatedAt        time.Time                                            `json:"updated_at"`
+	Version          int                                                  `json:"version"`
 }
+
+// OccurrenceSummaryExecutionOutcome defines model for OccurrenceSummary.ExecutionOutcome.
+type OccurrenceSummaryExecutionOutcome string
 
 // OnceSchedule defines model for OnceSchedule.
 type OnceSchedule struct {

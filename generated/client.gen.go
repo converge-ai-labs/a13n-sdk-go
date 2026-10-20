@@ -1312,18 +1312,27 @@ func (e JsonPartType) Valid() bool {
 
 // Defines values for LifecycleKind.
 const (
-	RunAccepted         LifecycleKind = "run.accepted"
-	RunAttemptCancelled LifecycleKind = "run_attempt.cancelled"
-	RunAttemptFailed    LifecycleKind = "run_attempt.failed"
-	RunAttemptLeased    LifecycleKind = "run_attempt.leased"
-	RunAttemptRunning   LifecycleKind = "run_attempt.running"
-	RunAttemptSucceeded LifecycleKind = "run_attempt.succeeded"
-	RunAttemptYielded   LifecycleKind = "run_attempt.yielded"
-	RunCancelled        LifecycleKind = "run.cancelled"
-	RunCompleted        LifecycleKind = "run.completed"
-	RunFailed           LifecycleKind = "run.failed"
-	RunRunning          LifecycleKind = "run.running"
-	RunWaiting          LifecycleKind = "run.waiting"
+	RunAccepted                 LifecycleKind = "run.accepted"
+	RunAttemptCancelled         LifecycleKind = "run_attempt.cancelled"
+	RunAttemptFailed            LifecycleKind = "run_attempt.failed"
+	RunAttemptLeased            LifecycleKind = "run_attempt.leased"
+	RunAttemptRunning           LifecycleKind = "run_attempt.running"
+	RunAttemptSucceeded         LifecycleKind = "run_attempt.succeeded"
+	RunAttemptYielded           LifecycleKind = "run_attempt.yielded"
+	RunCancelled                LifecycleKind = "run.cancelled"
+	RunCompleted                LifecycleKind = "run.completed"
+	RunFailed                   LifecycleKind = "run.failed"
+	RunRunning                  LifecycleKind = "run.running"
+	RunWaiting                  LifecycleKind = "run.waiting"
+	ScheduleArchived            LifecycleKind = "schedule.archived"
+	ScheduleCompleted           LifecycleKind = "schedule.completed"
+	ScheduleEnabled             LifecycleKind = "schedule.enabled"
+	ScheduleOccurrenceCancelled LifecycleKind = "schedule_occurrence.cancelled"
+	ScheduleOccurrenceCompleted LifecycleKind = "schedule_occurrence.completed"
+	ScheduleOccurrenceFailed    LifecycleKind = "schedule_occurrence.failed"
+	ScheduleOccurrenceSkipped   LifecycleKind = "schedule_occurrence.skipped"
+	ScheduleOccurrenceSubmitted LifecycleKind = "schedule_occurrence.submitted"
+	SchedulePaused              LifecycleKind = "schedule.paused"
 )
 
 // Valid indicates whether the value is a known member of the LifecycleKind enum.
@@ -1352,6 +1361,24 @@ func (e LifecycleKind) Valid() bool {
 	case RunRunning:
 		return true
 	case RunWaiting:
+		return true
+	case ScheduleArchived:
+		return true
+	case ScheduleCompleted:
+		return true
+	case ScheduleEnabled:
+		return true
+	case ScheduleOccurrenceCancelled:
+		return true
+	case ScheduleOccurrenceCompleted:
+		return true
+	case ScheduleOccurrenceFailed:
+		return true
+	case ScheduleOccurrenceSkipped:
+		return true
+	case ScheduleOccurrenceSubmitted:
+		return true
+	case SchedulePaused:
 		return true
 	default:
 		return false
@@ -1655,9 +1682,31 @@ func (e OAuthGrant) Valid() bool {
 	}
 }
 
+// Defines values for OccurrenceExecutionOutcome.
+const (
+	OccurrenceExecutionOutcomeCancelled OccurrenceExecutionOutcome = "cancelled"
+	OccurrenceExecutionOutcomeFailed    OccurrenceExecutionOutcome = "failed"
+	OccurrenceExecutionOutcomeSucceeded OccurrenceExecutionOutcome = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the OccurrenceExecutionOutcome enum.
+func (e OccurrenceExecutionOutcome) Valid() bool {
+	switch e {
+	case OccurrenceExecutionOutcomeCancelled:
+		return true
+	case OccurrenceExecutionOutcomeFailed:
+		return true
+	case OccurrenceExecutionOutcomeSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OccurrenceStatus.
 const (
 	OccurrenceStatusCancelled OccurrenceStatus = "cancelled"
+	OccurrenceStatusCompleted OccurrenceStatus = "completed"
 	OccurrenceStatusFailed    OccurrenceStatus = "failed"
 	OccurrenceStatusPending   OccurrenceStatus = "pending"
 	OccurrenceStatusSkipped   OccurrenceStatus = "skipped"
@@ -1669,6 +1718,8 @@ func (e OccurrenceStatus) Valid() bool {
 	switch e {
 	case OccurrenceStatusCancelled:
 		return true
+	case OccurrenceStatusCompleted:
+		return true
 	case OccurrenceStatusFailed:
 		return true
 	case OccurrenceStatusPending:
@@ -1676,6 +1727,27 @@ func (e OccurrenceStatus) Valid() bool {
 	case OccurrenceStatusSkipped:
 		return true
 	case OccurrenceStatusSubmitted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OccurrenceSummaryExecutionOutcome.
+const (
+	OccurrenceSummaryExecutionOutcomeCancelled OccurrenceSummaryExecutionOutcome = "cancelled"
+	OccurrenceSummaryExecutionOutcomeFailed    OccurrenceSummaryExecutionOutcome = "failed"
+	OccurrenceSummaryExecutionOutcomeSucceeded OccurrenceSummaryExecutionOutcome = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the OccurrenceSummaryExecutionOutcome enum.
+func (e OccurrenceSummaryExecutionOutcome) Valid() bool {
+	switch e {
+	case OccurrenceSummaryExecutionOutcomeCancelled:
+		return true
+	case OccurrenceSummaryExecutionOutcomeFailed:
+		return true
+	case OccurrenceSummaryExecutionOutcomeSucceeded:
 		return true
 	default:
 		return false
@@ -4167,7 +4239,7 @@ type CreatedSubscription struct {
 	CreatedById string    `json:"created_by_id"`
 	Enabled     bool      `json:"enabled"`
 
-	// Filter Absent fields match every run.
+	// Filter Absent fields match every event; a specified identity must exist and match.
 	Filter        SubscriptionFilter `json:"filter"`
 	Id            string             `json:"id"`
 	Kinds         []string           `json:"kinds"`
@@ -5500,32 +5572,38 @@ type OAuthSettings struct {
 
 // Occurrence defines model for Occurrence.
 type Occurrence struct {
-	CoveredFromAt    nullable.Nullable[time.Time]           `json:"covered_from_at"`
-	CreatedAt        time.Time                              `json:"created_at"`
-	DeadlineAt       time.Time                              `json:"deadline_at"`
-	DispatchAttempts int                                    `json:"dispatch_attempts"`
-	EntryId          nullable.Nullable[string]              `json:"entry_id"`
-	Execution        nullable.Nullable[OccurrenceExecution] `json:"execution,omitempty"`
-	FinishedAt       nullable.Nullable[time.Time]           `json:"finished_at"`
-	Id               string                                 `json:"id"`
-	LastError        nullable.Nullable[string]              `json:"last_error"`
-	NextAttemptAt    nullable.Nullable[time.Time]           `json:"next_attempt_at"`
-	PrincipalId      string                                 `json:"principal_id"`
-	Reason           nullable.Nullable[string]              `json:"reason"`
-	RequestedById    nullable.Nullable[string]              `json:"requested_by_id"`
-	ScheduleId       string                                 `json:"schedule_id"`
-	ScheduleVersion  int                                    `json:"schedule_version"`
-	ScheduledAt      nullable.Nullable[time.Time]           `json:"scheduled_at"`
-	SessionId        string                                 `json:"session_id"`
-	Snapshot         OccurrenceSnapshot                     `json:"snapshot"`
-	Status           OccurrenceStatus                       `json:"status"`
-	ThreadId         nullable.Nullable[string]              `json:"thread_id"`
-	Trigger          ScheduleTrigger                        `json:"trigger"`
-	UpdatedAt        time.Time                              `json:"updated_at"`
-	Version          int                                    `json:"version"`
+	CompletedAt      nullable.Nullable[time.Time]                  `json:"completed_at,omitempty"`
+	CompletionRunId  nullable.Nullable[string]                     `json:"completion_run_id,omitempty"`
+	CoveredFromAt    nullable.Nullable[time.Time]                  `json:"covered_from_at"`
+	CreatedAt        time.Time                                     `json:"created_at"`
+	DeadlineAt       time.Time                                     `json:"deadline_at"`
+	DispatchAttempts int                                           `json:"dispatch_attempts"`
+	EntryId          nullable.Nullable[string]                     `json:"entry_id"`
+	Execution        nullable.Nullable[OccurrenceExecution]        `json:"execution,omitempty"`
+	ExecutionOutcome nullable.Nullable[OccurrenceExecutionOutcome] `json:"execution_outcome,omitempty"`
+	FinishedAt       nullable.Nullable[time.Time]                  `json:"finished_at"`
+	Id               string                                        `json:"id"`
+	LastError        nullable.Nullable[string]                     `json:"last_error"`
+	NextAttemptAt    nullable.Nullable[time.Time]                  `json:"next_attempt_at"`
+	PrincipalId      string                                        `json:"principal_id"`
+	Reason           nullable.Nullable[string]                     `json:"reason"`
+	RequestedById    nullable.Nullable[string]                     `json:"requested_by_id"`
+	ScheduleId       string                                        `json:"schedule_id"`
+	ScheduleVersion  int                                           `json:"schedule_version"`
+	ScheduledAt      nullable.Nullable[time.Time]                  `json:"scheduled_at"`
+	SessionId        string                                        `json:"session_id"`
+	Snapshot         OccurrenceSnapshot                            `json:"snapshot"`
+	Status           OccurrenceStatus                              `json:"status"`
+	ThreadId         nullable.Nullable[string]                     `json:"thread_id"`
+	Trigger          ScheduleTrigger                               `json:"trigger"`
+	UpdatedAt        time.Time                                     `json:"updated_at"`
+	Version          int                                           `json:"version"`
 }
 
-// OccurrenceExecution Current execution facts, independent of the immutable submission result and its version.
+// OccurrenceExecutionOutcome defines model for Occurrence.ExecutionOutcome.
+type OccurrenceExecutionOutcome string
+
+// OccurrenceExecution Current execution observations alongside the durable occurrence completion facts.
 type OccurrenceExecution struct {
 	HasUnfinishedWork  bool                           `json:"has_unfinished_work"`
 	InitialEntryStatus nullable.Nullable[EntryStatus] `json:"initial_entry_status"`
@@ -5554,27 +5632,33 @@ type OccurrenceStatus string
 
 // OccurrenceSummary defines model for OccurrenceSummary.
 type OccurrenceSummary struct {
-	CoveredFromAt    nullable.Nullable[time.Time]           `json:"covered_from_at"`
-	CreatedAt        time.Time                              `json:"created_at"`
-	DeadlineAt       time.Time                              `json:"deadline_at"`
-	DispatchAttempts int                                    `json:"dispatch_attempts"`
-	EntryId          nullable.Nullable[string]              `json:"entry_id"`
-	Execution        nullable.Nullable[OccurrenceExecution] `json:"execution,omitempty"`
-	FinishedAt       nullable.Nullable[time.Time]           `json:"finished_at"`
-	Id               string                                 `json:"id"`
-	LastError        nullable.Nullable[string]              `json:"last_error"`
-	NextAttemptAt    nullable.Nullable[time.Time]           `json:"next_attempt_at"`
-	Reason           nullable.Nullable[string]              `json:"reason"`
-	ScheduleId       string                                 `json:"schedule_id"`
-	ScheduleVersion  int                                    `json:"schedule_version"`
-	ScheduledAt      nullable.Nullable[time.Time]           `json:"scheduled_at"`
-	SessionId        string                                 `json:"session_id"`
-	Status           OccurrenceStatus                       `json:"status"`
-	ThreadId         nullable.Nullable[string]              `json:"thread_id"`
-	Trigger          ScheduleTrigger                        `json:"trigger"`
-	UpdatedAt        time.Time                              `json:"updated_at"`
-	Version          int                                    `json:"version"`
+	CompletedAt      nullable.Nullable[time.Time]                         `json:"completed_at,omitempty"`
+	CompletionRunId  nullable.Nullable[string]                            `json:"completion_run_id,omitempty"`
+	CoveredFromAt    nullable.Nullable[time.Time]                         `json:"covered_from_at"`
+	CreatedAt        time.Time                                            `json:"created_at"`
+	DeadlineAt       time.Time                                            `json:"deadline_at"`
+	DispatchAttempts int                                                  `json:"dispatch_attempts"`
+	EntryId          nullable.Nullable[string]                            `json:"entry_id"`
+	Execution        nullable.Nullable[OccurrenceExecution]               `json:"execution,omitempty"`
+	ExecutionOutcome nullable.Nullable[OccurrenceSummaryExecutionOutcome] `json:"execution_outcome,omitempty"`
+	FinishedAt       nullable.Nullable[time.Time]                         `json:"finished_at"`
+	Id               string                                               `json:"id"`
+	LastError        nullable.Nullable[string]                            `json:"last_error"`
+	NextAttemptAt    nullable.Nullable[time.Time]                         `json:"next_attempt_at"`
+	Reason           nullable.Nullable[string]                            `json:"reason"`
+	ScheduleId       string                                               `json:"schedule_id"`
+	ScheduleVersion  int                                                  `json:"schedule_version"`
+	ScheduledAt      nullable.Nullable[time.Time]                         `json:"scheduled_at"`
+	SessionId        string                                               `json:"session_id"`
+	Status           OccurrenceStatus                                     `json:"status"`
+	ThreadId         nullable.Nullable[string]                            `json:"thread_id"`
+	Trigger          ScheduleTrigger                                      `json:"trigger"`
+	UpdatedAt        time.Time                                            `json:"updated_at"`
+	Version          int                                                  `json:"version"`
 }
+
+// OccurrenceSummaryExecutionOutcome defines model for OccurrenceSummary.ExecutionOutcome.
+type OccurrenceSummaryExecutionOutcome string
 
 // OnceSchedule defines model for OnceSchedule.
 type OnceSchedule struct {
@@ -6753,7 +6837,7 @@ type Subscription struct {
 	CreatedById string    `json:"created_by_id"`
 	Enabled     bool      `json:"enabled"`
 
-	// Filter Absent fields match every run.
+	// Filter Absent fields match every event; a specified identity must exist and match.
 	Filter      SubscriptionFilter `json:"filter"`
 	Id          string             `json:"id"`
 	Kinds       []string           `json:"kinds"`
@@ -6769,7 +6853,7 @@ type Subscription struct {
 type SubscriptionCreate struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Filter Absent fields match every run.
+	// Filter Absent fields match every event; a specified identity must exist and match.
 	Filter        *SubscriptionFilter       `json:"filter,omitempty"`
 	Kinds         []LifecycleKind           `json:"kinds"`
 	Name          string                    `json:"name"`
@@ -6777,11 +6861,12 @@ type SubscriptionCreate struct {
 	Url           string                    `json:"url"`
 }
 
-// SubscriptionFilter Absent fields match every run.
+// SubscriptionFilter Absent fields match every event; a specified identity must exist and match.
 type SubscriptionFilter struct {
-	AgentId   nullable.Nullable[string] `json:"agent_id,omitempty"`
-	SessionId nullable.Nullable[string] `json:"session_id,omitempty"`
-	ThreadId  nullable.Nullable[string] `json:"thread_id,omitempty"`
+	AgentId    nullable.Nullable[string] `json:"agent_id,omitempty"`
+	ScheduleId nullable.Nullable[string] `json:"schedule_id,omitempty"`
+	SessionId  nullable.Nullable[string] `json:"session_id,omitempty"`
+	ThreadId   nullable.Nullable[string] `json:"thread_id,omitempty"`
 }
 
 // SubscriptionPage defines model for SubscriptionPage.
