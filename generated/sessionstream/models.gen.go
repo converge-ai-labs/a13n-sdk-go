@@ -672,6 +672,21 @@ func (e OccurrenceStatus) Valid() bool {
 	}
 }
 
+// Defines values for OnceScheduleType.
+const (
+	Once OnceScheduleType = "once"
+)
+
+// Valid indicates whether the value is a known member of the OnceScheduleType enum.
+func (e OnceScheduleType) Valid() bool {
+	switch e {
+	case Once:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PlatformGroup.
 const (
 	Agents               PlatformGroup = "agents"
@@ -788,19 +803,22 @@ func (e RunViewRevisionSelection) Valid() bool {
 
 // Defines values for ScheduleState.
 const (
-	Archived ScheduleState = "archived"
-	Enabled  ScheduleState = "enabled"
-	Paused   ScheduleState = "paused"
+	ScheduleStateArchived  ScheduleState = "archived"
+	ScheduleStateCompleted ScheduleState = "completed"
+	ScheduleStateEnabled   ScheduleState = "enabled"
+	ScheduleStatePaused    ScheduleState = "paused"
 )
 
 // Valid indicates whether the value is a known member of the ScheduleState enum.
 func (e ScheduleState) Valid() bool {
 	switch e {
-	case Archived:
+	case ScheduleStateArchived:
 		return true
-	case Enabled:
+	case ScheduleStateCompleted:
 		return true
-	case Paused:
+	case ScheduleStateEnabled:
+		return true
+	case ScheduleStatePaused:
 		return true
 	default:
 		return false
@@ -1202,7 +1220,7 @@ type Configuration struct {
 	Name               string                    `json:"name"`
 	PauseReason        nullable.Nullable[string] `json:"pause_reason"`
 	PrincipalId        string                    `json:"principal_id"`
-	Schedule           CronSchedule              `json:"schedule"`
+	Schedule           ScheduleRule              `json:"schedule"`
 	SessionId          string                    `json:"session_id"`
 	State              ScheduleState             `json:"state"`
 	Version            int                       `json:"version"`
@@ -1548,6 +1566,15 @@ type OccurrenceSummary struct {
 	Version          int                                    `json:"version"`
 }
 
+// OnceSchedule defines model for OnceSchedule.
+type OnceSchedule struct {
+	RunAt time.Time        `json:"run_at"`
+	Type  OnceScheduleType `json:"type"`
+}
+
+// OnceScheduleType defines model for OnceSchedule.Type.
+type OnceScheduleType string
+
 // OutputSpec Plain text without a schema, one structured output, or at least two named variants.
 //
 // `resources` are the schemas `$ref`s may name besides the schema's own definitions.
@@ -1737,6 +1764,11 @@ type ScheduleEvent struct {
 type ScheduleOrigin struct {
 	OccurrenceId string `json:"occurrence_id"`
 	ScheduleId   string `json:"schedule_id"`
+}
+
+// ScheduleRule defines model for ScheduleRule.
+type ScheduleRule struct {
+	union json.RawMessage
 }
 
 // ScheduleState defines model for ScheduleState.
@@ -2401,6 +2433,68 @@ func (t RunView_MemoryMounts_Item) MarshalJSON() ([]byte, error) {
 }
 
 func (t *RunView_MemoryMounts_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsCronSchedule returns the union data inside the ScheduleRule as a CronSchedule
+func (t ScheduleRule) AsCronSchedule() (CronSchedule, error) {
+	var body CronSchedule
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCronSchedule overwrites any union data inside the ScheduleRule as the provided CronSchedule
+func (t *ScheduleRule) FromCronSchedule(v CronSchedule) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCronSchedule performs a merge with any union data inside the ScheduleRule, using the provided CronSchedule
+func (t *ScheduleRule) MergeCronSchedule(v CronSchedule) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsOnceSchedule returns the union data inside the ScheduleRule as a OnceSchedule
+func (t ScheduleRule) AsOnceSchedule() (OnceSchedule, error) {
+	var body OnceSchedule
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromOnceSchedule overwrites any union data inside the ScheduleRule as the provided OnceSchedule
+func (t *ScheduleRule) FromOnceSchedule(v OnceSchedule) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeOnceSchedule performs a merge with any union data inside the ScheduleRule, using the provided OnceSchedule
+func (t *ScheduleRule) MergeOnceSchedule(v OnceSchedule) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ScheduleRule) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ScheduleRule) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
