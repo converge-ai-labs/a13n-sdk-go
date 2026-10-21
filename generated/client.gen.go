@@ -6776,9 +6776,10 @@ type NewThread struct {
 	MessageHistory *MessageHistory `json:"message_history,omitempty"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
-	Options   *RunOptionsInput          `json:"options,omitempty"`
-	Payload   MessagePayload            `json:"payload"`
-	SessionId nullable.Nullable[string] `json:"session_id,omitempty"`
+	Options   *RunOptionsInput                 `json:"options,omitempty"`
+	Payload   MessagePayload                   `json:"payload"`
+	Session   nullable.Nullable[SessionCreate] `json:"session,omitempty"`
+	SessionId nullable.Nullable[string]        `json:"session_id,omitempty"`
 }
 
 // NewThreadKind defines model for NewThread.Kind.
@@ -7819,12 +7820,22 @@ type ServiceAccountUpdateStatus string
 type SessionCreate struct {
 	Labels *map[string]string                       `json:"labels,omitempty"`
 	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+	Origin nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
+	Title  nullable.Nullable[string]                `json:"title,omitempty"`
 }
 
 // SessionMemorySettings Participation and complete Space selection; policy belongs to each Space.
 type SessionMemorySettings struct {
 	Enabled *bool           `json:"enabled,omitempty"`
 	Spaces  *[]SpaceBinding `json:"spaces,omitempty"`
+}
+
+// SessionOrigin Caller-supplied display context, not execution provenance or an authorization boundary.
+type SessionOrigin struct {
+	Application string                    `json:"application"`
+	ExternalId  nullable.Nullable[string] `json:"external_id,omitempty"`
+	Name        nullable.Nullable[string] `json:"name,omitempty"`
+	Url         nullable.Nullable[string] `json:"url,omitempty"`
 }
 
 // SessionPage defines model for SessionPage.
@@ -7855,6 +7866,8 @@ type SessionProfile struct {
 type SessionUpdate struct {
 	Labels nullable.Nullable[map[string]string]     `json:"labels,omitempty"`
 	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+	Origin nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
+	Title  nullable.Nullable[string]                `json:"title,omitempty"`
 }
 
 // SessionView defines model for SessionView.
@@ -7867,10 +7880,12 @@ type SessionView struct {
 
 	// Memory Participation and complete Space selection; policy belongs to each Space.
 	Memory      *SessionMemorySettings            `json:"memory,omitempty"`
+	Origin      nullable.Nullable[SessionOrigin]  `json:"origin,omitempty"`
 	Preview     nullable.Nullable[SessionPreview] `json:"preview,omitempty"`
 	Purpose     *SessionViewPurpose               `json:"purpose,omitempty"`
 	RunCount    *int                              `json:"run_count,omitempty"`
 	ScheduleId  nullable.Nullable[string]         `json:"schedule_id,omitempty"`
+	Title       nullable.Nullable[string]         `json:"title,omitempty"`
 	UpdatedAt   time.Time                         `json:"updated_at"`
 	Version     int                               `json:"version"`
 	WorkspaceId string                            `json:"workspace_id"`
@@ -10514,8 +10529,9 @@ type ListSessionsParams struct {
 	// TextQuery All search terms must match one run's retained user/assistant text
 	TextQuery *string `form:"text_query,omitempty" json:"text_query,omitempty"`
 
-	// Q A session or thread ID
+	// Q Session/thread ID, title, origin, label value or retained conversation text
 	Q             *string      `form:"q,omitempty" json:"q,omitempty"`
+	Application   *string      `form:"application,omitempty" json:"application,omitempty"`
 	AgentId       *string      `form:"agent_id,omitempty" json:"agent_id,omitempty"`
 	Status        *[]RunStatus `form:"status,omitempty" json:"status,omitempty"`
 	Trigger       *[]Trigger   `form:"trigger,omitempty" json:"trigger,omitempty"`
@@ -39921,6 +39937,18 @@ func NewListSessionsRequest(server string, params *ListSessionsParams) (*http.Re
 		if params.Q != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "q", *params.Q, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Application != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "application", *params.Application, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
