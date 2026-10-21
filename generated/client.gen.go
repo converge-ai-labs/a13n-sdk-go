@@ -7838,7 +7838,6 @@ type SessionOrigin struct {
 	Application string                    `json:"application"`
 	ExternalId  nullable.Nullable[string] `json:"external_id,omitempty"`
 	Name        nullable.Nullable[string] `json:"name,omitempty"`
-	Url         nullable.Nullable[string] `json:"url,omitempty"`
 }
 
 // SessionPage defines model for SessionPage.
