@@ -1667,6 +1667,7 @@ type Progress struct {
 // ProxyToolSearchConfig Names and bounded discovery settings for one Agent's proxy surface.
 type ProxyToolSearchConfig struct {
 	CallName       *string                   `json:"call_name,omitempty"`
+	DescribeName   *string                   `json:"describe_name,omitempty"`
 	MaxResults     *int                      `json:"max_results,omitempty"`
 	MaxSearchBytes *int                      `json:"max_search_bytes,omitempty"`
 	Mode           ProxyToolSearchConfigMode `json:"mode"`
