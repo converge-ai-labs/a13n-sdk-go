@@ -719,6 +719,7 @@ const (
 	Execution            PlatformGroup = "execution"
 	Models               PlatformGroup = "models"
 	Providers            PlatformGroup = "providers"
+	Schedules            PlatformGroup = "schedules"
 	Skills               PlatformGroup = "skills"
 )
 
@@ -736,6 +737,8 @@ func (e PlatformGroup) Valid() bool {
 	case Models:
 		return true
 	case Providers:
+		return true
+	case Schedules:
 		return true
 	case Skills:
 		return true

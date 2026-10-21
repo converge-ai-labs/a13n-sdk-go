@@ -2260,6 +2260,7 @@ const (
 	PlatformGroupExecution            PlatformGroup = "execution"
 	PlatformGroupModels               PlatformGroup = "models"
 	PlatformGroupProviders            PlatformGroup = "providers"
+	PlatformGroupSchedules            PlatformGroup = "schedules"
 	PlatformGroupSkills               PlatformGroup = "skills"
 )
 
@@ -2277,6 +2278,8 @@ func (e PlatformGroup) Valid() bool {
 	case PlatformGroupModels:
 		return true
 	case PlatformGroupProviders:
+		return true
+	case PlatformGroupSchedules:
 		return true
 	case PlatformGroupSkills:
 		return true
@@ -17657,7 +17660,9 @@ type ClientInterface interface {
 
 	// CreateScheduleWithBody Create Schedule
 	//
-	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+	//
+	// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -17666,7 +17671,9 @@ type ClientInterface interface {
 
 	// CreateSchedule Create Schedule
 	//
-	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+	//
+	// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -23071,7 +23078,9 @@ func (c *Client) ListSchedules(ctx context.Context, params *ListSchedulesParams,
 
 // CreateScheduleWithBody Create Schedule
 //
-// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+//
+// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 //
 // Takes any type of body and a specified content type.
 //
@@ -23090,7 +23099,9 @@ func (c *Client) CreateScheduleWithBody(ctx context.Context, params *CreateSched
 
 // CreateSchedule Create Schedule
 //
-// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+//
+// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -49352,7 +49363,9 @@ type ClientWithResponsesInterface interface {
 
 	// CreateScheduleWithBodyWithResponse Create Schedule
 	//
-	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+	//
+	// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -49361,7 +49374,9 @@ type ClientWithResponsesInterface interface {
 
 	// CreateScheduleWithResponse Create Schedule
 	//
-	// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+	// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+	//
+	// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -75538,7 +75553,9 @@ func (c *ClientWithResponses) ListSchedulesWithResponse(ctx context.Context, par
 
 // CreateScheduleWithBodyWithResponse Create Schedule
 //
-// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+//
+// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -75553,7 +75570,9 @@ func (c *ClientWithResponses) CreateScheduleWithBodyWithResponse(ctx context.Con
 
 // CreateScheduleWithResponse Create Schedule
 //
-// Authorize recurring execution as the creator, independently of the accepting credential's lifetime.
+// Save durable execution authority as the creator, beyond this credential or Run's lifetime.
+//
+// Defaults to paused. Set state=enabled only when automatic future execution is intended.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
