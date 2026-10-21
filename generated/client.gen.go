@@ -17815,6 +17815,12 @@ type ClientInterface interface {
 
 	// GetMessageAuthors Get Message Authors
 	//
+	// Get message senders' current display names, emails, account kinds, status and avatar URLs.
+	//
+	// Supply the session ID and 1 to 100 entry IDs from the thread inbox. Requires workspace read permission;
+	// only message entries in that session are returned. This is not an arbitrary user or member-directory lookup.
+	// Use returned names to identify senders in answers; retain IDs when needed for precise references.
+	//
 	// Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthors` operationId).
 	GetMessageAuthors(ctx context.Context, sessionId string, params *GetMessageAuthorsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -23462,6 +23468,12 @@ func (c *Client) UpdateSession(ctx context.Context, sessionId string, params *Up
 }
 
 // GetMessageAuthors Get Message Authors
+//
+// Get message senders' current display names, emails, account kinds, status and avatar URLs.
+//
+// Supply the session ID and 1 to 100 entry IDs from the thread inbox. Requires workspace read permission;
+// only message entries in that session are returned. This is not an arbitrary user or member-directory lookup.
+// Use returned names to identify senders in answers; retain IDs when needed for precise references.
 //
 // Corresponds with GET /api/v1/sessions/{session_id}/message-authors (the `GetMessageAuthors` operationId).
 func (c *Client) GetMessageAuthors(ctx context.Context, sessionId string, params *GetMessageAuthorsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -49531,6 +49543,12 @@ type ClientWithResponsesInterface interface {
 	UpdateSessionWithResponse(ctx context.Context, sessionId string, params *UpdateSessionParams, body UpdateSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSessionResponse, error)
 
 	// GetMessageAuthorsWithResponse Get Message Authors
+	//
+	// Get message senders' current display names, emails, account kinds, status and avatar URLs.
+	//
+	// Supply the session ID and 1 to 100 entry IDs from the thread inbox. Requires workspace read permission;
+	// only message entries in that session are returned. This is not an arbitrary user or member-directory lookup.
+	// Use returned names to identify senders in answers; retain IDs when needed for precise references.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -75859,6 +75877,12 @@ func (c *ClientWithResponses) UpdateSessionWithResponse(ctx context.Context, ses
 }
 
 // GetMessageAuthorsWithResponse Get Message Authors
+//
+// Get message senders' current display names, emails, account kinds, status and avatar URLs.
+//
+// Supply the session ID and 1 to 100 entry IDs from the thread inbox. Requires workspace read permission;
+// only message entries in that session are returned. This is not an arbitrary user or member-directory lookup.
+// Use returned names to identify senders in answers; retain IDs when needed for precise references.
 //
 // Returns a wrapper object for the known response body format(s).
 //
