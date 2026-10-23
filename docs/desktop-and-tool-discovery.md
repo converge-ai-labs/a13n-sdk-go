@@ -4,29 +4,19 @@ These are native Service APIs on the existing `client.API()` transport. Service 
 
 ## Configure discovery without changing selected tools
 
-Tool search presents sources already selected by the Agent's toolsets, platform tools, Connections and plugins. It does not authorize new sources. Proxy mode exposes bounded search/call tools; native mode delegates discovery to the model provider. A provider may reject an unsupported native strategy.
-
-The root SDK aliases canonical generated types. Import `a13n` (`github.com/converge-ai-labs/a13n-sdk-go`) for this Run override:
+Tool search presents already selected sources through bounded proxy discovery. It grants no source authority. The root aliases canonical generated types:
 
 ```go
-func nativeDiscoveryOptions() (a13n.RunOptions, error) {
-    var config a13n.ToolSearchConfig
-    if err := config.FromNativeToolSearchConfig(a13n.NativeToolSearchConfig{
-        Strategy: a13n.Null[a13n.NativeToolSearchStrategy](),
-    }); err != nil { return a13n.RunOptions{}, err }
+func discoveryOptions() a13n.RunOptions {
     search := a13n.ToolSearch{
-        Config: &config,
+        Config: &a13n.ToolSearchConfig{SearchName: a13n.Ptr("find_tools"), MaxResults: a13n.Ptr(7)},
         Groups: a13n.Ptr(map[string]a13n.ToolSearchGroup{}),
     }
-    return a13n.RunOptions{Overrides: a13n.Value(a13n.Overrides{
-        ToolSearch: a13n.Value(search),
-    })}, nil
+    return a13n.RunOptions{Overrides: a13n.Value(a13n.Overrides{ToolSearch: a13n.Value(search)})}
 }
 ```
 
-`FromNativeToolSearchConfig` supplies the native discriminator. Omit `Strategy` to omit it; `Null` sends null; `Value(a13n.NativeToolSearchStrategy("bm25"))` or `"regex"` selects a strategy. To configure proxy discovery, use `FromProxyToolSearchConfig` with `ProxyToolSearchConfig{SearchName: Ptr("find_tools"), CallName: Ptr("invoke_tool"), MaxResults: Ptr(7)}`. Invalid/missing discriminators, mixed native/proxy fields and invalid strategy values fail at the generated ToolSearch JSON boundary in both HTTP and Session packages.
-
-An omitted/null `Overrides.ToolSearch` retains the Agent revision; an explicit ToolSearch replaces the entire block. Omitted `Groups` uses Service grouping defaults, while `Groups: Ptr(map[string]ToolSearchGroup{})` disables grouping. Nonempty groups require a description and may select platform tools, Connection IDs and plugin keys; false/empty selections remain meaningful. `ToolSearch{}` is an explicit empty block, not null. `config:null` and `groups:null` are invalid, unlike nullable native strategy.
+Omitted mode uses Service's proxy default. Native mode and strategy fields are rejected. `config:null` and `groups:null` are invalid. An omitted/null Run override inherits the revision; an explicit block replaces it, and an empty groups map disables grouping.
 
 ## Observe a desktop wait, then decide explicitly
 
@@ -48,7 +38,7 @@ After the person hands back control, the application can explicitly persist comp
 func completeDesktop(ctx context.Context, client *a13n.Client, controlID, browserSession string, epoch int) (generated.View, error) {
     api, err := client.API()
     if err != nil { return generated.View{}, err }
-    response, err := api.CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost(ctx, controlID, nil,
+    response, err := api.CompleteAssistance(ctx, controlID, nil,
         generated.Completion{SessionId: browserSession, Epoch: epoch, Note: a13n.Ptr("Handed back to the agent.")})
     result, err := a13n.ParseJSON[generated.View](client, response, err, 200)
     return result.Value, err
@@ -69,8 +59,8 @@ Use an explicit pointer type to retain nullable success. This function returns n
 func readContextUsage(ctx context.Context, client *a13n.Client, runID string) (*generated.ContextUsage, error) {
     api, err := client.API()
     if err != nil { return nil, err }
-    response, err := api.ContextUsageApiV1UsageContextGet(ctx,
-        &generated.ContextUsageApiV1UsageContextGetParams{RunId: &runID})
+    response, err := api.ContextUsage(ctx,
+        &generated.ContextUsageParams{RunId: &runID})
     result, err := a13n.ParseJSON[*generated.ContextUsage](client, response, err, 200)
     return result.Value, err
 }
@@ -79,3 +69,9 @@ func readContextUsage(ctx context.Context, client *a13n.Client, runID string) (*
 For other selectors, set only `ThreadId` or `RecordId` instead. A missing target is a Service error, distinct from successful null. Generated `WithResponse` calls expose the native response bytes/status as well; choose `ParseJSON[*T]` when typed nullable success and bounded decoding are useful. A non-pointer `ParseJSON[T]` continues to reject a null resource response.
 
 Session observation remains one cursor-free connection with no default extra frame limit or automatic reconnect. A fresh connection to an already-sealed Run yields Thread state with `last_run`; read that Run's historical Items explicitly if needed. Desktop waiting and tool-search configuration use the same pinned Session schema; no UI reducer or recovery policy is added.
+
+## Browse bounded run history
+
+Run lists return `RunListItem` metadata with `input_preview.text` (at most 200 Unicode code points) and `input_preview.truncated`. Fetch an individual Run for full input, output, options or memory mounts. List `view` selection is removed.
+
+Thread runs are newest first. `ThreadRunPage` exposes `total`, `first_number`, `previous_cursor` (newer) and `next_cursor` (older). Use `anchor` for the first page around an exact Run; subsequent requests send the returned cursor without the anchor. Reads and page iterators are lazy. Session streams also expose native schedule and occurrence frames.

@@ -32,8 +32,8 @@ The generated low-level API deliberately keeps scope **explicit**, even on a ses
 func sessionAgent(ctx context.Context, client *a13n.Client, workspaceID, agentID string) (generated.Agent, error) {
     api, err := client.API()
     if err != nil { return generated.Agent{}, err }
-    response, err := api.GetAgentApiV1AgentsAgentIdGet(ctx, agentID,
-        &generated.GetAgentApiV1AgentsAgentIdGetParams{XWorkspaceID: &workspaceID})
+    response, err := api.GetAgent(ctx, agentID,
+        &generated.GetAgentParams{XWorkspaceID: &workspaceID})
     agent, err := a13n.ParseJSON[generated.Agent](client, response, err, 200)
     if err != nil { return generated.Agent{}, err }
     return agent.Value, nil

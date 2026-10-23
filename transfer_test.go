@@ -58,7 +58,7 @@ func TestUploadAndImagePreserveCallerOwnership(t *testing.T) {
 		t.Fatal("input closed", err)
 	}
 	image := &ownedInput{Reader: strings.NewReader("image")}
-	response, err := client.api.PutWorkspaceIconApiV1WorkspacesWorkspaceIdIconPutWithBody(context.Background(), "ws", &generated.PutWorkspaceIconApiV1WorkspacesWorkspaceIdIconPutParams{IfMatch: pointer(`"v1"`)}, "image/png", readerOnly{image})
+	response, err := client.api.PutWorkspaceIconWithBody(context.Background(), "ws", &generated.PutWorkspaceIconParams{IfMatch: pointer(`"v1"`)}, "image/png", readerOnly{image})
 	if err == nil {
 		_, err = binaryResult(client, response, err, 200)
 	}
@@ -112,7 +112,7 @@ func TestJSONBoundAndCallbackRedirect(t *testing.T) {
 	if !errors.Is(err, ErrProtocol) {
 		t.Fatal(err)
 	}
-	response, err := client.api.CompleteAuthorizationApiV1ConnectionsCallbackGet(context.Background(), &generated.CompleteAuthorizationApiV1ConnectionsCallbackGetParams{State: "state"})
+	response, err := client.api.CompleteAuthorization(context.Background(), &generated.CompleteAuthorizationParams{State: "state"})
 	if err != nil || response.StatusCode != 303 || response.Header.Get("Location") != "https://app.test/return" {
 		t.Fatal(response, err)
 	}

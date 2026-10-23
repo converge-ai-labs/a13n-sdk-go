@@ -12,14 +12,14 @@ This example reads an Agent, uses its returned ETag, and returns the updated vie
 func updateDescription(ctx context.Context, client *a13n.Client, agentID, text string) (generated.Agent, error) {
     api, err := client.API()
     if err != nil { return generated.Agent{}, err }
-    response, err := api.GetAgentApiV1AgentsAgentIdGet(ctx, agentID,
-        &generated.GetAgentApiV1AgentsAgentIdGetParams{})
+    response, err := api.GetAgent(ctx, agentID,
+        &generated.GetAgentParams{})
     current, err := a13n.ParseJSON[generated.Agent](client, response, err, 200)
     if err != nil { return generated.Agent{}, err }
 
     etag := current.ETag()
-    response, err = api.UpdateAgentApiV1AgentsAgentIdPatch(ctx, agentID,
-        &generated.UpdateAgentApiV1AgentsAgentIdPatchParams{IfMatch: &etag},
+    response, err = api.UpdateAgent(ctx, agentID,
+        &generated.UpdateAgentParams{IfMatch: &etag},
         generated.AgentUpdate{Description: nullable.NewNullableWithValue(text)})
     updated, err := a13n.ParseJSON[generated.Agent](client, response, err, 200)
     if err != nil { return generated.Agent{}, err }
@@ -40,8 +40,8 @@ func listThreads(ctx context.Context, client *a13n.Client) ([]generated.ThreadVi
     api, err := client.API()
     if err != nil { return nil, err }
     pages := a13n.Pages(ctx, "", func(ctx context.Context, cursor *string) (a13n.Result[generated.ThreadPage], error) {
-        response, err := api.ListThreadsApiV1ThreadsGet(ctx,
-            &generated.ListThreadsApiV1ThreadsGetParams{Cursor: cursor})
+        response, err := api.ListThreads(ctx,
+            &generated.ListThreadsParams{Cursor: cursor})
         return a13n.ParseJSON[generated.ThreadPage](client, response, err, 200)
     }, func(page generated.ThreadPage) string { return page.NextCursor.GetOrEmpty() })
     var threads []generated.ThreadView
@@ -90,8 +90,8 @@ func beginModelAuthorization(ctx context.Context, client *a13n.Client, providerI
 ) {
     api, err := client.API()
     if err != nil { return a13n.Result[generated.AuthorizationStart]{}, err }
-    response, err := api.AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost(ctx, providerID,
-        &generated.AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams{XWorkspaceID: &workspaceID},
+    response, err := api.AuthorizeModel(ctx, providerID,
+        &generated.AuthorizeModelParams{XWorkspaceID: &workspaceID},
         generated.ProviderAuthorizationRequest{})
     return a13n.ParseJSON[generated.AuthorizationStart](client, response, err, 200)
 }
@@ -101,8 +101,8 @@ func modelAuthorizationStatus(ctx context.Context, client *a13n.Client, provider
 ) {
     api, err := client.API()
     if err != nil { return a13n.Result[generated.AuthorizationStatus]{}, err }
-    response, err := api.ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet(ctx, providerID,
-        &generated.ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams{XWorkspaceID: &workspaceID})
+    response, err := api.ModelAuthorization(ctx, providerID,
+        &generated.ModelAuthorizationParams{XWorkspaceID: &workspaceID})
     return a13n.ParseJSON[generated.AuthorizationStatus](client, response, err, 200)
 }
 
@@ -114,8 +114,8 @@ func completeManualModelAuthorization(ctx context.Context, client *a13n.Client, 
     }
     api, err := client.API()
     if err != nil { return a13n.Result[generated.AuthorizationStatus]{}, err }
-    response, err := api.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost(ctx, providerID,
-        &generated.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams{XWorkspaceID: &workspaceID},
+    response, err := api.CompleteModelAuthorization(ctx, providerID,
+        &generated.CompleteModelAuthorizationParams{XWorkspaceID: &workspaceID},
         generated.AuthorizationCallback{AttemptId: start.AttemptId, CallbackUrl: &pastedCallback})
     return a13n.ParseJSON[generated.AuthorizationStatus](client, response, err, 200)
 }
@@ -125,8 +125,8 @@ func availableProviderModels(ctx context.Context, client *a13n.Client, providerI
 ) {
     api, err := client.API()
     if err != nil { return a13n.Result[[]generated.ProviderModel]{}, err }
-    response, err := api.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx, providerID,
-        &generated.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams{XWorkspaceID: &workspaceID})
+    response, err := api.DiscoverModelProviderModels(ctx, providerID,
+        &generated.DiscoverModelProviderModelsParams{XWorkspaceID: &workspaceID})
     return a13n.ParseJSON[[]generated.ProviderModel](client, response, err, 200)
 }
 
@@ -135,8 +135,8 @@ func disconnectModelAuthorization(ctx context.Context, client *a13n.Client, prov
 ) {
     api, err := client.API()
     if err != nil { return a13n.Result[generated.AuthorizationDisconnect]{}, err }
-    response, err := api.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx, providerID,
-        &generated.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams{XWorkspaceID: &workspaceID})
+    response, err := api.DisconnectModelAuthorization(ctx, providerID,
+        &generated.DisconnectModelAuthorizationParams{XWorkspaceID: &workspaceID})
     return a13n.ParseJSON[generated.AuthorizationDisconnect](client, response, err, 200)
 }
 ```
@@ -163,8 +163,8 @@ func createMediaModel(ctx context.Context, client *a13n.Client, providerID, mode
     }
     api, err := client.API()
     if err != nil { return a13n.Result[generated.Model]{}, err }
-    response, err := api.CreateModelApiV1ModelsPost(ctx,
-        &generated.CreateModelApiV1ModelsPostParams{}, generated.ModelCreate{
+    response, err := api.CreateModel(ctx,
+        &generated.CreateModelParams{}, generated.ModelCreate{
             Name: "Media model", ProviderId: providerID,
             Config: generated.ModelConfigInput{
                 ModelApi: modelAPI, ModelName: modelName, Characteristics: &characteristics,
@@ -190,8 +190,8 @@ func messageAuthors(ctx context.Context, client *a13n.Client, sessionID string, 
 ) {
     api, err := client.API()
     if err != nil { return a13n.Result[generated.MessageAuthors]{}, err }
-    response, err := api.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx, sessionID,
-        &generated.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams{
+    response, err := api.GetMessageAuthors(ctx, sessionID,
+        &generated.GetMessageAuthorsParams{
             EntryId: entryIDs, XWorkspaceID: workspaceID,
         })
     return a13n.ParseJSON[generated.MessageAuthors](client, response, err, 200)
@@ -202,16 +202,16 @@ func messageAuthors(ctx context.Context, client *a13n.Client, sessionID string, 
 
 ## Query Runs, executed configuration and request metrics
 
-`ListRunsApiV1RunsGet` combines Agent, Session, Thread, principal, status and aware creation-time filters with a native Run cursor page. `CreatedAfter` is inclusive and `CreatedBefore` exclusive; results are newest first. Keep filters fixed while advancing the opaque cursor. `RunAgentApiV1RunsRunIdAgentGet` returns the retained revision and the Run's override-applied configuration as `generated.RunAgent`. Referenced Models, Connections and templates remain live resources. Read individual attempts with `GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet`; the attempt must belong to that Run.
+`ListRuns` combines Agent, Session, Thread, principal, status and aware creation-time filters with a native Run cursor page. `CreatedAfter` is inclusive and `CreatedBefore` exclusive; results are newest first. Keep filters fixed while advancing the opaque cursor. `GetRunAgent` returns the retained revision and the Run's override-applied configuration as `generated.RunAgent`. Referenced Models, Connections and templates remain live resources. Read individual attempts with `GetRunAttempt`; the attempt must belong to that Run.
 
-Native Agent configuration exposes `BuiltinSkills` separately from `PlatformTools`: installed instructions and platform tool groups are independent selections. `PlatformSelection` carries groups plus read/write permissions. The root workflow aliases `BuiltinSkill`, `PlatformSelection` and `PlatformGroup` preserve these values through `Overrides`; explicit empty lists remain empty. Service owns platform tool authentication and permission enforcement.
+Native Agent configuration exposes `BuiltinSkills` separately from `Toolsets`: installed instructions and tool selections are independent. Platform groups are part of the current `ToolsetSelection` contract. `BuiltinSkill` and `PlatformGroup` remain canonical generated aliases. Service owns tool authentication and permission enforcement.
 
-`ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet` returns authoritative nullable time-to-first-chunk, full request duration and output-token speed. Null means unavailable; a timed zero-output request can report speed zero. `UsageSummary.Runs` provides per-Run model breakdowns, while `ModelUsage` includes nullable aggregate timing/speed and decimal-string cost. Usage can include reports received after a Run seals. Use those returned metrics rather than deriving speed from stream timestamps or averaging per-request speeds.
+`ModelRequestMetrics` returns authoritative nullable time-to-first-chunk, full request duration and output-token speed. Null means unavailable; a timed zero-output request can report speed zero. `UsageSummary.Runs` provides per-Run model breakdowns, while `ModelUsage` includes nullable aggregate timing/speed and decimal-string cost. Usage can include reports received after a Run seals. Use those returned metrics rather than deriving speed from stream timestamps or averaging per-request speeds.
 
-`GetModelCatalogApiV1ModelCatalogGetParams{Provider: &channel, Model: &model}` applies exact AND filters; `Provider` names a catalog channel, not a workspace Provider ID, and `Model` is case-sensitive. Account-specific Provider model discovery remains a separate operation. Config-only Provider updates preserve omitted credentials/headers; send explicit `Credential: a13n.Null[map[string]generated.JsonValue]()` only when removing the credential. Provider configuration proposed by a client tool remains an ordinary pending call; private credential collection belongs to the application's authorized UI.
+`GetModelCatalogParams{Provider: &channel, Model: &model}` applies exact AND filters; `Provider` names a catalog channel, not a workspace Provider ID, and `Model` is case-sensitive. Account-specific Provider model discovery remains a separate operation. Config-only Provider updates preserve omitted credentials/headers; send explicit `Credential: a13n.Null[map[string]generated.JsonValue]()` only when removing the credential. Provider configuration proposed by a client tool remains an ordinary pending call; private credential collection belongs to the application's authorized UI.
 
 ## Probe Computer capability and set mount permissions
 
-`CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost` sends no body and returns `generated.ComputerCheck`: checked, unsupported or not-ready status with available operations and readiness evidence. This is a point-in-time probe, separate from execution authority. Agent and mount permission ceilings select exact `EnvironmentAction` operations. Use the native `EnvironmentPermissionSetInput` (root alias `EnvironmentPermissionSet`) in initial mounts or `MountUpdate` with the Thread ETag; an explicit `Operations: a13n.Ptr([]generated.EnvironmentAction{})` retains the empty ceiling.
+`CheckComputer` sends no body and returns `generated.ComputerCheck`: checked, unsupported or not-ready status with available operations and readiness evidence. This is a point-in-time probe, separate from execution authority. Agent and mount permission ceilings select exact `EnvironmentAction` operations. Use the native `EnvironmentPermissionSetInput` (root alias `EnvironmentPermissionSet`) in initial mounts or `MountUpdate` with the Thread ETag; an explicit `Operations: a13n.Ptr([]generated.EnvironmentAction{})` retains the empty ceiling.
 
 Environment Provider references and conditional deletion are also generated operations. Service owns in-use conflicts, provider readiness, desktop transport and gateway credentials. Docker catalog presets and provider JSON-schema extensions remain native data; SDK callers do not synthesize environment recipes or gateway authorization headers.

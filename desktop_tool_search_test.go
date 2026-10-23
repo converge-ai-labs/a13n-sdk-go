@@ -14,13 +14,12 @@ import (
 	"github.com/converge-ai-labs/a13n-sdk-go/generated/sessionstream"
 )
 
-func TestToolSearchTypedUnionAndNullableConfiguration(t *testing.T) {
+func TestToolSearchProxyConfiguration(t *testing.T) {
 	valid := []string{
 		`{}`, `{"groups":{}}`,
 		`{"config":{"mode":"proxy","max_results":0,"max_search_bytes":0,"search_name":"","call_name":""}}`,
-		`{"config":{"mode":"native"}}`, `{"config":{"mode":"native","strategy":null}}`,
-		`{"config":{"mode":"native","strategy":"bm25"},"groups":{"files":{"description":"Files","platform":false,"connections":[],"plugins":["selected"]}}}`,
-		`{"config":{"mode":"native","strategy":"regex"}}`,
+		`{"config":{}}`,
+		`{"config":{"mode":"proxy"},"groups":{"files":{"description":"Files","platform":false,"connections":[],"plugins":["selected"]}}}`,
 	}
 	for _, raw := range valid {
 		var value ToolSearch
@@ -48,7 +47,7 @@ func TestToolSearchTypedUnionAndNullableConfiguration(t *testing.T) {
 	}
 	for _, raw := range []string{
 		`null`, `{"config":null}`, `{"groups":null}`, `{"groups":{"x":{}}}`, `{"unexpected":true}`,
-		`{"config":{}}`, `{"config":{"mode":null}}`, `{"config":{"mode":"unknown"}}`,
+		`{"config":{"mode":"native"}}`, `{"config":{"mode":null}}`, `{"config":{"mode":"unknown"}}`,
 		`{"config":{"mode":"native","max_results":10}}`, `{"config":{"mode":"proxy","strategy":"bm25"}}`,
 		`{"config":{"mode":"native","strategy":"unknown"}}`, `{"config":{"mode":"native","strategy":false}}`,
 		`{"config":{"mode":"proxy","max_results":null}}`, `{"config":{"mode":"proxy","max_results":1.5}}`,
@@ -62,29 +61,15 @@ func TestToolSearchTypedUnionAndNullableConfiguration(t *testing.T) {
 			t.Fatal("invalid Session ToolSearch accepted", raw)
 		}
 	}
-	for _, raw := range []string{`{}`, `null`, `{"mode":"native","search_name":"proxy"}`, `{"mode":"native","strategy":"bad"}`} {
+	for _, raw := range []string{`{"mode":"native"}`, `null`, `{"mode":"native","search_name":"proxy"}`, `{"mode":"native","strategy":"bad"}`} {
 		var value ToolSearchConfig
 		if err := json.Unmarshal([]byte(raw), &value); err == nil {
 			t.Fatal("invalid union accepted", raw)
 		}
 	}
-	var native ToolSearchConfig
-	if err := native.FromNativeToolSearchConfig(NativeToolSearchConfig{Strategy: Value(NativeToolSearchStrategy("invalid"))}); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := json.Marshal(native); err == nil {
-		t.Fatal("invalid typed strategy serialized")
-	}
-	if err := native.FromNativeToolSearchConfig(NativeToolSearchConfig{Strategy: Null[NativeToolSearchStrategy]()}); err != nil {
-		t.Fatal(err)
-	}
-	encoded, err := json.Marshal(native)
-	if err != nil || string(encoded) != `{"mode":"native","strategy":null}` {
-		t.Fatal(string(encoded), err)
-	}
-	decoded, err := native.ValueByDiscriminator()
-	if err != nil || !decoded.(generated.NativeToolSearchConfig).Strategy.IsNull() {
-		t.Fatal(decoded, err)
+	invalidMode := generated.ToolSearchConfigMode("native")
+	if _, err := json.Marshal(ToolSearchConfig{Mode: &invalidMode}); err == nil {
+		t.Fatal("invalid discovery mode serialized")
 	}
 	for _, raw := range []string{`{}`, `{"tool_search":null}`, `{"tool_search":{}}`, `{"tool_search":{"groups":{}}}`} {
 		var value Overrides
@@ -153,7 +138,7 @@ func TestSessionDesktopWaitAndToolSearchNativeProjection(t *testing.T) {
 	run := strings.Replace(sessionRunJSON, `"status":"accepted"`, `"status":"waiting"`, 1)
 	run = strings.Replace(run, `"wait_reason":null`, `"wait_reason":"desktop_control"`, 1)
 	run = strings.Replace(run, `"pending":null`, `"pending":{"approvals":[],"calls":[],"desktop_control_id":"control"}`, 1)
-	run = strings.Replace(run, `"options":{}`, `"options":{"overrides":{"tool_search":{"config":{"mode":"native","strategy":null},"groups":{}}}}`, 1)
+	run = strings.Replace(run, `"options":{}`, `"options":{"overrides":{"tool_search":{"config":{"mode":"proxy","max_results":7},"groups":{}}}}`, 1)
 	data := strings.Replace(sessionThreadJSON, `"last_run":null`, `"last_run":`+run, 1)
 	frame, err := parseSessionFrame(sseEvent{event: "thread", data: []byte(data)})
 	if err != nil {
@@ -171,13 +156,12 @@ func TestSessionDesktopWaitAndToolSearchNativeProjection(t *testing.T) {
 	}
 	overrides, _ := last.Options.Overrides.Get()
 	search, _ := overrides.ToolSearch.Get()
-	value, err := search.Config.ValueByDiscriminator()
-	if err != nil || !value.(sessionstream.NativeToolSearchConfig).Strategy.IsNull() {
-		t.Fatal(value, err)
+	if search.Config == nil || search.Config.MaxResults == nil || *search.Config.MaxResults != 7 {
+		t.Fatal(search.Config)
 	}
 	for _, invalid := range []string{
 		strings.Replace(data, `"desktop_control_id":"control"`, `"desktop_control_id":7`, 1),
-		strings.Replace(data, `"strategy":null`, `"max_results":10`, 1),
+		strings.Replace(data, `"max_results":7`, `"strategy":"regex"`, 1),
 	} {
 		if _, err := parseSessionFrame(sseEvent{event: "thread", data: []byte(invalid)}); !errors.Is(err, ErrProtocol) {
 			t.Fatal("invalid native frame accepted", err)

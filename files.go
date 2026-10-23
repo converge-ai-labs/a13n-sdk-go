@@ -21,7 +21,7 @@ func (a Asset) Download(ctx context.Context) (*BinaryResult, error) {
 	if err := validateClient(a.client, a.ID); err != nil {
 		return nil, err
 	}
-	response, err := a.client.api.ReadAssetContentApiV1AssetsAssetIdContentGet(ctx, a.ID, &generated.ReadAssetContentApiV1AssetsAssetIdContentGetParams{XWorkspaceID: a.client.semanticWorkspace()})
+	response, err := a.client.api.ReadAssetContent(ctx, a.ID, &generated.ReadAssetContentParams{XWorkspaceID: a.client.semanticWorkspace()})
 	return binaryResult(a.client, response, err, 200)
 }
 
@@ -38,7 +38,7 @@ func (c *Client) Upload(ctx context.Context, file UploadFile, requestKey string)
 	if err != nil {
 		return Result[generated.Upload]{}, err
 	}
-	response, err := c.api.CreateUploadApiV1UploadsPostWithBody(ctx, &generated.CreateUploadApiV1UploadsPostParams{IdempotencyKey: requestKey, XWorkspaceID: c.semanticWorkspace()}, contentType, readerOnly{body})
+	response, err := c.api.CreateUploadWithBody(ctx, &generated.CreateUploadParams{IdempotencyKey: requestKey, XWorkspaceID: c.semanticWorkspace()}, contentType, readerOnly{body})
 	return jsonResult[generated.Upload](c, response, err, 200)
 }
 

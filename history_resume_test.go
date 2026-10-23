@@ -81,7 +81,7 @@ func TestImportedHistoryHighAndLowLevelWireIsSubmitOnly(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	raw, err := api.CreateThreadApiV1ThreadsPost(ctx, &generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: "history-low"},
+	raw, err := api.CreateThread(ctx, &generated.CreateThreadParams{IdempotencyKey: "history-low"},
 		generated.NewThread{AgentId: "agent", Payload: testTextPayload("Another new Thread"), MessageHistory: &history})
 	receipt, err := ParseJSON[generated.Submitted](client, raw, err, 201)
 	if err != nil || receipt.StatusCode != 201 || receipt.ETag() != `"v1"` {
@@ -154,7 +154,7 @@ func TestResumeInputAndResultsUseOneHighLevelMutationAndRawReplay(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	raw, err := api.ResumeRunApiV1RunsRunIdResumePost(ctx, "wait", &generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: "resume-key"}, request)
+	raw, err := api.ResumeRun(ctx, "wait", &generated.ResumeRunParams{IdempotencyKey: "resume-key"}, request)
 	replayed, err := ParseJSON[generated.RunView](client, raw, err, 200)
 	if err != nil || replayed.Value.Id != successor.ID || replayed.StatusCode != 200 || len(postBodies) != 2 || string(postBodies[0]) != string(postBodies[1]) {
 		t.Fatalf("raw replay input/results/headers: %v %v", replayed, err)

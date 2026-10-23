@@ -253,7 +253,7 @@ func TestGeneratedCASPreservesStructuredFailure(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	response, err := api.UpdateAgentApiV1AgentsAgentIdPatch(context.Background(), "agent", &generated.UpdateAgentApiV1AgentsAgentIdPatchParams{IfMatch: pointer(`"v1"`)}, generated.AgentUpdate{})
+	response, err := api.UpdateAgent(context.Background(), "agent", &generated.UpdateAgentParams{IfMatch: pointer(`"v1"`)}, generated.AgentUpdate{})
 	_, err = ParseJSON[generated.Agent](client, response, err, 200)
 	var failure *ApiError
 	if !errors.As(err, &failure) || failure.Status != 412 || failure.RequestID != "req-test" || len(failure.Details) != 1 || calls.Load() != 1 {
@@ -314,7 +314,7 @@ func TestSessionScopeOnlyExplicitOnGeneratedCalls(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	response, err := api.LogoutApiV1AuthLogoutPost(context.Background())
+	response, err := api.Logout(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -312,7 +312,7 @@ func (s *ThreadStream) attach() error {
 	if s.ctx.Err() != nil {
 		return s.ctx.Err()
 	}
-	options := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{XWorkspaceID: s.thread.client.semanticWorkspace()}
+	options := generated.ThreadStreamParams{XWorkspaceID: s.thread.client.semanticWorkspace()}
 	s.mu.Lock()
 	cursor, position := s.applied, s.position
 	s.mu.Unlock()
@@ -322,7 +322,7 @@ func (s *ThreadStream) attach() error {
 	if cursor != "" {
 		options.LastEventID = &cursor
 	}
-	raw, err := s.thread.client.api.ThreadStreamApiV1ThreadsThreadIdStreamGet(s.ctx, s.thread.ID, &options)
+	raw, err := s.thread.client.api.ThreadStream(s.ctx, s.thread.ID, &options)
 	response, err := binaryResult(s.thread.client, raw, err, 200)
 	if err != nil {
 		return err

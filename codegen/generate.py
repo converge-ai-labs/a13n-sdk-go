@@ -41,7 +41,7 @@ def name_skill_sync(document: dict) -> None:
 
 
 def guard_tool_search(output: Path, schemas: dict, package: str) -> None:
-    """Keep the new strict discriminated union strict at both JSON boundaries."""
+    """Validate the strict discovery configuration at both JSON boundaries."""
     if "ToolSearchConfig" not in schemas:
         return
     graph: dict = {}
@@ -71,22 +71,25 @@ def guard_tool_search(output: Path, schemas: dict, package: str) -> None:
     (output.parent / "tool_search.gen.go").write_text(
         template.replace("{{PACKAGE}}", package).replace("{{SCHEMA}}", json.dumps(native))
     )
-    text = output.read_text()
-    marshal = "func (t ToolSearchConfig) MarshalJSON() ([]byte, error) {\n\tb, err := t.union.MarshalJSON()\n\treturn b, err\n}"
-    unmarshal = (
-        "func (t *ToolSearchConfig) UnmarshalJSON(b []byte) error {\n\terr := t.union.UnmarshalJSON(b)\n\treturn err\n}"
-    )
-    assert text.count(marshal) == text.count(unmarshal) == 1
-    text = text.replace(
-        marshal,
-        'func (t ToolSearchConfig) MarshalJSON() ([]byte, error) {\n\tb, err := t.union.MarshalJSON()\n\tif err == nil { err = validateToolSearchJSON("ToolSearchConfig", b) }\n\treturn b, err\n}',
-    )
-    text = text.replace(
-        unmarshal,
-        'func (t *ToolSearchConfig) UnmarshalJSON(b []byte) error {\n\tif err := validateToolSearchJSON("ToolSearchConfig", b); err != nil { return err }\n\treturn t.union.UnmarshalJSON(b)\n}',
-    )
-    output.write_text(text)
-    run("gofmt", "-w", str(output), str(output.parent / "tool_search.gen.go"))
+    # Tool discovery now has one proxy configuration object, not a union.
+    with (output.parent / "tool_search.gen.go").open("a") as generated:
+        generated.write("""
+func (t ToolSearchConfig) MarshalJSON() ([]byte, error) {
+    type value ToolSearchConfig
+    data, err := json.Marshal(value(t))
+    if err == nil { err = validateToolSearchJSON("ToolSearchConfig", data) }
+    return data, err
+}
+func (t *ToolSearchConfig) UnmarshalJSON(data []byte) error {
+    if err := validateToolSearchJSON("ToolSearchConfig", data); err != nil { return err }
+    type value ToolSearchConfig
+    var decoded value
+    if err := json.Unmarshal(data, &decoded); err != nil { return err }
+    *t = ToolSearchConfig(decoded)
+    return nil
+}
+""")
+    run("gofmt", "-w", str(output.parent / "tool_search.gen.go"))
 
 
 def generate(document: dict, work: Path) -> Path:

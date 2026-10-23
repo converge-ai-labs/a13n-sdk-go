@@ -87,7 +87,7 @@ if err := json.NewEncoder(os.Stdout).Encode(items.Value.Items); err != nil { ret
 
 ## Observe a Session's native snapshots
 
-`Client.SessionEvents` opens one advanced native connection for all Session threads, including children. It shares the Client transport, authentication, semantic workspace and cancellation lifetime. Its four distinct `SessionFrame` variants embed the generated `sessionstream` schema models: `SessionThreadFrame`, `SessionItemsFrame`, `SessionDeltaFrame` and `SessionGapFrame`. `RawJSON()` returns original bytes independently of typed decoding. Session frames have no SSE ID or cursor; reopening always starts from a fresh snapshot. An already-sealed Run appears in the thread's last-run state, without replaying its items; use Run.Items for that saved display.
+`Client.SessionEvents` opens one advanced native connection for all Session threads, including children. It shares the Client transport, authentication, semantic workspace and cancellation lifetime. Its six distinct `SessionFrame` variants embed the generated `sessionstream` schema models: `SessionThreadFrame`, `SessionItemsFrame`, `SessionDeltaFrame`, `SessionGapFrame`, `SessionScheduleFrame` and `SessionOccurrenceFrame`. `RawJSON()` returns original bytes independently of typed decoding. Session frames have no SSE ID or cursor; reopening always starts from a fresh snapshot. An already-sealed Run appears in the thread's last-run state, without replaying its items; use Run.Items for that saved display.
 
 This helper imports `context`, `fmt`, `io` and `a13n`. It consumes one connection and leaves reconnection to its caller:
 
@@ -121,13 +121,13 @@ There is no automatic reconnect or mutation retry. A persistent application's re
 
 ## Keep explicit Thread progress separate
 
-The generated persistent `ThreadStreamApiV1ThreadsThreadIdStreamGet` still accepts paired Run and Position, plus optional LastEventID. Supply only progress your application actually applied and saved; Run.Items supplies none. A position uses canonical nonnegative decimal attempt/sequence components, each at most 20 digits. A retained Redis ID optimizes replay and does not establish coverage by itself. Session normalization state is a separate protocol concept.
+The generated persistent `ThreadStream` still accepts paired Run and Position, plus optional LastEventID. Supply only progress your application actually applied and saved; Run.Items supplies none. A position uses canonical nonnegative decimal attempt/sequence components, each at most 20 digits. A retained Redis ID optimizes replay and does not establish coverage by itself. Session normalization state is a separate protocol concept.
 
 A Thread gap, reset, uncovered sequence hole or newer attempt freezes the internal explicitly scoped reader's position and hint. Later deltas cannot heal that claim. Read committed display for inspection, or reopen the native Session stream for server-owned snapshot repair; an Items read alone cannot authorize a new Thread coverage claim. The SDK neither infers positions from Redis IDs nor creates an empty baseline after reset. Advanced generated raw responses remain caller-owned and require explicit body closure; session-authenticated generated calls set XWorkspaceID explicitly.
 
 Within the default finite interaction, asking for the next frame acknowledges the preceding one. Reconnect uses only its acknowledged Redis ID, never a merely received ID. It does not automatically add Run/position query parameters or claim a display baseline. Exact-Run filtering and the finite lifecycle remain unchanged. Close does not acknowledge the last returned frame. Advanced readers that maintain their own display must opt into coverage explicitly and follow the applied-only rule. Position components are canonical nonnegative decimal integers, at most 20 digits each; a hint alone uses the older `Last-Event-ID` replay behavior and cannot establish complete delivery.
 
-A Run outcome's `Output` is an optional structured value, not the last text delta; `Items` is one window of persisted display messages and tool activity, not an automatically loaded full transcript. Handle `waiting` outcomes through [waiting and tools](waiting-and-tools.md), and consult [errors and recovery](errors-and-recovery.md) if `Next` fails before a result is available. For long-lived subscriptions to all activity on a Thread, the low-level generated `ThreadStreamApiV1ThreadsThreadIdStreamGet` remains available through `client.API()` with a caller-owned response body; it is not a second high-level Agent interaction.
+A Run outcome's `Output` is an optional structured value, not the last text delta; `Items` is one window of persisted display messages and tool activity, not an automatically loaded full transcript. Handle `waiting` outcomes through [waiting and tools](waiting-and-tools.md), and consult [errors and recovery](errors-and-recovery.md) if `Next` fails before a result is available. For long-lived subscriptions to all activity on a Thread, the low-level generated `ThreadStream` remains available through `client.API()` with a caller-owned response body; it is not a second high-level Agent interaction.
 
 ## Explicitly expand saved display content
 
@@ -141,8 +141,8 @@ func expandSavedContent(ctx context.Context, client *a13n.Client, runID, content
 ) {
     api, err := client.API()
     if err != nil { return a13n.Result[generated.RunContent]{}, err }
-    response, err := api.RunContentApiV1RunsRunIdContentsContentIdGet(ctx, runID, contentID,
-        &generated.RunContentApiV1RunsRunIdContentsContentIdGetParams{XWorkspaceID: workspaceID})
+    response, err := api.GetRunContent(ctx, runID, contentID,
+        &generated.GetRunContentParams{XWorkspaceID: workspaceID})
     return a13n.ParseJSON[generated.RunContent](client, response, err, 200)
 }
 ```
@@ -171,8 +171,8 @@ Use the owning Run and committed image reference for an explicit binary read. Th
 func copyRetainedImage(ctx context.Context, client *a13n.Client, runID, imageID string, destination io.Writer) (int64, error) {
     api, err := client.API()
     if err != nil { return 0, err }
-    response, err := api.RunImageApiV1RunsRunIdImagesImageIdGet(ctx, runID, imageID,
-        &generated.RunImageApiV1RunsRunIdImagesImageIdGetParams{})
+    response, err := api.RunImage(ctx, runID, imageID,
+        &generated.RunImageParams{})
     if err != nil { return 0, err }
     if response.StatusCode != 200 {
         _, err := a13n.ParseJSON[map[string]any](client, response, nil, 200)

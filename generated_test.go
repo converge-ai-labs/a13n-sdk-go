@@ -109,7 +109,7 @@ func TestGeneratedHTTPAndBinaryShareTransport(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := api.GetWorkspaceApiV1WorkspacesWorkspaceIdGetWithResponse(context.Background(), "ws")
+	result, err := api.GetWorkspaceWithResponse(context.Background(), "ws")
 	if err != nil || result.JSON200 == nil || result.HTTPResponse.Header.Get("X-Request-ID") != "req_test" {
 		t.Fatalf("metadata: %v %v", result, err)
 	}
@@ -123,7 +123,7 @@ func TestGeneratedHTTPAndBinaryShareTransport(t *testing.T) {
 		t.Fatal(err)
 	}
 	_ = client.Close()
-	if _, err := api.GetWorkspaceApiV1WorkspacesWorkspaceIdGet(context.Background(), "ws"); err == nil {
+	if _, err := api.GetWorkspace(context.Background(), "ws"); err == nil {
 		t.Fatal("closed client allowed request")
 	}
 	if !reflect.DeepEqual(paths, []string{"/prefix/api/v1/workspaces/ws", "/prefix/api/v1/assets/ast/content"}) {
@@ -187,8 +187,8 @@ func TestGeneratedMemoryPathEscapesUnicodeAndReservedCharacters(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	response, err := api.ReadFileApiV1MemoriesMemoryIdFilesPathGet(context.Background(), "mem",
-		"projects/计划 #1%.md", &generated.ReadFileApiV1MemoriesMemoryIdFilesPathGetParams{})
+	response, err := api.ReadFile(context.Background(), "mem",
+		"projects/计划 #1%.md", &generated.ReadFileParams{})
 	result, err := a13n.ParseJSON[generated.MemoryFile](client, response, err, 200)
 	if err != nil || result.Value.Path != "projects/计划 #1%.md" {
 		t.Fatal(result, err)

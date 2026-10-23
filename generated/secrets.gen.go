@@ -27,3 +27,5 @@ func (ProviderCreate) String() string          { return "ProviderCreate { .. }" 
 func (ProviderCreate) GoString() string        { return "ProviderCreate { .. }" }
 func (ProviderUpdate) String() string          { return "ProviderUpdate { .. }" }
 func (ProviderUpdate) GoString() string        { return "ProviderUpdate { .. }" }
+func (VercelOptionsRequest) String() string    { return "VercelOptionsRequest { .. }" }
+func (VercelOptionsRequest) GoString() string  { return "VercelOptionsRequest { .. }" }

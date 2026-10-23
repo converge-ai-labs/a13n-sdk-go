@@ -156,6 +156,21 @@ func (e ContentRefMediaType) Valid() bool {
 	}
 }
 
+// Defines values for CronScheduleType.
+const (
+	Cron CronScheduleType = "cron"
+)
+
+// Valid indicates whether the value is a known member of the CronScheduleType enum.
+func (e CronScheduleType) Valid() bool {
+	switch e {
+	case Cron:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DelegationContextPolicyHistory.
 const (
 	DelegationContextPolicyHistoryNone     DelegationContextPolicyHistory = "none"
@@ -259,6 +274,7 @@ func (e EntryStatus) Valid() bool {
 const (
 	EntryViewKindChildResult EntryViewKind = "child_result"
 	EntryViewKindMessage     EntryViewKind = "message"
+	EntryViewKindToolResult  EntryViewKind = "tool_result"
 )
 
 // Valid indicates whether the value is a known member of the EntryViewKind enum.
@@ -268,6 +284,8 @@ func (e EntryViewKind) Valid() bool {
 		return true
 	case EntryViewKindMessage:
 		return true
+	case EntryViewKindToolResult:
+		return true
 	default:
 		return false
 	}
@@ -275,46 +293,48 @@ func (e EntryViewKind) Valid() bool {
 
 // Defines values for EnvironmentAction.
 const (
-	EnvironmentComputerClick       EnvironmentAction = "environment.computer.click"
-	EnvironmentComputerDescribe    EnvironmentAction = "environment.computer.describe"
-	EnvironmentComputerDrag        EnvironmentAction = "environment.computer.drag"
-	EnvironmentComputerMove        EnvironmentAction = "environment.computer.move"
-	EnvironmentComputerObserve     EnvironmentAction = "environment.computer.observe"
-	EnvironmentComputerPressKeys   EnvironmentAction = "environment.computer.press_keys"
-	EnvironmentComputerScroll      EnvironmentAction = "environment.computer.scroll"
-	EnvironmentComputerTypeText    EnvironmentAction = "environment.computer.type_text"
-	EnvironmentComputerZoom        EnvironmentAction = "environment.computer.zoom"
-	EnvironmentFileCopyDestination EnvironmentAction = "environment.file.copy_destination"
-	EnvironmentFileCopySource      EnvironmentAction = "environment.file.copy_source"
-	EnvironmentFileList            EnvironmentAction = "environment.file.list"
-	EnvironmentFileMkdir           EnvironmentAction = "environment.file.mkdir"
-	EnvironmentFileMove            EnvironmentAction = "environment.file.move"
-	EnvironmentFilePatchText       EnvironmentAction = "environment.file.patch_text"
-	EnvironmentFileQuery           EnvironmentAction = "environment.file.query"
-	EnvironmentFileReadBytes       EnvironmentAction = "environment.file.read_bytes"
-	EnvironmentFileReadText        EnvironmentAction = "environment.file.read_text"
-	EnvironmentFileRemove          EnvironmentAction = "environment.file.remove"
-	EnvironmentFileSearchText      EnvironmentAction = "environment.file.search_text"
-	EnvironmentFileStat            EnvironmentAction = "environment.file.stat"
-	EnvironmentFileWriteBytes      EnvironmentAction = "environment.file.write_bytes"
-	EnvironmentFileWriteText       EnvironmentAction = "environment.file.write_text"
-	EnvironmentOutputRead          EnvironmentAction = "environment.output.read"
-	EnvironmentOutputRelease       EnvironmentAction = "environment.output.release"
-	EnvironmentPortInspect         EnvironmentAction = "environment.port.inspect"
-	EnvironmentPortWait            EnvironmentAction = "environment.port.wait"
-	EnvironmentProcessCloseStdin   EnvironmentAction = "environment.process.close_stdin"
-	EnvironmentProcessInspect      EnvironmentAction = "environment.process.inspect"
-	EnvironmentProcessKill         EnvironmentAction = "environment.process.kill"
-	EnvironmentProcessList         EnvironmentAction = "environment.process.list"
-	EnvironmentProcessReadOutput   EnvironmentAction = "environment.process.read_output"
-	EnvironmentProcessRelease      EnvironmentAction = "environment.process.release"
-	EnvironmentProcessSignal       EnvironmentAction = "environment.process.signal"
-	EnvironmentProcessStart        EnvironmentAction = "environment.process.start"
-	EnvironmentProcessWait         EnvironmentAction = "environment.process.wait"
-	EnvironmentProcessWriteStdin   EnvironmentAction = "environment.process.write_stdin"
-	EnvironmentShellExec           EnvironmentAction = "environment.shell.exec"
-	EnvironmentStateExport         EnvironmentAction = "environment.state.export"
-	EnvironmentStateRestore        EnvironmentAction = "environment.state.restore"
+	EnvironmentComputerClick          EnvironmentAction = "environment.computer.click"
+	EnvironmentComputerDescribe       EnvironmentAction = "environment.computer.describe"
+	EnvironmentComputerDrag           EnvironmentAction = "environment.computer.drag"
+	EnvironmentComputerMove           EnvironmentAction = "environment.computer.move"
+	EnvironmentComputerObserve        EnvironmentAction = "environment.computer.observe"
+	EnvironmentComputerPressKeys      EnvironmentAction = "environment.computer.press_keys"
+	EnvironmentComputerReadClipboard  EnvironmentAction = "environment.computer.read_clipboard"
+	EnvironmentComputerScroll         EnvironmentAction = "environment.computer.scroll"
+	EnvironmentComputerTypeText       EnvironmentAction = "environment.computer.type_text"
+	EnvironmentComputerWriteClipboard EnvironmentAction = "environment.computer.write_clipboard"
+	EnvironmentComputerZoom           EnvironmentAction = "environment.computer.zoom"
+	EnvironmentFileCopyDestination    EnvironmentAction = "environment.file.copy_destination"
+	EnvironmentFileCopySource         EnvironmentAction = "environment.file.copy_source"
+	EnvironmentFileList               EnvironmentAction = "environment.file.list"
+	EnvironmentFileMkdir              EnvironmentAction = "environment.file.mkdir"
+	EnvironmentFileMove               EnvironmentAction = "environment.file.move"
+	EnvironmentFilePatchText          EnvironmentAction = "environment.file.patch_text"
+	EnvironmentFileQuery              EnvironmentAction = "environment.file.query"
+	EnvironmentFileReadBytes          EnvironmentAction = "environment.file.read_bytes"
+	EnvironmentFileReadText           EnvironmentAction = "environment.file.read_text"
+	EnvironmentFileRemove             EnvironmentAction = "environment.file.remove"
+	EnvironmentFileSearchText         EnvironmentAction = "environment.file.search_text"
+	EnvironmentFileStat               EnvironmentAction = "environment.file.stat"
+	EnvironmentFileWriteBytes         EnvironmentAction = "environment.file.write_bytes"
+	EnvironmentFileWriteText          EnvironmentAction = "environment.file.write_text"
+	EnvironmentOutputRead             EnvironmentAction = "environment.output.read"
+	EnvironmentOutputRelease          EnvironmentAction = "environment.output.release"
+	EnvironmentPortInspect            EnvironmentAction = "environment.port.inspect"
+	EnvironmentPortWait               EnvironmentAction = "environment.port.wait"
+	EnvironmentProcessCloseStdin      EnvironmentAction = "environment.process.close_stdin"
+	EnvironmentProcessInspect         EnvironmentAction = "environment.process.inspect"
+	EnvironmentProcessKill            EnvironmentAction = "environment.process.kill"
+	EnvironmentProcessList            EnvironmentAction = "environment.process.list"
+	EnvironmentProcessReadOutput      EnvironmentAction = "environment.process.read_output"
+	EnvironmentProcessRelease         EnvironmentAction = "environment.process.release"
+	EnvironmentProcessSignal          EnvironmentAction = "environment.process.signal"
+	EnvironmentProcessStart           EnvironmentAction = "environment.process.start"
+	EnvironmentProcessWait            EnvironmentAction = "environment.process.wait"
+	EnvironmentProcessWriteStdin      EnvironmentAction = "environment.process.write_stdin"
+	EnvironmentShellExec              EnvironmentAction = "environment.shell.exec"
+	EnvironmentStateExport            EnvironmentAction = "environment.state.export"
+	EnvironmentStateRestore           EnvironmentAction = "environment.state.restore"
 )
 
 // Valid indicates whether the value is a known member of the EnvironmentAction enum.
@@ -332,9 +352,13 @@ func (e EnvironmentAction) Valid() bool {
 		return true
 	case EnvironmentComputerPressKeys:
 		return true
+	case EnvironmentComputerReadClipboard:
+		return true
 	case EnvironmentComputerScroll:
 		return true
 	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentComputerWriteClipboard:
 		return true
 	case EnvironmentComputerZoom:
 		return true
@@ -591,33 +615,66 @@ func (e MemorySourceStatus) Valid() bool {
 	}
 }
 
-// Defines values for NativeToolSearchConfigMode.
+// Defines values for OccurrenceStatus.
 const (
-	Native NativeToolSearchConfigMode = "native"
+	OccurrenceStatusCancelled OccurrenceStatus = "cancelled"
+	OccurrenceStatusCompleted OccurrenceStatus = "completed"
+	OccurrenceStatusFailed    OccurrenceStatus = "failed"
+	OccurrenceStatusPending   OccurrenceStatus = "pending"
+	OccurrenceStatusSkipped   OccurrenceStatus = "skipped"
+	OccurrenceStatusSubmitted OccurrenceStatus = "submitted"
 )
 
-// Valid indicates whether the value is a known member of the NativeToolSearchConfigMode enum.
-func (e NativeToolSearchConfigMode) Valid() bool {
+// Valid indicates whether the value is a known member of the OccurrenceStatus enum.
+func (e OccurrenceStatus) Valid() bool {
 	switch e {
-	case Native:
+	case OccurrenceStatusCancelled:
+		return true
+	case OccurrenceStatusCompleted:
+		return true
+	case OccurrenceStatusFailed:
+		return true
+	case OccurrenceStatusPending:
+		return true
+	case OccurrenceStatusSkipped:
+		return true
+	case OccurrenceStatusSubmitted:
 		return true
 	default:
 		return false
 	}
 }
 
-// Defines values for NativeToolSearchConfigStrategy.
+// Defines values for OccurrenceSummaryExecutionOutcome.
 const (
-	Bm25  NativeToolSearchConfigStrategy = "bm25"
-	Regex NativeToolSearchConfigStrategy = "regex"
+	OccurrenceSummaryExecutionOutcomeCancelled OccurrenceSummaryExecutionOutcome = "cancelled"
+	OccurrenceSummaryExecutionOutcomeFailed    OccurrenceSummaryExecutionOutcome = "failed"
+	OccurrenceSummaryExecutionOutcomeSucceeded OccurrenceSummaryExecutionOutcome = "succeeded"
 )
 
-// Valid indicates whether the value is a known member of the NativeToolSearchConfigStrategy enum.
-func (e NativeToolSearchConfigStrategy) Valid() bool {
+// Valid indicates whether the value is a known member of the OccurrenceSummaryExecutionOutcome enum.
+func (e OccurrenceSummaryExecutionOutcome) Valid() bool {
 	switch e {
-	case Bm25:
+	case OccurrenceSummaryExecutionOutcomeCancelled:
 		return true
-	case Regex:
+	case OccurrenceSummaryExecutionOutcomeFailed:
+		return true
+	case OccurrenceSummaryExecutionOutcomeSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OnceScheduleType.
+const (
+	Once OnceScheduleType = "once"
+)
+
+// Valid indicates whether the value is a known member of the OnceScheduleType enum.
+func (e OnceScheduleType) Valid() bool {
+	switch e {
+	case Once:
 		return true
 	default:
 		return false
@@ -632,6 +689,7 @@ const (
 	Execution            PlatformGroup = "execution"
 	Models               PlatformGroup = "models"
 	Providers            PlatformGroup = "providers"
+	Schedules            PlatformGroup = "schedules"
 	Skills               PlatformGroup = "skills"
 )
 
@@ -650,64 +708,9 @@ func (e PlatformGroup) Valid() bool {
 		return true
 	case Providers:
 		return true
+	case Schedules:
+		return true
 	case Skills:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for PlatformSelectionReadPermission.
-const (
-	PlatformSelectionReadPermissionAllow PlatformSelectionReadPermission = "allow"
-	PlatformSelectionReadPermissionAsk   PlatformSelectionReadPermission = "ask"
-	PlatformSelectionReadPermissionDeny  PlatformSelectionReadPermission = "deny"
-)
-
-// Valid indicates whether the value is a known member of the PlatformSelectionReadPermission enum.
-func (e PlatformSelectionReadPermission) Valid() bool {
-	switch e {
-	case PlatformSelectionReadPermissionAllow:
-		return true
-	case PlatformSelectionReadPermissionAsk:
-		return true
-	case PlatformSelectionReadPermissionDeny:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for PlatformSelectionWritePermission.
-const (
-	PlatformSelectionWritePermissionAllow PlatformSelectionWritePermission = "allow"
-	PlatformSelectionWritePermissionAsk   PlatformSelectionWritePermission = "ask"
-	PlatformSelectionWritePermissionDeny  PlatformSelectionWritePermission = "deny"
-)
-
-// Valid indicates whether the value is a known member of the PlatformSelectionWritePermission enum.
-func (e PlatformSelectionWritePermission) Valid() bool {
-	switch e {
-	case PlatformSelectionWritePermissionAllow:
-		return true
-	case PlatformSelectionWritePermissionAsk:
-		return true
-	case PlatformSelectionWritePermissionDeny:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ProxyToolSearchConfigMode.
-const (
-	Proxy ProxyToolSearchConfigMode = "proxy"
-)
-
-// Valid indicates whether the value is a known member of the ProxyToolSearchConfigMode enum.
-func (e ProxyToolSearchConfigMode) Valid() bool {
-	switch e {
-	case Proxy:
 		return true
 	default:
 		return false
@@ -780,6 +783,48 @@ func (e RunViewRevisionSelection) Valid() bool {
 	}
 }
 
+// Defines values for ScheduleState.
+const (
+	ScheduleStateArchived  ScheduleState = "archived"
+	ScheduleStateCompleted ScheduleState = "completed"
+	ScheduleStateEnabled   ScheduleState = "enabled"
+	ScheduleStatePaused    ScheduleState = "paused"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleState enum.
+func (e ScheduleState) Valid() bool {
+	switch e {
+	case ScheduleStateArchived:
+		return true
+	case ScheduleStateCompleted:
+		return true
+	case ScheduleStateEnabled:
+		return true
+	case ScheduleStatePaused:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ScheduleTrigger.
+const (
+	Manual    ScheduleTrigger = "manual"
+	Scheduled ScheduleTrigger = "scheduled"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleTrigger enum.
+func (e ScheduleTrigger) Valid() bool {
+	switch e {
+	case Manual:
+		return true
+	case Scheduled:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SharedSkillSyncMode.
 const (
 	SharedSkillSyncModeShared SharedSkillSyncMode = "shared"
@@ -789,6 +834,24 @@ const (
 func (e SharedSkillSyncMode) Valid() bool {
 	switch e {
 	case SharedSkillSyncModeShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for Steering.
+const (
+	Boundary  Steering = "boundary"
+	Immediate Steering = "immediate"
+)
+
+// Valid indicates whether the value is a known member of the Steering enum.
+func (e Steering) Valid() bool {
+	switch e {
+	case Boundary:
+		return true
+	case Immediate:
 		return true
 	default:
 		return false
@@ -843,6 +906,24 @@ func (e ThreadViewPurpose) Valid() bool {
 	case Conversation:
 		return true
 	case MemoryOrganization:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ToolExecutionOverrideMode.
+const (
+	Auto   ToolExecutionOverrideMode = "auto"
+	Inline ToolExecutionOverrideMode = "inline"
+)
+
+// Valid indicates whether the value is a known member of the ToolExecutionOverrideMode enum.
+func (e ToolExecutionOverrideMode) Valid() bool {
+	switch e {
+	case Auto:
+		return true
+	case Inline:
 		return true
 	default:
 		return false
@@ -930,39 +1011,63 @@ func (e ToolRiskLevel) Valid() bool {
 	}
 }
 
-// Defines values for ToolsetKey.
+// Defines values for ToolSearchConfigMode.
 const (
-	Assets        ToolsetKey = "assets"
-	Computer      ToolsetKey = "computer"
-	Configuration ToolsetKey = "configuration"
-	Files         ToolsetKey = "files"
-	Findings      ToolsetKey = "findings"
-	Memory        ToolsetKey = "memory"
-	Shell         ToolsetKey = "shell"
-	Traces        ToolsetKey = "traces"
-	Web           ToolsetKey = "web"
+	Proxy ToolSearchConfigMode = "proxy"
 )
 
-// Valid indicates whether the value is a known member of the ToolsetKey enum.
-func (e ToolsetKey) Valid() bool {
+// Valid indicates whether the value is a known member of the ToolSearchConfigMode enum.
+func (e ToolSearchConfigMode) Valid() bool {
 	switch e {
-	case Assets:
+	case Proxy:
 		return true
-	case Computer:
+	default:
+		return false
+	}
+}
+
+// Defines values for ToolSearchGroupCapabilities.
+const (
+	ToolSearchGroupCapabilitiesEnvironment ToolSearchGroupCapabilities = "environment"
+	ToolSearchGroupCapabilitiesWeb         ToolSearchGroupCapabilities = "web"
+)
+
+// Valid indicates whether the value is a known member of the ToolSearchGroupCapabilities enum.
+func (e ToolSearchGroupCapabilities) Valid() bool {
+	switch e {
+	case ToolSearchGroupCapabilitiesEnvironment:
 		return true
-	case Configuration:
+	case ToolSearchGroupCapabilitiesWeb:
 		return true
-	case Files:
+	default:
+		return false
+	}
+}
+
+// Defines values for ToolsetKey0.
+const (
+	ToolsetKey0Assets   ToolsetKey0 = "assets"
+	ToolsetKey0Computer ToolsetKey0 = "computer"
+	ToolsetKey0Files    ToolsetKey0 = "files"
+	ToolsetKey0Memory   ToolsetKey0 = "memory"
+	ToolsetKey0Shell    ToolsetKey0 = "shell"
+	ToolsetKey0Web      ToolsetKey0 = "web"
+)
+
+// Valid indicates whether the value is a known member of the ToolsetKey0 enum.
+func (e ToolsetKey0) Valid() bool {
+	switch e {
+	case ToolsetKey0Assets:
 		return true
-	case Findings:
+	case ToolsetKey0Computer:
 		return true
-	case Memory:
+	case ToolsetKey0Files:
 		return true
-	case Shell:
+	case ToolsetKey0Memory:
 		return true
-	case Traces:
+	case ToolsetKey0Shell:
 		return true
-	case Web:
+	case ToolsetKey0Web:
 		return true
 	default:
 		return false
@@ -976,6 +1081,7 @@ const (
 	TriggerQueued      Trigger = "queued"
 	TriggerResume      Trigger = "resume"
 	TriggerSpawned     Trigger = "spawned"
+	TriggerToolResult  Trigger = "tool_result"
 )
 
 // Valid indicates whether the value is a known member of the Trigger enum.
@@ -990,6 +1096,8 @@ func (e Trigger) Valid() bool {
 	case TriggerResume:
 		return true
 	case TriggerSpawned:
+		return true
+	case TriggerToolResult:
 		return true
 	default:
 		return false
@@ -1078,7 +1186,6 @@ type AgentOverride struct {
 	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]    `json:"model_characteristics,omitempty"`
 	ModelSettings        nullable.Nullable[map[string]JsonValue]         `json:"model_settings,omitempty"`
 	OutputSpec           nullable.Nullable[OutputSpec]                   `json:"output_spec,omitempty"`
-	PlatformTools        nullable.Nullable[PlatformSelection]            `json:"platform_tools,omitempty"`
 	Plugins              nullable.Nullable[[]PluginSelection]            `json:"plugins,omitempty"`
 	Retries              nullable.Nullable[RetryOverride]                `json:"retries,omitempty"`
 	Reviewer             nullable.Nullable[AgentReviewer]                `json:"reviewer,omitempty"`
@@ -1160,10 +1267,22 @@ type ClientToolDefinition struct {
 // ClientToolDefinitionPermission defines model for ClientToolDefinition.Permission.
 type ClientToolDefinitionPermission string
 
-// ConnectionSelection An agent's use of one connection: all the tools it exposes, or a subset, and their permissions.
+// Configuration defines model for Configuration.
+type Configuration struct {
+	Id                 string                    `json:"id"`
+	MaxLatenessSeconds int                       `json:"max_lateness_seconds"`
+	Name               string                    `json:"name"`
+	PauseReason        nullable.Nullable[string] `json:"pause_reason"`
+	PrincipalId        string                    `json:"principal_id"`
+	Schedule           ScheduleRule              `json:"schedule"`
+	SessionId          string                    `json:"session_id"`
+	State              ScheduleState             `json:"state"`
+	Version            int                       `json:"version"`
+}
+
+// ConnectionSelection An agent's selected tools and permissions.
 type ConnectionSelection struct {
 	ConnectionId string                            `json:"connection_id"`
-	DeferLoading *bool                             `json:"defer_loading,omitempty"`
 	Permission   *ToolPermissionSetting            `json:"permission,omitempty"`
 	Permissions  *map[string]ToolPermissionSetting `json:"permissions,omitempty"`
 	Tools        nullable.Nullable[[]string]       `json:"tools,omitempty"`
@@ -1180,6 +1299,16 @@ type ContentRef struct {
 
 // ContentRefMediaType defines model for ContentRef.MediaType.
 type ContentRefMediaType string
+
+// CronSchedule defines model for CronSchedule.
+type CronSchedule struct {
+	Expression string            `json:"expression"`
+	Timezone   string            `json:"timezone"`
+	Type       *CronScheduleType `json:"type,omitempty"`
+}
+
+// CronScheduleType defines model for CronSchedule.Type.
+type CronScheduleType string
 
 // DelegationContextPolicy defines model for DelegationContextPolicy.
 type DelegationContextPolicy struct {
@@ -1279,6 +1408,12 @@ type EnvironmentPermissionSet struct {
 	Operations *[]EnvironmentAction `json:"operations,omitempty"`
 }
 
+// ExecutionOverride Sparse choices: null inherits; Thread PATCH distinguishes omission from null.
+type ExecutionOverride struct {
+	Steering nullable.Nullable[Steering]              `json:"steering,omitempty"`
+	Tools    nullable.Nullable[ToolExecutionOverride] `json:"tools,omitempty"`
+}
+
 // Failed An explicit external tool failure, including an intentional unanswered question.
 type Failed struct {
 	Message string       `json:"message"`
@@ -1324,6 +1459,12 @@ type FrozenMemoryMount struct {
 type Gap struct {
 	RunId    string `json:"run_id"`
 	ThreadId string `json:"thread_id"`
+}
+
+// InitialRun defines model for InitialRun.
+type InitialRun struct {
+	Id     string    `json:"id"`
+	Status RunStatus `json:"status"`
 }
 
 // IsolatedSkillSync Reuse immutable package directories, with a soft count budget.
@@ -1423,24 +1564,69 @@ type MessagePayload struct {
 	Content []Part `json:"content"`
 }
 
-// NativeToolSearchConfig Provider-native discovery; omitted strategy uses the provider default.
-type NativeToolSearchConfig struct {
-	Mode     NativeToolSearchConfigMode                        `json:"mode"`
-	Strategy nullable.Nullable[NativeToolSearchConfigStrategy] `json:"strategy,omitempty"`
-}
-
-// NativeToolSearchConfigMode defines model for NativeToolSearchConfig.Mode.
-type NativeToolSearchConfigMode string
-
-// NativeToolSearchConfigStrategy defines model for NativeToolSearchConfig.Strategy.
-type NativeToolSearchConfigStrategy string
-
 // ObserverContinuation Native conversion cursors required to resume mid-part, without raw history.
 type ObserverContinuation struct {
 	RunId    nullable.Nullable[string] `json:"run_id,omitempty"`
 	State    *UnderscoreObserverState  `json:"state,omitempty"`
 	ThreadId nullable.Nullable[string] `json:"thread_id,omitempty"`
 }
+
+// OccurrenceEvent defines model for OccurrenceEvent.
+type OccurrenceEvent struct {
+	Occurrence OccurrenceSummary `json:"occurrence"`
+	ScheduleId string            `json:"schedule_id"`
+	SessionId  string            `json:"session_id"`
+}
+
+// OccurrenceExecution Current execution observations alongside the durable occurrence completion facts.
+type OccurrenceExecution struct {
+	HasUnfinishedWork  bool                           `json:"has_unfinished_work"`
+	InitialEntryStatus nullable.Nullable[EntryStatus] `json:"initial_entry_status"`
+	InitialRun         nullable.Nullable[InitialRun]  `json:"initial_run"`
+	ObservedAt         time.Time                      `json:"observed_at"`
+}
+
+// OccurrenceStatus defines model for OccurrenceStatus.
+type OccurrenceStatus string
+
+// OccurrenceSummary defines model for OccurrenceSummary.
+type OccurrenceSummary struct {
+	CompletedAt      nullable.Nullable[time.Time]                         `json:"completed_at,omitempty"`
+	CompletionRunId  nullable.Nullable[string]                            `json:"completion_run_id,omitempty"`
+	CoveredFromAt    nullable.Nullable[time.Time]                         `json:"covered_from_at"`
+	CreatedAt        time.Time                                            `json:"created_at"`
+	DeadlineAt       time.Time                                            `json:"deadline_at"`
+	DispatchAttempts int                                                  `json:"dispatch_attempts"`
+	EntryId          nullable.Nullable[string]                            `json:"entry_id"`
+	Execution        nullable.Nullable[OccurrenceExecution]               `json:"execution,omitempty"`
+	ExecutionOutcome nullable.Nullable[OccurrenceSummaryExecutionOutcome] `json:"execution_outcome,omitempty"`
+	FinishedAt       nullable.Nullable[time.Time]                         `json:"finished_at"`
+	Id               string                                               `json:"id"`
+	LastError        nullable.Nullable[string]                            `json:"last_error"`
+	NextAttemptAt    nullable.Nullable[time.Time]                         `json:"next_attempt_at"`
+	Reason           nullable.Nullable[string]                            `json:"reason"`
+	ScheduleId       string                                               `json:"schedule_id"`
+	ScheduleVersion  int                                                  `json:"schedule_version"`
+	ScheduledAt      nullable.Nullable[time.Time]                         `json:"scheduled_at"`
+	SessionId        string                                               `json:"session_id"`
+	Status           OccurrenceStatus                                     `json:"status"`
+	ThreadId         nullable.Nullable[string]                            `json:"thread_id"`
+	Trigger          ScheduleTrigger                                      `json:"trigger"`
+	UpdatedAt        time.Time                                            `json:"updated_at"`
+	Version          int                                                  `json:"version"`
+}
+
+// OccurrenceSummaryExecutionOutcome defines model for OccurrenceSummary.ExecutionOutcome.
+type OccurrenceSummaryExecutionOutcome string
+
+// OnceSchedule defines model for OnceSchedule.
+type OnceSchedule struct {
+	RunAt time.Time        `json:"run_at"`
+	Type  OnceScheduleType `json:"type"`
+}
+
+// OnceScheduleType defines model for OnceSchedule.Type.
+type OnceScheduleType string
 
 // OutputSpec Plain text without a schema, one structured output, or at least two named variants.
 //
@@ -1484,19 +1670,6 @@ type PendingCall struct {
 // PlatformGroup defines model for PlatformGroup.
 type PlatformGroup string
 
-// PlatformSelection Platform MCP groups selected independently of local operating instructions.
-type PlatformSelection struct {
-	Groups          *[]PlatformGroup                  `json:"groups,omitempty"`
-	ReadPermission  *PlatformSelectionReadPermission  `json:"read_permission,omitempty"`
-	WritePermission *PlatformSelectionWritePermission `json:"write_permission,omitempty"`
-}
-
-// PlatformSelectionReadPermission defines model for PlatformSelection.ReadPermission.
-type PlatformSelectionReadPermission string
-
-// PlatformSelectionWritePermission defines model for PlatformSelection.WritePermission.
-type PlatformSelectionWritePermission string
-
 // PluginSelection One instance of a Harness plugin factory the deployment installed.
 type PluginSelection struct {
 	Config       *map[string]JsonValue `json:"config,omitempty"`
@@ -1504,17 +1677,12 @@ type PluginSelection struct {
 	PluginKey    string                `json:"plugin_key"`
 }
 
-// ProxyToolSearchConfig Names and bounded discovery settings for one Agent's proxy surface.
-type ProxyToolSearchConfig struct {
-	CallName       *string                   `json:"call_name,omitempty"`
-	MaxResults     *int                      `json:"max_results,omitempty"`
-	MaxSearchBytes *int                      `json:"max_search_bytes,omitempty"`
-	Mode           ProxyToolSearchConfigMode `json:"mode"`
-	SearchName     *string                   `json:"search_name,omitempty"`
+// Progress defines model for Progress.
+type Progress struct {
+	LastOccurrenceId    nullable.Nullable[string]    `json:"last_occurrence_id"`
+	NextFireAt          nullable.Nullable[time.Time] `json:"next_fire_at"`
+	PendingOccurrenceId nullable.Nullable[string]    `json:"pending_occurrence_id"`
 }
-
-// ProxyToolSearchConfigMode defines model for ProxyToolSearchConfig.Mode.
-type ProxyToolSearchConfigMode string
 
 // RecordSource defines model for RecordSource.
 type RecordSource struct {
@@ -1556,10 +1724,11 @@ type RunConfiguration struct {
 
 // RunOptions What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptions struct {
-	Configuration nullable.Nullable[RunConfiguration] `json:"configuration,omitempty"`
-	Labels        *map[string]string                  `json:"labels,omitempty"`
-	MaxUsage      nullable.Nullable[UsageLimit]       `json:"max_usage,omitempty"`
-	Overrides     nullable.Nullable[AgentOverride]    `json:"overrides,omitempty"`
+	Configuration nullable.Nullable[RunConfiguration]  `json:"configuration,omitempty"`
+	Execution     nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
+	Labels        *map[string]string                   `json:"labels,omitempty"`
+	MaxUsage      nullable.Nullable[UsageLimit]        `json:"max_usage,omitempty"`
+	Overrides     nullable.Nullable[AgentOverride]     `json:"overrides,omitempty"`
 }
 
 // RunSnapshot A run's committed items from ordinal `first` on. The receiver deletes the items it holds from `first` on and
@@ -1602,6 +1771,7 @@ type RunView struct {
 	Resume            nullable.Nullable[Resume]               `json:"resume"`
 	ResumedById       nullable.Nullable[string]               `json:"resumed_by_id"`
 	RevisionSelection RunViewRevisionSelection                `json:"revision_selection"`
+	ScheduleOrigin    nullable.Nullable[ScheduleOrigin]       `json:"schedule_origin,omitempty"`
 	SealedAt          nullable.Nullable[time.Time]            `json:"sealed_at"`
 	SessionId         string                                  `json:"session_id"`
 	SourceEntryId     nullable.Nullable[string]               `json:"source_entry_id"`
@@ -1624,6 +1794,31 @@ type RunView_MemoryMounts_Item struct {
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
 
+// ScheduleEvent defines model for ScheduleEvent.
+type ScheduleEvent struct {
+	Configuration Configuration `json:"configuration"`
+	Progress      Progress      `json:"progress"`
+	ScheduleId    string        `json:"schedule_id"`
+	SessionId     string        `json:"session_id"`
+}
+
+// ScheduleOrigin defines model for ScheduleOrigin.
+type ScheduleOrigin struct {
+	OccurrenceId string `json:"occurrence_id"`
+	ScheduleId   string `json:"schedule_id"`
+}
+
+// ScheduleRule defines model for ScheduleRule.
+type ScheduleRule struct {
+	union json.RawMessage
+}
+
+// ScheduleState defines model for ScheduleState.
+type ScheduleState string
+
+// ScheduleTrigger defines model for ScheduleTrigger.
+type ScheduleTrigger string
+
 // SharedSkillSync Publish mutable conventional names; the last completed publication wins.
 type SharedSkillSync struct {
 	Cleanup   *bool                `json:"cleanup,omitempty"`
@@ -1644,6 +1839,9 @@ type SkillSelection struct {
 type SkillSync struct {
 	union json.RawMessage
 }
+
+// Steering defines model for Steering.
+type Steering string
 
 // StreamPosition defines model for StreamPosition.
 type StreamPosition struct {
@@ -1680,23 +1878,25 @@ type ThreadState struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
-	ArchivedAt       nullable.Nullable[time.Time] `json:"archived_at"`
-	CreatedAt        time.Time                    `json:"created_at"`
-	CurrentRunId     nullable.Nullable[string]    `json:"current_run_id"`
-	Id               string                       `json:"id"`
-	Labels           map[string]string            `json:"labels"`
-	LastRunId        nullable.Nullable[string]    `json:"last_run_id"`
-	McpHeaders       map[string]map[string]string `json:"mcp_headers"`
-	Origin           ThreadViewOrigin             `json:"origin"`
-	OriginRunId      nullable.Nullable[string]    `json:"origin_run_id"`
-	OriginThreadId   nullable.Nullable[string]    `json:"origin_thread_id"`
-	OriginToolCallId nullable.Nullable[string]    `json:"origin_tool_call_id"`
-	Purpose          *ThreadViewPurpose           `json:"purpose,omitempty"`
-	SessionId        string                       `json:"session_id"`
-	Subagent         nullable.Nullable[string]    `json:"subagent"`
-	UpdatedAt        time.Time                    `json:"updated_at"`
-	Version          int                          `json:"version"`
-	WorkspaceId      string                       `json:"workspace_id"`
+	ArchivedAt           nullable.Nullable[time.Time]         `json:"archived_at"`
+	CreatedAt            time.Time                            `json:"created_at"`
+	CurrentRunId         nullable.Nullable[string]            `json:"current_run_id"`
+	Execution            nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
+	Id                   string                               `json:"id"`
+	Labels               map[string]string                    `json:"labels"`
+	LastRunId            nullable.Nullable[string]            `json:"last_run_id"`
+	McpHeaders           map[string]map[string]string         `json:"mcp_headers"`
+	Origin               ThreadViewOrigin                     `json:"origin"`
+	OriginRunId          nullable.Nullable[string]            `json:"origin_run_id"`
+	OriginThreadId       nullable.Nullable[string]            `json:"origin_thread_id"`
+	OriginToolCallId     nullable.Nullable[string]            `json:"origin_tool_call_id"`
+	Purpose              *ThreadViewPurpose                   `json:"purpose,omitempty"`
+	ScheduleOccurrenceId nullable.Nullable[string]            `json:"schedule_occurrence_id,omitempty"`
+	SessionId            string                               `json:"session_id"`
+	Subagent             nullable.Nullable[string]            `json:"subagent"`
+	UpdatedAt            time.Time                            `json:"updated_at"`
+	Version              int                                  `json:"version"`
+	WorkspaceId          string                               `json:"workspace_id"`
 }
 
 // ThreadViewOrigin defines model for ThreadView.Origin.
@@ -1707,6 +1907,15 @@ type ThreadViewPurpose string
 
 // ToolCallId defines model for ToolCallId.
 type ToolCallId = string
+
+// ToolExecutionOverride defines model for ToolExecutionOverride.
+type ToolExecutionOverride struct {
+	ForegroundWaitSeconds nullable.Nullable[float32]                   `json:"foreground_wait_seconds,omitempty"`
+	Mode                  nullable.Nullable[ToolExecutionOverrideMode] `json:"mode,omitempty"`
+}
+
+// ToolExecutionOverrideMode defines model for ToolExecutionOverride.Mode.
+type ToolExecutionOverrideMode string
 
 // ToolPermissionMode defines model for ToolPermissionMode.
 type ToolPermissionMode string
@@ -1733,22 +1942,37 @@ type ToolRiskLevel string
 
 // ToolSearch Presentation of already-selected sources, composed by Harness once per agent.
 type ToolSearch struct {
+	// Config Names and bounded discovery settings for one Agent's proxy surface.
 	Config *ToolSearchConfig           `json:"config,omitempty"`
 	Groups *map[string]ToolSearchGroup `json:"groups,omitempty"`
 }
 
-// ToolSearchConfig defines model for ToolSearchConfig.
+// ToolSearchConfig Names and bounded discovery settings for one Agent's proxy surface.
 type ToolSearchConfig struct {
-	union json.RawMessage
+	CallName       *string               `json:"call_name,omitempty"`
+	DescribeName   *string               `json:"describe_name,omitempty"`
+	GroupsName     *string               `json:"groups_name,omitempty"`
+	ListName       *string               `json:"list_name,omitempty"`
+	MaxResults     *int                  `json:"max_results,omitempty"`
+	MaxSearchBytes *int                  `json:"max_search_bytes,omitempty"`
+	Mode           *ToolSearchConfigMode `json:"mode,omitempty"`
+	SearchName     *string               `json:"search_name,omitempty"`
 }
+
+// ToolSearchConfigMode defines model for ToolSearchConfig.Mode.
+type ToolSearchConfigMode string
 
 // ToolSearchGroup defines model for ToolSearchGroup.
 type ToolSearchGroup struct {
-	Connections *[]string `json:"connections,omitempty"`
-	Description string    `json:"description"`
-	Platform    *bool     `json:"platform,omitempty"`
-	Plugins     *[]string `json:"plugins,omitempty"`
+	Capabilities *[]ToolSearchGroupCapabilities `json:"capabilities,omitempty"`
+	Connections  *[]string                      `json:"connections,omitempty"`
+	Description  string                         `json:"description"`
+	Platform     *bool                          `json:"platform,omitempty"`
+	Plugins      *[]string                      `json:"plugins,omitempty"`
 }
+
+// ToolSearchGroupCapabilities defines model for ToolSearchGroup.Capabilities.
+type ToolSearchGroupCapabilities string
 
 // ToolSelection defines model for ToolSelection.
 type ToolSelection struct {
@@ -1758,7 +1982,12 @@ type ToolSelection struct {
 }
 
 // ToolsetKey defines model for ToolsetKey.
-type ToolsetKey string
+type ToolsetKey struct {
+	union json.RawMessage
+}
+
+// ToolsetKey0 defines model for ToolsetKey.0.
+type ToolsetKey0 string
 
 // ToolsetSelection defines model for ToolsetSelection.
 type ToolsetSelection struct {
@@ -2278,6 +2507,68 @@ func (t *RunView_MemoryMounts_Item) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsCronSchedule returns the union data inside the ScheduleRule as a CronSchedule
+func (t ScheduleRule) AsCronSchedule() (CronSchedule, error) {
+	var body CronSchedule
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCronSchedule overwrites any union data inside the ScheduleRule as the provided CronSchedule
+func (t *ScheduleRule) FromCronSchedule(v CronSchedule) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCronSchedule performs a merge with any union data inside the ScheduleRule, using the provided CronSchedule
+func (t *ScheduleRule) MergeCronSchedule(v CronSchedule) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsOnceSchedule returns the union data inside the ScheduleRule as a OnceSchedule
+func (t ScheduleRule) AsOnceSchedule() (OnceSchedule, error) {
+	var body OnceSchedule
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromOnceSchedule overwrites any union data inside the ScheduleRule as the provided OnceSchedule
+func (t *ScheduleRule) FromOnceSchedule(v OnceSchedule) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeOnceSchedule performs a merge with any union data inside the ScheduleRule, using the provided OnceSchedule
+func (t *ScheduleRule) MergeOnceSchedule(v OnceSchedule) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ScheduleRule) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ScheduleRule) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsSharedSkillSync returns the union data inside the SkillSync as a SharedSkillSync
 func (t SkillSync) AsSharedSkillSync() (SharedSkillSync, error) {
 	var body SharedSkillSync
@@ -2441,31 +2732,23 @@ func (t *ToolPermissionSetting) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-// AsProxyToolSearchConfig returns the union data inside the ToolSearchConfig as a ProxyToolSearchConfig
-func (t ToolSearchConfig) AsProxyToolSearchConfig() (ProxyToolSearchConfig, error) {
-	var body ProxyToolSearchConfig
+// AsToolsetKey0 returns the union data inside the ToolsetKey as a ToolsetKey0
+func (t ToolsetKey) AsToolsetKey0() (ToolsetKey0, error) {
+	var body ToolsetKey0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProxyToolSearchConfig overwrites any union data inside the ToolSearchConfig as the provided ProxyToolSearchConfig
-func (t *ToolSearchConfig) FromProxyToolSearchConfig(v ProxyToolSearchConfig) error {
+// FromToolsetKey0 overwrites any union data inside the ToolsetKey as the provided ToolsetKey0
+func (t *ToolsetKey) FromToolsetKey0(v ToolsetKey0) error {
 	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"mode":"proxy"}`))
 	t.union = b
 	return err
 }
 
-// MergeProxyToolSearchConfig performs a merge with any union data inside the ToolSearchConfig, using the provided ProxyToolSearchConfig
-func (t *ToolSearchConfig) MergeProxyToolSearchConfig(v ProxyToolSearchConfig) error {
+// MergeToolsetKey0 performs a merge with any union data inside the ToolsetKey, using the provided ToolsetKey0
+func (t *ToolsetKey) MergeToolsetKey0(v ToolsetKey0) error {
 	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"mode":"proxy"}`))
 	if err != nil {
 		return err
 	}
@@ -2475,31 +2758,23 @@ func (t *ToolSearchConfig) MergeProxyToolSearchConfig(v ProxyToolSearchConfig) e
 	return err
 }
 
-// AsNativeToolSearchConfig returns the union data inside the ToolSearchConfig as a NativeToolSearchConfig
-func (t ToolSearchConfig) AsNativeToolSearchConfig() (NativeToolSearchConfig, error) {
-	var body NativeToolSearchConfig
+// AsPlatformGroup returns the union data inside the ToolsetKey as a PlatformGroup
+func (t ToolsetKey) AsPlatformGroup() (PlatformGroup, error) {
+	var body PlatformGroup
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromNativeToolSearchConfig overwrites any union data inside the ToolSearchConfig as the provided NativeToolSearchConfig
-func (t *ToolSearchConfig) FromNativeToolSearchConfig(v NativeToolSearchConfig) error {
+// FromPlatformGroup overwrites any union data inside the ToolsetKey as the provided PlatformGroup
+func (t *ToolsetKey) FromPlatformGroup(v PlatformGroup) error {
 	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
 	t.union = b
 	return err
 }
 
-// MergeNativeToolSearchConfig performs a merge with any union data inside the ToolSearchConfig, using the provided NativeToolSearchConfig
-func (t *ToolSearchConfig) MergeNativeToolSearchConfig(v NativeToolSearchConfig) error {
+// MergePlatformGroup performs a merge with any union data inside the ToolsetKey, using the provided PlatformGroup
+func (t *ToolsetKey) MergePlatformGroup(v PlatformGroup) error {
 	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
 	if err != nil {
 		return err
 	}
@@ -2509,40 +2784,12 @@ func (t *ToolSearchConfig) MergeNativeToolSearchConfig(v NativeToolSearchConfig)
 	return err
 }
 
-func (t ToolSearchConfig) Discriminator() (string, error) {
-	var discriminator struct {
-		Discriminator string `json:"mode"`
-	}
-	err := json.Unmarshal(t.union, &discriminator)
-	return discriminator.Discriminator, err
-}
-
-func (t ToolSearchConfig) ValueByDiscriminator() (interface{}, error) {
-	discriminator, err := t.Discriminator()
-	if err != nil {
-		return nil, err
-	}
-	switch discriminator {
-	case "native":
-		return t.AsNativeToolSearchConfig()
-	case "proxy":
-		return t.AsProxyToolSearchConfig()
-	default:
-		return nil, errors.New("unknown discriminator value: " + discriminator)
-	}
-}
-
-func (t ToolSearchConfig) MarshalJSON() ([]byte, error) {
+func (t ToolsetKey) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
-	if err == nil {
-		err = validateToolSearchJSON("ToolSearchConfig", b)
-	}
 	return b, err
 }
 
-func (t *ToolSearchConfig) UnmarshalJSON(b []byte) error {
-	if err := validateToolSearchJSON("ToolSearchConfig", b); err != nil {
-		return err
-	}
-	return t.union.UnmarshalJSON(b)
+func (t *ToolsetKey) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
 }

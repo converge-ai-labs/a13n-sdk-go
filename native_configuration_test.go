@@ -84,7 +84,7 @@ func TestNativeConfigurationForwardingStartSendAndMessage(t *testing.T) {
 			}
 			_ = sent.Close()
 			api, _ := client.API()
-			raw, err := api.SubmitMessageApiV1ThreadsThreadIdInboxPost(ctx, "thr", &generated.SubmitMessageApiV1ThreadsThreadIdInboxPostParams{IdempotencyKey: "raw"}, generated.Message{AgentId: "agent", Payload: payload, Options: &options})
+			raw, err := api.SubmitMessage(ctx, "thr", &generated.SubmitMessageParams{IdempotencyKey: "raw"}, generated.Message{AgentId: "agent", Payload: payload, Options: &options})
 			if _, err := ParseJSON[generated.Submitted](client, raw, err, 201); err != nil {
 				t.Fatal(err)
 			}

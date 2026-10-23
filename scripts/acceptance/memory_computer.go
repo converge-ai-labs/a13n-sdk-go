@@ -120,58 +120,58 @@ func memoryComputerOffline() {
 		before := must(time.Parse(time.RFC3339, "2026-10-15T00:00:00Z"))
 		calls := []func() (*http.Response, error){
 			func() (*http.Response, error) {
-				return api.DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDelete(ctx, "provider", &generated.DeleteEnvironmentProviderApiV1EnvironmentProvidersProviderIdDeleteParams{XWorkspaceID: scope, IfMatch: &cas})
+				return api.DeleteEnvironmentProvider(ctx, "provider", &generated.DeleteEnvironmentProviderParams{XWorkspaceID: scope, IfMatch: &cas})
 			},
 			func() (*http.Response, error) {
-				return api.DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx, "space", &generated.DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams{XWorkspaceID: scope, IfMatch: &cas})
+				return api.DeleteSpace(ctx, "space", &generated.DeleteSpaceParams{XWorkspaceID: scope, IfMatch: &cas})
 			},
 			func() (*http.Response, error) {
-				return api.EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGet(ctx, "provider", &generated.EnvironmentProviderReferencesApiV1EnvironmentProvidersProviderIdReferencesGetParams{XWorkspaceID: scope})
+				return api.EnvironmentProviderReferences(ctx, "provider", &generated.EnvironmentProviderReferencesParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.ListSpacesApiV1MemorySpacesGet(ctx, &generated.ListSpacesApiV1MemorySpacesGetParams{XWorkspaceID: scope, Label: ptr([]string{"team=one", "kind=shared"}), Enabled: ptr(false), Limit: &limit, Cursor: &cursor})
+				return api.ListSpaces(ctx, &generated.ListSpacesParams{XWorkspaceID: scope, Label: ptr([]string{"team=one", "kind=shared"}), Enabled: ptr(false), Limit: &limit, Cursor: &cursor})
 			},
 			func() (*http.Response, error) {
-				return api.GetSpaceApiV1MemorySpacesSpaceIdGet(ctx, "space", &generated.GetSpaceApiV1MemorySpacesSpaceIdGetParams{XWorkspaceID: scope})
+				return api.GetSpace(ctx, "space", &generated.GetSpaceParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx, "space", &generated.GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams{XWorkspaceID: scope})
+				return api.GetSpaceOrganization(ctx, "space", &generated.GetSpaceOrganizationParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx, "space", &generated.ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams{XWorkspaceID: scope, Limit: &limit, Cursor: &cursor})
+				return api.ListSpaceOrganizations(ctx, "space", &generated.ListSpaceOrganizationsParams{XWorkspaceID: scope, Limit: &limit, Cursor: &cursor})
 			},
 			func() (*http.Response, error) {
-				return api.ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx, "space", &generated.ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams{XWorkspaceID: scope, Limit: &limit, Cursor: &cursor})
+				return api.ListSpaceSessions(ctx, "space", &generated.ListSpaceSessionsParams{XWorkspaceID: scope, Limit: &limit, Cursor: &cursor})
 			},
 			func() (*http.Response, error) {
-				return api.ListRunsApiV1RunsGet(ctx, &generated.ListRunsApiV1RunsGetParams{XWorkspaceID: scope, AgentId: ptr("agent"), SessionId: ptr("session"), ThreadId: ptr("thread"), PrincipalId: ptr("principal"), Status: ptr(generated.ListRunsApiV1RunsGetParamsStatus("completed")), CreatedAfter: &after, CreatedBefore: &before, Limit: &limit, Cursor: &cursor})
+				return api.ListRuns(ctx, &generated.ListRunsParams{XWorkspaceID: scope, AgentId: ptr("agent"), SessionId: ptr("session"), ThreadId: ptr("thread"), PrincipalId: ptr("principal"), Status: ptr(generated.ListRunsParamsStatus("completed")), CreatedAfter: &after, CreatedBefore: &before, Limit: &limit, Cursor: &cursor})
 			},
 			func() (*http.Response, error) {
-				return api.RunAgentApiV1RunsRunIdAgentGet(ctx, "run", &generated.RunAgentApiV1RunsRunIdAgentGetParams{XWorkspaceID: scope})
+				return api.GetRunAgent(ctx, "run", &generated.GetRunAgentParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx, "run", "attempt", &generated.GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams{XWorkspaceID: scope})
+				return api.GetRunAttempt(ctx, "run", "attempt", &generated.GetRunAttemptParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.RunImageApiV1RunsRunIdImagesImageIdGet(ctx, "run", "image", &generated.RunImageApiV1RunsRunIdImagesImageIdGetParams{XWorkspaceID: scope})
+				return api.RunImage(ctx, "run", "image", &generated.RunImageParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx, "record", &generated.ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams{XWorkspaceID: scope})
+				return api.ModelRequestMetrics(ctx, "record", &generated.ModelRequestMetricsParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx, "space", &generated.UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams{XWorkspaceID: scope, IfMatch: &cas}, generated.MemorySpaceUpdate{Description: a13n.Null[string](), Enabled: a13n.Value(false), Organization: a13n.Value(generated.OrganizationPolicy{Enabled: ptr(false), CooldownSeconds: ptr(0)})})
+				return api.UpdateSpace(ctx, "space", &generated.UpdateSpaceParams{XWorkspaceID: scope, IfMatch: &cas}, generated.MemorySpaceUpdate{Description: a13n.Null[string](), Enabled: a13n.Value(false), Organization: a13n.Value(generated.OrganizationPolicy{Enabled: ptr(false), CooldownSeconds: ptr(0)})})
 			},
 			func() (*http.Response, error) {
-				return api.UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatch(ctx, "thread", "desktop", &generated.UpdateMountApiV1ThreadsThreadIdEnvironmentsNamePatchParams{XWorkspaceID: scope, IfMatch: &cas}, generated.MountUpdate{PermissionCeiling: generated.EnvironmentPermissionSetInput{Operations: ptr([]generated.EnvironmentAction{})}})
+				return api.UpdateEnvironmentMount(ctx, "thread", "desktop", &generated.UpdateEnvironmentMountParams{XWorkspaceID: scope, IfMatch: &cas}, generated.MountUpdate{PermissionCeiling: generated.EnvironmentPermissionSetInput{Operations: ptr([]generated.EnvironmentAction{})}})
 			},
 			func() (*http.Response, error) {
-				return api.CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPost(ctx, "environment", &generated.CheckComputerApiV1EnvironmentsEnvironmentIdComputerCheckPostParams{XWorkspaceID: scope})
+				return api.CheckComputer(ctx, "environment", &generated.CheckComputerParams{XWorkspaceID: scope})
 			},
 			func() (*http.Response, error) {
-				return api.CreateSpaceApiV1MemorySpacesPost(ctx, &generated.CreateSpaceApiV1MemorySpacesPostParams{XWorkspaceID: scope}, generated.MemorySpaceCreate{Name: "shared", Enabled: ptr(false), AlwaysLoad: ptr([]string{})})
+				return api.CreateSpace(ctx, &generated.CreateSpaceParams{XWorkspaceID: scope}, generated.MemorySpaceCreate{Name: "shared", Enabled: ptr(false), AlwaysLoad: ptr([]string{})})
 			},
 			func() (*http.Response, error) {
-				return api.OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx, "space", &generated.OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams{XWorkspaceID: scope})
+				return api.OrganizeSpace(ctx, "space", &generated.OrganizeSpaceParams{XWorkspaceID: scope})
 			},
 		}
 		for _, call := range calls[:2] {
@@ -188,7 +188,7 @@ func memoryComputerOffline() {
 		_ = nativeJSON[generated.SessionPage](client, 200, calls[7])
 		_ = nativeJSON[generated.RunPage](client, 200, calls[8])
 		agent := nativeJSON[generated.RunAgent](client, 200, calls[9]).Value
-		check(agent.Revision.Id == "revision" && agent.Config.Memory != nil && agent.Config.Memory.Enabled != nil && !*agent.Config.Memory.Enabled && agent.Config.PlatformTools != nil, "executed Agent native configuration")
+		check(agent.Revision.Id == "revision" && agent.Config.Memory != nil && agent.Config.Memory.Enabled != nil && !*agent.Config.Memory.Enabled, "executed Agent native configuration")
 		check(nativeJSON[generated.AttemptView](client, 200, calls[10]).Value.Id == "attempt", "attempt detail")
 		response, err := calls[11]()
 		check(err == nil && response.StatusCode == 200 && response.Header.Get("Content-Type") == "image/png" && response.Header.Get("Cache-Control") == "no-store" && response.Header.Get("X-Content-Type-Options") == "nosniff", "retained image raw metadata")
@@ -218,10 +218,10 @@ func mustClose(closer io.Closer) { check(closer.Close() == nil, "close owned res
 // live journey. No desktop/provider infrastructure is provisioned by the caller.
 func memoryComputerReadback(ctx context.Context, client *a13n.Client, outcome a13n.RunOutcome) {
 	api := must(client.API())
-	raw, err := api.RunAgentApiV1RunsRunIdAgentGet(ctx, outcome.RunID, &generated.RunAgentApiV1RunsRunIdAgentGetParams{})
+	raw, err := api.GetRunAgent(ctx, outcome.RunID, &generated.GetRunAgentParams{})
 	agent := must(a13n.ParseJSON[generated.RunAgent](client, raw, err, 200))
 	check(agent.Value.Revision.Id != "", "matching Service executed Agent revision")
-	raw, err = api.ListRunsApiV1RunsGet(ctx, &generated.ListRunsApiV1RunsGetParams{ThreadId: &outcome.ThreadID, Limit: ptr(100)})
+	raw, err = api.ListRuns(ctx, &generated.ListRunsParams{ThreadId: &outcome.ThreadID, Limit: ptr(100)})
 	runs := must(a13n.ParseJSON[generated.RunPage](client, raw, err, 200))
 	found := false
 	for _, run := range runs.Value.Items {
@@ -230,29 +230,29 @@ func memoryComputerReadback(ctx context.Context, client *a13n.Client, outcome a1
 		}
 	}
 	check(found, "matching Service workspace Run list")
-	raw, err = api.RunAttemptsApiV1RunsRunIdAttemptsGet(ctx, outcome.RunID, &generated.RunAttemptsApiV1RunsRunIdAttemptsGetParams{})
+	raw, err = api.ListRunAttempts(ctx, outcome.RunID, &generated.ListRunAttemptsParams{})
 	attempts := must(a13n.ParseJSON[generated.Attempts](client, raw, err, 200))
 	for _, attempt := range attempts.Value.Items {
-		raw, err = api.GetAttemptApiV1RunsRunIdAttemptsAttemptIdGet(ctx, outcome.RunID, attempt.Id, &generated.GetAttemptApiV1RunsRunIdAttemptsAttemptIdGetParams{})
+		raw, err = api.GetRunAttempt(ctx, outcome.RunID, attempt.Id, &generated.GetRunAttemptParams{})
 		check(must(a13n.ParseJSON[generated.AttemptView](client, raw, err, 200)).Value.Id == attempt.Id, "matching Service attempt detail")
 	}
-	raw, err = api.CreateSpaceApiV1MemorySpacesPost(ctx, &generated.CreateSpaceApiV1MemorySpacesPostParams{}, generated.MemorySpaceCreate{Name: "go-acceptance-" + outcome.RunID, Enabled: ptr(false), AlwaysLoad: ptr([]string{})})
+	raw, err = api.CreateSpace(ctx, &generated.CreateSpaceParams{}, generated.MemorySpaceCreate{Name: "go-acceptance-" + outcome.RunID, Enabled: ptr(false), AlwaysLoad: ptr([]string{})})
 	space := must(a13n.ParseJSON[generated.MemorySpace](client, raw, err, 201))
 	check(!space.Value.Enabled && len(space.Value.AlwaysLoad) == 0 && space.Value.MemoryId != "", "matching Service Space create")
-	raw, err = api.UpdateSpaceApiV1MemorySpacesSpaceIdPatch(ctx, space.Value.Id, &generated.UpdateSpaceApiV1MemorySpacesSpaceIdPatchParams{IfMatch: ptr(space.ETag())}, generated.MemorySpaceUpdate{Description: a13n.Value("installed Go caller"), Organization: a13n.Value(generated.OrganizationPolicy{Enabled: ptr(false), CooldownSeconds: ptr(0)})})
+	raw, err = api.UpdateSpace(ctx, space.Value.Id, &generated.UpdateSpaceParams{IfMatch: ptr(space.ETag())}, generated.MemorySpaceUpdate{Description: a13n.Value("installed Go caller"), Organization: a13n.Value(generated.OrganizationPolicy{Enabled: ptr(false), CooldownSeconds: ptr(0)})})
 	space = must(a13n.ParseJSON[generated.MemorySpace](client, raw, err, 200))
 	check(space.Value.Organization.CooldownSeconds != nil && *space.Value.Organization.CooldownSeconds == 0, "matching Service organization zero cooldown")
-	raw, err = api.GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGet(ctx, space.Value.Id, &generated.GetSpaceOrganizationApiV1MemorySpacesSpaceIdOrganizationGetParams{})
+	raw, err = api.GetSpaceOrganization(ctx, space.Value.Id, &generated.GetSpaceOrganizationParams{})
 	_ = must(a13n.ParseJSON[generated.SpaceOrganizationStatus](client, raw, err, 200))
-	raw, err = api.ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGet(ctx, space.Value.Id, &generated.ListSpaceOrganizationsApiV1MemorySpacesSpaceIdOrganizationsGetParams{})
+	raw, err = api.ListSpaceOrganizations(ctx, space.Value.Id, &generated.ListSpaceOrganizationsParams{})
 	_ = must(a13n.ParseJSON[generated.RunPage](client, raw, err, 200))
-	raw, err = api.ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGet(ctx, space.Value.Id, &generated.ListSpaceSessionsApiV1MemorySpacesSpaceIdSessionsGetParams{})
+	raw, err = api.ListSpaceSessions(ctx, space.Value.Id, &generated.ListSpaceSessionsParams{})
 	_ = must(a13n.ParseJSON[generated.SessionPage](client, raw, err, 200))
-	raw, err = api.DeleteSpaceApiV1MemorySpacesSpaceIdDelete(ctx, space.Value.Id, &generated.DeleteSpaceApiV1MemorySpacesSpaceIdDeleteParams{IfMatch: ptr(space.ETag())})
+	raw, err = api.DeleteSpace(ctx, space.Value.Id, &generated.DeleteSpaceParams{IfMatch: ptr(space.ETag())})
 	check(err == nil && raw.StatusCode == 204, "matching Service Space delete")
 	mustClose(raw.Body)
 	if recordID := os.Getenv("A13N_MODEL_RECORD"); recordID != "" {
-		raw, err = api.ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGet(ctx, recordID, &generated.ModelRequestMetricsApiV1UsageRecordsRecordIdMetricsGetParams{})
+		raw, err = api.ModelRequestMetrics(ctx, recordID, &generated.ModelRequestMetricsParams{})
 		metrics := must(a13n.ParseJSON[generated.ModelRequestMetrics](client, raw, err, 200))
 		check(metrics.StatusCode == 200, "matching Service model request metrics")
 		fmt.Println("Matching Service: supplied model-request record metrics read passed")
@@ -260,9 +260,9 @@ func memoryComputerReadback(ctx context.Context, client *a13n.Client, outcome a1
 		fmt.Println("Matching Service: no A13N_MODEL_RECORD supplied; model-request metrics covered offline")
 	}
 	if model := os.Getenv("A13N_ORGANIZER_MODEL"); model != "" {
-		raw, err = api.CreateSpaceApiV1MemorySpacesPost(ctx, &generated.CreateSpaceApiV1MemorySpacesPostParams{}, generated.MemorySpaceCreate{Name: "go-organization-" + outcome.RunID, Organization: &generated.OrganizationPolicy{Enabled: ptr(false), Model: a13n.Value(model), CooldownSeconds: ptr(0)}})
+		raw, err = api.CreateSpace(ctx, &generated.CreateSpaceParams{}, generated.MemorySpaceCreate{Name: "go-organization-" + outcome.RunID, Organization: &generated.OrganizationPolicy{Enabled: ptr(false), Model: a13n.Value(model), CooldownSeconds: ptr(0)}})
 		organizationSpace := must(a13n.ParseJSON[generated.MemorySpace](client, raw, err, 201))
-		raw, err = api.OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost(ctx, organizationSpace.Value.Id, &generated.OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPostParams{})
+		raw, err = api.OrganizeSpace(ctx, organizationSpace.Value.Id, &generated.OrganizeSpaceParams{})
 		_ = must(a13n.ParseJSON[generated.SpaceOrganizationStatus](client, raw, err, 202))
 		fmt.Println("Matching Service: manual organization request accepted (202); asynchronous execution/cleanup remains fixture-owned")
 	} else {

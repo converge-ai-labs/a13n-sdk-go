@@ -15,7 +15,7 @@ import (
 // mode and an absent discriminator never silently chooses a branch.
 var toolSearchSchemas = sync.OnceValues(func() (map[string]*jsonschema.Schema, error) {
 	var document any
-	if err := json.Unmarshal([]byte("{\"$defs\": {\"ToolSearch\": {\"additionalProperties\": false, \"description\": \"Presentation of already-selected sources, composed by Harness once per agent.\", \"properties\": {\"config\": {\"$ref\": \"#/$defs/ToolSearchConfig\"}, \"groups\": {\"additionalProperties\": {\"$ref\": \"#/$defs/ToolSearchGroup\"}, \"maxProperties\": 128, \"title\": \"Groups\", \"type\": \"object\"}}, \"title\": \"ToolSearch\", \"type\": \"object\"}, \"ToolSearchConfig\": {\"discriminator\": {\"mapping\": {\"native\": \"#/$defs/NativeToolSearchConfig\", \"proxy\": \"#/$defs/ProxyToolSearchConfig\"}, \"propertyName\": \"mode\"}, \"oneOf\": [{\"$ref\": \"#/$defs/ProxyToolSearchConfig\"}, {\"$ref\": \"#/$defs/NativeToolSearchConfig\"}]}, \"ProxyToolSearchConfig\": {\"additionalProperties\": false, \"description\": \"Names and bounded discovery settings for one Agent's proxy surface.\", \"properties\": {\"call_name\": {\"default\": \"call_proxy_tool\", \"title\": \"Call Name\", \"type\": \"string\"}, \"max_results\": {\"default\": 10, \"title\": \"Max Results\", \"type\": \"integer\"}, \"max_search_bytes\": {\"default\": 32768, \"title\": \"Max Search Bytes\", \"type\": \"integer\"}, \"mode\": {\"const\": \"proxy\", \"default\": \"proxy\", \"title\": \"Mode\", \"type\": \"string\"}, \"search_name\": {\"default\": \"search_proxy_tools\", \"title\": \"Search Name\", \"type\": \"string\"}}, \"required\": [\"mode\"], \"title\": \"ProxyToolSearchConfig\", \"type\": \"object\"}, \"NativeToolSearchConfig\": {\"additionalProperties\": false, \"description\": \"Provider-native discovery; omitted strategy uses the provider default.\", \"properties\": {\"mode\": {\"const\": \"native\", \"default\": \"native\", \"title\": \"Mode\", \"type\": \"string\"}, \"strategy\": {\"anyOf\": [{\"enum\": [\"bm25\", \"regex\"], \"type\": \"string\"}, {\"type\": \"null\"}], \"title\": \"Strategy\"}}, \"required\": [\"mode\"], \"title\": \"NativeToolSearchConfig\", \"type\": \"object\"}, \"ToolSearchGroup\": {\"additionalProperties\": false, \"properties\": {\"connections\": {\"default\": [], \"items\": {\"maxLength\": 41, \"pattern\": \"^[a-z][a-z0-9]{1,7}_[0-9a-f]{20,32}$\", \"type\": \"string\"}, \"maxItems\": 128, \"title\": \"Connections\", \"type\": \"array\"}, \"description\": {\"maxLength\": 512, \"minLength\": 1, \"title\": \"Description\", \"type\": \"string\"}, \"platform\": {\"default\": false, \"title\": \"Platform\", \"type\": \"boolean\"}, \"plugins\": {\"default\": [], \"items\": {\"pattern\": \"^[A-Za-z_][A-Za-z0-9_.:-]{0,127}$\", \"type\": \"string\"}, \"maxItems\": 128, \"title\": \"Plugins\", \"type\": \"array\"}}, \"required\": [\"description\"], \"title\": \"ToolSearchGroup\", \"type\": \"object\"}}}"), &document); err != nil {
+	if err := json.Unmarshal([]byte("{\"$defs\": {\"ToolSearch\": {\"additionalProperties\": false, \"description\": \"Presentation of already-selected sources, composed by Harness once per agent.\", \"properties\": {\"config\": {\"$ref\": \"#/$defs/ToolSearchConfig\"}, \"groups\": {\"additionalProperties\": {\"$ref\": \"#/$defs/ToolSearchGroup\"}, \"maxProperties\": 128, \"title\": \"Groups\", \"type\": \"object\"}}, \"title\": \"ToolSearch\", \"type\": \"object\"}, \"ToolSearchConfig\": {\"additionalProperties\": false, \"description\": \"Names and bounded discovery settings for one Agent's proxy surface.\", \"properties\": {\"call_name\": {\"default\": \"call_tool\", \"title\": \"Call Name\", \"type\": \"string\"}, \"describe_name\": {\"default\": \"describe_tool\", \"title\": \"Describe Name\", \"type\": \"string\"}, \"groups_name\": {\"default\": \"list_tool_groups\", \"title\": \"Groups Name\", \"type\": \"string\"}, \"list_name\": {\"default\": \"list_tools\", \"title\": \"List Name\", \"type\": \"string\"}, \"max_results\": {\"default\": 10, \"title\": \"Max Results\", \"type\": \"integer\"}, \"max_search_bytes\": {\"default\": 32768, \"title\": \"Max Search Bytes\", \"type\": \"integer\"}, \"mode\": {\"const\": \"proxy\", \"default\": \"proxy\", \"title\": \"Mode\", \"type\": \"string\"}, \"search_name\": {\"default\": \"discover_tools\", \"title\": \"Search Name\", \"type\": \"string\"}}, \"title\": \"ProxyToolSearchConfig\", \"type\": \"object\"}, \"ToolSearchGroup\": {\"additionalProperties\": false, \"properties\": {\"capabilities\": {\"default\": [], \"items\": {\"enum\": [\"environment\", \"web\"], \"type\": \"string\"}, \"title\": \"Capabilities\", \"type\": \"array\"}, \"connections\": {\"default\": [], \"items\": {\"maxLength\": 41, \"pattern\": \"^[a-z][a-z0-9]{1,7}_[0-9a-f]{20,32}$\", \"type\": \"string\"}, \"maxItems\": 128, \"title\": \"Connections\", \"type\": \"array\"}, \"description\": {\"maxLength\": 512, \"minLength\": 1, \"title\": \"Description\", \"type\": \"string\"}, \"platform\": {\"default\": false, \"title\": \"Platform\", \"type\": \"boolean\"}, \"plugins\": {\"default\": [], \"items\": {\"pattern\": \"^[A-Za-z_][A-Za-z0-9_.:-]{0,127}$\", \"type\": \"string\"}, \"maxItems\": 128, \"title\": \"Plugins\", \"type\": \"array\"}}, \"required\": [\"description\"], \"title\": \"ToolSearchGroup\", \"type\": \"object\"}}}"), &document); err != nil {
 		return nil, err
 	}
 	compiler := jsonschema.NewCompiler()
@@ -68,5 +68,26 @@ func (t *ToolSearch) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*t = ToolSearch(decoded)
+	return nil
+}
+
+func (t ToolSearchConfig) MarshalJSON() ([]byte, error) {
+	type value ToolSearchConfig
+	data, err := json.Marshal(value(t))
+	if err == nil {
+		err = validateToolSearchJSON("ToolSearchConfig", data)
+	}
+	return data, err
+}
+func (t *ToolSearchConfig) UnmarshalJSON(data []byte) error {
+	if err := validateToolSearchJSON("ToolSearchConfig", data); err != nil {
+		return err
+	}
+	type value ToolSearchConfig
+	var decoded value
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		return err
+	}
+	*t = ToolSearchConfig(decoded)
 	return nil
 }
