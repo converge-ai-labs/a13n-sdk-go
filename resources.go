@@ -124,6 +124,22 @@ func jsonResult[T any](client *Client, response *http.Response, err error, succe
 	return result, nil
 }
 
+// High-level observers require the full record even when native reads offer compact projections.
+func detailedResult[T any](client *Client, response *http.Response, err error, success ...int) (Result[T], error) {
+	result, err := jsonResult[T](client, response, err, success...)
+	if err != nil {
+		return result, err
+	}
+	var shape struct {
+		View           string          `json:"view"`
+		Representation json.RawMessage `json:"representation"`
+	}
+	if json.Unmarshal(result.raw, &shape) != nil || shape.View == "compact" || len(shape.Representation) > 0 {
+		return result, protocolError(response, "expected_detailed")
+	}
+	return result, nil
+}
+
 // The canonical nullable decoder uses float64 for arbitrary JSON. Shadow only
 // Run output and saved content at this common response owner so large numbers reach both
 // the typed evidence and high-level output without forking generated parsers.

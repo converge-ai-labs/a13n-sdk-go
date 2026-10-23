@@ -5729,6 +5729,9 @@ type EnvironmentUpdate struct {
 	Token    nullable.Nullable[string] `json:"token,omitempty"`
 }
 
+// EnvironmentVariables Default variables for Agent commands. Ordinary readable configuration, not secret storage. Command variables override these defaults.
+type EnvironmentVariables map[string]string
+
 // EnvironmentView defines model for EnvironmentView.
 type EnvironmentView struct {
 	CreatedAt           time.Time                             `json:"created_at"`
@@ -5790,8 +5793,9 @@ type ExecutionObservationSource string
 
 // ExecutionOverride Sparse choices: null inherits; Thread PATCH distinguishes omission from null.
 type ExecutionOverride struct {
-	Steering nullable.Nullable[Steering]              `json:"steering,omitempty"`
-	Tools    nullable.Nullable[ToolExecutionOverride] `json:"tools,omitempty"`
+	Environment nullable.Nullable[EnvironmentVariables]  `json:"environment,omitempty"`
+	Steering    nullable.Nullable[Steering]              `json:"steering,omitempty"`
+	Tools       nullable.Nullable[ToolExecutionOverride] `json:"tools,omitempty"`
 }
 
 // ExecutionPage defines model for ExecutionPage.
@@ -8371,7 +8375,7 @@ type Span struct {
 // SpanStatus defines model for Span.Status.
 type SpanStatus string
 
-// SpanContentPage A matching span's selected content, or a continuation to keep locating that span.
+// SpanContentPage A matching span's selected content, or no items when the trace has no such span.
 type SpanContentPage struct {
 	Items      []TextRead                `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
@@ -11596,7 +11600,6 @@ type GetTraceSpanParams struct {
 // ReadSpanContentParams defines parameters for ReadSpanContent.
 type ReadSpanContentParams struct {
 	Section *ReadSpanContentParamsSection `form:"section,omitempty" json:"section,omitempty"`
-	Cursor  *string                       `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// Offset Unicode code-point offset; continue with next_offset.
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
@@ -18593,8 +18596,8 @@ type ClientInterface interface {
 
 	// ReadSpanContent Read Span Content
 	//
-	// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
-	// cursor while continuing fragments with version and next_offset.
+	// Read a fragment of one span's content. The backend is queried for that span alone; items is empty when the
+	// trace has no such span. Continue fragments with version and next_offset.
 	//
 	// Corresponds with GET /api/v1/traces/{trace_id}/spans/{span_id}/content (the `ReadSpanContent` operationId).
 	ReadSpanContent(ctx context.Context, traceId string, spanId string, params *ReadSpanContentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -25127,8 +25130,8 @@ func (c *Client) GetTraceSpan(ctx context.Context, traceId string, spanId string
 
 // ReadSpanContent Read Span Content
 //
-// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
-// cursor while continuing fragments with version and next_offset.
+// Read a fragment of one span's content. The backend is queried for that span alone; items is empty when the
+// trace has no such span. Continue fragments with version and next_offset.
 //
 // Corresponds with GET /api/v1/traces/{trace_id}/spans/{span_id}/content (the `ReadSpanContent` operationId).
 func (c *Client) ReadSpanContent(ctx context.Context, traceId string, spanId string, params *ReadSpanContentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -45712,18 +45715,6 @@ func NewReadSpanContentRequest(server string, traceId string, spanId string, par
 
 		}
 
-		if params.Cursor != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
-				return nil, err
-			} else {
-				for _, qp := range strings.Split(queryFrag, "&") {
-					rawQueryFragments = append(rawQueryFragments, qp)
-				}
-			}
-
-		}
-
 		if params.Offset != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
@@ -51643,8 +51634,8 @@ type ClientWithResponsesInterface interface {
 
 	// ReadSpanContentWithResponse Read Span Content
 	//
-	// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
-	// cursor while continuing fragments with version and next_offset.
+	// Read a fragment of one span's content. The backend is queried for that span alone; items is empty when the
+	// trace has no such span. Continue fragments with version and next_offset.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -79382,8 +79373,8 @@ func (c *ClientWithResponses) GetTraceSpanWithResponse(ctx context.Context, trac
 
 // ReadSpanContentWithResponse Read Span Content
 //
-// Locate a span in bounded backend pages. Follow next_cursor when empty. Once found, retain that request's
-// cursor while continuing fragments with version and next_offset.
+// Read a fragment of one span's content. The backend is queried for that span alone; items is empty when the
+// trace has no such span. Continue fragments with version and next_offset.
 //
 // Returns a wrapper object for the known response body format(s).
 //
