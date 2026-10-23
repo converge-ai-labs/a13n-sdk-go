@@ -146,3 +146,5 @@ Desktop waits finish the finite Interaction normally. Use the explicit native co
 ## License
 
 Apache License 2.0.
+
+See [Execution options and migration](docs/execution-and-migration.md) for scoped command variables and compatibility notes.

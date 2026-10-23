@@ -15,6 +15,11 @@ func Null[T any]() Optional[T]     { return nullable.NewNullNullable[T]() }
 func Ptr[T any](v T) *T            { return &v }
 
 // Workflow values are selected canonical wire aliases, not duplicated schemas.
+type ExecutionOverride = generated.ExecutionOverride
+type ToolExecutionOverride = generated.ToolExecutionOverride
+type ToolExecutionMode = generated.ToolExecutionOverrideMode
+type Steering = generated.Steering
+type EnvironmentVariables = generated.EnvironmentVariables
 type RunOptions = generated.RunOptionsInput
 type Configuration = generated.RunConfigurationInput
 type Overrides = generated.AgentOverrideInput

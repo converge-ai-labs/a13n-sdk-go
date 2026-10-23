@@ -1408,10 +1408,14 @@ type EnvironmentPermissionSet struct {
 	Operations *[]EnvironmentAction `json:"operations,omitempty"`
 }
 
+// EnvironmentVariables Default variables for Agent commands. Ordinary readable configuration, not secret storage. Command variables override these defaults.
+type EnvironmentVariables map[string]string
+
 // ExecutionOverride Sparse choices: null inherits; Thread PATCH distinguishes omission from null.
 type ExecutionOverride struct {
-	Steering nullable.Nullable[Steering]              `json:"steering,omitempty"`
-	Tools    nullable.Nullable[ToolExecutionOverride] `json:"tools,omitempty"`
+	Environment nullable.Nullable[EnvironmentVariables]  `json:"environment,omitempty"`
+	Steering    nullable.Nullable[Steering]              `json:"steering,omitempty"`
+	Tools       nullable.Nullable[ToolExecutionOverride] `json:"tools,omitempty"`
 }
 
 // Failed An explicit external tool failure, including an intentional unanswered question.

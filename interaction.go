@@ -268,8 +268,8 @@ func (e Entry) Get(ctx context.Context) (Result[generated.EntryView], error) {
 	if err := validateClient(e.client, e.ThreadID, e.ID); err != nil {
 		return Result[generated.EntryView]{}, err
 	}
-	r, err := e.client.api.GetInboxEntry(ctx, e.ThreadID, e.ID, &generated.GetInboxEntryParams{XWorkspaceID: e.client.semanticWorkspace()})
-	result, err := jsonResult[generated.EntryView](e.client, r, err, 200)
+	r, err := e.client.api.GetInboxEntry(ctx, e.ThreadID, e.ID, &generated.GetInboxEntryParams{View: Ptr(generated.ReadViewDetailed), XWorkspaceID: e.client.semanticWorkspace()})
+	result, err := detailedResult[generated.EntryView](e.client, r, err, 200)
 	if err == nil && (result.Value.Id != e.ID || result.Value.ThreadId != e.ThreadID) {
 		return result, fmt.Errorf("%w: inconsistent Entry identity", ErrProtocol)
 	}
@@ -280,8 +280,8 @@ func (r Run) Get(ctx context.Context) (Result[generated.RunView], error) {
 	if err := validateClient(r.client, r.ID); err != nil {
 		return Result[generated.RunView]{}, err
 	}
-	resp, err := r.client.api.GetRun(ctx, r.ID, &generated.GetRunParams{XWorkspaceID: r.client.semanticWorkspace()})
-	result, err := jsonResult[generated.RunView](r.client, resp, err, 200)
+	resp, err := r.client.api.GetRun(ctx, r.ID, &generated.GetRunParams{View: Ptr(generated.ReadViewDetailed), XWorkspaceID: r.client.semanticWorkspace()})
+	result, err := detailedResult[generated.RunView](r.client, resp, err, 200)
 	if err == nil && result.Value.Id != r.ID {
 		return result, fmt.Errorf("%w: inconsistent Run identity", ErrProtocol)
 	}
@@ -481,7 +481,7 @@ func (r Run) Resume(ctx context.Context, answers Answers, options ...ResumeOptio
 		return nil, err
 	}
 	resp, err := r.client.api.ResumeRun(mutation, r.ID, &generated.ResumeRunParams{IdempotencyKey: key, XWorkspaceID: r.client.semanticWorkspace()}, request)
-	result, err := jsonResult[generated.RunView](r.client, resp, err, 200, 201)
+	result, err := detailedResult[generated.RunView](r.client, resp, err, 200, 201)
 	if err == nil && (validateID(result.Value.Id) != nil || result.Value.Id == r.ID || validateID(result.Value.ThreadId) != nil) {
 		err = fmt.Errorf("%w: invalid successor Run", ErrProtocol)
 	}
@@ -498,5 +498,5 @@ func (r Run) Interrupt(ctx context.Context) (Result[generated.RunView], error) {
 		return Result[generated.RunView]{}, err
 	}
 	resp, err := r.client.api.InterruptRun(ctx, r.ID, &generated.InterruptRunParams{XWorkspaceID: r.client.semanticWorkspace()})
-	return jsonResult[generated.RunView](r.client, resp, err, 200)
+	return detailedResult[generated.RunView](r.client, resp, err, 200)
 }
