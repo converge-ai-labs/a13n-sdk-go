@@ -40,11 +40,11 @@ func TestRunItemsHasNoCoverageAndGeneratedStreamUsesExplicitProgress(t *testing.
 		api, _ := client.API()
 		// Progress is explicitly caller-supplied, never obtained from Items.
 		runID, position := "run", "1-8"
-		params := generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{Run: &runID, Position: &position}
+		params := generated.ThreadStreamParams{Run: &runID, Position: &position}
 		if hint != "" {
 			params.LastEventID = &hint
 		}
-		response, err := api.ThreadStreamApiV1ThreadsThreadIdStreamGet(context.Background(), "thr", &params)
+		response, err := api.ThreadStream(context.Background(), "thr", &params)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -54,7 +54,7 @@ func TestRunItemsHasNoCoverageAndGeneratedStreamUsesExplicitProgress(t *testing.
 
 func TestOtherModelNativeSettingsForwardUnchanged(t *testing.T) {
 	settings := map[string]generated.JsonValue{"nested": map[string]any{"enabled": true, "nullable": nil, "values": []any{1, "x", false}}, "counter": 42}
-	request, err := generated.NewCreateModelApiV1ModelsPostRequest("https://service.invalid", &generated.CreateModelApiV1ModelsPostParams{}, generated.ModelCreate{Name: "Native", ProviderId: "prv_x", Config: generated.ModelConfigInput{ModelApi: "other.native", ModelName: "native", Settings: &settings}})
+	request, err := generated.NewCreateModelRequest("https://service.invalid", &generated.CreateModelParams{}, generated.ModelCreate{Name: "Native", ProviderId: "prv_x", Config: generated.ModelConfigInput{ModelApi: "other.native", ModelName: "native", Settings: &settings}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -90,7 +90,7 @@ func TestUploadIDAndEightCharacterPasswordWire(t *testing.T) {
 	if err := json.Unmarshal([]byte(fmt.Sprintf(`{"upload_id":%q,"filename":"file","content_type":"text/plain","size":1,"digest":"digest"}`, uploadID)), &upload); err != nil {
 		t.Fatal(err)
 	}
-	request, err := generated.NewCreateAssetApiV1AssetsPostRequest("https://service.invalid", &generated.CreateAssetApiV1AssetsPostParams{}, generated.AssetCreate{Name: "file", UploadId: upload.UploadId})
+	request, err := generated.NewCreateAssetRequest("https://service.invalid", &generated.CreateAssetParams{}, generated.AssetCreate{Name: "file", UploadId: upload.UploadId})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -102,11 +102,11 @@ func TestUploadIDAndEightCharacterPasswordWire(t *testing.T) {
 	password := "eight888"
 	change := generated.PasswordChange{CurrentPassword: &password, Password: &password}
 	reset := generated.PasswordResetConfirm{Password: &password, Token: strings.Repeat("x", 16)}
-	changed, err := generated.NewChangePasswordApiV1UsersMePasswordPostRequest("https://service.invalid", change)
+	changed, err := generated.NewChangePasswordRequest("https://service.invalid", change)
 	if err != nil {
 		t.Fatal(err)
 	}
-	confirmed, err := generated.NewConfirmPasswordResetApiV1AuthPasswordResetConfirmPostRequest("https://service.invalid", reset)
+	confirmed, err := generated.NewConfirmPasswordResetRequest("https://service.invalid", reset)
 	if err != nil {
 		t.Fatal(err)
 	}

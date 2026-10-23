@@ -42,6 +42,8 @@ type StartOptions struct {
 	AgentRevisionId nullable.Nullable[string]
 	Delivery        *Delivery
 	Environments    *InitialMounts
+	Execution       nullable.Nullable[generated.ExecutionOverride]
+	Session         nullable.Nullable[generated.SessionCreate]
 	Kind            *NewThreadKind
 	McpHeaders      *McpHeaders
 	Memories        *[]MemoryMount
@@ -165,7 +167,7 @@ func (a Agent) StartInput(ctx context.Context, input Input, options ...StartOpti
 		return nil, err
 	}
 	body := generated.NewThread{AgentId: a.ID, Payload: payload, AgentRevisionId: opts.AgentRevisionId,
-		Delivery: opts.Delivery, Environments: opts.Environments, Kind: opts.Kind, McpHeaders: opts.McpHeaders,
+		Delivery: opts.Delivery, Environments: opts.Environments, Execution: opts.Execution, Session: opts.Session, Kind: opts.Kind, McpHeaders: opts.McpHeaders,
 		Memories: opts.Memories, MessageHistory: opts.MessageHistory, Options: opts.Options, SessionId: opts.SessionId}
 	observation, cancel := observationContext(ctx)
 	mutation, dispatch, key, err := mutationContext(observation, a.client, opts.IdempotencyKey)
@@ -173,7 +175,7 @@ func (a Agent) StartInput(ctx context.Context, input Input, options ...StartOpti
 		cancel()
 		return nil, err
 	}
-	resp, err := a.client.api.CreateThreadApiV1ThreadsPost(mutation, &generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: key, XWorkspaceID: a.client.semanticWorkspace()}, body)
+	resp, err := a.client.api.CreateThread(mutation, &generated.CreateThreadParams{IdempotencyKey: key, XWorkspaceID: a.client.semanticWorkspace()}, body)
 	result, err := jsonResult[generated.Submitted](a.client, resp, err, 200, 201)
 	var submitted *submission
 	if err == nil {
@@ -213,7 +215,7 @@ func (a Agent) SendInput(ctx context.Context, threadID string, input Input, opti
 		cancel()
 		return nil, err
 	}
-	resp, err := a.client.api.SubmitMessageApiV1ThreadsThreadIdInboxPost(mutation, threadID, &generated.SubmitMessageApiV1ThreadsThreadIdInboxPostParams{IdempotencyKey: key, XWorkspaceID: a.client.semanticWorkspace()}, body)
+	resp, err := a.client.api.SubmitMessage(mutation, threadID, &generated.SubmitMessageParams{IdempotencyKey: key, XWorkspaceID: a.client.semanticWorkspace()}, body)
 	result, err := jsonResult[generated.Submitted](a.client, resp, err, 200, 201)
 	var submitted *submission
 	if err == nil {
@@ -254,7 +256,7 @@ func (t Thread) Get(ctx context.Context) (Result[generated.ThreadView], error) {
 	if err := validateClient(t.client, t.ID); err != nil {
 		return Result[generated.ThreadView]{}, err
 	}
-	r, err := t.client.api.GetThreadApiV1ThreadsThreadIdGet(ctx, t.ID, &generated.GetThreadApiV1ThreadsThreadIdGetParams{XWorkspaceID: t.client.semanticWorkspace()})
+	r, err := t.client.api.GetThread(ctx, t.ID, &generated.GetThreadParams{XWorkspaceID: t.client.semanticWorkspace()})
 	result, err := jsonResult[generated.ThreadView](t.client, r, err, 200)
 	if err == nil && result.Value.Id != t.ID {
 		return result, fmt.Errorf("%w: inconsistent Thread identity", ErrProtocol)
@@ -266,7 +268,7 @@ func (e Entry) Get(ctx context.Context) (Result[generated.EntryView], error) {
 	if err := validateClient(e.client, e.ThreadID, e.ID); err != nil {
 		return Result[generated.EntryView]{}, err
 	}
-	r, err := e.client.api.GetEntryApiV1ThreadsThreadIdInboxEntryIdGet(ctx, e.ThreadID, e.ID, &generated.GetEntryApiV1ThreadsThreadIdInboxEntryIdGetParams{XWorkspaceID: e.client.semanticWorkspace()})
+	r, err := e.client.api.GetInboxEntry(ctx, e.ThreadID, e.ID, &generated.GetInboxEntryParams{XWorkspaceID: e.client.semanticWorkspace()})
 	result, err := jsonResult[generated.EntryView](e.client, r, err, 200)
 	if err == nil && (result.Value.Id != e.ID || result.Value.ThreadId != e.ThreadID) {
 		return result, fmt.Errorf("%w: inconsistent Entry identity", ErrProtocol)
@@ -278,7 +280,7 @@ func (r Run) Get(ctx context.Context) (Result[generated.RunView], error) {
 	if err := validateClient(r.client, r.ID); err != nil {
 		return Result[generated.RunView]{}, err
 	}
-	resp, err := r.client.api.GetRunApiV1RunsRunIdGet(ctx, r.ID, &generated.GetRunApiV1RunsRunIdGetParams{XWorkspaceID: r.client.semanticWorkspace()})
+	resp, err := r.client.api.GetRun(ctx, r.ID, &generated.GetRunParams{XWorkspaceID: r.client.semanticWorkspace()})
 	result, err := jsonResult[generated.RunView](r.client, resp, err, 200)
 	if err == nil && result.Value.Id != r.ID {
 		return result, fmt.Errorf("%w: inconsistent Run identity", ErrProtocol)
@@ -306,11 +308,11 @@ func (r Run) Items(ctx context.Context, options ...RunItemsOptions) (Result[gene
 	if len(options) > 1 {
 		return Result[generated.RunItems]{}, errors.New("Items accepts at most one options value")
 	}
-	params := generated.RunItemsApiV1RunsRunIdItemsGetParams{XWorkspaceID: r.client.semanticWorkspace()}
+	params := generated.ListRunItemsParams{XWorkspaceID: r.client.semanticWorkspace()}
 	if len(options) == 1 {
 		params.Before, params.After, params.Limit = options[0].Before, options[0].After, options[0].Limit
 	}
-	resp, err := r.client.api.RunItemsApiV1RunsRunIdItemsGet(ctx, r.ID, &params)
+	resp, err := r.client.api.ListRunItems(ctx, r.ID, &params)
 	result, err := jsonResult[generated.RunItems](r.client, resp, err, 200)
 	if err == nil && result.Value.Run.Id != r.ID {
 		return result, fmt.Errorf("%w: inconsistent Run Items identity", ErrProtocol)
@@ -478,7 +480,7 @@ func (r Run) Resume(ctx context.Context, answers Answers, options ...ResumeOptio
 		cancel()
 		return nil, err
 	}
-	resp, err := r.client.api.ResumeRunApiV1RunsRunIdResumePost(mutation, r.ID, &generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: key, XWorkspaceID: r.client.semanticWorkspace()}, request)
+	resp, err := r.client.api.ResumeRun(mutation, r.ID, &generated.ResumeRunParams{IdempotencyKey: key, XWorkspaceID: r.client.semanticWorkspace()}, request)
 	result, err := jsonResult[generated.RunView](r.client, resp, err, 200, 201)
 	if err == nil && (validateID(result.Value.Id) != nil || result.Value.Id == r.ID || validateID(result.Value.ThreadId) != nil) {
 		err = fmt.Errorf("%w: invalid successor Run", ErrProtocol)
@@ -495,6 +497,6 @@ func (r Run) Interrupt(ctx context.Context) (Result[generated.RunView], error) {
 	if err := validateClient(r.client, r.ID); err != nil {
 		return Result[generated.RunView]{}, err
 	}
-	resp, err := r.client.api.InterruptRunApiV1RunsRunIdInterruptPost(ctx, r.ID, &generated.InterruptRunApiV1RunsRunIdInterruptPostParams{XWorkspaceID: r.client.semanticWorkspace()})
+	resp, err := r.client.api.InterruptRun(ctx, r.ID, &generated.InterruptRunParams{XWorkspaceID: r.client.semanticWorkspace()})
 	return jsonResult[generated.RunView](r.client, resp, err, 200)
 }

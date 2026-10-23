@@ -47,6 +47,18 @@ type SessionGapFrame struct {
 	sessionstream.Gap
 }
 
+type SessionScheduleFrame struct {
+	sessionFrameData
+	sessionstream.ScheduleEvent
+}
+type SessionOccurrenceFrame struct {
+	sessionFrameData
+	sessionstream.OccurrenceEvent
+}
+
+func (SessionScheduleFrame) EventType() string   { return "schedule" }
+func (SessionOccurrenceFrame) EventType() string { return "occurrence" }
+
 func (SessionThreadFrame) EventType() string { return "thread" }
 func (SessionItemsFrame) EventType() string  { return "items" }
 func (SessionDeltaFrame) EventType() string  { return "delta" }
@@ -82,8 +94,8 @@ func (c *Client) SessionEvents(ctx context.Context, sessionID string, options Se
 		return nil, fmt.Errorf("stream bound cannot be negative")
 	}
 	ctx, cancel := context.WithCancel(ctx)
-	raw, err := c.api.SessionStreamApiV1SessionsSessionIdStreamGet(ctx, sessionID,
-		&generated.SessionStreamApiV1SessionsSessionIdStreamGetParams{XWorkspaceID: c.semanticWorkspace()})
+	raw, err := c.api.SessionStream(ctx, sessionID,
+		&generated.SessionStreamParams{XWorkspaceID: c.semanticWorkspace()})
 	response, err := binaryResult(c, raw, err, http.StatusOK)
 	if err != nil {
 		cancel()
@@ -165,6 +177,10 @@ func parseSessionFrame(event sseEvent) (SessionFrame, error) {
 		target = &SessionItemsFrame{sessionFrameData: meta}
 	case "delta":
 		target = &SessionDeltaFrame{sessionFrameData: meta}
+	case "schedule":
+		target = &SessionScheduleFrame{sessionFrameData: meta}
+	case "occurrence":
+		target = &SessionOccurrenceFrame{sessionFrameData: meta}
 	case "gap":
 		target = &SessionGapFrame{sessionFrameData: meta}
 	default:

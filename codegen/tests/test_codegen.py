@@ -112,7 +112,7 @@ def test_both_generated_graphs_match_pinned_inputs(tmp_path: Path) -> None:
     expected = {path.relative_to(ROOT / "generated"): path.read_bytes() for path in (ROOT / "generated").rglob("*.go")}
     assert actual == expected
     text = (output / "sessionstream/models.gen.go").read_text()
-    assert set(schema["frames"]) == {"thread", "items", "delta", "gap"}
+    assert set(schema["frames"]) == {"thread", "items", "delta", "gap", "schedule", "occurrence"}
     bundled = (output / "sessionstream/schema.gen.go").read_text().split("const JSONSchema = ", 1)[1].strip()
     assert json.loads(json.loads(bundled)) == schema
     assert "nullable.Nullable[SkillSync]" in text

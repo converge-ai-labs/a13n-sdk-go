@@ -115,7 +115,7 @@ func TestRunContentPreservesNativeNumbersAndOriginalEvidence(t *testing.T) {
 		body := `{"id":"content","media_type":"application/json","value":` + value + `,"truncated":false}`
 		client := coverageClient(t, func(req *http.Request) *http.Response { return coverageResponse(200, body) })
 		api, _ := client.API()
-		resp, err := api.RunContentApiV1RunsRunIdContentsContentIdGet(context.Background(), "run", "content", &generated.RunContentApiV1RunsRunIdContentsContentIdGetParams{})
+		resp, err := api.GetRunContent(context.Background(), "run", "content", &generated.GetRunContentParams{})
 		content, err := ParseJSON[generated.RunContent](client, resp, err, 200)
 		if err != nil || string(content.RawJSON()) != body {
 			t.Fatal(err, string(content.RawJSON()))
@@ -214,31 +214,31 @@ func TestCatchupNineOperationsShareAuthScopeMetadataAndLifetime(t *testing.T) {
 			ctx := context.Background()
 			calls := []func() (*http.Response, error){
 				func() (*http.Response, error) {
-					return api.ListFindingsApiV1FindingsGet(ctx, &generated.ListFindingsApiV1FindingsGetParams{XWorkspaceID: scope, Closed: Ptr(false), Cursor: Ptr("next")})
+					return api.ListFindings(ctx, &generated.ListFindingsParams{XWorkspaceID: scope, Closed: Ptr(false), Cursor: Ptr("next")})
 				},
 				func() (*http.Response, error) {
-					return api.CreateFindingApiV1FindingsPost(ctx, &generated.CreateFindingApiV1FindingsPostParams{XWorkspaceID: scope}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: "revision", Category: generated.InstructionIssue, SourceKey: "source", Title: "Finding", Evidence: []generated.Evidence{}})
+					return api.CreateFinding(ctx, &generated.CreateFindingParams{XWorkspaceID: scope}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: "revision", Category: generated.InstructionIssue, SourceKey: "source", Title: "Finding", Evidence: []generated.Evidence{}})
 				},
 				func() (*http.Response, error) {
-					return api.GetFindingApiV1FindingsFindingIdGet(ctx, "finding", &generated.GetFindingApiV1FindingsFindingIdGetParams{XWorkspaceID: scope})
+					return api.GetFinding(ctx, "finding", &generated.GetFindingParams{XWorkspaceID: scope})
 				},
 				func() (*http.Response, error) {
-					return api.UpdateFindingApiV1FindingsFindingIdPatch(ctx, "finding", &generated.UpdateFindingApiV1FindingsFindingIdPatchParams{XWorkspaceID: scope, IfMatch: Ptr(`"finding:1"`)}, generated.FindingUpdate{Closed: Value(false), AssessmentNote: Null[string]()})
+					return api.UpdateFinding(ctx, "finding", &generated.UpdateFindingParams{XWorkspaceID: scope, IfMatch: Ptr(`"finding:1"`)}, generated.FindingUpdate{Closed: Value(false), AssessmentNote: Null[string]()})
 				},
 				func() (*http.Response, error) {
-					return api.ListAnalysesApiV1FindingAnalysesGet(ctx, &generated.ListAnalysesApiV1FindingAnalysesGetParams{XWorkspaceID: scope})
+					return api.ListFindingAnalyses(ctx, &generated.ListFindingAnalysesParams{XWorkspaceID: scope})
 				},
 				func() (*http.Response, error) {
-					return api.StartAnalysisApiV1FindingAnalysesPost(ctx, &generated.StartAnalysisApiV1FindingAnalysesPostParams{XWorkspaceID: scope, IdempotencyKey: "analysis-key"}, generated.AnalysisCreate{TraceId: Null[string](), Presets: Ptr([]generated.Preset{})})
+					return api.StartAnalysis(ctx, &generated.StartAnalysisParams{XWorkspaceID: scope, IdempotencyKey: "analysis-key"}, generated.AnalysisCreate{TraceId: Null[string](), Presets: Ptr([]generated.Preset{})})
 				},
 				func() (*http.Response, error) {
-					return api.PrepareFindingAgentApiV1FindingAgentPost(ctx, &generated.PrepareFindingAgentApiV1FindingAgentPostParams{XWorkspaceID: scope})
+					return api.PrepareFindingAgent(ctx, &generated.PrepareFindingAgentParams{XWorkspaceID: scope})
 				},
 				func() (*http.Response, error) {
-					return api.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx, "session", &generated.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams{XWorkspaceID: scope, EntryId: []string{"one", "two"}})
+					return api.GetMessageAuthors(ctx, "session", &generated.GetMessageAuthorsParams{XWorkspaceID: scope, EntryId: []string{"one", "two"}})
 				},
 				func() (*http.Response, error) {
-					return api.RunContentApiV1RunsRunIdContentsContentIdGet(ctx, "run", "content", &generated.RunContentApiV1RunsRunIdContentsContentIdGetParams{XWorkspaceID: scope})
+					return api.GetRunContent(ctx, "run", "content", &generated.GetRunContentParams{XWorkspaceID: scope})
 				},
 			}
 			for _, call := range calls {
@@ -348,7 +348,7 @@ func TestRunContentRequiresOneCompleteJSONDocument(t *testing.T) {
 	for _, suffix := range []string{`{"value":2}`, ` garbage`, "\n\t "} {
 		client := coverageClient(t, func(req *http.Request) *http.Response { return coverageResponse(200, body+suffix) })
 		api, _ := client.API()
-		raw, err := api.RunContentApiV1RunsRunIdContentsContentIdGet(context.Background(), "run", "content", &generated.RunContentApiV1RunsRunIdContentsContentIdGetParams{})
+		raw, err := api.GetRunContent(context.Background(), "run", "content", &generated.GetRunContentParams{})
 		content, err := ParseJSON[generated.RunContent](client, raw, err, 200)
 		if strings.TrimSpace(suffix) == "" {
 			if err != nil || content.Value.Value != json.Number("1e309") {

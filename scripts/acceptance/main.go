@@ -143,8 +143,8 @@ func offline() {
 	thread := must(interaction.Thread().Get(ctx))
 	check(thread.Value.Id == "thr" && !strings.Contains(string(thread.RawJSON()), "message_history"), "installed history is submit-only")
 	api := must(client.API())
-	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
-		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: "offline"},
+	replayResponse, err := api.CreateThread(ctx,
+		&generated.CreateThreadParams{IdempotencyKey: "offline"},
 		generated.NewThread{AgentId: "agent", Payload: testTextPayload("Hello"), MessageHistory: &history})
 	replay := must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
 	check(replay.Value.Entry.Id == interaction.Entry().ID && submitted == 2, "installed generated same-key Create replay")
@@ -160,13 +160,13 @@ func offline() {
 	successor := must(client.Run("wait").Resume(ctx, a13n.Answers{"call-1": a13n.Returned(map[string]any{"answer": 42})}, a13n.ResumeOptions{IdempotencyKey: "resume-offline", Input: a13n.Value(a13n.Input{Content: []a13n.Part{a13n.TextPart("Plus this user input.")}})}))
 	defer successor.Close()
 	check(successor.Receipt().RunID == "successor" && successor.ReceiptEvidence().Resume.StatusCode == 201, "installed atomic resume successor")
-	replayedResponse, err := api.ResumeRunApiV1RunsRunIdResumePost(ctx, "wait",
-		&generated.ResumeRunApiV1RunsRunIdResumePostParams{IdempotencyKey: "resume-offline"}, resume)
+	replayedResponse, err := api.ResumeRun(ctx, "wait",
+		&generated.ResumeRunParams{IdempotencyKey: "resume-offline"}, resume)
 	replayed := must(a13n.ParseJSON[generated.RunView](client, replayedResponse, err, 200))
 	check(replayed.Value.Id == successor.Receipt().RunID && resumeCalls == 2 && continued == 1, "installed raw resume replay no follow-up input send")
 	pages := 0
 	for page, err := range a13n.Pages(ctx, "", func(ctx context.Context, cursor *string) (a13n.Result[generated.ThreadPage], error) {
-		response, err := api.ListThreadsApiV1ThreadsGet(ctx, &generated.ListThreadsApiV1ThreadsGetParams{Cursor: cursor})
+		response, err := api.ListThreads(ctx, &generated.ListThreadsParams{Cursor: cursor})
 		return a13n.ParseJSON[generated.ThreadPage](client, response, err, 200)
 	}, func(page generated.ThreadPage) string { return page.NextCursor.GetOrEmpty() }) {
 		check(err == nil && page.StatusCode == 200 && page.ETag() == `"1"`, "generated pagination/metadata")
@@ -174,18 +174,18 @@ func offline() {
 	}
 	check(pages == 1, "pagination")
 	path := "projects/计划 #1%.md"
-	fileResponse, err := api.ReadFileApiV1MemoriesMemoryIdFilesPathGet(ctx, "mem", path,
-		&generated.ReadFileApiV1MemoriesMemoryIdFilesPathGetParams{})
+	fileResponse, err := api.ReadFile(ctx, "mem", path,
+		&generated.ReadFileParams{})
 	file := must(a13n.ParseJSON[generated.MemoryFile](client, fileResponse, err, 200))
 	check(file.Value.Content == "first", "installed generated Unicode file route")
 	etag := `"file:v1"`
-	fileResponse, err = api.ReplaceFileApiV1MemoriesMemoryIdFilesPathPut(ctx, "mem", path,
-		&generated.ReplaceFileApiV1MemoriesMemoryIdFilesPathPutParams{IfMatch: &etag}, generated.MemoryFileReplace{Content: "second"})
+	fileResponse, err = api.ReplaceFile(ctx, "mem", path,
+		&generated.ReplaceFileParams{IfMatch: &etag}, generated.MemoryFileReplace{Content: "second"})
 	check(must(a13n.ParseJSON[generated.MemoryFile](client, fileResponse, err, 200)).Value.Content == "second", "installed memory CAS")
 	seqs := []int{}
 	for page, err := range a13n.Pages(ctx, "", func(ctx context.Context, cursor *string) (a13n.Result[generated.MemoryRevisionPage], error) {
-		response, err := api.ListRevisionsApiV1MemoriesMemoryIdRevisionsGet(ctx, "mem",
-			&generated.ListRevisionsApiV1MemoriesMemoryIdRevisionsGetParams{Path: &path, Cursor: cursor})
+		response, err := api.ListMemoryRevisions(ctx, "mem",
+			&generated.ListMemoryRevisionsParams{Path: &path, Cursor: cursor})
 		return a13n.ParseJSON[generated.MemoryRevisionPage](client, response, err, 200)
 	}, func(page generated.MemoryRevisionPage) string { return page.NextCursor.GetOrEmpty() }) {
 		check(err == nil, "installed numeric revision pages")
@@ -194,15 +194,15 @@ func offline() {
 		}
 	}
 	check(len(seqs) == 2 && seqs[0] == 7 && seqs[1] == 8, "installed numeric revisions")
-	restoreResponse, err := api.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost(ctx, "mem", seqs[1],
-		&generated.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostParams{IfMatch: &etag})
+	restoreResponse, err := api.RestoreMemoryRevision(ctx, "mem", seqs[1],
+		&generated.RestoreMemoryRevisionParams{IfMatch: &etag})
 	restored := must(a13n.ParseJSON[generated.MemoryFileState](client, restoreResponse, err, 200))
 	check(restored.Value.File.IsNull(), "installed nullable memory restore")
 	var part generated.Part
 	check(part.FromTextPart(generated.TextPart{Type: "text", Text: "typed"}) == nil, "typed union")
 	body := must(json.Marshal(generated.AgentUpdate{Description: nullable.NewNullNullable[string]()}))
 	check(string(body) == `{"description":null}`, "nullable omission")
-	response, err := api.HealthHealthzGet(ctx)
+	response, err := api.Health(ctx)
 	_, err = a13n.ParseJSON[map[string]any](client, response, err, 200)
 	var protocol *a13n.ProtocolError
 	check(errors.Is(err, a13n.ErrProtocol) && errors.As(err, &protocol) && protocol.Kind == "content_type", "bounded protocol errors")
@@ -229,7 +229,7 @@ func live() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 	api := must(client.API())
-	response := must(api.HealthHealthzGet(ctx))
+	response := must(api.Health(ctx))
 	check(response.StatusCode == 200, "health")
 	_ = response.Body.Close()
 	agent := required("A13N_AGENT")
@@ -263,8 +263,8 @@ func live() {
 
 	catchupReadback(ctx, client, outcome, first.Entry().ID)
 	memoryComputerReadback(ctx, client, outcome)
-	replayResponse, err := api.CreateThreadApiV1ThreadsPost(ctx,
-		&generated.CreateThreadApiV1ThreadsPostParams{IdempotencyKey: firstKey},
+	replayResponse, err := api.CreateThread(ctx,
+		&generated.CreateThreadParams{IdempotencyKey: firstKey},
 		generated.NewThread{AgentId: agent, Payload: testTextPayload(firstText), MessageHistory: &history, Options: initialOptions})
 	replay := must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
 	check(replay.Value.Thread.Id == first.Thread().ID && replay.Value.Entry.Id == first.Entry().ID,
@@ -290,7 +290,7 @@ func live() {
 	checkConfiguration(waitingOutcome.Evidence().Value, waitingOptions)
 	pending := waitingOutcome.Pending
 	check(len(pending.Approvals) == 0 && len(pending.Calls) == 1, "pending client call count")
-	delivery := generated.NextRun
+	delivery := generated.DeliveryNextRun
 	queuedPayload := testTextPayload("Follow up after the client tool answer.")
 	queuedKey := key()
 	queuedOptions := configurationOptions("next-run")
@@ -300,8 +300,8 @@ func live() {
 	check(queued.Receipt().ProvisionalRunID == "" && queued.ReceiptEvidence().Submission.StatusCode == 201, "next_run queued receipt")
 	// Reconcile the same logical mutation through the complete generated API.
 	// This explicit same-key replay must return the original Entry, not submit twice.
-	replayResponse, err = api.SubmitMessageApiV1ThreadsThreadIdInboxPost(ctx, waiting.Thread().ID,
-		&generated.SubmitMessageApiV1ThreadsThreadIdInboxPostParams{IdempotencyKey: queuedKey},
+	replayResponse, err = api.SubmitMessage(ctx, waiting.Thread().ID,
+		&generated.SubmitMessageParams{IdempotencyKey: queuedKey},
 		generated.Message{AgentId: clientToolAgent, Payload: queuedPayload, Delivery: &delivery, Options: queuedOptions})
 	replay = must(a13n.ParseJSON[generated.Submitted](client, replayResponse, err, 200))
 	check(replay.StatusCode == 200 && replay.Value.Entry.Id == queued.Entry().ID && replay.Value.Thread.Id == waiting.Thread().ID, "same-key replay")
@@ -323,17 +323,17 @@ func live() {
 
 	content := bytes.Repeat([]byte("asset\n"), 50000)
 	upload := must(client.Upload(ctx, a13n.UploadFile{Name: "acceptance.bin", ContentType: "application/octet-stream", Reader: bytes.NewReader(content)}, key()))
-	assetResponse, err := api.CreateAssetApiV1AssetsPost(ctx, &generated.CreateAssetApiV1AssetsPostParams{}, generated.AssetCreate{Name: "Acceptance", UploadId: upload.Value.UploadId})
+	assetResponse, err := api.CreateAsset(ctx, &generated.CreateAssetParams{}, generated.AssetCreate{Name: "Acceptance", UploadId: upload.Value.UploadId})
 	asset := must(a13n.ParseJSON[generated.Asset](client, assetResponse, err, 200, 201))
 	download := must(client.Asset(asset.Value.Id).Download(ctx))
 	received := must(io.ReadAll(download.Body))
 	_ = download.Close()
 	check(bytes.Equal(received, content), "streamed binary transfer")
-	currentResponse, err := api.GetAgentApiV1AgentsAgentIdGet(ctx, agent, &generated.GetAgentApiV1AgentsAgentIdGetParams{})
+	currentResponse, err := api.GetAgent(ctx, agent, &generated.GetAgentParams{})
 	current := must(a13n.ParseJSON[generated.Agent](client, currentResponse, err, 200))
-	changedResponse, err := api.UpdateAgentApiV1AgentsAgentIdPatch(ctx, agent, &generated.UpdateAgentApiV1AgentsAgentIdPatchParams{IfMatch: &[]string{current.ETag()}[0]}, generated.AgentUpdate{Description: nullable.NewNullableWithValue("Go acceptance")})
+	changedResponse, err := api.UpdateAgent(ctx, agent, &generated.UpdateAgentParams{IfMatch: &[]string{current.ETag()}[0]}, generated.AgentUpdate{Description: nullable.NewNullableWithValue("Go acceptance")})
 	changed := must(a13n.ParseJSON[generated.Agent](client, changedResponse, err, 200))
-	staleResponse, err := api.UpdateAgentApiV1AgentsAgentIdPatch(ctx, agent, &generated.UpdateAgentApiV1AgentsAgentIdPatchParams{IfMatch: &[]string{current.ETag()}[0]}, generated.AgentUpdate{})
+	staleResponse, err := api.UpdateAgent(ctx, agent, &generated.UpdateAgentParams{IfMatch: &[]string{current.ETag()}[0]}, generated.AgentUpdate{})
 	_, err = a13n.ParseJSON[generated.Agent](client, staleResponse, err, 200)
 	var failure *a13n.ApiError
 	check(errors.As(err, &failure) && failure.Status == 412 && changed.ETag() != current.ETag(), "CAS conflict evidence")
@@ -345,30 +345,30 @@ func live() {
 // one generated transport: escaped Unicode paths, CAS, paged numeric revisions,
 // nullable restore, and frozen Run mounts.
 func memory(ctx context.Context, client *a13n.Client, api *generated.ClientWithResponses, agent string) {
-	createdResponse, err := api.CreateMemoryApiV1MemoriesPost(ctx, &generated.CreateMemoryApiV1MemoriesPostParams{},
+	createdResponse, err := api.CreateMemory(ctx, &generated.CreateMemoryParams{},
 		generated.MemoryCreate{Name: "Go acceptance", Type: ptr("postgres")})
 	created := must(a13n.ParseJSON[generated.Memory](client, createdResponse, err, 201))
 	memoryID, path := created.Value.Id, "projects/计划 #1%.md"
-	firstResponse, err := api.CreateFileApiV1MemoriesMemoryIdFilesPost(ctx, memoryID,
-		&generated.CreateFileApiV1MemoriesMemoryIdFilesPostParams{}, generated.MemoryFileCreate{Path: path, Content: "first"})
+	firstResponse, err := api.CreateFile(ctx, memoryID,
+		&generated.CreateFileParams{}, generated.MemoryFileCreate{Path: path, Content: "first"})
 	first := must(a13n.ParseJSON[generated.MemoryFile](client, firstResponse, err, 201))
 	check(first.Value.Path == path, "Unicode file creation")
 	read := func() a13n.Result[generated.MemoryFile] {
-		response, err := api.ReadFileApiV1MemoriesMemoryIdFilesPathGet(ctx, memoryID, path,
-			&generated.ReadFileApiV1MemoriesMemoryIdFilesPathGetParams{})
+		response, err := api.ReadFile(ctx, memoryID, path,
+			&generated.ReadFileParams{})
 		return must(a13n.ParseJSON[generated.MemoryFile](client, response, err, 200))
 	}
 	check(read().Value.Content == "first", "Unicode file read")
 	etag := first.ETag()
-	replacedResponse, err := api.ReplaceFileApiV1MemoriesMemoryIdFilesPathPut(ctx, memoryID, path,
-		&generated.ReplaceFileApiV1MemoriesMemoryIdFilesPathPutParams{IfMatch: &etag},
+	replacedResponse, err := api.ReplaceFile(ctx, memoryID, path,
+		&generated.ReplaceFileParams{IfMatch: &etag},
 		generated.MemoryFileReplace{Content: "second"})
 	_ = must(a13n.ParseJSON[generated.MemoryFile](client, replacedResponse, err, 200))
 	limit := 1
 	revisions := []generated.MemoryRevision{}
 	for page, err := range a13n.Pages(ctx, "", func(ctx context.Context, cursor *string) (a13n.Result[generated.MemoryRevisionPage], error) {
-		response, err := api.ListRevisionsApiV1MemoriesMemoryIdRevisionsGet(ctx, memoryID,
-			&generated.ListRevisionsApiV1MemoriesMemoryIdRevisionsGetParams{Path: &path, Limit: &limit, Cursor: cursor})
+		response, err := api.ListMemoryRevisions(ctx, memoryID,
+			&generated.ListMemoryRevisionsParams{Path: &path, Limit: &limit, Cursor: cursor})
 		return a13n.ParseJSON[generated.MemoryRevisionPage](client, response, err, 200)
 	}, func(page generated.MemoryRevisionPage) string { return page.NextCursor.GetOrEmpty() }) {
 		check(err == nil, fmt.Sprintf("memory revision pagination: %v", err))
@@ -386,20 +386,20 @@ func memory(ctx context.Context, client *a13n.Client, api *generated.ClientWithR
 	}
 	check(original > 0 && updated > original, "numeric revision ordering")
 	etag = read().ETag()
-	deletedResponse, err := api.DeleteFileApiV1MemoriesMemoryIdFilesPathDelete(ctx, memoryID, path,
-		&generated.DeleteFileApiV1MemoriesMemoryIdFilesPathDeleteParams{IfMatch: &etag})
+	deletedResponse, err := api.DeleteFile(ctx, memoryID, path,
+		&generated.DeleteFileParams{IfMatch: &etag})
 	_ = must(a13n.ParseJSON[struct{}](client, deletedResponse, err, 204))
-	restoredResponse, err := api.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost(ctx, memoryID, updated,
-		&generated.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostParams{})
+	restoredResponse, err := api.RestoreMemoryRevision(ctx, memoryID, updated,
+		&generated.RestoreMemoryRevisionParams{})
 	restored := must(a13n.ParseJSON[generated.MemoryFileState](client, restoredResponse, err, 200))
 	check(must(restored.Value.File.Get()).Content == "first", "numeric revision restore")
 	etag = read().ETag()
-	undoneResponse, err := api.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost(ctx, memoryID, original,
-		&generated.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostParams{IfMatch: &etag})
+	undoneResponse, err := api.RestoreMemoryRevision(ctx, memoryID, original,
+		&generated.RestoreMemoryRevisionParams{IfMatch: &etag})
 	undone := must(a13n.ParseJSON[generated.MemoryFileState](client, undoneResponse, err, 200))
 	check(undone.Value.File.IsNull(), "restore creation yields null file")
-	restoredResponse, err = api.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost(ctx, memoryID, updated,
-		&generated.RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePostParams{})
+	restoredResponse, err = api.RestoreMemoryRevision(ctx, memoryID, updated,
+		&generated.RestoreMemoryRevisionParams{})
 	_ = must(a13n.ParseJSON[generated.MemoryFileState](client, restoredResponse, err, 200))
 
 	mounts := []generated.MemoryMount{{MemoryId: memoryID, Name: "notes", Access: generated.MemoryAccessRead}}
@@ -409,8 +409,8 @@ func memory(ctx context.Context, client *a13n.Client, api *generated.ClientWithR
 	check(outcome.Status == generated.RunStatusCompleted, "memory-mounted Run")
 	thread := must(interaction.Thread().Get(ctx))
 	etag = thread.ETag()
-	mountResponse, err := api.UpdateMountApiV1ThreadsThreadIdMemoriesNamePatch(ctx, interaction.Thread().ID, "notes",
-		&generated.UpdateMountApiV1ThreadsThreadIdMemoriesNamePatchParams{IfMatch: &etag},
+	mountResponse, err := api.UpdateMemoryMount(ctx, interaction.Thread().ID, "notes",
+		&generated.UpdateMemoryMountParams{IfMatch: &etag},
 		generated.MemoryMountUpdate{Access: nullable.NewNullableWithValue(generated.MemoryAccessWrite)})
 	_ = must(a13n.ParseJSON[generated.MemoryMount](client, mountResponse, err, 200))
 	// This explicit legacy memory mount is one native union alternative; shared
@@ -421,9 +421,9 @@ func memory(ctx context.Context, client *a13n.Client, api *generated.ClientWithR
 }
 
 // This progress is saved by the application independently of Run Items.
-func recoveryParams(hint string) *generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams {
+func recoveryParams(hint string) *generated.ThreadStreamParams {
 	runID, position := "recovered", "2-8"
-	params := &generated.ThreadStreamApiV1ThreadsThreadIdStreamGetParams{Run: &runID, Position: &position}
+	params := &generated.ThreadStreamParams{Run: &runID, Position: &position}
 	if hint != "null" {
 		after := "999-1"
 		params.LastEventID = &after
@@ -448,7 +448,7 @@ func streamRecoveryOffline() {
 		}))
 		client := must(a13n.NewClient(server.URL, a13n.NewSecret("offline"), nil))
 		api := must(client.API())
-		response := must(api.ThreadStreamApiV1ThreadsThreadIdStreamGet(context.Background(), "recovery-thread", recoveryParams(hint)))
+		response := must(api.ThreadStream(context.Background(), "recovery-thread", recoveryParams(hint)))
 		body := must(io.ReadAll(response.Body))
 		_ = response.Body.Close()
 		check(strings.Contains(string(body), "event: boundary") && !strings.Contains(string(body), "event: gap"), "covered boundary and expired hint")

@@ -116,7 +116,6 @@ func TestPlatformAndComputerSelectionsReachAuthoredStart(t *testing.T) {
 	mounts := InitialMounts{{Name: "desktop", EnvironmentId: "environment", PermissionCeiling: &permissions}}
 	options := RunOptions{Overrides: Value(Overrides{
 		BuiltinSkills: Value([]BuiltinSkill{}),
-		PlatformTools: Value(PlatformSelection{Groups: Ptr([]PlatformGroup{generated.PlatformGroupExecution}), ReadPermission: Ptr(generated.PlatformSelectionReadPermissionDeny), WritePermission: Ptr(generated.PlatformSelectionWritePermissionAsk)}),
 	})}
 	interaction, err := client.Agent("agent").Start(context.Background(), "Inspect", StartOptions{IdempotencyKey: "selection", Environments: &mounts, Options: &options})
 	if err != nil {
@@ -128,14 +127,14 @@ func TestPlatformAndComputerSelectionsReachAuthoredStart(t *testing.T) {
 	}
 	var got, want any
 	_ = json.Unmarshal(submitted["options"], &got)
-	_ = json.Unmarshal([]byte(`{"overrides":{"builtin_skills":[],"platform_tools":{"groups":["execution"],"read_permission":"deny","write_permission":"ask"}}}`), &want)
+	_ = json.Unmarshal([]byte(`{"overrides":{"builtin_skills":[]}}`), &want)
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("platform selections changed: %s", submitted["options"])
 	}
 }
 
 func TestMemoryPlatformAndUsageNativeReadback(t *testing.T) {
-	config := `{"model":"test","builtin_skills":[],"platform_tools":{"groups":["execution","providers"],"read_permission":"deny","write_permission":"ask"},"memory":{"enabled":false,"spaces":[]}}`
+	config := `{"model":"test","builtin_skills":[],"memory":{"enabled":false,"spaces":[]}}`
 	for _, model := range []any{&generated.AgentConfigInput{}, &generated.AgentConfigOutput{}} {
 		if err := json.Unmarshal([]byte(config), model); err != nil {
 			t.Fatal(err)
@@ -151,7 +150,7 @@ func TestMemoryPlatformAndUsageNativeReadback(t *testing.T) {
 			t.Fatalf("config changed: %s", encoded)
 		}
 	}
-	for _, body := range []string{`{}`, `{"builtin_skills":null,"platform_tools":null}`, `{"builtin_skills":[],"platform_tools":{"groups":[]}}`} {
+	for _, body := range []string{`{}`, `{"builtin_skills":null}`, `{"builtin_skills":[]}`} {
 		for _, model := range []any{&Overrides{}, &generated.AgentOverrideOutput{}} {
 			if err := json.Unmarshal([]byte(body), model); err != nil {
 				t.Fatal(err)
@@ -193,7 +192,7 @@ func TestCatalogExactFiltersAndProviderSecretOmission(t *testing.T) {
 		return coverageResponse(200, `{"items":[],"status":"ready"}`)
 	})
 	api, _ := client.API()
-	response, err := api.GetModelCatalogApiV1ModelCatalogGet(context.Background(), &generated.GetModelCatalogApiV1ModelCatalogGetParams{Provider: Ptr("catalog-channel"), Model: Ptr("Vendor/Case Sensitive+Model")})
+	response, err := api.GetModelCatalog(context.Background(), &generated.GetModelCatalogParams{Provider: Ptr("catalog-channel"), Model: Ptr("Vendor/Case Sensitive+Model")})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -231,7 +230,7 @@ func TestRetainedImageBinaryAndUnavailableErrors(t *testing.T) {
 			return response
 		})
 		api, _ := client.API()
-		response, err := api.RunImageApiV1RunsRunIdImagesImageIdGet(context.Background(), "run/id", "image #%", &generated.RunImageApiV1RunsRunIdImagesImageIdGetParams{})
+		response, err := api.RunImage(context.Background(), "run/id", "image #%", &generated.RunImageParams{})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -245,7 +244,7 @@ func TestRetainedImageBinaryAndUnavailableErrors(t *testing.T) {
 		return coverageResponse(404, `{"error":{"code":"not_found","message":"Not found","details":{},"request_id":null}}`)
 	})
 	api, _ := client.API()
-	response, err := api.RunImageApiV1RunsRunIdImagesImageIdGet(context.Background(), "run", "uncommitted", &generated.RunImageApiV1RunsRunIdImagesImageIdGetParams{})
+	response, err := api.RunImage(context.Background(), "run", "uncommitted", &generated.RunImageParams{})
 	_, err = ParseJSON[map[string]any](client, response, err, 200)
 	var failure *ApiError
 	if !errors.As(err, &failure) || failure.Code != "not_found" {

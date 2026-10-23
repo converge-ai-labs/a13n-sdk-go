@@ -76,13 +76,13 @@ func TestModelProviderAuthorizationAndDiscoveryNativeWire(t *testing.T) {
 			api, _ := client.API()
 			ctx := context.Background()
 			scope := "wsp_test"
-			raw, err := api.ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGet(ctx, "provider", &generated.ModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationGetParams{XWorkspaceID: &scope})
+			raw, err := api.ModelAuthorization(ctx, "provider", &generated.ModelAuthorizationParams{XWorkspaceID: &scope})
 			status, err := ParseJSON[generated.AuthorizationStatus](client, raw, err, 200)
 			if err != nil || status.Value.State != "connected" || status.Value.Pending == nil || *status.Value.Pending || !status.Value.Subject.IsNull() || status.RequestID() != "oauth-wire" || status.Header.Get("Cache-Control") != "no-store" {
 				t.Fatal(status, err)
 			}
 			newRegistration := false
-			raw, err = api.AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePost(ctx, "provider", &generated.AuthorizeModelApiV1ModelProvidersProviderIdAuthorizePostParams{XWorkspaceID: &scope}, generated.ProviderAuthorizationRequest{NewRegistration: &newRegistration})
+			raw, err = api.AuthorizeModel(ctx, "provider", &generated.AuthorizeModelParams{XWorkspaceID: &scope}, generated.ProviderAuthorizationRequest{NewRegistration: &newRegistration})
 			start, err := ParseJSON[generated.AuthorizationStart](client, raw, err, 200)
 			if err != nil || start.Value.AttemptId != "attempt" || start.Value.Method == nil || *start.Value.Method != "manual_callback" {
 				t.Fatal(start, err)
@@ -91,17 +91,17 @@ func TestModelProviderAuthorizationAndDiscoveryNativeWire(t *testing.T) {
 			if strings.Contains(fmt.Sprintf("%+v %#v", body, body), "secret-test-code") {
 				t.Fatal("callback secret diagnostic leak")
 			}
-			raw, err = api.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPost(ctx, "provider", &generated.CompleteModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationCallbackPostParams{XWorkspaceID: &scope}, body)
+			raw, err = api.CompleteModelAuthorization(ctx, "provider", &generated.CompleteModelAuthorizationParams{XWorkspaceID: &scope}, body)
 			completed, err := ParseJSON[generated.AuthorizationStatus](client, raw, err, 200)
 			if err != nil || completed.Value.State != "connected" {
 				t.Fatal(completed, err)
 			}
-			raw, err = api.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGet(ctx, "provider", &generated.DiscoverModelProviderModelsApiV1ModelProvidersProviderIdModelsGetParams{XWorkspaceID: &scope})
+			raw, err = api.DiscoverModelProviderModels(ctx, "provider", &generated.DiscoverModelProviderModelsParams{XWorkspaceID: &scope})
 			models, err := ParseJSON[[]generated.ProviderModel](client, raw, err, 200)
 			if err != nil || !reflect.DeepEqual(models.Value, []generated.ProviderModel{{Slug: "native-chat", DisplayName: "Native Chat"}}) {
 				t.Fatal(models, err)
 			}
-			raw, err = api.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDelete(ctx, "provider", &generated.DisconnectModelAuthorizationApiV1ModelProvidersProviderIdAuthorizationDeleteParams{XWorkspaceID: &scope})
+			raw, err = api.DisconnectModelAuthorization(ctx, "provider", &generated.DisconnectModelAuthorizationParams{XWorkspaceID: &scope})
 			disconnected, err := ParseJSON[generated.AuthorizationDisconnect](client, raw, err, 200)
 			if err != nil || disconnected.Value.LocalTokensCleared == nil || !*disconnected.Value.LocalTokensCleared || !disconnected.Value.RevocationConfirmed.IsNull() {
 				t.Fatal(disconnected, err)
@@ -121,7 +121,7 @@ func TestModelMediaPoliciesPreserveOmittedNullZeroAndFalse(t *testing.T) {
 		if err := json.Unmarshal([]byte(input), &characteristics); err != nil {
 			t.Fatal(err)
 		}
-		raw, err := generated.NewCreateModelApiV1ModelsPostRequest("https://service.invalid", &generated.CreateModelApiV1ModelsPostParams{}, generated.ModelCreate{Name: "Media", ProviderId: "provider", Config: generated.ModelConfigInput{ModelApi: "other.native", ModelName: "native", Characteristics: &characteristics}})
+		raw, err := generated.NewCreateModelRequest("https://service.invalid", &generated.CreateModelParams{}, generated.ModelCreate{Name: "Media", ProviderId: "provider", Config: generated.ModelConfigInput{ModelApi: "other.native", ModelName: "native", Characteristics: &characteristics}})
 		if err != nil {
 			t.Fatal(err)
 		}

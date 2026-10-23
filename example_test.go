@@ -70,7 +70,7 @@ func ExampleClient_API() {
 		return
 	}
 	// Admin/organization operations use the same generated API and transport.
-	response, err := api.HealthHealthzGet(context.Background())
+	response, err := api.Health(context.Background())
 	if err == nil {
 		_ = response.Body.Close()
 	}
@@ -85,7 +85,7 @@ func ExamplePages() {
 	defer client.Close()
 	api, _ := client.API()
 	pages := a13n.Pages(ctx, "", func(ctx context.Context, cursor *string) (a13n.Result[generated.ThreadPage], error) {
-		response, err := api.ListThreadsApiV1ThreadsGet(ctx, &generated.ListThreadsApiV1ThreadsGetParams{Cursor: cursor})
+		response, err := api.ListThreads(ctx, &generated.ListThreadsParams{Cursor: cursor})
 		return a13n.ParseJSON[generated.ThreadPage](client, response, err, 200)
 	}, func(page generated.ThreadPage) string { return page.NextCursor.GetOrEmpty() })
 	for page, err := range pages {

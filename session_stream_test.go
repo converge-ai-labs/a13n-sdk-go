@@ -11,6 +11,7 @@ import (
 	"net/http/cookiejar"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"reflect"
 	"strings"
 	"sync/atomic"
@@ -27,6 +28,33 @@ const sessionDeltaJSON = `{"thread_id":"thr","run_id":"run","attempt":1,"sequenc
 const sessionGapJSON = `{"thread_id":"thr","run_id":"run"}`
 
 func sessionEvent(name, data string) string { return "event: " + name + "\ndata: " + data + "\n\n" }
+
+func TestSessionScheduleAndOccurrenceFrames(t *testing.T) {
+	for event, model := range map[string]string{"schedule": "ScheduleEvent", "occurrence": "OccurrenceEvent"} {
+		data, err := os.ReadFile("testdata/" + model + ".json")
+		if err != nil {
+			t.Fatal(err)
+		}
+		frame, err := parseSessionFrame(sseEvent{event: event, data: data})
+		if err != nil || frame.EventType() != event {
+			t.Fatal(frame, err)
+		}
+		var got, want any
+		encoded, err := json.Marshal(frame)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := json.Unmarshal(encoded, &got); err != nil {
+			t.Fatal(err)
+		}
+		if err := json.Unmarshal(data, &want); err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("changed %s: %s", event, encoded)
+		}
+	}
+}
 
 func TestSessionFramesAndNativeContinuationAreSeparateFromThread(t *testing.T) {
 	for name, data := range map[string]string{"thread": sessionThreadJSON, "items": sessionItemsJSON, "delta": sessionDeltaJSON, "gap": sessionGapJSON} {
@@ -282,7 +310,7 @@ func TestSessionStreamScopeAndProtocolFailureOwnership(t *testing.T) {
 		t.Fatal("invalid known frame retried", err, calls)
 	}
 	api, _ := client.API()
-	response, err := api.SessionStreamApiV1SessionsSessionIdStreamGet(context.Background(), "ses", &generated.SessionStreamApiV1SessionsSessionIdStreamGetParams{XWorkspaceID: Ptr("explicit")})
+	response, err := api.SessionStream(context.Background(), "ses", &generated.SessionStreamParams{XWorkspaceID: Ptr("explicit")})
 	if err != nil {
 		t.Fatal(err)
 	}

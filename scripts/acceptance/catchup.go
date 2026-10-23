@@ -57,26 +57,26 @@ func catchupOffline() {
 	defer client.Close()
 	ctx := context.Background()
 	api := must(client.API())
-	raw, err := api.RunContentApiV1RunsRunIdContentsContentIdGet(ctx, "run", "content", &generated.RunContentApiV1RunsRunIdContentsContentIdGetParams{})
+	raw, err := api.GetRunContent(ctx, "run", "content", &generated.GetRunContentParams{})
 	content := must(a13n.ParseJSON[generated.RunContent](client, raw, err, 200))
 	object := content.Value.Value.(map[string]any)
 	check(object["z"] == json.Number("9007199254740993") && object["large"] == json.Number("1e309"), "installed saved native JSON precision")
-	raw, err = api.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx, "session", &generated.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams{EntryId: []string{"one", "two"}})
+	raw, err = api.GetMessageAuthors(ctx, "session", &generated.GetMessageAuthorsParams{EntryId: []string{"one", "two"}})
 	authors := must(a13n.ParseJSON[generated.MessageAuthors](client, raw, err, 200))
 	check(len(authors.Value.Items) == 1 && authors.Value.Items[0].EntryId == "two" && authors.Value.Items[0].Principal.IsNull(), "installed authors correlate by ID, not array index")
-	raw, err = api.ListFindingsApiV1FindingsGet(ctx, &generated.ListFindingsApiV1FindingsGetParams{Closed: ptr(false)})
+	raw, err = api.ListFindings(ctx, &generated.ListFindingsParams{Closed: ptr(false)})
 	check(must(a13n.ParseJSON[generated.FindingPage](client, raw, err, 200)).Value.NextCursor.IsNull(), "installed finding paging")
-	raw, err = api.CreateFindingApiV1FindingsPost(ctx, &generated.CreateFindingApiV1FindingsPostParams{}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: "revision", SourceKey: "source", Category: generated.InstructionIssue, Title: "Finding", Evidence: []generated.Evidence{}})
+	raw, err = api.CreateFinding(ctx, &generated.CreateFindingParams{}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: "revision", SourceKey: "source", Category: generated.InstructionIssue, Title: "Finding", Evidence: []generated.Evidence{}})
 	check(must(a13n.ParseJSON[generated.Finding](client, raw, err, 201)).Value.Id == "finding", "installed finding creation")
-	raw, err = api.GetFindingApiV1FindingsFindingIdGet(ctx, "finding", &generated.GetFindingApiV1FindingsFindingIdGetParams{})
+	raw, err = api.GetFinding(ctx, "finding", &generated.GetFindingParams{})
 	check(must(a13n.ParseJSON[generated.Finding](client, raw, err, 200)).Value.Id == "finding", "installed finding read")
-	raw, err = api.UpdateFindingApiV1FindingsFindingIdPatch(ctx, "finding", &generated.UpdateFindingApiV1FindingsFindingIdPatchParams{IfMatch: ptr(`"finding:1"`)}, generated.FindingUpdate{Closed: a13n.Value(false), AssessmentNote: a13n.Null[string]()})
+	raw, err = api.UpdateFinding(ctx, "finding", &generated.UpdateFindingParams{IfMatch: ptr(`"finding:1"`)}, generated.FindingUpdate{Closed: a13n.Value(false), AssessmentNote: a13n.Null[string]()})
 	check(must(a13n.ParseJSON[generated.Finding](client, raw, err, 200)).Value.Id == "finding", "installed finding update")
-	raw, err = api.ListAnalysesApiV1FindingAnalysesGet(ctx, &generated.ListAnalysesApiV1FindingAnalysesGetParams{})
+	raw, err = api.ListFindingAnalyses(ctx, &generated.ListFindingAnalysesParams{})
 	check(must(a13n.ParseJSON[generated.AnalysisPage](client, raw, err, 200)).Value.NextCursor.IsNull(), "installed analysis paging")
-	raw, err = api.StartAnalysisApiV1FindingAnalysesPost(ctx, &generated.StartAnalysisApiV1FindingAnalysesPostParams{IdempotencyKey: "analysis"}, generated.AnalysisCreate{TraceId: a13n.Null[string](), Presets: ptr([]generated.Preset{})})
+	raw, err = api.StartAnalysis(ctx, &generated.StartAnalysisParams{IdempotencyKey: "analysis"}, generated.AnalysisCreate{TraceId: a13n.Null[string](), Presets: ptr([]generated.Preset{})})
 	check(must(a13n.ParseJSON[generated.Analysis](client, raw, err, 201)).Value.RunId == "run", "installed analysis creation")
-	raw, err = api.PrepareFindingAgentApiV1FindingAgentPost(ctx, &generated.PrepareFindingAgentApiV1FindingAgentPostParams{})
+	raw, err = api.PrepareFindingAgent(ctx, &generated.PrepareFindingAgentParams{})
 	check(must(a13n.ParseJSON[generated.Agent](client, raw, err, 200)).Value.Id == "agent", "installed finding agent preparation")
 	var policy a13n.SkillSync
 	check(policy.FromIsolatedSkillSync(a13n.IsolatedSkillSync{CacheCount: a13n.Ptr(0)}) == nil, "installed isolated policy constructor")
@@ -91,7 +91,7 @@ func catchupOffline() {
 func catchupReadback(ctx context.Context, client *a13n.Client, result a13n.RunOutcome, entryID string) {
 	api := must(client.API())
 	thread := must(client.Thread(result.ThreadID).Get(ctx))
-	raw, err := api.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGet(ctx, thread.Value.SessionId, &generated.GetMessageAuthorsApiV1SessionsSessionIdMessageAuthorsGetParams{EntryId: []string{entryID}})
+	raw, err := api.GetMessageAuthors(ctx, thread.Value.SessionId, &generated.GetMessageAuthorsParams{EntryId: []string{entryID}})
 	authors := must(a13n.ParseJSON[generated.MessageAuthors](client, raw, err, 200))
 	check(len(authors.Value.Items) == 1 && authors.Value.Items[0].EntryId == entryID, "matching Service authors resolved submitted Entry")
 	items := must(result.Run.Items(ctx))
@@ -101,15 +101,15 @@ func catchupReadback(ctx context.Context, client *a13n.Client, result a13n.RunOu
 			continue
 		}
 		for _, ref := range *item.ContentRefs {
-			raw, err = api.RunContentApiV1RunsRunIdContentsContentIdGet(ctx, result.RunID, ref.Id, &generated.RunContentApiV1RunsRunIdContentsContentIdGetParams{})
+			raw, err = api.GetRunContent(ctx, result.RunID, ref.Id, &generated.GetRunContentParams{})
 			content := must(a13n.ParseJSON[generated.RunContent](client, raw, err, 200))
 			check(content.Value.Id == ref.Id && string(content.Value.MediaType) == string(ref.MediaType) && ((content.Value.Truncated != nil && *content.Value.Truncated) == (ref.Truncated != nil && *ref.Truncated)), "matching Service content identity/media/truncation")
 			count++
 		}
 	}
-	raw, err = api.ListFindingsApiV1FindingsGet(ctx, &generated.ListFindingsApiV1FindingsGetParams{Closed: ptr(false)})
+	raw, err = api.ListFindings(ctx, &generated.ListFindingsParams{Closed: ptr(false)})
 	_ = must(a13n.ParseJSON[generated.FindingPage](client, raw, err, 200))
-	raw, err = api.ListAnalysesApiV1FindingAnalysesGet(ctx, &generated.ListAnalysesApiV1FindingAnalysesGetParams{})
+	raw, err = api.ListFindingAnalyses(ctx, &generated.ListFindingAnalysesParams{})
 	_ = must(a13n.ParseJSON[generated.AnalysisPage](client, raw, err, 200))
 	fmt.Printf("Matching Service catchup readback: authors and finding/analysis pages; expanded %d committed content refs\n", count)
 }

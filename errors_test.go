@@ -15,7 +15,7 @@ import (
 )
 
 func healthCheck(client *Client) (Result[map[string]any], error) {
-	response, err := client.api.HealthHealthzGet(context.Background())
+	response, err := client.api.Health(context.Background())
 	return jsonResult[map[string]any](client, response, err, 200)
 }
 
