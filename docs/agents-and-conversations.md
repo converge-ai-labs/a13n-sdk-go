@@ -134,8 +134,8 @@ func createAgent(ctx context.Context, client *a13n.Client, modelKey string) (str
     api, err := client.API()
     if err != nil { return "", err }
     instructions := "Answer clearly and cite uncertainty."
-    response, err := api.CreateAgentApiV1AgentsPost(ctx,
-        &generated.CreateAgentApiV1AgentsPostParams{}, generated.AgentCreate{
+    response, err := api.CreateAgent(ctx,
+        &generated.CreateAgentParams{}, generated.AgentCreate{
             Name: "Research assistant",
             Config: generated.AgentConfigInput{Model: modelKey, Instructions: &instructions},
         })

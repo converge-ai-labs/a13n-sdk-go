@@ -14,8 +14,8 @@ func askAboutPDF(ctx context.Context, client *a13n.Client, agentID, filename str
 
     api, err := client.API()
     if err != nil { return a13n.RunOutcome{}, err }
-    response, err := api.CreateAssetApiV1AssetsPost(ctx,
-        &generated.CreateAssetApiV1AssetsPostParams{},
+    response, err := api.CreateAsset(ctx,
+        &generated.CreateAssetParams{},
         generated.AssetCreate{Name: "Report", UploadId: upload.Value.UploadId})
     asset, err := a13n.ParseJSON[generated.Asset](client, response, err, 201)
     if err != nil { return a13n.RunOutcome{}, err }
@@ -58,13 +58,13 @@ func createNotesMemory(ctx context.Context, client *a13n.Client) (string, error)
     api, err := client.API()
     if err != nil { return "", err }
     fileType := "postgres"
-    response, err := api.CreateMemoryApiV1MemoriesPost(ctx,
-        &generated.CreateMemoryApiV1MemoriesPostParams{},
+    response, err := api.CreateMemory(ctx,
+        &generated.CreateMemoryParams{},
         generated.MemoryCreate{Name: "Project notes", Type: &fileType})
     memory, err := a13n.ParseJSON[generated.Memory](client, response, err, 201)
     if err != nil { return "", err }
-    response, err = api.CreateFileApiV1MemoriesMemoryIdFilesPost(ctx, memory.Value.Id,
-        &generated.CreateFileApiV1MemoriesMemoryIdFilesPostParams{},
+    response, err = api.CreateFile(ctx, memory.Value.Id,
+        &generated.CreateFileParams{},
         generated.MemoryFileCreate{Path: "projects/计划 #1%.md", Content: "Project goals"})
     _, err = a13n.ParseJSON[generated.MemoryFile](client, response, err, 201)
     if err != nil { return "", err }
@@ -94,20 +94,20 @@ The generated API treats a path such as `projects/计划 #1%.md` as **one** path
 
 ```go
 path := "projects/计划 #1%.md"
-response, err := api.ReadFileApiV1MemoriesMemoryIdFilesPathGet(ctx, memoryID, path,
-    &generated.ReadFileApiV1MemoriesMemoryIdFilesPathGetParams{})
+response, err := api.ReadFile(ctx, memoryID, path,
+    &generated.ReadFileParams{})
 current, err := a13n.ParseJSON[generated.MemoryFile](client, response, err, 200)
 if err != nil { return err }
 etag := current.ETag()
-response, err = api.ReplaceFileApiV1MemoriesMemoryIdFilesPathPut(ctx, memoryID, path,
-    &generated.ReplaceFileApiV1MemoriesMemoryIdFilesPathPutParams{IfMatch: &etag},
+response, err = api.ReplaceFile(ctx, memoryID, path,
+    &generated.ReplaceFileParams{IfMatch: &etag},
     generated.MemoryFileReplace{Content: "Updated goals"})
 updated, err := a13n.ParseJSON[generated.MemoryFile](client, response, err, 200)
 if err != nil { return err }
 fmt.Println(updated.Value.Path, updated.Value.Content)
 ```
 
-This last snippet assumes the `api`, `client`, `ctx` and `memoryID` from above; imports also include `fmt`. To inspect changes, use `ListRevisionsApiV1MemoriesMemoryIdRevisionsGet` with `a13n.Pages` (see [pagination](generated-api.md#page-through-a-list)). Its revisions carry numeric `Seq`; `RestoreRevisionApiV1MemoriesMemoryIdRevisionsSeqRestorePost` takes that `int` and a conditional ETag when replacing an existing file. A restore can yield `MemoryFileState.File` as **null** (for example restoring a creation operation that removes the file). Check the nullable value before accessing its content; see the [installed consumer](../scripts/acceptance/main.go) for an end-to-end Unicode/history/restore example.
+This last snippet assumes the `api`, `client`, `ctx` and `memoryID` from above; imports also include `fmt`. To inspect changes, use `ListMemoryRevisions` with `a13n.Pages` (see [pagination](generated-api.md#page-through-a-list)). Its revisions carry numeric `Seq`; `RestoreMemoryRevision` takes that `int` and a conditional ETag when replacing an existing file. A restore can yield `MemoryFileState.File` as **null** (for example restoring a creation operation that removes the file). Check the nullable value before accessing its content; see the [installed consumer](../scripts/acceptance/main.go) for an end-to-end Unicode/history/restore example.
 
 ## Select shared Memory Spaces for a Session
 
@@ -125,8 +125,8 @@ func createSessionWithSpace(ctx context.Context, client *a13n.Client, spaceID st
         Enabled: a13n.Ptr(true),
         Spaces: a13n.Ptr([]generated.SpaceBinding{{Name: "team", SpaceId: spaceID}}),
     }
-    response, err := api.CreateSessionApiV1SessionsPost(ctx,
-        &generated.CreateSessionApiV1SessionsPostParams{},
+    response, err := api.CreateSession(ctx,
+        &generated.CreateSessionParams{},
         generated.SessionCreate{Memory: a13n.Value(memory)})
     return a13n.ParseJSON[generated.SessionView](client, response, err, 201)
 }
@@ -136,4 +136,4 @@ Omitted settings inherit or preserve their Service-owned value; explicit `spaces
 
 `RunView.MemoryMounts` is now a generated union: use `AsMemoryMount()` for a legacy request mount or `AsFrozenMemoryMount()` for host-resolved Space evidence. Frozen mounts can include nullable `SpaceId` and optional non-null `Roots`. Keep the native union when reserializing readback so those fields survive. Roots and Space identity are host evidence, not fields to copy into a request `MemoryMount`.
 
-Organization status and history are separate reads. `OrganizeSpaceApiV1MemorySpacesSpaceIdOrganizationsPost` takes no body and returns `202` with `SpaceOrganizationStatus`; `Pending`/`ActiveRunId` are asynchronous observations. Service owns scheduling, thresholds, captured authority and background execution. Ordinary Session/Thread lists exclude `memory_organization` maintenance purpose; Space organization history and attached-Session endpoints provide the corresponding explicit views.
+Organization status and history are separate reads. `OrganizeSpace` takes no body and returns `202` with `SpaceOrganizationStatus`; `Pending`/`ActiveRunId` are asynchronous observations. Service owns scheduling, thresholds, captured authority and background execution. Ordinary Session/Thread lists exclude `memory_organization` maintenance purpose; Space organization history and attached-Session endpoints provide the corresponding explicit views.

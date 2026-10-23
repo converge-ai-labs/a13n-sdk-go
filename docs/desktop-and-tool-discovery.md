@@ -38,7 +38,7 @@ After the person hands back control, the application can explicitly persist comp
 func completeDesktop(ctx context.Context, client *a13n.Client, controlID, browserSession string, epoch int) (generated.View, error) {
     api, err := client.API()
     if err != nil { return generated.View{}, err }
-    response, err := api.CompleteAssistanceApiV1DesktopAssistanceAssistanceIdCompletePost(ctx, controlID, nil,
+    response, err := api.CompleteAssistance(ctx, controlID, nil,
         generated.Completion{SessionId: browserSession, Epoch: epoch, Note: a13n.Ptr("Handed back to the agent.")})
     result, err := a13n.ParseJSON[generated.View](client, response, err, 200)
     return result.Value, err
@@ -59,8 +59,8 @@ Use an explicit pointer type to retain nullable success. This function returns n
 func readContextUsage(ctx context.Context, client *a13n.Client, runID string) (*generated.ContextUsage, error) {
     api, err := client.API()
     if err != nil { return nil, err }
-    response, err := api.ContextUsageApiV1UsageContextGet(ctx,
-        &generated.ContextUsageApiV1UsageContextGetParams{RunId: &runID})
+    response, err := api.ContextUsage(ctx,
+        &generated.ContextUsageParams{RunId: &runID})
     result, err := a13n.ParseJSON[*generated.ContextUsage](client, response, err, 200)
     return result.Value, err
 }
