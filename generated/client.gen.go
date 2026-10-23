@@ -7844,9 +7844,12 @@ type RunSummaryView string
 
 // RunUsage defines model for RunUsage.
 type RunUsage struct {
-	Models   []ModelUsage `json:"models"`
-	RunId    string       `json:"run_id"`
-	ThreadId string       `json:"thread_id"`
+	Models []ModelUsage `json:"models"`
+	RunId  string       `json:"run_id"`
+
+	// RunNumber One-based chronological position among all Runs in the Thread.
+	RunNumber int    `json:"run_number"`
+	ThreadId  string `json:"thread_id"`
 }
 
 // RunView defines model for RunView.
@@ -9067,6 +9070,25 @@ type UserKeyCreate struct {
 // Verb defines model for Verb.
 type Verb string
 
+// VercelOption defines model for VercelOption.
+type VercelOption struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// VercelOptions defines model for VercelOptions.
+type VercelOptions struct {
+	Cursor nullable.Nullable[int] `json:"cursor,omitempty"`
+	Items  []VercelOption         `json:"items"`
+}
+
+// VercelOptionsRequest defines model for VercelOptionsRequest.
+type VercelOptionsRequest struct {
+	ApiKey *string                   `json:"api_key,omitempty"`
+	Cursor nullable.Nullable[int]    `json:"cursor,omitempty"`
+	TeamId nullable.Nullable[string] `json:"team_id,omitempty"`
+}
+
 // VideoInputPolicy Base64-after byte budget for both one video and all inline videos in a request.
 type VideoInputPolicy struct {
 	// MaxVideoBytes Maximum Base64-encoded bytes per video and in aggregate per model request.
@@ -9658,6 +9680,12 @@ type RotateDeviceCredentialParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// VercelProviderOptionsParams defines parameters for VercelProviderOptions.
+type VercelProviderOptionsParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -11901,6 +11929,9 @@ type UpdateDeviceJSONRequestBody = DeviceUpdate
 
 // QueryDeviceMetricsJSONRequestBody defines body for QueryDeviceMetrics for application/json ContentType.
 type QueryDeviceMetricsJSONRequestBody = EnvironmentQuery
+
+// VercelProviderOptionsJSONRequestBody defines body for VercelProviderOptions for application/json ContentType.
+type VercelProviderOptionsJSONRequestBody = VercelOptionsRequest
 
 // CreateEnvironmentProviderJSONRequestBody defines body for CreateEnvironmentProvider for application/json ContentType.
 type CreateEnvironmentProviderJSONRequestBody = ProviderCreate
@@ -16695,6 +16726,24 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
 	RotateDeviceCredential(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// VercelProviderOptionsWithBody Vercel Provider Options
+	//
+	// List accessible teams, or projects in a selected team, using an unsaved credential.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+	VercelProviderOptionsWithBody(ctx context.Context, params *VercelProviderOptionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VercelProviderOptions Vercel Provider Options
+	//
+	// List accessible teams, or projects in a selected team, using an unsaved credential.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+	VercelProviderOptions(ctx context.Context, params *VercelProviderOptionsParams, body VercelProviderOptionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListEnvironmentProviders List environment providers
 	//
 	// Corresponds with GET /api/v1/environment-providers (the `ListEnvironmentProviders` operationId).
@@ -20401,6 +20450,44 @@ func (c *Client) QueryDeviceMetrics(ctx context.Context, deviceId string, params
 // Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
 func (c *Client) RotateDeviceCredential(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRotateDeviceCredentialRequest(c.Server, deviceId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VercelProviderOptionsWithBody Vercel Provider Options
+//
+// List accessible teams, or projects in a selected team, using an unsaved credential.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+func (c *Client) VercelProviderOptionsWithBody(ctx context.Context, params *VercelProviderOptionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVercelProviderOptionsRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VercelProviderOptions Vercel Provider Options
+//
+// List accessible teams, or projects in a selected team, using an unsaved credential.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+func (c *Client) VercelProviderOptions(ctx context.Context, params *VercelProviderOptionsParams, body VercelProviderOptionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVercelProviderOptionsRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -30396,6 +30483,61 @@ func NewRotateDeviceCredentialRequest(server string, deviceId string, params *Ro
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewVercelProviderOptionsRequest calls the generic VercelProviderOptions builder with application/json body
+func NewVercelProviderOptionsRequest(server string, params *VercelProviderOptionsParams, body VercelProviderOptionsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVercelProviderOptionsRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewVercelProviderOptionsRequestWithBody constructs an http.Request for the VercelProviderOptions method, with any body, and a specified content type
+func NewVercelProviderOptionsRequestWithBody(server string, params *VercelProviderOptionsParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-provider-options/vercel")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -49356,6 +49498,24 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
 	RotateDeviceCredentialWithResponse(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*RotateDeviceCredentialResponse, error)
 
+	// VercelProviderOptionsWithBodyWithResponse Vercel Provider Options
+	//
+	// List accessible teams, or projects in a selected team, using an unsaved credential.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+	VercelProviderOptionsWithBodyWithResponse(ctx context.Context, params *VercelProviderOptionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VercelProviderOptionsResponse, error)
+
+	// VercelProviderOptionsWithResponse Vercel Provider Options
+	//
+	// List accessible teams, or projects in a selected team, using an unsaved credential.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+	VercelProviderOptionsWithResponse(ctx context.Context, params *VercelProviderOptionsParams, body VercelProviderOptionsJSONRequestBody, reqEditors ...RequestEditorFn) (*VercelProviderOptionsResponse, error)
+
 	// ListEnvironmentProvidersWithResponse List environment providers
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -56279,6 +56439,75 @@ func (r RotateDeviceCredentialResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r RotateDeviceCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// VercelProviderOptionsResponse400Headers the declared response headers of an HTTP 400 response for VercelProviderOptions
+type VercelProviderOptionsResponse400Headers struct {
+	XRequestId *string
+}
+
+// VercelProviderOptionsResponseDefaultHeaders the declared response headers of an HTTP default response for VercelProviderOptions
+type VercelProviderOptionsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type VercelProviderOptionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *VercelOptions
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *VercelProviderOptionsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *VercelProviderOptionsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VercelProviderOptionsResponse) GetJSON200() *VercelOptions {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r VercelProviderOptionsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r VercelProviderOptionsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r VercelProviderOptionsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VercelProviderOptionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VercelProviderOptionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VercelProviderOptionsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -75328,6 +75557,36 @@ func (c *ClientWithResponses) RotateDeviceCredentialWithResponse(ctx context.Con
 	return ParseRotateDeviceCredentialResponse(rsp)
 }
 
+// VercelProviderOptionsWithBodyWithResponse Vercel Provider Options
+//
+// List accessible teams, or projects in a selected team, using an unsaved credential.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+func (c *ClientWithResponses) VercelProviderOptionsWithBodyWithResponse(ctx context.Context, params *VercelProviderOptionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VercelProviderOptionsResponse, error) {
+	rsp, err := c.VercelProviderOptionsWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVercelProviderOptionsResponse(rsp)
+}
+
+// VercelProviderOptionsWithResponse Vercel Provider Options
+//
+// List accessible teams, or projects in a selected team, using an unsaved credential.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-provider-options/vercel (the `VercelProviderOptions` operationId).
+func (c *ClientWithResponses) VercelProviderOptionsWithResponse(ctx context.Context, params *VercelProviderOptionsParams, body VercelProviderOptionsJSONRequestBody, reqEditors ...RequestEditorFn) (*VercelProviderOptionsResponse, error) {
+	rsp, err := c.VercelProviderOptions(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVercelProviderOptionsResponse(rsp)
+}
+
 // ListEnvironmentProvidersWithResponse List environment providers
 //
 // Returns a wrapper object for the known response body format(s).
@@ -83932,6 +84191,69 @@ func ParseRotateDeviceCredentialResponse(rsp *http.Response) (*RotateDeviceCrede
 		response.Headers400 = &headers
 	case true:
 		var headers RotateDeviceCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseVercelProviderOptionsResponse parses an HTTP response from a VercelProviderOptionsWithResponse call
+func ParseVercelProviderOptionsResponse(rsp *http.Response) (*VercelProviderOptionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VercelProviderOptionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VercelOptions
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers VercelProviderOptionsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers VercelProviderOptionsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
