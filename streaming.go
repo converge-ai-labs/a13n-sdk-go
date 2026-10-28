@@ -22,6 +22,9 @@ import (
 	"github.com/oapi-codegen/nullable"
 )
 
+// Truncation retains ErrProtocol compatibility while allowing bounded Thread recovery.
+var errTruncatedSSE = fmt.Errorf("%w: truncated SSE", ErrProtocol)
+
 var streamCursor = regexp.MustCompile(`^[0-9]{1,20}-[0-9]{1,20}$`)
 var streamPosition = regexp.MustCompile(`^(0|[1-9][0-9]{0,19})-(0|[1-9][0-9]{0,19})$`)
 
@@ -350,7 +353,7 @@ func (s *ThreadStream) recover(err error) error {
 	if s.ctx.Err() != nil {
 		return s.ctx.Err()
 	}
-	retry := errors.Is(err, ErrTransport)
+	retry := errors.Is(err, ErrTransport) || errors.Is(err, errTruncatedSSE)
 	var api *ApiError
 	if errors.As(err, &api) {
 		retry = api.Status == 429 || api.Status == 502 || api.Status == 503 || api.Status == 504
@@ -392,7 +395,16 @@ func (p *sseParser) line() (string, error) {
 		b, err := p.reader.ReadByte()
 		if err != nil {
 			if err == io.EOF && len(raw) > 0 {
-				return "", fmt.Errorf("%w: truncated SSE line", ErrProtocol)
+				// An unfinished code point can be a transport cut; an invalid
+				// sequence already present in the prefix cannot.
+				for len(raw) > 0 && utf8.FullRune(raw) {
+					r, size := utf8.DecodeRune(raw)
+					if r == utf8.RuneError && size == 1 {
+						return "", fmt.Errorf("%w: invalid SSE UTF-8", ErrProtocol)
+					}
+					raw = raw[size:]
+				}
+				return "", fmt.Errorf("%w line", errTruncatedSSE)
 			}
 			return "", err
 		}
@@ -438,7 +450,7 @@ func (p *sseParser) nextEvent() (sseEvent, error) {
 		line, err := p.line()
 		if err != nil {
 			if err == io.EOF && (len(data) > 0 || event != "" || hasID) {
-				return sseEvent{}, fmt.Errorf("%w: truncated SSE frame", ErrProtocol)
+				return sseEvent{}, fmt.Errorf("%w frame", errTruncatedSSE)
 			}
 			return sseEvent{}, err
 		}

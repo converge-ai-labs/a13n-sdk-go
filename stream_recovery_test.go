@@ -157,3 +157,74 @@ func TestCoverageOptionsValidatePairButDoNotInferFromHint(t *testing.T) {
 		_ = stream.Close()
 	}
 }
+
+func TestTruncatedThreadStreamResumesAppliedCursor(t *testing.T) {
+	for name, tail := range map[string]string{
+		"line":  "id: 2-0\nevent: delta\ndata: {",
+		"frame": strings.TrimSuffix(deltaAt("run", 1, 2, "2-0"), "\n"),
+		"utf8":  "id: 2-0\nevent: delta\ndata: \xf0\x9f",
+	} {
+		t.Run(name, func(t *testing.T) {
+			var cursors []string
+			client := coverageClient(t, func(req *http.Request) *http.Response {
+				cursors = append(cursors, req.Header.Get("Last-Event-ID"))
+				body := deltaAt("run", 1, 1, "1-0") + tail
+				if len(cursors) > 1 {
+					body = deltaAt("run", 1, 2, "2-0") + "id: 3-0\nevent: boundary\ndata: {\"run_id\":\"run\",\"attempt\":1,\"sequence\":2}\n\n"
+				}
+				response := coverageResponse(200, body)
+				response.Header.Set("Content-Type", "text/event-stream")
+				return response
+			})
+			stream, err := client.Thread("thr").events(context.Background(), StreamOptions{MaxReconnects: 2, ReconnectDelay: time.Millisecond})
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer stream.Close()
+			for _, cursor := range []string{"1-0", "2-0", "3-0"} {
+				frame, err := stream.Next()
+				if err != nil || frame.Cursor() != cursor {
+					t.Fatal(frame, err, cursor)
+				}
+			}
+			if len(cursors) != 2 || cursors[0] != "" || cursors[1] != "1-0" || stream.AppliedCursor() != "2-0" {
+				t.Fatal(cursors, stream.AppliedCursor())
+			}
+		})
+	}
+}
+
+func TestThreadTruncationBudgetAndFatalPayloads(t *testing.T) {
+	for _, test := range []struct {
+		name, body     string
+		retries, calls int
+	}{
+		{"bounded", "event: delta\ndata: {", 2, 3},
+		{"disabled", "event: delta\ndata: {", 0, 1},
+		{"invalid_byte", "data: \xff", 2, 1},
+		{"invalid_continuation", "data: \x80", 2, 1},
+		{"invalid_prefix", "data: \xc0\xf0\x9f", 2, 1},
+		{"invalid_complete_utf8", "data: \xff\n\n", 2, 1},
+		{"incomplete_utf8_line", "data: \xf0\x9f\n\n", 2, 1},
+		{"invalid_json", "id: 1-0\nevent: delta\ndata: {\n\n", 2, 1},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			calls := 0
+			client := coverageClient(t, func(req *http.Request) *http.Response {
+				calls++
+				response := coverageResponse(200, test.body)
+				response.Header.Set("Content-Type", "text/event-stream")
+				return response
+			})
+			stream, err := client.Thread("thr").events(context.Background(), StreamOptions{MaxReconnects: test.retries, ReconnectDelay: time.Millisecond})
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer stream.Close()
+			_, err = stream.Next()
+			if !errors.Is(err, ErrProtocol) || calls != test.calls {
+				t.Fatal(err, calls)
+			}
+		})
+	}
+}

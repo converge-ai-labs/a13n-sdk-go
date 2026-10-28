@@ -56,6 +56,13 @@ type SessionOccurrenceFrame struct {
 	sessionstream.OccurrenceEvent
 }
 
+type SessionAppReadyFrame struct {
+	sessionFrameData
+	sessionstream.AppReady
+}
+
+func (SessionAppReadyFrame) EventType() string { return "app_ready" }
+
 func (SessionScheduleFrame) EventType() string   { return "schedule" }
 func (SessionOccurrenceFrame) EventType() string { return "occurrence" }
 
@@ -181,6 +188,8 @@ func parseSessionFrame(event sseEvent) (SessionFrame, error) {
 		target = &SessionScheduleFrame{sessionFrameData: meta}
 	case "occurrence":
 		target = &SessionOccurrenceFrame{sessionFrameData: meta}
+	case "app_ready":
+		target = &SessionAppReadyFrame{sessionFrameData: meta}
 	case "gap":
 		target = &SessionGapFrame{sessionFrameData: meta}
 	default:

@@ -168,11 +168,11 @@ func TestMemoryPlatformAndUsageNativeReadback(t *testing.T) {
 		}
 	}
 	var usage generated.UsageSummary
-	body := `{"models":[{"model":null,"input_tokens":0,"output_tokens":0,"cache_read_tokens":0,"cache_write_tokens":0,"requests":1,"cost":"0.00000000001","average_time_to_first_chunk_seconds":null,"output_tokens_per_second":0}],"runs":[{"run_id":"run","thread_id":"thread","models":[]}]}`
+	body := `{"models":[{"model":null,"input_tokens":0,"output_tokens":0,"cache_read_tokens":0,"cache_write_tokens":0,"requests":1,"cost":"0.00000000001","average_time_to_first_chunk_seconds":null,"output_tokens_per_second":0}]}`
 	if err := json.Unmarshal([]byte(body), &usage); err != nil {
 		t.Fatal(err)
 	}
-	if len(usage.Runs) != 1 || usage.Runs[0].RunId != "run" || !usage.Models[0].AverageTimeToFirstChunkSeconds.IsNull() || usage.Models[0].OutputTokensPerSecond.IsNull() || usage.Models[0].Cost.GetOrEmpty() != "0.00000000001" {
+	if len(usage.Models) != 1 || !usage.Models[0].AverageTimeToFirstChunkSeconds.IsNull() || usage.Models[0].OutputTokensPerSecond.IsNull() || usage.Models[0].Cost.GetOrEmpty() != "0.00000000001" {
 		t.Fatalf("usage changed: %#v", usage)
 	}
 	var session generated.SessionView

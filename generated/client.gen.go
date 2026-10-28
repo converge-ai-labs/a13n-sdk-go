@@ -38,21 +38,6 @@ func (e AccessMode) Valid() bool {
 	}
 }
 
-// Defines values for AgentConfigInputBuiltinSkills.
-const (
-	AgentConfigInputBuiltinSkillsPlatformOperations AgentConfigInputBuiltinSkills = "platform-operations"
-)
-
-// Valid indicates whether the value is a known member of the AgentConfigInputBuiltinSkills enum.
-func (e AgentConfigInputBuiltinSkills) Valid() bool {
-	switch e {
-	case AgentConfigInputBuiltinSkillsPlatformOperations:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AgentConfigInputSubagentMode.
 const (
 	AgentConfigInputSubagentModeAsync  AgentConfigInputSubagentMode = "async"
@@ -71,21 +56,6 @@ func (e AgentConfigInputSubagentMode) Valid() bool {
 	}
 }
 
-// Defines values for AgentConfigOutputBuiltinSkills.
-const (
-	AgentConfigOutputBuiltinSkillsPlatformOperations AgentConfigOutputBuiltinSkills = "platform-operations"
-)
-
-// Valid indicates whether the value is a known member of the AgentConfigOutputBuiltinSkills enum.
-func (e AgentConfigOutputBuiltinSkills) Valid() bool {
-	switch e {
-	case AgentConfigOutputBuiltinSkillsPlatformOperations:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AgentConfigOutputSubagentMode.
 const (
 	AgentConfigOutputSubagentModeAsync  AgentConfigOutputSubagentMode = "async"
@@ -98,36 +68,6 @@ func (e AgentConfigOutputSubagentMode) Valid() bool {
 	case AgentConfigOutputSubagentModeAsync:
 		return true
 	case AgentConfigOutputSubagentModeInline:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for AgentOverrideInputBuiltinSkills.
-const (
-	AgentOverrideInputBuiltinSkillsPlatformOperations AgentOverrideInputBuiltinSkills = "platform-operations"
-)
-
-// Valid indicates whether the value is a known member of the AgentOverrideInputBuiltinSkills enum.
-func (e AgentOverrideInputBuiltinSkills) Valid() bool {
-	switch e {
-	case AgentOverrideInputBuiltinSkillsPlatformOperations:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for AgentOverrideOutputBuiltinSkills.
-const (
-	AgentOverrideOutputBuiltinSkillsPlatformOperations AgentOverrideOutputBuiltinSkills = "platform-operations"
-)
-
-// Valid indicates whether the value is a known member of the AgentOverrideOutputBuiltinSkills enum.
-func (e AgentOverrideOutputBuiltinSkills) Valid() bool {
-	switch e {
-	case AgentOverrideOutputBuiltinSkillsPlatformOperations:
 		return true
 	default:
 		return false
@@ -344,6 +284,21 @@ func (e AuthorizationStatusState) Valid() bool {
 	case Disconnected:
 		return true
 	case ReauthenticationRequired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BuiltinSkillName.
+const (
+	PlatformOperations BuiltinSkillName = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the BuiltinSkillName enum.
+func (e BuiltinSkillName) Valid() bool {
+	switch e {
+	case PlatformOperations:
 		return true
 	default:
 		return false
@@ -1874,6 +1829,42 @@ func (e McpAuth) Valid() bool {
 	}
 }
 
+// Defines values for MemberUsageKind.
+const (
+	MemberUsageKindServiceAccount MemberUsageKind = "service_account"
+	MemberUsageKindUser           MemberUsageKind = "user"
+)
+
+// Valid indicates whether the value is a known member of the MemberUsageKind enum.
+func (e MemberUsageKind) Valid() bool {
+	switch e {
+	case MemberUsageKindServiceAccount:
+		return true
+	case MemberUsageKindUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MemberUsageStatus.
+const (
+	MemberUsageStatusActive   MemberUsageStatus = "active"
+	MemberUsageStatusDisabled MemberUsageStatus = "disabled"
+)
+
+// Valid indicates whether the value is a known member of the MemberUsageStatus enum.
+func (e MemberUsageStatus) Valid() bool {
+	switch e {
+	case MemberUsageStatusActive:
+		return true
+	case MemberUsageStatusDisabled:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for MemoryAccess.
 const (
 	MemoryAccessRead  MemoryAccess = "read"
@@ -3083,6 +3074,48 @@ func (e TextReadRepresentation) Valid() bool {
 	}
 }
 
+// Defines values for ThreadNavigationOrigin.
+const (
+	ThreadNavigationOriginChild ThreadNavigationOrigin = "child"
+	ThreadNavigationOriginFork  ThreadNavigationOrigin = "fork"
+	ThreadNavigationOriginNew   ThreadNavigationOrigin = "new"
+)
+
+// Valid indicates whether the value is a known member of the ThreadNavigationOrigin enum.
+func (e ThreadNavigationOrigin) Valid() bool {
+	switch e {
+	case ThreadNavigationOriginChild:
+		return true
+	case ThreadNavigationOriginFork:
+		return true
+	case ThreadNavigationOriginNew:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ThreadReferenceOrigin.
+const (
+	ThreadReferenceOriginChild ThreadReferenceOrigin = "child"
+	ThreadReferenceOriginFork  ThreadReferenceOrigin = "fork"
+	ThreadReferenceOriginNew   ThreadReferenceOrigin = "new"
+)
+
+// Valid indicates whether the value is a known member of the ThreadReferenceOrigin enum.
+func (e ThreadReferenceOrigin) Valid() bool {
+	switch e {
+	case ThreadReferenceOriginChild:
+		return true
+	case ThreadReferenceOriginFork:
+		return true
+	case ThreadReferenceOriginNew:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ThreadViewOrigin.
 const (
 	ThreadViewOriginChild ThreadViewOrigin = "child"
@@ -4121,6 +4154,27 @@ func (e GetScheduleOccurrenceParamsInclude) Valid() bool {
 	}
 }
 
+// Defines values for ListSessionThreadsParamsOrigin.
+const (
+	ListSessionThreadsParamsOriginChild ListSessionThreadsParamsOrigin = "child"
+	ListSessionThreadsParamsOriginFork  ListSessionThreadsParamsOrigin = "fork"
+	ListSessionThreadsParamsOriginNew   ListSessionThreadsParamsOrigin = "new"
+)
+
+// Valid indicates whether the value is a known member of the ListSessionThreadsParamsOrigin enum.
+func (e ListSessionThreadsParamsOrigin) Valid() bool {
+	switch e {
+	case ListSessionThreadsParamsOriginChild:
+		return true
+	case ListSessionThreadsParamsOriginFork:
+		return true
+	case ListSessionThreadsParamsOriginNew:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListSkillsParamsSource.
 const (
 	ListSkillsParamsSourceGithub ListSkillsParamsSource = "github"
@@ -4133,6 +4187,27 @@ func (e ListSkillsParamsSource) Valid() bool {
 	case ListSkillsParamsSourceGithub:
 		return true
 	case ListSkillsParamsSourceUpload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListThreadsParamsOrigin.
+const (
+	ListThreadsParamsOriginChild ListThreadsParamsOrigin = "child"
+	ListThreadsParamsOriginFork  ListThreadsParamsOrigin = "fork"
+	ListThreadsParamsOriginNew   ListThreadsParamsOrigin = "new"
+)
+
+// Valid indicates whether the value is a known member of the ListThreadsParamsOrigin enum.
+func (e ListThreadsParamsOrigin) Valid() bool {
+	switch e {
+	case ListThreadsParamsOriginChild:
+		return true
+	case ListThreadsParamsOriginFork:
+		return true
+	case ListThreadsParamsOriginNew:
 		return true
 	default:
 		return false
@@ -4382,7 +4457,9 @@ type Agent struct {
 
 // AgentConfigInput defines model for AgentConfig-Input.
 type AgentConfigInput struct {
-	BuiltinSkills                *[]AgentConfigInputBuiltinSkills     `json:"builtin_skills,omitempty"`
+	// BackgroundCompaction Host-selected overlap policy, separate from the common compaction trigger.
+	BackgroundCompaction         *BackgroundCompactionPolicy          `json:"background_compaction,omitempty"`
+	BuiltinSkills                *[]BuiltinSkillName                  `json:"builtin_skills,omitempty"`
 	ClientTools                  *[]ClientToolDefinition              `json:"client_tools,omitempty"`
 	ConnectionTools              *[]ConnectionSelection               `json:"connection_tools,omitempty"`
 	DefaultEnvironmentTemplateId nullable.Nullable[string]            `json:"default_environment_template_id,omitempty"`
@@ -4414,15 +4491,14 @@ type AgentConfigInput struct {
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
 }
 
-// AgentConfigInputBuiltinSkills defines model for AgentConfigInput.BuiltinSkills.
-type AgentConfigInputBuiltinSkills string
-
 // AgentConfigInputSubagentMode defines model for AgentConfigInput.SubagentMode.
 type AgentConfigInputSubagentMode string
 
 // AgentConfigOutput defines model for AgentConfig-Output.
 type AgentConfigOutput struct {
-	BuiltinSkills                *[]AgentConfigOutputBuiltinSkills    `json:"builtin_skills,omitempty"`
+	// BackgroundCompaction Host-selected overlap policy, separate from the common compaction trigger.
+	BackgroundCompaction         *BackgroundCompactionPolicy          `json:"background_compaction,omitempty"`
+	BuiltinSkills                *[]BuiltinSkillName                  `json:"builtin_skills,omitempty"`
 	ClientTools                  *[]ClientToolDefinition              `json:"client_tools,omitempty"`
 	ConnectionTools              *[]ConnectionSelection               `json:"connection_tools,omitempty"`
 	DefaultEnvironmentTemplateId nullable.Nullable[string]            `json:"default_environment_template_id,omitempty"`
@@ -4453,9 +4529,6 @@ type AgentConfigOutput struct {
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
 }
-
-// AgentConfigOutputBuiltinSkills defines model for AgentConfigOutput.BuiltinSkills.
-type AgentConfigOutputBuiltinSkills string
 
 // AgentConfigOutputSubagentMode defines model for AgentConfigOutput.SubagentMode.
 type AgentConfigOutputSubagentMode string
@@ -4488,56 +4561,50 @@ type AgentModelCharacteristics struct {
 // `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
 // edge removes it; every other field replaces the revision's value.
 type AgentOverrideInput struct {
-	BuiltinSkills        nullable.Nullable[[]AgentOverrideInputBuiltinSkills] `json:"builtin_skills,omitempty"`
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]            `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]             `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                            `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                              `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]       `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                            `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]         `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]              `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                        `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]                 `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]                     `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]                     `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                         `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]                  `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]            `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]                        `json:"tool_search,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection]       `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
-
-// AgentOverrideInputBuiltinSkills defines model for AgentOverrideInput.BuiltinSkills.
-type AgentOverrideInputBuiltinSkills string
 
 // AgentOverrideOutput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
 // `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
 // edge removes it; every other field replaces the revision's value.
 type AgentOverrideOutput struct {
-	BuiltinSkills        nullable.Nullable[[]AgentOverrideOutputBuiltinSkills] `json:"builtin_skills,omitempty"`
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]             `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]              `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                             `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                               `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]        `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                             `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]          `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]               `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                         `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]                  `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]                      `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]                      `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                          `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]                   `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]             `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]                         `json:"tool_search,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection]        `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
-
-// AgentOverrideOutputBuiltinSkills defines model for AgentOverrideOutput.BuiltinSkills.
-type AgentOverrideOutputBuiltinSkills string
 
 // AgentPage defines model for AgentPage.
 type AgentPage struct {
@@ -4566,14 +4633,17 @@ type AgentReviewerOnFlagged string
 
 // AgentRevision defines model for AgentRevision.
 type AgentRevision struct {
-	AgentId     string                    `json:"agent_id"`
-	Config      AgentConfigOutput         `json:"config"`
-	CreatedAt   time.Time                 `json:"created_at"`
-	CreatedById string                    `json:"created_by_id"`
-	Digest      string                    `json:"digest"`
-	Id          string                    `json:"id"`
-	Note        nullable.Nullable[string] `json:"note"`
-	Number      int                       `json:"number"`
+	AgentId string `json:"agent_id"`
+
+	// BuiltinInstructions Current deployment guidance for this builtin Agent, not a revision or Run snapshot.
+	BuiltinInstructions nullable.Nullable[string] `json:"builtin_instructions,omitempty"`
+	Config              AgentConfigOutput         `json:"config"`
+	CreatedAt           time.Time                 `json:"created_at"`
+	CreatedById         string                    `json:"created_by_id"`
+	Digest              string                    `json:"digest"`
+	Id                  string                    `json:"id"`
+	Note                nullable.Nullable[string] `json:"note"`
+	Number              int                       `json:"number"`
 }
 
 // AgentRevisionCreate defines model for AgentRevisionCreate.
@@ -4642,6 +4712,7 @@ type Analysis struct {
 // AnalysisCreate defines model for AnalysisCreate.
 type AnalysisCreate struct {
 	AgentId       nullable.Nullable[string]    `json:"agent_id,omitempty"`
+	Instructions  *string                      `json:"instructions,omitempty"`
 	MaxTraces     *int                         `json:"max_traces,omitempty"`
 	Presets       *[]Preset                    `json:"presets,omitempty"`
 	StartedAfter  nullable.Nullable[time.Time] `json:"started_after,omitempty"`
@@ -4682,6 +4753,42 @@ type ApiKey struct {
 type ApiKeyPage struct {
 	Items      []ApiKey                  `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// AppReference defines model for AppReference.
+type AppReference struct {
+	AgentRevisionId string `json:"agent_revision_id"`
+	AppId           string `json:"app_id"`
+	ConnectionId    string `json:"connection_id"`
+	ResourceUri     string `json:"resource_uri"`
+	SourceRunId     string `json:"source_run_id"`
+	ToolCallId      string `json:"tool_call_id"`
+	ToolName        string `json:"tool_name"`
+	Unavailable     *bool  `json:"unavailable,omitempty"`
+}
+
+// AppResource defines model for AppResource.
+type AppResource struct {
+	Html     string               `json:"html"`
+	Metadata map[string]JsonValue `json:"metadata"`
+	MimeType string               `json:"mime_type"`
+	Uri      string               `json:"uri"`
+}
+
+// AppResourceRead defines model for AppResourceRead.
+type AppResourceRead struct {
+	Uri string `json:"uri"`
+}
+
+// AppToolCall defines model for AppToolCall.
+type AppToolCall struct {
+	Arguments *map[string]JsonValue `json:"arguments,omitempty"`
+	Name      string                `json:"name"`
+}
+
+// AppToolResult defines model for AppToolResult.
+type AppToolResult struct {
+	Result map[string]JsonValue `json:"result"`
 }
 
 // ApprovalDecision defines model for ApprovalDecision.
@@ -4868,6 +4975,12 @@ type AuthorizationStatus struct {
 // AuthorizationStatusState defines model for AuthorizationStatus.State.
 type AuthorizationStatusState string
 
+// BackgroundCompactionPolicy Host-selected overlap policy, separate from the common compaction trigger.
+type BackgroundCompactionPolicy struct {
+	BlockingThreshold *float32 `json:"blocking_threshold,omitempty"`
+	Enabled           *bool    `json:"enabled,omitempty"`
+}
+
 // BearerCredential defines model for BearerCredential.
 type BearerCredential struct {
 	Token *string `json:"token,omitempty"`
@@ -4878,6 +4991,30 @@ type BootstrapInput struct {
 	Email    openapi_types.Email `json:"email"`
 	Password *string             `json:"password,omitempty"`
 }
+
+// BuiltinSkill defines model for BuiltinSkill.
+type BuiltinSkill struct {
+	Description string           `json:"description"`
+	Name        BuiltinSkillName `json:"name"`
+}
+
+// BuiltinSkillCatalog defines model for BuiltinSkillCatalog.
+type BuiltinSkillCatalog struct {
+	Items []BuiltinSkill `json:"items"`
+}
+
+// BuiltinSkillDetail The current process's bundled package, without a workspace resource or revision.
+type BuiltinSkillDetail struct {
+	Description   string           `json:"description"`
+	Files         []SkillFile      `json:"files"`
+	Name          BuiltinSkillName `json:"name"`
+	PackageDigest string           `json:"package_digest"`
+	PackageSize   int              `json:"package_size"`
+	Root          string           `json:"root"`
+}
+
+// BuiltinSkillName defines model for BuiltinSkillName.
+type BuiltinSkillName string
 
 // BusyOccurrence defines model for BusyOccurrence.
 type BusyOccurrence struct {
@@ -6344,10 +6481,11 @@ type McpAuth string
 
 // McpConfig defines model for McpConfig.
 type McpConfig struct {
-	Headers *[]string                        `json:"headers,omitempty"`
-	Oauth   nullable.Nullable[OAuthSettings] `json:"oauth,omitempty"`
-	Tools   nullable.Nullable[[]string]      `json:"tools,omitempty"`
-	Url     string                           `json:"url"`
+	ForwardContextHeaders *bool                            `json:"forward_context_headers,omitempty"`
+	Headers               *[]string                        `json:"headers,omitempty"`
+	Oauth                 nullable.Nullable[OAuthSettings] `json:"oauth,omitempty"`
+	Tools                 nullable.Nullable[[]string]      `json:"tools,omitempty"`
+	Url                   string                           `json:"url"`
 }
 
 // McpHeaders defines model for McpHeaders.
@@ -6391,6 +6529,28 @@ type MediaUnderstandingSelection struct {
 // MemberPage defines model for MemberPage.
 type MemberPage struct {
 	Items      []PrincipalSummary        `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// MemberUsage defines model for MemberUsage.
+type MemberUsage struct {
+	Kind        MemberUsageKind   `json:"kind"`
+	Name        string            `json:"name"`
+	PrincipalId string            `json:"principal_id"`
+	Runs        RunMetrics        `json:"runs"`
+	Status      MemberUsageStatus `json:"status"`
+	Usage       ModelMetrics      `json:"usage"`
+}
+
+// MemberUsageKind defines model for MemberUsage.Kind.
+type MemberUsageKind string
+
+// MemberUsageStatus defines model for MemberUsage.Status.
+type MemberUsageStatus string
+
+// MemberUsagePage defines model for MemberUsagePage.
+type MemberUsagePage struct {
+	Items      []MemberUsage             `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
@@ -7153,6 +7313,15 @@ type OpenView struct {
 	SessionId string `json:"session_id"`
 }
 
+// OpenedApp defines model for OpenedApp.
+type OpenedApp struct {
+	Arguments map[string]JsonValue `json:"arguments"`
+	Reference AppReference         `json:"reference"`
+	Resource  AppResource          `json:"resource"`
+	Result    map[string]JsonValue `json:"result"`
+	Tool      map[string]JsonValue `json:"tool"`
+}
+
 // OperatingSystem defines model for OperatingSystem.
 type OperatingSystem string
 
@@ -7285,11 +7454,26 @@ type PendingCall struct {
 // PlatformGroup defines model for PlatformGroup.
 type PlatformGroup string
 
+// PluginCatalog defines model for PluginCatalog.
+type PluginCatalog struct {
+	Items []PluginType `json:"items"`
+}
+
 // PluginSelection One instance of a Harness plugin factory the deployment installed.
 type PluginSelection struct {
 	Config       *map[string]JsonValue `json:"config,omitempty"`
 	InstanceName string                `json:"instance_name"`
 	PluginKey    string                `json:"plugin_key"`
+}
+
+// PluginType defines model for PluginType.
+type PluginType struct {
+	ConfigSchema        nullable.Nullable[map[string]JsonValue] `json:"config_schema"`
+	Description         string                                  `json:"description"`
+	DisplayName         string                                  `json:"display_name"`
+	DistributionName    nullable.Nullable[string]               `json:"distribution_name"`
+	DistributionVersion nullable.Nullable[string]               `json:"distribution_version"`
+	PluginKey           string                                  `json:"plugin_key"`
 }
 
 // Position defines model for Position.
@@ -7591,6 +7775,11 @@ type Request struct {
 	Reason string `json:"reason"`
 }
 
+// RequestContext Explicit business headers, frozen in accepted Run options and kept out of model projections.
+type RequestContext struct {
+	Headers *map[string]string `json:"headers,omitempty"`
+}
+
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
 	Approvals map[string]ApprovalDecision       `json:"approvals"`
@@ -7779,6 +7968,7 @@ type RunMetrics struct {
 // RunOptionsInput What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptionsInput struct {
 	Configuration nullable.Nullable[RunConfigurationInput] `json:"configuration,omitempty"`
+	Context       nullable.Nullable[RequestContext]        `json:"context,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride]     `json:"execution,omitempty"`
 	Labels        *map[string]string                       `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]            `json:"max_usage,omitempty"`
@@ -7788,6 +7978,7 @@ type RunOptionsInput struct {
 // RunOptionsOutput What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptionsOutput struct {
 	Configuration nullable.Nullable[RunConfigurationOutput] `json:"configuration,omitempty"`
+	Context       nullable.Nullable[RequestContext]         `json:"context,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride]      `json:"execution,omitempty"`
 	Labels        *map[string]string                        `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]             `json:"max_usage,omitempty"`
@@ -7854,6 +8045,12 @@ type RunUsage struct {
 	// RunNumber One-based chronological position among all Runs in the Thread.
 	RunNumber int    `json:"run_number"`
 	ThreadId  string `json:"thread_id"`
+}
+
+// RunUsagePage defines model for RunUsagePage.
+type RunUsagePage struct {
+	Items      []RunUsage                `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
 // RunView defines model for RunView.
@@ -8687,11 +8884,44 @@ type TextReadMediaType string
 // TextReadRepresentation defines model for TextRead.Representation.
 type TextReadRepresentation string
 
+// ThreadNavigation Bounded navigation metadata; positions count the complete Session before filtering.
+type ThreadNavigation struct {
+	CreatedAt    time.Time                          `json:"created_at"`
+	Id           string                             `json:"id"`
+	Origin       ThreadNavigationOrigin             `json:"origin"`
+	OriginCount  int                                `json:"origin_count"`
+	OriginNumber int                                `json:"origin_number"`
+	OriginThread nullable.Nullable[ThreadReference] `json:"origin_thread"`
+	SessionId    string                             `json:"session_id"`
+	Subagent     nullable.Nullable[string]          `json:"subagent"`
+}
+
+// ThreadNavigationOrigin defines model for ThreadNavigation.Origin.
+type ThreadNavigationOrigin string
+
+// ThreadNavigationPage defines model for ThreadNavigationPage.
+type ThreadNavigationPage struct {
+	Items      []ThreadNavigation        `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
 // ThreadPage defines model for ThreadPage.
 type ThreadPage struct {
 	Items      []ThreadView              `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
+
+// ThreadReference defines model for ThreadReference.
+type ThreadReference struct {
+	Id           string                    `json:"id"`
+	Origin       ThreadReferenceOrigin     `json:"origin"`
+	OriginCount  int                       `json:"origin_count"`
+	OriginNumber int                       `json:"origin_number"`
+	Subagent     nullable.Nullable[string] `json:"subagent"`
+}
+
+// ThreadReferenceOrigin defines model for ThreadReference.Origin.
+type ThreadReferenceOrigin string
 
 // ThreadRunPage Newest first; first_number is the first item's 1-based chronological position in the thread.
 type ThreadRunPage struct {
@@ -8773,6 +9003,7 @@ type ToolInfo struct {
 	Annotations     *map[string]JsonValue                   `json:"annotations,omitempty"`
 	Description     nullable.Nullable[string]               `json:"description"`
 	InputSchema     map[string]JsonValue                    `json:"input_schema"`
+	Metadata        *map[string]JsonValue                   `json:"metadata,omitempty"`
 	Name            string                                  `json:"name"`
 	OutputSchema    nullable.Nullable[map[string]JsonValue] `json:"output_schema,omitempty"`
 	ProviderVersion nullable.Nullable[string]               `json:"provider_version,omitempty"`
@@ -9061,7 +9292,6 @@ type UsageOverview struct {
 // UsageSummary defines model for UsageSummary.
 type UsageSummary struct {
 	Models []ModelUsage `json:"models"`
-	Runs   []RunUsage   `json:"runs"`
 }
 
 // UserKeyCreate defines model for UserKeyCreate.
@@ -9397,6 +9627,26 @@ type ReadAssetContentParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListBuiltinSkillsParams defines parameters for ListBuiltinSkills.
+type ListBuiltinSkillsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetBuiltinSkillParams defines parameters for GetBuiltinSkill.
+type GetBuiltinSkillParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ReadBuiltinSkillArchiveParams defines parameters for ReadBuiltinSkillArchive.
+type ReadBuiltinSkillArchiveParams struct {
+	PackageDigest *string `form:"package_digest,omitempty" json:"package_digest,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListConnectionsParams defines parameters for ListConnections.
 type ListConnectionsParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -9512,6 +9762,15 @@ type ListConnectorProvidersParams struct {
 
 // CreateConnectorProviderParams defines parameters for CreateConnectorProvider.
 type CreateConnectorProviderParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DeleteConnectorProviderParams defines parameters for DeleteConnectorProvider.
+type DeleteConnectorProviderParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -10139,6 +10398,15 @@ type CreateMemoryProviderParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DeleteMemoryProviderParams defines parameters for DeleteMemoryProvider.
+type DeleteMemoryProviderParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // GetMemoryProviderParams defines parameters for GetMemoryProvider.
 type GetMemoryProviderParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -10389,6 +10657,15 @@ type CreateModelProviderParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DeleteModelProviderParams defines parameters for DeleteModelProvider.
+type DeleteModelProviderParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // GetModelProviderParams defines parameters for GetModelProvider.
 type GetModelProviderParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -10540,6 +10817,12 @@ type ListOrganizationWorkspacesParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
+// ListPluginsParams defines parameters for ListPlugins.
+type ListPluginsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListProviderTypesParamsKind defines parameters for ListProviderTypes.
 type ListProviderTypesParamsKind string
 
@@ -10635,6 +10918,24 @@ type GetRunAgentParamsPart string
 // GetRunAgent200JSONResponseBody defines parameters for GetRunAgent.
 type GetRunAgent200JSONResponseBody struct {
 	union json.RawMessage
+}
+
+// OpenRunAppParams defines parameters for OpenRunApp.
+type OpenRunAppParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ReadRunAppResourceParams defines parameters for ReadRunAppResource.
+type ReadRunAppResourceParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CallRunAppToolParams defines parameters for CallRunAppTool.
+type CallRunAppToolParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
 // ListRunAttemptsParams defines parameters for ListRunAttempts.
@@ -10977,6 +11278,20 @@ type SessionStreamParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListSessionThreadsParams defines parameters for ListSessionThreads.
+type ListSessionThreadsParams struct {
+	Origin   *[]ListSessionThreadsParamsOrigin `form:"origin,omitempty" json:"origin,omitempty"`
+	ThreadId *[]string                         `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	Limit    *int                              `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor   *string                           `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListSessionThreadsParamsOrigin defines parameters for ListSessionThreads.
+type ListSessionThreadsParamsOrigin string
+
 // ListSkillsParams defines parameters for ListSkills.
 type ListSkillsParams struct {
 	Label    *[]string               `form:"label,omitempty" json:"label,omitempty"`
@@ -11139,16 +11454,21 @@ type RedeliverParams struct {
 
 // ListThreadsParams defines parameters for ListThreads.
 type ListThreadsParams struct {
-	SessionId    *string   `form:"session_id,omitempty" json:"session_id,omitempty"`
-	OccurrenceId *string   `form:"occurrence_id,omitempty" json:"occurrence_id,omitempty"`
-	TextQuery    *string   `form:"text_query,omitempty" json:"text_query,omitempty"`
-	Label        *[]string `form:"label,omitempty" json:"label,omitempty"`
-	Limit        *int      `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor       *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	SessionId    *string                    `form:"session_id,omitempty" json:"session_id,omitempty"`
+	OccurrenceId *string                    `form:"occurrence_id,omitempty" json:"occurrence_id,omitempty"`
+	Origin       *[]ListThreadsParamsOrigin `form:"origin,omitempty" json:"origin,omitempty"`
+	OriginRunId  *string                    `form:"origin_run_id,omitempty" json:"origin_run_id,omitempty"`
+	TextQuery    *string                    `form:"text_query,omitempty" json:"text_query,omitempty"`
+	Label        *[]string                  `form:"label,omitempty" json:"label,omitempty"`
+	Limit        *int                       `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor       *string                    `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// ListThreadsParamsOrigin defines parameters for ListThreads.
+type ListThreadsParamsOrigin string
 
 // CreateThreadParams defines parameters for CreateThread.
 type CreateThreadParams struct {
@@ -11642,10 +11962,13 @@ type SummarizeUsageParams struct {
 
 // UsageAgentsParams defines parameters for UsageAgents.
 type UsageAgentsParams struct {
-	Start  time.Time `form:"start" json:"start"`
-	End    time.Time `form:"end" json:"end"`
-	Limit  *int      `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Start time.Time `form:"start" json:"start"`
+	End   time.Time `form:"end" json:"end"`
+
+	// PrincipalId Filter by Run execution identity; requires workspace admin.
+	PrincipalId *string `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Limit       *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor      *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -11661,12 +11984,29 @@ type ContextUsageParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListUsageMembersParams defines parameters for ListUsageMembers.
+type ListUsageMembersParams struct {
+	Start time.Time `form:"start" json:"start"`
+	End   time.Time `form:"end" json:"end"`
+
+	// PrincipalId Filter by Run execution identity; requires workspace admin.
+	PrincipalId *string `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Limit       *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor      *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // UsageModelsParams defines parameters for UsageModels.
 type UsageModelsParams struct {
-	Start  time.Time `form:"start" json:"start"`
-	End    time.Time `form:"end" json:"end"`
-	Limit  *int      `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Start time.Time `form:"start" json:"start"`
+	End   time.Time `form:"end" json:"end"`
+
+	// PrincipalId Filter by Run execution identity; requires workspace admin.
+	PrincipalId *string `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Limit       *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor      *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -11674,9 +12014,12 @@ type UsageModelsParams struct {
 
 // UsageOverviewParams defines parameters for UsageOverview.
 type UsageOverviewParams struct {
-	Start    time.Time `form:"start" json:"start"`
-	End      time.Time `form:"end" json:"end"`
-	Timezone *string   `form:"timezone,omitempty" json:"timezone,omitempty"`
+	Start time.Time `form:"start" json:"start"`
+	End   time.Time `form:"end" json:"end"`
+
+	// PrincipalId Filter by Run execution identity; requires workspace admin.
+	PrincipalId *string `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Timezone    *string `form:"timezone,omitempty" json:"timezone,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -11684,6 +12027,20 @@ type UsageOverviewParams struct {
 
 // ModelRequestMetricsParams defines parameters for ModelRequestMetrics.
 type ModelRequestMetricsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListRunUsageParams defines parameters for ListRunUsage.
+type ListRunUsageParams struct {
+	RunId          *string    `form:"run_id,omitempty" json:"run_id,omitempty"`
+	ThreadId       *string    `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	SessionId      *string    `form:"session_id,omitempty" json:"session_id,omitempty"`
+	IngestedAfter  *time.Time `form:"ingested_after,omitempty" json:"ingested_after,omitempty"`
+	IngestedBefore *time.Time `form:"ingested_before,omitempty" json:"ingested_before,omitempty"`
+	Limit          *int       `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor         *string    `form:"cursor,omitempty" json:"cursor,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -11742,6 +12099,15 @@ type ListWebProvidersParams struct {
 
 // CreateWebProviderParams defines parameters for CreateWebProvider.
 type CreateWebProviderParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DeleteWebProviderParams defines parameters for DeleteWebProvider.
+type DeleteWebProviderParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -12061,6 +12427,12 @@ type CreateWorkspaceJSONRequestBody = WorkspaceCreate
 
 // UpdateRunJSONRequestBody defines body for UpdateRun for application/json ContentType.
 type UpdateRunJSONRequestBody = RunLabels
+
+// ReadRunAppResourceJSONRequestBody defines body for ReadRunAppResource for application/json ContentType.
+type ReadRunAppResourceJSONRequestBody = AppResourceRead
+
+// CallRunAppToolJSONRequestBody defines body for CallRunAppTool for application/json ContentType.
+type CallRunAppToolJSONRequestBody = AppToolCall
 
 // OpenControlJSONRequestBody defines body for OpenControl for application/json ContentType.
 type OpenControlJSONRequestBody = Request
@@ -16151,9 +16523,9 @@ type ClientInterface interface {
 
 	// PrepareComposer Prepare Composer
 	//
-	// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+	// The workspace's Agent Composer, initialized or offered an updated official revision without changing its default.
 	//
-	// Refused with `model_required` while the workspace has no model the caller can use.
+	// Initial preparation requires a usable model; later preparation preserves the selected model and revision.
 	//
 	// Corresponds with POST /api/v1/agent-composer (the `PrepareComposer` operationId).
 	PrepareComposer(ctx context.Context, params *PrepareComposerParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -16426,6 +16798,27 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/auth/session (the `SessionProfile` operationId).
 	SessionProfile(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListBuiltinSkills List Builtin Skills
+	//
+	// The skills bundled with this Service release, separately from workspace skill resources.
+	//
+	// Corresponds with GET /api/v1/builtin-skills (the `ListBuiltinSkills` operationId).
+	ListBuiltinSkills(ctx context.Context, params *ListBuiltinSkillsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetBuiltinSkill Get Builtin Skill
+	//
+	// The current deployment's bundled skill and its package file manifest.
+	//
+	// Corresponds with GET /api/v1/builtin-skills/{name} (the `GetBuiltinSkill` operationId).
+	GetBuiltinSkill(ctx context.Context, name string, params *GetBuiltinSkillParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReadBuiltinSkillArchive Read Builtin Skill Archive
+	//
+	// Optionally require the manifest's digest; a changed package returns conflict.
+	//
+	// Corresponds with GET /api/v1/builtin-skills/{name}/content (the `ReadBuiltinSkillArchive` operationId).
+	ReadBuiltinSkillArchive(ctx context.Context, name string, params *ReadBuiltinSkillArchiveParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListConnections List Connections
 	//
 	// Corresponds with GET /api/v1/connections (the `ListConnections` operationId).
@@ -16548,6 +16941,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/connector-providers (the `CreateConnectorProvider` operationId).
 	CreateConnectorProvider(ctx context.Context, params *CreateConnectorProviderParams, body CreateConnectorProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteConnectorProvider Delete Connector Provider
+	//
+	// Corresponds with DELETE /api/v1/connector-providers/{provider_id} (the `DeleteConnectorProvider` operationId).
+	DeleteConnectorProvider(ctx context.Context, providerId string, params *DeleteConnectorProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetConnectorProvider Get connector provider
 	//
@@ -17272,6 +17670,11 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/memory-providers (the `CreateMemoryProvider` operationId).
 	CreateMemoryProvider(ctx context.Context, params *CreateMemoryProviderParams, body CreateMemoryProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteMemoryProvider Delete Memory Provider
+	//
+	// Corresponds with DELETE /api/v1/memory-providers/{provider_id} (the `DeleteMemoryProvider` operationId).
+	DeleteMemoryProvider(ctx context.Context, providerId string, params *DeleteMemoryProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetMemoryProvider Get memory provider
 	//
 	// Corresponds with GET /api/v1/memory-providers/{provider_id} (the `GetMemoryProvider` operationId).
@@ -17507,6 +17910,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/model-providers (the `CreateModelProvider` operationId).
 	CreateModelProvider(ctx context.Context, params *CreateModelProviderParams, body CreateModelProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteModelProvider Delete Model Provider
+	//
+	// Corresponds with DELETE /api/v1/model-providers/{provider_id} (the `DeleteModelProvider` operationId).
+	DeleteModelProvider(ctx context.Context, providerId string, params *DeleteModelProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetModelProvider Get model provider
 	//
@@ -17766,6 +18174,13 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/organizations/{organization_id}/workspaces (the `CreateWorkspace` operationId).
 	CreateWorkspace(ctx context.Context, organizationId string, body CreateWorkspaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListPlugins List Plugins
+	//
+	// The plugins loaded by this Control process, without constructing or executing instances.
+	//
+	// Corresponds with GET /api/v1/plugins (the `ListPlugins` operationId).
+	ListPlugins(ctx context.Context, params *ListPluginsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListProviderTypes List Provider Types
 	//
 	// Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypes` operationId).
@@ -17805,6 +18220,49 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/agent (the `GetRunAgent` operationId).
 	GetRunAgent(ctx context.Context, runId string, params *GetRunAgentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OpenRunApp Open Run App
+	//
+	// Open a saved MCP App with freshly read HTML and its original tool result.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/open (the `OpenRunApp` operationId).
+	OpenRunApp(ctx context.Context, runId string, appId string, params *OpenRunAppParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReadRunAppResourceWithBody Read Run App Resource
+	//
+	// Read the HTML resource bound to a saved MCP App.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+	ReadRunAppResourceWithBody(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReadRunAppResource Read Run App Resource
+	//
+	// Read the HTML resource bound to a saved MCP App.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+	ReadRunAppResource(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, body ReadRunAppResourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CallRunAppToolWithBody Call Run App Tool
+	//
+	// Call an App-visible tool on the saved connection without starting a Run.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+	CallRunAppToolWithBody(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CallRunAppTool Call Run App Tool
+	//
+	// Call an App-visible tool on the saved connection without starting a Run.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+	CallRunAppTool(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, body CallRunAppToolJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListRunAttempts List Run Attempts
 	//
@@ -18117,6 +18575,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStream` operationId).
 	SessionStream(ctx context.Context, sessionId string, params *SessionStreamParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSessionThreads List Session Threads
+	//
+	// Lightweight Session navigation, oldest first, with stable per-origin positions and parent references.
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/threads (the `ListSessionThreads` operationId).
+	ListSessionThreads(ctx context.Context, sessionId string, params *ListSessionThreadsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSkills List Skills
 	//
@@ -18626,6 +19091,11 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/usage/context (the `ContextUsage` operationId).
 	ContextUsage(ctx context.Context, params *ContextUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListUsageMembers List Usage Members
+	//
+	// Corresponds with GET /api/v1/usage/members (the `ListUsageMembers` operationId).
+	ListUsageMembers(ctx context.Context, params *ListUsageMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// UsageModels Usage Models
 	//
 	// Corresponds with GET /api/v1/usage/models (the `UsageModels` operationId).
@@ -18640,6 +19110,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetrics` operationId).
 	ModelRequestMetrics(ctx context.Context, recordId string, params *ModelRequestMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListRunUsage List Run Usage
+	//
+	// One page of Run usage; Run numbers include all Runs in each Thread, including those without usage.
+	//
+	// Corresponds with GET /api/v1/usage/runs (the `ListRunUsage` operationId).
+	ListRunUsage(ctx context.Context, params *ListRunUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetProfile Get Profile
 	//
@@ -18772,6 +19249,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/web-providers (the `CreateWebProvider` operationId).
 	CreateWebProvider(ctx context.Context, params *CreateWebProviderParams, body CreateWebProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteWebProvider Delete Web Provider
+	//
+	// Corresponds with DELETE /api/v1/web-providers/{provider_id} (the `DeleteWebProvider` operationId).
+	DeleteWebProvider(ctx context.Context, providerId string, params *DeleteWebProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetWebProvider Get web provider
 	//
@@ -19015,9 +19497,9 @@ type ClientInterface interface {
 
 // PrepareComposer Prepare Composer
 //
-// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+// The workspace's Agent Composer, initialized or offered an updated official revision without changing its default.
 //
-// Refused with `model_required` while the workspace has no model the caller can use.
+// Initial preparation requires a usable model; later preparation preserves the selected model and revision.
 //
 // Corresponds with POST /api/v1/agent-composer (the `PrepareComposer` operationId).
 func (c *Client) PrepareComposer(ctx context.Context, params *PrepareComposerParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -19700,6 +20182,57 @@ func (c *Client) SessionProfile(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
+// ListBuiltinSkills List Builtin Skills
+//
+// The skills bundled with this Service release, separately from workspace skill resources.
+//
+// Corresponds with GET /api/v1/builtin-skills (the `ListBuiltinSkills` operationId).
+func (c *Client) ListBuiltinSkills(ctx context.Context, params *ListBuiltinSkillsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListBuiltinSkillsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetBuiltinSkill Get Builtin Skill
+//
+// The current deployment's bundled skill and its package file manifest.
+//
+// Corresponds with GET /api/v1/builtin-skills/{name} (the `GetBuiltinSkill` operationId).
+func (c *Client) GetBuiltinSkill(ctx context.Context, name string, params *GetBuiltinSkillParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetBuiltinSkillRequest(c.Server, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReadBuiltinSkillArchive Read Builtin Skill Archive
+//
+// Optionally require the manifest's digest; a changed package returns conflict.
+//
+// Corresponds with GET /api/v1/builtin-skills/{name}/content (the `ReadBuiltinSkillArchive` operationId).
+func (c *Client) ReadBuiltinSkillArchive(ctx context.Context, name string, params *ReadBuiltinSkillArchiveParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadBuiltinSkillArchiveRequest(c.Server, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListConnections List Connections
 //
 // Corresponds with GET /api/v1/connections (the `ListConnections` operationId).
@@ -19993,6 +20526,21 @@ func (c *Client) CreateConnectorProviderWithBody(ctx context.Context, params *Cr
 // Corresponds with POST /api/v1/connector-providers (the `CreateConnectorProvider` operationId).
 func (c *Client) CreateConnectorProvider(ctx context.Context, params *CreateConnectorProviderParams, body CreateConnectorProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateConnectorProviderRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteConnectorProvider Delete Connector Provider
+//
+// Corresponds with DELETE /api/v1/connector-providers/{provider_id} (the `DeleteConnectorProvider` operationId).
+func (c *Client) DeleteConnectorProvider(ctx context.Context, providerId string, params *DeleteConnectorProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteConnectorProviderRequest(c.Server, providerId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -21816,6 +22364,21 @@ func (c *Client) CreateMemoryProvider(ctx context.Context, params *CreateMemoryP
 	return c.Client.Do(req)
 }
 
+// DeleteMemoryProvider Delete Memory Provider
+//
+// Corresponds with DELETE /api/v1/memory-providers/{provider_id} (the `DeleteMemoryProvider` operationId).
+func (c *Client) DeleteMemoryProvider(ctx context.Context, providerId string, params *DeleteMemoryProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteMemoryProviderRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetMemoryProvider Get memory provider
 //
 // Corresponds with GET /api/v1/memory-providers/{provider_id} (the `GetMemoryProvider` operationId).
@@ -22422,6 +22985,21 @@ func (c *Client) CreateModelProviderWithBody(ctx context.Context, params *Create
 // Corresponds with POST /api/v1/model-providers (the `CreateModelProvider` operationId).
 func (c *Client) CreateModelProvider(ctx context.Context, params *CreateModelProviderParams, body CreateModelProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateModelProviderRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteModelProvider Delete Model Provider
+//
+// Corresponds with DELETE /api/v1/model-providers/{provider_id} (the `DeleteModelProvider` operationId).
+func (c *Client) DeleteModelProvider(ctx context.Context, providerId string, params *DeleteModelProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteModelProviderRequest(c.Server, providerId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -23090,6 +23668,23 @@ func (c *Client) CreateWorkspace(ctx context.Context, organizationId string, bod
 	return c.Client.Do(req)
 }
 
+// ListPlugins List Plugins
+//
+// The plugins loaded by this Control process, without constructing or executing instances.
+//
+// Corresponds with GET /api/v1/plugins (the `ListPlugins` operationId).
+func (c *Client) ListPlugins(ctx context.Context, params *ListPluginsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPluginsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListProviderTypes List Provider Types
 //
 // Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypes` operationId).
@@ -23180,6 +23775,99 @@ func (c *Client) UpdateRun(ctx context.Context, runId string, params *UpdateRunP
 // Corresponds with GET /api/v1/runs/{run_id}/agent (the `GetRunAgent` operationId).
 func (c *Client) GetRunAgent(ctx context.Context, runId string, params *GetRunAgentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRunAgentRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OpenRunApp Open Run App
+//
+// Open a saved MCP App with freshly read HTML and its original tool result.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/open (the `OpenRunApp` operationId).
+func (c *Client) OpenRunApp(ctx context.Context, runId string, appId string, params *OpenRunAppParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOpenRunAppRequest(c.Server, runId, appId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReadRunAppResourceWithBody Read Run App Resource
+//
+// Read the HTML resource bound to a saved MCP App.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+func (c *Client) ReadRunAppResourceWithBody(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadRunAppResourceRequestWithBody(c.Server, runId, appId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReadRunAppResource Read Run App Resource
+//
+// Read the HTML resource bound to a saved MCP App.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+func (c *Client) ReadRunAppResource(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, body ReadRunAppResourceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadRunAppResourceRequest(c.Server, runId, appId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CallRunAppToolWithBody Call Run App Tool
+//
+// Call an App-visible tool on the saved connection without starting a Run.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+func (c *Client) CallRunAppToolWithBody(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCallRunAppToolRequestWithBody(c.Server, runId, appId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CallRunAppTool Call Run App Tool
+//
+// Call an App-visible tool on the saved connection without starting a Run.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+func (c *Client) CallRunAppTool(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, body CallRunAppToolJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCallRunAppToolRequest(c.Server, runId, appId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -23942,6 +24630,23 @@ func (c *Client) GetMessageAuthors(ctx context.Context, sessionId string, params
 // Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStream` operationId).
 func (c *Client) SessionStream(ctx context.Context, sessionId string, params *SessionStreamParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewSessionStreamRequest(c.Server, sessionId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListSessionThreads List Session Threads
+//
+// Lightweight Session navigation, oldest first, with stable per-origin positions and parent references.
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/threads (the `ListSessionThreads` operationId).
+func (c *Client) ListSessionThreads(ctx context.Context, sessionId string, params *ListSessionThreadsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSessionThreadsRequest(c.Server, sessionId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -25210,6 +25915,21 @@ func (c *Client) ContextUsage(ctx context.Context, params *ContextUsageParams, r
 	return c.Client.Do(req)
 }
 
+// ListUsageMembers List Usage Members
+//
+// Corresponds with GET /api/v1/usage/members (the `ListUsageMembers` operationId).
+func (c *Client) ListUsageMembers(ctx context.Context, params *ListUsageMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListUsageMembersRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // UsageModels Usage Models
 //
 // Corresponds with GET /api/v1/usage/models (the `UsageModels` operationId).
@@ -25245,6 +25965,23 @@ func (c *Client) UsageOverview(ctx context.Context, params *UsageOverviewParams,
 // Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetrics` operationId).
 func (c *Client) ModelRequestMetrics(ctx context.Context, recordId string, params *ModelRequestMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewModelRequestMetricsRequest(c.Server, recordId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListRunUsage List Run Usage
+//
+// One page of Run usage; Run numbers include all Runs in each Thread, including those without usage.
+//
+// Corresponds with GET /api/v1/usage/runs (the `ListRunUsage` operationId).
+func (c *Client) ListRunUsage(ctx context.Context, params *ListRunUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRunUsageRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -25577,6 +26314,21 @@ func (c *Client) CreateWebProviderWithBody(ctx context.Context, params *CreateWe
 // Corresponds with POST /api/v1/web-providers (the `CreateWebProvider` operationId).
 func (c *Client) CreateWebProvider(ctx context.Context, params *CreateWebProviderParams, body CreateWebProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateWebProviderRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteWebProvider Delete Web Provider
+//
+// Corresponds with DELETE /api/v1/web-providers/{provider_id} (the `DeleteWebProvider` operationId).
+func (c *Client) DeleteWebProvider(ctx context.Context, providerId string, params *DeleteWebProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteWebProviderRequest(c.Server, providerId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -28095,6 +28847,173 @@ func NewSessionProfileRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewListBuiltinSkillsRequest constructs an http.Request for the ListBuiltinSkills method
+func NewListBuiltinSkillsRequest(server string, params *ListBuiltinSkillsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/builtin-skills")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetBuiltinSkillRequest constructs an http.Request for the GetBuiltinSkill method
+func NewGetBuiltinSkillRequest(server string, name string, params *GetBuiltinSkillParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/builtin-skills/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewReadBuiltinSkillArchiveRequest constructs an http.Request for the ReadBuiltinSkillArchive method
+func NewReadBuiltinSkillArchiveRequest(server string, name string, params *ReadBuiltinSkillArchiveParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/builtin-skills/%s/content", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.PackageDigest != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "package_digest", *params.PackageDigest, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListConnectionsRequest constructs an http.Request for the ListConnections method
 func NewListConnectionsRequest(server string, params *ListConnectionsParams) (*http.Request, error) {
 	var err error
@@ -29062,6 +29981,66 @@ func NewCreateConnectorProviderRequestWithBody(server string, params *CreateConn
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteConnectorProviderRequest constructs an http.Request for the DeleteConnectorProvider method
+func NewDeleteConnectorProviderRequest(server string, providerId string, params *DeleteConnectorProviderParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
 		}
 
 	}
@@ -34325,6 +35304,66 @@ func NewCreateMemoryProviderRequestWithBody(server string, params *CreateMemoryP
 	return req, nil
 }
 
+// NewDeleteMemoryProviderRequest constructs an http.Request for the DeleteMemoryProvider method
+func NewDeleteMemoryProviderRequest(server string, providerId string, params *DeleteMemoryProviderParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetMemoryProviderRequest constructs an http.Request for the GetMemoryProvider method
 func NewGetMemoryProviderRequest(server string, providerId string, params *GetMemoryProviderParams) (*http.Request, error) {
 	var err error
@@ -36246,6 +37285,66 @@ func NewCreateModelProviderRequestWithBody(server string, params *CreateModelPro
 	return req, nil
 }
 
+// NewDeleteModelProviderRequest constructs an http.Request for the DeleteModelProvider method
+func NewDeleteModelProviderRequest(server string, providerId string, params *DeleteModelProviderParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/model-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetModelProviderRequest constructs an http.Request for the GetModelProvider method
 func NewGetModelProviderRequest(server string, providerId string, params *GetModelProviderParams) (*http.Request, error) {
 	var err error
@@ -37967,6 +39066,48 @@ func NewCreateWorkspaceRequestWithBody(server string, organizationId string, con
 	return req, nil
 }
 
+// NewListPluginsRequest constructs an http.Request for the ListPlugins method
+func NewListPluginsRequest(server string, params *ListPluginsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/plugins")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListProviderTypesRequest constructs an http.Request for the ListProviderTypes method
 func NewListProviderTypesRequest(server string, kind ListProviderTypesParamsKind) (*http.Request, error) {
 	var err error
@@ -38516,6 +39657,200 @@ func NewGetRunAgentRequest(server string, runId string, params *GetRunAgentParam
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewOpenRunAppRequest constructs an http.Request for the OpenRunApp method
+func NewOpenRunAppRequest(server string, runId string, appId string, params *OpenRunAppParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/apps/%s/open", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewReadRunAppResourceRequest calls the generic ReadRunAppResource builder with application/json body
+func NewReadRunAppResourceRequest(server string, runId string, appId string, params *ReadRunAppResourceParams, body ReadRunAppResourceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewReadRunAppResourceRequestWithBody(server, runId, appId, params, "application/json", bodyReader)
+}
+
+// NewReadRunAppResourceRequestWithBody constructs an http.Request for the ReadRunAppResource method, with any body, and a specified content type
+func NewReadRunAppResourceRequestWithBody(server string, runId string, appId string, params *ReadRunAppResourceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/apps/%s/resources/read", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCallRunAppToolRequest calls the generic CallRunAppTool builder with application/json body
+func NewCallRunAppToolRequest(server string, runId string, appId string, params *CallRunAppToolParams, body CallRunAppToolJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCallRunAppToolRequestWithBody(server, runId, appId, params, "application/json", bodyReader)
+}
+
+// NewCallRunAppToolRequestWithBody constructs an http.Request for the CallRunAppTool method, with any body, and a specified content type
+func NewCallRunAppToolRequestWithBody(server string, runId string, appId string, params *CallRunAppToolParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/apps/%s/tools/call", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -41218,6 +42553,118 @@ func NewSessionStreamRequest(server string, sessionId string, params *SessionStr
 	return req, nil
 }
 
+// NewListSessionThreadsRequest constructs an http.Request for the ListSessionThreads method
+func NewListSessionThreadsRequest(server string, sessionId string, params *ListSessionThreadsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "session_id", sessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/sessions/%s/threads", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Origin != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "origin", *params.Origin, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ThreadId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "thread_id", *params.ThreadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListSkillsRequest constructs an http.Request for the ListSkills method
 func NewListSkillsRequest(server string, params *ListSkillsParams) (*http.Request, error) {
 	var err error
@@ -42607,6 +44054,30 @@ func NewListThreadsRequest(server string, params *ListThreadsParams) (*http.Requ
 		if params.OccurrenceId != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "occurrence_id", *params.OccurrenceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Origin != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "origin", *params.Origin, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.OriginRunId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "origin_run_id", *params.OriginRunId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -46006,6 +47477,18 @@ func NewUsageAgentsRequest(server string, params *UsageAgentsParams) (*http.Requ
 			}
 		}
 
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
@@ -46152,6 +47635,115 @@ func NewContextUsageRequest(server string, params *ContextUsageParams) (*http.Re
 	return req, nil
 }
 
+// NewListUsageMembersRequest constructs an http.Request for the ListUsageMembers method
+func NewListUsageMembersRequest(server string, params *ListUsageMembersParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/members")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start", params.Start, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end", params.End, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewUsageModelsRequest constructs an http.Request for the UsageModels method
 func NewUsageModelsRequest(server string, params *UsageModelsParams) (*http.Request, error) {
 	var err error
@@ -46194,6 +47786,18 @@ func NewUsageModelsRequest(server string, params *UsageModelsParams) (*http.Requ
 			for _, qp := range strings.Split(queryFrag, "&") {
 				rawQueryFragments = append(rawQueryFragments, qp)
 			}
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
 		}
 
 		if params.Limit != nil {
@@ -46293,6 +47897,18 @@ func NewUsageOverviewRequest(server string, params *UsageOverviewParams) (*http.
 			}
 		}
 
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Timezone != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "timezone", *params.Timezone, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -46358,6 +47974,147 @@ func NewModelRequestMetricsRequest(server string, recordId string, params *Model
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListRunUsageRequest constructs an http.Request for the ListRunUsage method
+func NewListRunUsageRequest(server string, params *ListRunUsageParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/runs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.RunId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "run_id", *params.RunId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ThreadId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "thread_id", *params.ThreadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SessionId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "session_id", *params.SessionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IngestedAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "ingested_after", *params.IngestedAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IngestedBefore != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "ingested_before", *params.IngestedBefore, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -47127,6 +48884,66 @@ func NewCreateWebProviderRequestWithBody(server string, params *CreateWebProvide
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteWebProviderRequest constructs an http.Request for the DeleteWebProvider method
+func NewDeleteWebProviderRequest(server string, providerId string, params *DeleteWebProviderParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/web-providers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
 		}
 
 	}
@@ -48831,9 +50648,9 @@ type ClientWithResponsesInterface interface {
 
 	// PrepareComposerWithResponse Prepare Composer
 	//
-	// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+	// The workspace's Agent Composer, initialized or offered an updated official revision without changing its default.
 	//
-	// Refused with `model_required` while the workspace has no model the caller can use.
+	// Initial preparation requires a usable model; later preparation preserves the selected model and revision.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -49142,6 +50959,33 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/auth/session (the `SessionProfile` operationId).
 	SessionProfileWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*SessionProfileResponse, error)
 
+	// ListBuiltinSkillsWithResponse List Builtin Skills
+	//
+	// The skills bundled with this Service release, separately from workspace skill resources.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/builtin-skills (the `ListBuiltinSkills` operationId).
+	ListBuiltinSkillsWithResponse(ctx context.Context, params *ListBuiltinSkillsParams, reqEditors ...RequestEditorFn) (*ListBuiltinSkillsResponse, error)
+
+	// GetBuiltinSkillWithResponse Get Builtin Skill
+	//
+	// The current deployment's bundled skill and its package file manifest.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/builtin-skills/{name} (the `GetBuiltinSkill` operationId).
+	GetBuiltinSkillWithResponse(ctx context.Context, name string, params *GetBuiltinSkillParams, reqEditors ...RequestEditorFn) (*GetBuiltinSkillResponse, error)
+
+	// ReadBuiltinSkillArchiveWithResponse Read Builtin Skill Archive
+	//
+	// Optionally require the manifest's digest; a changed package returns conflict.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/builtin-skills/{name}/content (the `ReadBuiltinSkillArchive` operationId).
+	ReadBuiltinSkillArchiveWithResponse(ctx context.Context, name string, params *ReadBuiltinSkillArchiveParams, reqEditors ...RequestEditorFn) (*ReadBuiltinSkillArchiveResponse, error)
+
 	// ListConnectionsWithResponse List Connections
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -49284,6 +51128,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/connector-providers (the `CreateConnectorProvider` operationId).
 	CreateConnectorProviderWithResponse(ctx context.Context, params *CreateConnectorProviderParams, body CreateConnectorProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConnectorProviderResponse, error)
+
+	// DeleteConnectorProviderWithResponse Delete Connector Provider
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/connector-providers/{provider_id} (the `DeleteConnectorProvider` operationId).
+	DeleteConnectorProviderWithResponse(ctx context.Context, providerId string, params *DeleteConnectorProviderParams, reqEditors ...RequestEditorFn) (*DeleteConnectorProviderResponse, error)
 
 	// GetConnectorProviderWithResponse Get connector provider
 	//
@@ -50102,6 +51953,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/memory-providers (the `CreateMemoryProvider` operationId).
 	CreateMemoryProviderWithResponse(ctx context.Context, params *CreateMemoryProviderParams, body CreateMemoryProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMemoryProviderResponse, error)
 
+	// DeleteMemoryProviderWithResponse Delete Memory Provider
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/memory-providers/{provider_id} (the `DeleteMemoryProvider` operationId).
+	DeleteMemoryProviderWithResponse(ctx context.Context, providerId string, params *DeleteMemoryProviderParams, reqEditors ...RequestEditorFn) (*DeleteMemoryProviderResponse, error)
+
 	// GetMemoryProviderWithResponse Get memory provider
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -50377,6 +52235,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/model-providers (the `CreateModelProvider` operationId).
 	CreateModelProviderWithResponse(ctx context.Context, params *CreateModelProviderParams, body CreateModelProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateModelProviderResponse, error)
+
+	// DeleteModelProviderWithResponse Delete Model Provider
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/model-providers/{provider_id} (the `DeleteModelProvider` operationId).
+	DeleteModelProviderWithResponse(ctx context.Context, providerId string, params *DeleteModelProviderParams, reqEditors ...RequestEditorFn) (*DeleteModelProviderResponse, error)
 
 	// GetModelProviderWithResponse Get model provider
 	//
@@ -50674,6 +52539,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/organizations/{organization_id}/workspaces (the `CreateWorkspace` operationId).
 	CreateWorkspaceWithResponse(ctx context.Context, organizationId string, body CreateWorkspaceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWorkspaceResponse, error)
 
+	// ListPluginsWithResponse List Plugins
+	//
+	// The plugins loaded by this Control process, without constructing or executing instances.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/plugins (the `ListPlugins` operationId).
+	ListPluginsWithResponse(ctx context.Context, params *ListPluginsParams, reqEditors ...RequestEditorFn) (*ListPluginsResponse, error)
+
 	// ListProviderTypesWithResponse List Provider Types
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -50721,6 +52595,51 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/agent (the `GetRunAgent` operationId).
 	GetRunAgentWithResponse(ctx context.Context, runId string, params *GetRunAgentParams, reqEditors ...RequestEditorFn) (*GetRunAgentResponse, error)
+
+	// OpenRunAppWithResponse Open Run App
+	//
+	// Open a saved MCP App with freshly read HTML and its original tool result.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/open (the `OpenRunApp` operationId).
+	OpenRunAppWithResponse(ctx context.Context, runId string, appId string, params *OpenRunAppParams, reqEditors ...RequestEditorFn) (*OpenRunAppResponse, error)
+
+	// ReadRunAppResourceWithBodyWithResponse Read Run App Resource
+	//
+	// Read the HTML resource bound to a saved MCP App.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+	ReadRunAppResourceWithBodyWithResponse(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReadRunAppResourceResponse, error)
+
+	// ReadRunAppResourceWithResponse Read Run App Resource
+	//
+	// Read the HTML resource bound to a saved MCP App.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+	ReadRunAppResourceWithResponse(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, body ReadRunAppResourceJSONRequestBody, reqEditors ...RequestEditorFn) (*ReadRunAppResourceResponse, error)
+
+	// CallRunAppToolWithBodyWithResponse Call Run App Tool
+	//
+	// Call an App-visible tool on the saved connection without starting a Run.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+	CallRunAppToolWithBodyWithResponse(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CallRunAppToolResponse, error)
+
+	// CallRunAppToolWithResponse Call Run App Tool
+	//
+	// Call an App-visible tool on the saved connection without starting a Run.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+	CallRunAppToolWithResponse(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, body CallRunAppToolJSONRequestBody, reqEditors ...RequestEditorFn) (*CallRunAppToolResponse, error)
 
 	// ListRunAttemptsWithResponse List Run Attempts
 	//
@@ -51075,6 +52994,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStream` operationId).
 	SessionStreamWithResponse(ctx context.Context, sessionId string, params *SessionStreamParams, reqEditors ...RequestEditorFn) (*SessionStreamResponse, error)
+
+	// ListSessionThreadsWithResponse List Session Threads
+	//
+	// Lightweight Session navigation, oldest first, with stable per-origin positions and parent references.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/sessions/{session_id}/threads (the `ListSessionThreads` operationId).
+	ListSessionThreadsWithResponse(ctx context.Context, sessionId string, params *ListSessionThreadsParams, reqEditors ...RequestEditorFn) (*ListSessionThreadsResponse, error)
 
 	// ListSkillsWithResponse List Skills
 	//
@@ -51672,6 +53600,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/usage/context (the `ContextUsage` operationId).
 	ContextUsageWithResponse(ctx context.Context, params *ContextUsageParams, reqEditors ...RequestEditorFn) (*ContextUsageResponse, error)
 
+	// ListUsageMembersWithResponse List Usage Members
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/members (the `ListUsageMembers` operationId).
+	ListUsageMembersWithResponse(ctx context.Context, params *ListUsageMembersParams, reqEditors ...RequestEditorFn) (*ListUsageMembersResponse, error)
+
 	// UsageModelsWithResponse Usage Models
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -51692,6 +53627,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/records/{record_id}/metrics (the `ModelRequestMetrics` operationId).
 	ModelRequestMetricsWithResponse(ctx context.Context, recordId string, params *ModelRequestMetricsParams, reqEditors ...RequestEditorFn) (*ModelRequestMetricsResponse, error)
+
+	// ListRunUsageWithResponse List Run Usage
+	//
+	// One page of Run usage; Run numbers include all Runs in each Thread, including those without usage.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/runs (the `ListRunUsage` operationId).
+	ListRunUsageWithResponse(ctx context.Context, params *ListRunUsageParams, reqEditors ...RequestEditorFn) (*ListRunUsageResponse, error)
 
 	// GetProfileWithResponse Get Profile
 	//
@@ -51842,6 +53786,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/web-providers (the `CreateWebProvider` operationId).
 	CreateWebProviderWithResponse(ctx context.Context, params *CreateWebProviderParams, body CreateWebProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWebProviderResponse, error)
+
+	// DeleteWebProviderWithResponse Delete Web Provider
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /api/v1/web-providers/{provider_id} (the `DeleteWebProvider` operationId).
+	DeleteWebProviderWithResponse(ctx context.Context, providerId string, params *DeleteWebProviderParams, reqEditors ...RequestEditorFn) (*DeleteWebProviderResponse, error)
 
 	// GetWebProviderWithResponse Get web provider
 	//
@@ -54111,6 +56062,206 @@ func (r SessionProfileResponse) ContentType() string {
 	return ""
 }
 
+// ListBuiltinSkillsResponse400Headers the declared response headers of an HTTP 400 response for ListBuiltinSkills
+type ListBuiltinSkillsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListBuiltinSkillsResponseDefaultHeaders the declared response headers of an HTTP default response for ListBuiltinSkills
+type ListBuiltinSkillsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListBuiltinSkillsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BuiltinSkillCatalog
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListBuiltinSkillsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListBuiltinSkillsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListBuiltinSkillsResponse) GetJSON200() *BuiltinSkillCatalog {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListBuiltinSkillsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListBuiltinSkillsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListBuiltinSkillsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListBuiltinSkillsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListBuiltinSkillsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListBuiltinSkillsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetBuiltinSkillResponse400Headers the declared response headers of an HTTP 400 response for GetBuiltinSkill
+type GetBuiltinSkillResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetBuiltinSkillResponseDefaultHeaders the declared response headers of an HTTP default response for GetBuiltinSkill
+type GetBuiltinSkillResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetBuiltinSkillResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BuiltinSkillDetail
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetBuiltinSkillResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetBuiltinSkillResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetBuiltinSkillResponse) GetJSON200() *BuiltinSkillDetail {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetBuiltinSkillResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetBuiltinSkillResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetBuiltinSkillResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetBuiltinSkillResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetBuiltinSkillResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetBuiltinSkillResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ReadBuiltinSkillArchiveResponse400Headers the declared response headers of an HTTP 400 response for ReadBuiltinSkillArchive
+type ReadBuiltinSkillArchiveResponse400Headers struct {
+	XRequestId *string
+}
+
+// ReadBuiltinSkillArchiveResponseDefaultHeaders the declared response headers of an HTTP default response for ReadBuiltinSkillArchive
+type ReadBuiltinSkillArchiveResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ReadBuiltinSkillArchiveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ReadBuiltinSkillArchiveResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ReadBuiltinSkillArchiveResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ReadBuiltinSkillArchiveResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReadBuiltinSkillArchiveResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReadBuiltinSkillArchiveResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReadBuiltinSkillArchiveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReadBuiltinSkillArchiveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReadBuiltinSkillArchiveResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListConnectionsResponse400Headers the declared response headers of an HTTP 400 response for ListConnections
 type ListConnectionsResponse400Headers struct {
 	XRequestId *string
@@ -55057,6 +57208,68 @@ func (r CreateConnectorProviderResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CreateConnectorProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteConnectorProviderResponse400Headers the declared response headers of an HTTP 400 response for DeleteConnectorProvider
+type DeleteConnectorProviderResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteConnectorProviderResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteConnectorProvider
+type DeleteConnectorProviderResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteConnectorProviderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteConnectorProviderResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteConnectorProviderResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteConnectorProviderResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteConnectorProviderResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteConnectorProviderResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteConnectorProviderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteConnectorProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteConnectorProviderResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -60403,6 +62616,68 @@ func (r CreateMemoryProviderResponse) ContentType() string {
 	return ""
 }
 
+// DeleteMemoryProviderResponse400Headers the declared response headers of an HTTP 400 response for DeleteMemoryProvider
+type DeleteMemoryProviderResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteMemoryProviderResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteMemoryProvider
+type DeleteMemoryProviderResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteMemoryProviderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteMemoryProviderResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteMemoryProviderResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteMemoryProviderResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteMemoryProviderResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteMemoryProviderResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteMemoryProviderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteMemoryProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteMemoryProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetMemoryProviderResponse400Headers the declared response headers of an HTTP 400 response for GetMemoryProvider
 type GetMemoryProviderResponse400Headers struct {
 	XRequestId *string
@@ -62377,6 +64652,68 @@ func (r CreateModelProviderResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CreateModelProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteModelProviderResponse400Headers the declared response headers of an HTTP 400 response for DeleteModelProvider
+type DeleteModelProviderResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteModelProviderResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteModelProvider
+type DeleteModelProviderResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteModelProviderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteModelProviderResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteModelProviderResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteModelProviderResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteModelProviderResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteModelProviderResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteModelProviderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteModelProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteModelProviderResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -64439,6 +66776,75 @@ func (r CreateWorkspaceResponse) ContentType() string {
 	return ""
 }
 
+// ListPluginsResponse400Headers the declared response headers of an HTTP 400 response for ListPlugins
+type ListPluginsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListPluginsResponseDefaultHeaders the declared response headers of an HTTP default response for ListPlugins
+type ListPluginsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListPluginsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PluginCatalog
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListPluginsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListPluginsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListPluginsResponse) GetJSON200() *PluginCatalog {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListPluginsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListPluginsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListPluginsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListPluginsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListPluginsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListPluginsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListProviderTypesResponse400Headers the declared response headers of an HTTP 400 response for ListProviderTypes
 type ListProviderTypesResponse400Headers struct {
 	XRequestId *string
@@ -64778,6 +67184,213 @@ func (r GetRunAgentResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetRunAgentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// OpenRunAppResponse400Headers the declared response headers of an HTTP 400 response for OpenRunApp
+type OpenRunAppResponse400Headers struct {
+	XRequestId *string
+}
+
+// OpenRunAppResponseDefaultHeaders the declared response headers of an HTTP default response for OpenRunApp
+type OpenRunAppResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type OpenRunAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *OpenedApp
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *OpenRunAppResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *OpenRunAppResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r OpenRunAppResponse) GetJSON200() *OpenedApp {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r OpenRunAppResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r OpenRunAppResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r OpenRunAppResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r OpenRunAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OpenRunAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r OpenRunAppResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ReadRunAppResourceResponse400Headers the declared response headers of an HTTP 400 response for ReadRunAppResource
+type ReadRunAppResourceResponse400Headers struct {
+	XRequestId *string
+}
+
+// ReadRunAppResourceResponseDefaultHeaders the declared response headers of an HTTP default response for ReadRunAppResource
+type ReadRunAppResourceResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ReadRunAppResourceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppResource
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ReadRunAppResourceResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ReadRunAppResourceResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ReadRunAppResourceResponse) GetJSON200() *AppResource {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ReadRunAppResourceResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReadRunAppResourceResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReadRunAppResourceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReadRunAppResourceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReadRunAppResourceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReadRunAppResourceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CallRunAppToolResponse400Headers the declared response headers of an HTTP 400 response for CallRunAppTool
+type CallRunAppToolResponse400Headers struct {
+	XRequestId *string
+}
+
+// CallRunAppToolResponseDefaultHeaders the declared response headers of an HTTP default response for CallRunAppTool
+type CallRunAppToolResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CallRunAppToolResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppToolResult
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CallRunAppToolResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CallRunAppToolResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CallRunAppToolResponse) GetJSON200() *AppToolResult {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CallRunAppToolResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CallRunAppToolResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CallRunAppToolResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CallRunAppToolResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CallRunAppToolResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CallRunAppToolResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -67048,6 +69661,75 @@ func (r SessionStreamResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r SessionStreamResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListSessionThreadsResponse400Headers the declared response headers of an HTTP 400 response for ListSessionThreads
+type ListSessionThreadsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSessionThreadsResponseDefaultHeaders the declared response headers of an HTTP default response for ListSessionThreads
+type ListSessionThreadsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSessionThreadsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ThreadNavigationPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSessionThreadsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSessionThreadsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSessionThreadsResponse) GetJSON200() *ThreadNavigationPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSessionThreadsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSessionThreadsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSessionThreadsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSessionThreadsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSessionThreadsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSessionThreadsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -71166,6 +73848,75 @@ func (r ContextUsageResponse) ContentType() string {
 	return ""
 }
 
+// ListUsageMembersResponse400Headers the declared response headers of an HTTP 400 response for ListUsageMembers
+type ListUsageMembersResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListUsageMembersResponseDefaultHeaders the declared response headers of an HTTP default response for ListUsageMembers
+type ListUsageMembersResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListUsageMembersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemberUsagePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListUsageMembersResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListUsageMembersResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListUsageMembersResponse) GetJSON200() *MemberUsagePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListUsageMembersResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListUsageMembersResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListUsageMembersResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListUsageMembersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListUsageMembersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListUsageMembersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // UsageModelsResponse400Headers the declared response headers of an HTTP 400 response for UsageModels
 type UsageModelsResponse400Headers struct {
 	XRequestId *string
@@ -71367,6 +74118,75 @@ func (r ModelRequestMetricsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ModelRequestMetricsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListRunUsageResponse400Headers the declared response headers of an HTTP 400 response for ListRunUsage
+type ListRunUsageResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListRunUsageResponseDefaultHeaders the declared response headers of an HTTP default response for ListRunUsage
+type ListRunUsageResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListRunUsageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RunUsagePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListRunUsageResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListRunUsageResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListRunUsageResponse) GetJSON200() *RunUsagePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListRunUsageResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListRunUsageResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListRunUsageResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListRunUsageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListRunUsageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListRunUsageResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -72360,6 +75180,68 @@ func (r CreateWebProviderResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CreateWebProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteWebProviderResponse400Headers the declared response headers of an HTTP 400 response for DeleteWebProvider
+type DeleteWebProviderResponse400Headers struct {
+	XRequestId *string
+}
+
+// DeleteWebProviderResponseDefaultHeaders the declared response headers of an HTTP default response for DeleteWebProvider
+type DeleteWebProviderResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DeleteWebProviderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DeleteWebProviderResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DeleteWebProviderResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DeleteWebProviderResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DeleteWebProviderResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteWebProviderResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteWebProviderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteWebProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteWebProviderResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -74368,9 +77250,9 @@ func (r ReadyResponse) ContentType() string {
 
 // PrepareComposerWithResponse Prepare Composer
 //
-// The workspace's Agent Composer, created or brought up to date with the deployment's definition.
+// The workspace's Agent Composer, initialized or offered an updated official revision without changing its default.
 //
-// Refused with `model_required` while the workspace has no model the caller can use.
+// Initial preparation requires a usable model; later preparation preserves the selected model and revision.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -74925,6 +77807,51 @@ func (c *ClientWithResponses) SessionProfileWithResponse(ctx context.Context, re
 	return ParseSessionProfileResponse(rsp)
 }
 
+// ListBuiltinSkillsWithResponse List Builtin Skills
+//
+// The skills bundled with this Service release, separately from workspace skill resources.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/builtin-skills (the `ListBuiltinSkills` operationId).
+func (c *ClientWithResponses) ListBuiltinSkillsWithResponse(ctx context.Context, params *ListBuiltinSkillsParams, reqEditors ...RequestEditorFn) (*ListBuiltinSkillsResponse, error) {
+	rsp, err := c.ListBuiltinSkills(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListBuiltinSkillsResponse(rsp)
+}
+
+// GetBuiltinSkillWithResponse Get Builtin Skill
+//
+// The current deployment's bundled skill and its package file manifest.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/builtin-skills/{name} (the `GetBuiltinSkill` operationId).
+func (c *ClientWithResponses) GetBuiltinSkillWithResponse(ctx context.Context, name string, params *GetBuiltinSkillParams, reqEditors ...RequestEditorFn) (*GetBuiltinSkillResponse, error) {
+	rsp, err := c.GetBuiltinSkill(ctx, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetBuiltinSkillResponse(rsp)
+}
+
+// ReadBuiltinSkillArchiveWithResponse Read Builtin Skill Archive
+//
+// Optionally require the manifest's digest; a changed package returns conflict.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/builtin-skills/{name}/content (the `ReadBuiltinSkillArchive` operationId).
+func (c *ClientWithResponses) ReadBuiltinSkillArchiveWithResponse(ctx context.Context, name string, params *ReadBuiltinSkillArchiveParams, reqEditors ...RequestEditorFn) (*ReadBuiltinSkillArchiveResponse, error) {
+	rsp, err := c.ReadBuiltinSkillArchive(ctx, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReadBuiltinSkillArchiveResponse(rsp)
+}
+
 // ListConnectionsWithResponse List Connections
 //
 // Returns a wrapper object for the known response body format(s).
@@ -75174,6 +78101,19 @@ func (c *ClientWithResponses) CreateConnectorProviderWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseCreateConnectorProviderResponse(rsp)
+}
+
+// DeleteConnectorProviderWithResponse Delete Connector Provider
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/connector-providers/{provider_id} (the `DeleteConnectorProvider` operationId).
+func (c *ClientWithResponses) DeleteConnectorProviderWithResponse(ctx context.Context, providerId string, params *DeleteConnectorProviderParams, reqEditors ...RequestEditorFn) (*DeleteConnectorProviderResponse, error) {
+	rsp, err := c.DeleteConnectorProvider(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteConnectorProviderResponse(rsp)
 }
 
 // GetConnectorProviderWithResponse Get connector provider
@@ -76647,6 +79587,19 @@ func (c *ClientWithResponses) CreateMemoryProviderWithResponse(ctx context.Conte
 	return ParseCreateMemoryProviderResponse(rsp)
 }
 
+// DeleteMemoryProviderWithResponse Delete Memory Provider
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/memory-providers/{provider_id} (the `DeleteMemoryProvider` operationId).
+func (c *ClientWithResponses) DeleteMemoryProviderWithResponse(ctx context.Context, providerId string, params *DeleteMemoryProviderParams, reqEditors ...RequestEditorFn) (*DeleteMemoryProviderResponse, error) {
+	rsp, err := c.DeleteMemoryProvider(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteMemoryProviderResponse(rsp)
+}
+
 // GetMemoryProviderWithResponse Get memory provider
 //
 // Returns a wrapper object for the known response body format(s).
@@ -77149,6 +80102,19 @@ func (c *ClientWithResponses) CreateModelProviderWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseCreateModelProviderResponse(rsp)
+}
+
+// DeleteModelProviderWithResponse Delete Model Provider
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/model-providers/{provider_id} (the `DeleteModelProvider` operationId).
+func (c *ClientWithResponses) DeleteModelProviderWithResponse(ctx context.Context, providerId string, params *DeleteModelProviderParams, reqEditors ...RequestEditorFn) (*DeleteModelProviderResponse, error) {
+	rsp, err := c.DeleteModelProvider(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteModelProviderResponse(rsp)
 }
 
 // GetModelProviderWithResponse Get model provider
@@ -77687,6 +80653,21 @@ func (c *ClientWithResponses) CreateWorkspaceWithResponse(ctx context.Context, o
 	return ParseCreateWorkspaceResponse(rsp)
 }
 
+// ListPluginsWithResponse List Plugins
+//
+// The plugins loaded by this Control process, without constructing or executing instances.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/plugins (the `ListPlugins` operationId).
+func (c *ClientWithResponses) ListPluginsWithResponse(ctx context.Context, params *ListPluginsParams, reqEditors ...RequestEditorFn) (*ListPluginsResponse, error) {
+	rsp, err := c.ListPlugins(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListPluginsResponse(rsp)
+}
+
 // ListProviderTypesWithResponse List Provider Types
 //
 // Returns a wrapper object for the known response body format(s).
@@ -77769,6 +80750,81 @@ func (c *ClientWithResponses) GetRunAgentWithResponse(ctx context.Context, runId
 		return nil, err
 	}
 	return ParseGetRunAgentResponse(rsp)
+}
+
+// OpenRunAppWithResponse Open Run App
+//
+// Open a saved MCP App with freshly read HTML and its original tool result.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/open (the `OpenRunApp` operationId).
+func (c *ClientWithResponses) OpenRunAppWithResponse(ctx context.Context, runId string, appId string, params *OpenRunAppParams, reqEditors ...RequestEditorFn) (*OpenRunAppResponse, error) {
+	rsp, err := c.OpenRunApp(ctx, runId, appId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOpenRunAppResponse(rsp)
+}
+
+// ReadRunAppResourceWithBodyWithResponse Read Run App Resource
+//
+// Read the HTML resource bound to a saved MCP App.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+func (c *ClientWithResponses) ReadRunAppResourceWithBodyWithResponse(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReadRunAppResourceResponse, error) {
+	rsp, err := c.ReadRunAppResourceWithBody(ctx, runId, appId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReadRunAppResourceResponse(rsp)
+}
+
+// ReadRunAppResourceWithResponse Read Run App Resource
+//
+// Read the HTML resource bound to a saved MCP App.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/resources/read (the `ReadRunAppResource` operationId).
+func (c *ClientWithResponses) ReadRunAppResourceWithResponse(ctx context.Context, runId string, appId string, params *ReadRunAppResourceParams, body ReadRunAppResourceJSONRequestBody, reqEditors ...RequestEditorFn) (*ReadRunAppResourceResponse, error) {
+	rsp, err := c.ReadRunAppResource(ctx, runId, appId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReadRunAppResourceResponse(rsp)
+}
+
+// CallRunAppToolWithBodyWithResponse Call Run App Tool
+//
+// Call an App-visible tool on the saved connection without starting a Run.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+func (c *ClientWithResponses) CallRunAppToolWithBodyWithResponse(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CallRunAppToolResponse, error) {
+	rsp, err := c.CallRunAppToolWithBody(ctx, runId, appId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCallRunAppToolResponse(rsp)
+}
+
+// CallRunAppToolWithResponse Call Run App Tool
+//
+// Call an App-visible tool on the saved connection without starting a Run.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/apps/{app_id}/tools/call (the `CallRunAppTool` operationId).
+func (c *ClientWithResponses) CallRunAppToolWithResponse(ctx context.Context, runId string, appId string, params *CallRunAppToolParams, body CallRunAppToolJSONRequestBody, reqEditors ...RequestEditorFn) (*CallRunAppToolResponse, error) {
+	rsp, err := c.CallRunAppTool(ctx, runId, appId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCallRunAppToolResponse(rsp)
 }
 
 // ListRunAttemptsWithResponse List Run Attempts
@@ -78393,6 +81449,21 @@ func (c *ClientWithResponses) SessionStreamWithResponse(ctx context.Context, ses
 		return nil, err
 	}
 	return ParseSessionStreamResponse(rsp)
+}
+
+// ListSessionThreadsWithResponse List Session Threads
+//
+// Lightweight Session navigation, oldest first, with stable per-origin positions and parent references.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/sessions/{session_id}/threads (the `ListSessionThreads` operationId).
+func (c *ClientWithResponses) ListSessionThreadsWithResponse(ctx context.Context, sessionId string, params *ListSessionThreadsParams, reqEditors ...RequestEditorFn) (*ListSessionThreadsResponse, error) {
+	rsp, err := c.ListSessionThreads(ctx, sessionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSessionThreadsResponse(rsp)
 }
 
 // ListSkillsWithResponse List Skills
@@ -79441,6 +82512,19 @@ func (c *ClientWithResponses) ContextUsageWithResponse(ctx context.Context, para
 	return ParseContextUsageResponse(rsp)
 }
 
+// ListUsageMembersWithResponse List Usage Members
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/members (the `ListUsageMembers` operationId).
+func (c *ClientWithResponses) ListUsageMembersWithResponse(ctx context.Context, params *ListUsageMembersParams, reqEditors ...RequestEditorFn) (*ListUsageMembersResponse, error) {
+	rsp, err := c.ListUsageMembers(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListUsageMembersResponse(rsp)
+}
+
 // UsageModelsWithResponse Usage Models
 //
 // Returns a wrapper object for the known response body format(s).
@@ -79478,6 +82562,21 @@ func (c *ClientWithResponses) ModelRequestMetricsWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseModelRequestMetricsResponse(rsp)
+}
+
+// ListRunUsageWithResponse List Run Usage
+//
+// One page of Run usage; Run numbers include all Runs in each Thread, including those without usage.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/runs (the `ListRunUsage` operationId).
+func (c *ClientWithResponses) ListRunUsageWithResponse(ctx context.Context, params *ListRunUsageParams, reqEditors ...RequestEditorFn) (*ListRunUsageResponse, error) {
+	rsp, err := c.ListRunUsage(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListRunUsageResponse(rsp)
 }
 
 // GetProfileWithResponse Get Profile
@@ -79748,6 +82847,19 @@ func (c *ClientWithResponses) CreateWebProviderWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseCreateWebProviderResponse(rsp)
+}
+
+// DeleteWebProviderWithResponse Delete Web Provider
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /api/v1/web-providers/{provider_id} (the `DeleteWebProvider` operationId).
+func (c *ClientWithResponses) DeleteWebProviderWithResponse(ctx context.Context, providerId string, params *DeleteWebProviderParams, reqEditors ...RequestEditorFn) (*DeleteWebProviderResponse, error) {
+	rsp, err := c.DeleteWebProvider(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteWebProviderResponse(rsp)
 }
 
 // GetWebProviderWithResponse Get web provider
@@ -82071,6 +85183,188 @@ func ParseSessionProfileResponse(rsp *http.Response) (*SessionProfileResponse, e
 	return response, nil
 }
 
+// ParseListBuiltinSkillsResponse parses an HTTP response from a ListBuiltinSkillsWithResponse call
+func ParseListBuiltinSkillsResponse(rsp *http.Response) (*ListBuiltinSkillsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListBuiltinSkillsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BuiltinSkillCatalog
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListBuiltinSkillsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListBuiltinSkillsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetBuiltinSkillResponse parses an HTTP response from a GetBuiltinSkillWithResponse call
+func ParseGetBuiltinSkillResponse(rsp *http.Response) (*GetBuiltinSkillResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetBuiltinSkillResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BuiltinSkillDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetBuiltinSkillResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetBuiltinSkillResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseReadBuiltinSkillArchiveResponse parses an HTTP response from a ReadBuiltinSkillArchiveWithResponse call
+func ParseReadBuiltinSkillArchiveResponse(rsp *http.Response) (*ReadBuiltinSkillArchiveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReadBuiltinSkillArchiveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ReadBuiltinSkillArchiveResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ReadBuiltinSkillArchiveResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListConnectionsResponse parses an HTTP response from a ListConnectionsWithResponse call
 func ParseListConnectionsResponse(rsp *http.Response) (*ListConnectionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -82926,6 +86220,65 @@ func ParseCreateConnectorProviderResponse(rsp *http.Response) (*CreateConnectorP
 		response.Headers400 = &headers
 	case true:
 		var headers CreateConnectorProviderResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteConnectorProviderResponse parses an HTTP response from a DeleteConnectorProviderWithResponse call
+func ParseDeleteConnectorProviderResponse(rsp *http.Response) (*DeleteConnectorProviderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteConnectorProviderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteConnectorProviderResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteConnectorProviderResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -87826,6 +91179,65 @@ func ParseCreateMemoryProviderResponse(rsp *http.Response) (*CreateMemoryProvide
 	return response, nil
 }
 
+// ParseDeleteMemoryProviderResponse parses an HTTP response from a DeleteMemoryProviderWithResponse call
+func ParseDeleteMemoryProviderResponse(rsp *http.Response) (*DeleteMemoryProviderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteMemoryProviderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteMemoryProviderResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteMemoryProviderResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetMemoryProviderResponse parses an HTTP response from a GetMemoryProviderWithResponse call
 func ParseGetMemoryProviderResponse(rsp *http.Response) (*GetMemoryProviderResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -89628,6 +93040,65 @@ func ParseCreateModelProviderResponse(rsp *http.Response) (*CreateModelProviderR
 		response.Headers400 = &headers
 	case true:
 		var headers CreateModelProviderResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteModelProviderResponse parses an HTTP response from a DeleteModelProviderWithResponse call
+func ParseDeleteModelProviderResponse(rsp *http.Response) (*DeleteModelProviderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteModelProviderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteModelProviderResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteModelProviderResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -91520,6 +94991,69 @@ func ParseCreateWorkspaceResponse(rsp *http.Response) (*CreateWorkspaceResponse,
 	return response, nil
 }
 
+// ParseListPluginsResponse parses an HTTP response from a ListPluginsWithResponse call
+func ParseListPluginsResponse(rsp *http.Response) (*ListPluginsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListPluginsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PluginCatalog
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListPluginsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListPluginsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListProviderTypesResponse parses an HTTP response from a ListProviderTypesWithResponse call
 func ParseListProviderTypesResponse(rsp *http.Response) (*ListProviderTypesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -91822,6 +95356,195 @@ func ParseGetRunAgentResponse(rsp *http.Response) (*GetRunAgentResponse, error) 
 		response.Headers400 = &headers
 	case true:
 		var headers GetRunAgentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseOpenRunAppResponse parses an HTTP response from a OpenRunAppWithResponse call
+func ParseOpenRunAppResponse(rsp *http.Response) (*OpenRunAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OpenRunAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OpenedApp
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers OpenRunAppResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers OpenRunAppResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseReadRunAppResourceResponse parses an HTTP response from a ReadRunAppResourceWithResponse call
+func ParseReadRunAppResourceResponse(rsp *http.Response) (*ReadRunAppResourceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReadRunAppResourceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppResource
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ReadRunAppResourceResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ReadRunAppResourceResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCallRunAppToolResponse parses an HTTP response from a CallRunAppToolWithResponse call
+func ParseCallRunAppToolResponse(rsp *http.Response) (*CallRunAppToolResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CallRunAppToolResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppToolResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CallRunAppToolResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CallRunAppToolResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -93897,6 +97620,69 @@ func ParseSessionStreamResponse(rsp *http.Response) (*SessionStreamResponse, err
 		response.Headers400 = &headers
 	case true:
 		var headers SessionStreamResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSessionThreadsResponse parses an HTTP response from a ListSessionThreadsWithResponse call
+func ParseListSessionThreadsResponse(rsp *http.Response) (*ListSessionThreadsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSessionThreadsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ThreadNavigationPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSessionThreadsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSessionThreadsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -97671,6 +101457,69 @@ func ParseContextUsageResponse(rsp *http.Response) (*ContextUsageResponse, error
 	return response, nil
 }
 
+// ParseListUsageMembersResponse parses an HTTP response from a ListUsageMembersWithResponse call
+func ParseListUsageMembersResponse(rsp *http.Response) (*ListUsageMembersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListUsageMembersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemberUsagePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListUsageMembersResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListUsageMembersResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseUsageModelsResponse parses an HTTP response from a UsageModelsWithResponse call
 func ParseUsageModelsResponse(rsp *http.Response) (*UsageModelsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -97847,6 +101696,69 @@ func ParseModelRequestMetricsResponse(rsp *http.Response) (*ModelRequestMetricsR
 		response.Headers400 = &headers
 	case true:
 		var headers ModelRequestMetricsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListRunUsageResponse parses an HTTP response from a ListRunUsageWithResponse call
+func ParseListRunUsageResponse(rsp *http.Response) (*ListRunUsageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListRunUsageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RunUsagePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListRunUsageResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListRunUsageResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -98756,6 +102668,65 @@ func ParseCreateWebProviderResponse(rsp *http.Response) (*CreateWebProviderRespo
 		response.Headers400 = &headers
 	case true:
 		var headers CreateWebProviderResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteWebProviderResponse parses an HTTP response from a DeleteWebProviderWithResponse call
+func ParseDeleteWebProviderResponse(rsp *http.Response) (*DeleteWebProviderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteWebProviderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DeleteWebProviderResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DeleteWebProviderResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
