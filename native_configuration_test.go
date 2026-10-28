@@ -18,7 +18,8 @@ import (
 // Compare actual decoded wire JSON, not just the Go options pointer.
 func TestNativeConfigurationForwardingStartSendAndMessage(t *testing.T) {
 	cases := []string{
-		`{}`, `{"configuration":null}`, `{"configuration":{}}`,
+		`{}`, `{"context":null}`, `{"context":{}}`, `{"context":{"headers":{}}}`, `{"context":{"headers":{"X-Tenant":"demo"}}}`,
+		`{"configuration":null}`, `{"configuration":{}}`,
 		`{"configuration":{"allowed_hosts":null}}`,
 		`{"configuration":{"allowed_hosts":[],"extensions":{}}}`,
 		`{"configuration":{"allowed_hosts":["EXAMPLE.COM","regex:.*\\.example\\.com"],"extensions":{"app.settings":{"enabled":false,"empty":[],"object":{},"nullable":null,"nested":{"n":0,"text":""}}}},"overrides":{"instructions":"Distinct Agent override"}}`,

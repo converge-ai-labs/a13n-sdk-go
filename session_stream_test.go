@@ -432,3 +432,64 @@ type sessionSizeBody struct {
 }
 
 func (b *sessionSizeBody) Close() error { b.closed = true; return nil }
+
+func TestSessionTruncationClosesWithoutReconnect(t *testing.T) {
+	for _, tail := range []string{"event: items\ndata: {", "event: items\ndata: {}\n", "data: \xf0\x9f"} {
+		calls := 0
+		body := &sessionSizeBody{Reader: strings.NewReader(tail)}
+		client := coverageClient(t, func(req *http.Request) *http.Response {
+			calls++
+			response := coverageResponse(200, "")
+			response.Header.Set("Content-Type", "text/event-stream")
+			response.Body = body
+			return response
+		})
+		stream, err := client.SessionEvents(context.Background(), "ses", SessionStreamOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := stream.Next(); !errors.Is(err, ErrProtocol) || !body.closed || calls != 1 {
+			t.Fatal(err, body.closed, calls)
+		}
+		if _, err := stream.Next(); err != io.EOF || calls != 1 {
+			t.Fatal(err, calls)
+		}
+	}
+}
+
+func TestSessionAppReadyIsTypedRepeatableAndHasNoCursor(t *testing.T) {
+	payload := `{"thread_id":"thr","run_id":"run","apps":[{"app_id":"app","connection_id":"con","agent_revision_id":"rev","source_run_id":"run","tool_call_id":"call","tool_name":"chart","resource_uri":"ui://chart"}]}`
+	client := coverageClient(t, func(r *http.Request) *http.Response {
+		response := coverageResponse(200, strings.Repeat(sessionEvent("app_ready", payload), 2))
+		response.Header.Set("Content-Type", "text/event-stream")
+		return response
+	})
+	stream, err := client.SessionEvents(context.Background(), "ses", SessionStreamOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer stream.Close()
+	for i := 0; i < 2; i++ {
+		frame, err := stream.Next()
+		if err != nil {
+			t.Fatal(err)
+		}
+		ready, ok := frame.(*SessionAppReadyFrame)
+		if !ok || ready.EventType() != "app_ready" || ready.RunId != "run" || len(ready.Apps) != 1 || ready.Apps[0].AppId != "app" {
+			t.Fatal(frame)
+		}
+	}
+	if _, err := stream.Next(); err != io.EOF {
+		t.Fatal(err)
+	}
+	for _, invalid := range []sseEvent{
+		{event: "app_ready", data: []byte(payload), hasID: true},
+		{event: "app_ready", data: []byte(`{"thread_id":"thr","run_id":"run"}`)},
+		{event: "app_ready", data: []byte(`{"thread_id":"thr","run_id":"run","apps":null}`)},
+		{event: "app_ready", data: []byte(`{"thread_id":"thr","run_id":"run","apps":[{}]}`)},
+	} {
+		if _, err := parseSessionFrame(invalid); !errors.Is(err, ErrProtocol) {
+			t.Fatal("accepted malformed readiness", err)
+		}
+	}
+}

@@ -12,21 +12,6 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
-// Defines values for AgentOverrideBuiltinSkills.
-const (
-	PlatformOperations AgentOverrideBuiltinSkills = "platform-operations"
-)
-
-// Valid indicates whether the value is a known member of the AgentOverrideBuiltinSkills enum.
-func (e AgentOverrideBuiltinSkills) Valid() bool {
-	switch e {
-	case PlatformOperations:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AgentReviewerOnError.
 const (
 	AgentReviewerOnErrorAllow            AgentReviewerOnError = "allow"
@@ -90,6 +75,21 @@ const (
 func (e AssetPartType) Valid() bool {
 	switch e {
 	case Asset:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BuiltinSkillName.
+const (
+	PlatformOperations BuiltinSkillName = "platform-operations"
+)
+
+// Valid indicates whether the value is a known member of the BuiltinSkillName enum.
+func (e BuiltinSkillName) Valid() bool {
+	switch e {
+	case PlatformOperations:
 		return true
 	default:
 		return false
@@ -1176,28 +1176,25 @@ type AgentModelCharacteristics struct {
 // `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
 // edge removes it; every other field replaces the revision's value.
 type AgentOverride struct {
-	BuiltinSkills        nullable.Nullable[[]AgentOverrideBuiltinSkills] `json:"builtin_skills,omitempty"`
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]       `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]        `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                       `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                         `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]  `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                       `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]    `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]         `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                   `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]            `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]                `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]                `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                    `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]             `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]       `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]                   `json:"tool_search,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection]  `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
-
-// AgentOverrideBuiltinSkills defines model for AgentOverride.BuiltinSkills.
-type AgentOverrideBuiltinSkills string
 
 // AgentReviewer The model reviewing calls whose permission is `review`, selected by model key.
 type AgentReviewer struct {
@@ -1217,6 +1214,25 @@ type AgentReviewerOnError string
 
 // AgentReviewerOnFlagged defines model for AgentReviewer.OnFlagged.
 type AgentReviewerOnFlagged string
+
+// AppReady App originals and references are committed; opening still checks access and fetches current HTML.
+type AppReady struct {
+	Apps     []AppReference `json:"apps"`
+	RunId    string         `json:"run_id"`
+	ThreadId string         `json:"thread_id"`
+}
+
+// AppReference defines model for AppReference.
+type AppReference struct {
+	AgentRevisionId string `json:"agent_revision_id"`
+	AppId           string `json:"app_id"`
+	ConnectionId    string `json:"connection_id"`
+	ResourceUri     string `json:"resource_uri"`
+	SourceRunId     string `json:"source_run_id"`
+	ToolCallId      string `json:"tool_call_id"`
+	ToolName        string `json:"tool_name"`
+	Unavailable     *bool  `json:"unavailable,omitempty"`
+}
 
 // ApprovalDecision defines model for ApprovalDecision.
 type ApprovalDecision struct {
@@ -1239,6 +1255,9 @@ type AssetPart struct {
 
 // AssetPartType defines model for AssetPart.Type.
 type AssetPartType string
+
+// BuiltinSkillName defines model for BuiltinSkillName.
+type BuiltinSkillName string
 
 // CallResult defines model for CallResult.
 type CallResult struct {
@@ -1694,6 +1713,11 @@ type RecordSource struct {
 	Sha256 string `json:"sha256"`
 }
 
+// RequestContext Explicit business headers, frozen in accepted Run options and kept out of model projections.
+type RequestContext struct {
+	Headers *map[string]string `json:"headers,omitempty"`
+}
+
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
 	Approvals map[string]ApprovalDecision       `json:"approvals"`
@@ -1729,6 +1753,7 @@ type RunConfiguration struct {
 // RunOptions What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptions struct {
 	Configuration nullable.Nullable[RunConfiguration]  `json:"configuration,omitempty"`
+	Context       nullable.Nullable[RequestContext]    `json:"context,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
 	Labels        *map[string]string                   `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]        `json:"max_usage,omitempty"`
