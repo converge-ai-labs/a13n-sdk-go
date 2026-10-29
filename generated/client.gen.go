@@ -595,6 +595,7 @@ const (
 	ConfigSectionSkills                       ConfigSection = "skills"
 	ConfigSectionSubagentMode                 ConfigSection = "subagent_mode"
 	ConfigSectionSubagents                    ConfigSection = "subagents"
+	ConfigSectionSummarize                    ConfigSection = "summarize"
 	ConfigSectionToolSearch                   ConfigSection = "tool_search"
 	ConfigSectionToolsets                     ConfigSection = "toolsets"
 	ConfigSectionUserQuestions                ConfigSection = "user_questions"
@@ -644,6 +645,8 @@ func (e ConfigSection) Valid() bool {
 	case ConfigSectionSubagentMode:
 		return true
 	case ConfigSectionSubagents:
+		return true
+	case ConfigSectionSummarize:
 		return true
 	case ConfigSectionToolSearch:
 		return true
@@ -3766,6 +3769,7 @@ const (
 	CompareAgentRevisionsParamsSectionSkills                       CompareAgentRevisionsParamsSection = "skills"
 	CompareAgentRevisionsParamsSectionSubagentMode                 CompareAgentRevisionsParamsSection = "subagent_mode"
 	CompareAgentRevisionsParamsSectionSubagents                    CompareAgentRevisionsParamsSection = "subagents"
+	CompareAgentRevisionsParamsSectionSummarize                    CompareAgentRevisionsParamsSection = "summarize"
 	CompareAgentRevisionsParamsSectionToolSearch                   CompareAgentRevisionsParamsSection = "tool_search"
 	CompareAgentRevisionsParamsSectionToolsets                     CompareAgentRevisionsParamsSection = "toolsets"
 	CompareAgentRevisionsParamsSectionUserQuestions                CompareAgentRevisionsParamsSection = "user_questions"
@@ -3815,6 +3819,8 @@ func (e CompareAgentRevisionsParamsSection) Valid() bool {
 	case CompareAgentRevisionsParamsSectionSubagentMode:
 		return true
 	case CompareAgentRevisionsParamsSectionSubagents:
+		return true
+	case CompareAgentRevisionsParamsSectionSummarize:
 		return true
 	case CompareAgentRevisionsParamsSectionToolSearch:
 		return true
@@ -4009,6 +4015,7 @@ const (
 	GetRunAgentParamsPartSkills                       GetRunAgentParamsPart = "skills"
 	GetRunAgentParamsPartSubagentMode                 GetRunAgentParamsPart = "subagent_mode"
 	GetRunAgentParamsPartSubagents                    GetRunAgentParamsPart = "subagents"
+	GetRunAgentParamsPartSummarize                    GetRunAgentParamsPart = "summarize"
 	GetRunAgentParamsPartToolSearch                   GetRunAgentParamsPart = "tool_search"
 	GetRunAgentParamsPartToolsets                     GetRunAgentParamsPart = "toolsets"
 	GetRunAgentParamsPartUserQuestions                GetRunAgentParamsPart = "user_questions"
@@ -4058,6 +4065,8 @@ func (e GetRunAgentParamsPart) Valid() bool {
 	case GetRunAgentParamsPartSubagentMode:
 		return true
 	case GetRunAgentParamsPartSubagents:
+		return true
+	case GetRunAgentParamsPartSummarize:
 		return true
 	case GetRunAgentParamsPartToolSearch:
 		return true
@@ -4486,6 +4495,7 @@ type AgentConfigInput struct {
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
 	SubagentMode         *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
 	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
+	Summarize            *bool                            `json:"summarize,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
@@ -4525,6 +4535,7 @@ type AgentConfigOutput struct {
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
 	SubagentMode         *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
 	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
+	Summarize            *bool                            `json:"summarize,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
