@@ -4163,6 +4163,45 @@ func (e GetScheduleOccurrenceParamsInclude) Valid() bool {
 	}
 }
 
+// Defines values for ListSessionsParamsSort.
+const (
+	ListSessionsParamsSortCost      ListSessionsParamsSort = "cost"
+	ListSessionsParamsSortRuns      ListSessionsParamsSort = "runs"
+	ListSessionsParamsSortUpdatedAt ListSessionsParamsSort = "updated_at"
+)
+
+// Valid indicates whether the value is a known member of the ListSessionsParamsSort enum.
+func (e ListSessionsParamsSort) Valid() bool {
+	switch e {
+	case ListSessionsParamsSortCost:
+		return true
+	case ListSessionsParamsSortRuns:
+		return true
+	case ListSessionsParamsSortUpdatedAt:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListSessionsParamsDirection.
+const (
+	ListSessionsParamsDirectionAsc  ListSessionsParamsDirection = "asc"
+	ListSessionsParamsDirectionDesc ListSessionsParamsDirection = "desc"
+)
+
+// Valid indicates whether the value is a known member of the ListSessionsParamsDirection enum.
+func (e ListSessionsParamsDirection) Valid() bool {
+	switch e {
+	case ListSessionsParamsDirectionAsc:
+		return true
+	case ListSessionsParamsDirectionDesc:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListSessionThreadsParamsOrigin.
 const (
 	ListSessionThreadsParamsOriginChild ListSessionThreadsParamsOrigin = "child"
@@ -4262,6 +4301,45 @@ func (e GetInboxEntryParamsSection) Valid() bool {
 	}
 }
 
+// Defines values for ListThreadRunsParamsSort.
+const (
+	ListThreadRunsParamsSortCalls    ListThreadRunsParamsSort = "calls"
+	ListThreadRunsParamsSortCost     ListThreadRunsParamsSort = "cost"
+	ListThreadRunsParamsSortDuration ListThreadRunsParamsSort = "duration"
+)
+
+// Valid indicates whether the value is a known member of the ListThreadRunsParamsSort enum.
+func (e ListThreadRunsParamsSort) Valid() bool {
+	switch e {
+	case ListThreadRunsParamsSortCalls:
+		return true
+	case ListThreadRunsParamsSortCost:
+		return true
+	case ListThreadRunsParamsSortDuration:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListThreadRunsParamsDirection.
+const (
+	ListThreadRunsParamsDirectionAsc  ListThreadRunsParamsDirection = "asc"
+	ListThreadRunsParamsDirectionDesc ListThreadRunsParamsDirection = "desc"
+)
+
+// Valid indicates whether the value is a known member of the ListThreadRunsParamsDirection enum.
+func (e ListThreadRunsParamsDirection) Valid() bool {
+	switch e {
+	case ListThreadRunsParamsDirectionAsc:
+		return true
+	case ListThreadRunsParamsDirectionDesc:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ListTracesParamsStatus.
 const (
 	ListTracesParamsStatusError ListTracesParamsStatus = "error"
@@ -4282,19 +4360,19 @@ func (e ListTracesParamsStatus) Valid() bool {
 
 // Defines values for SearchTracesParamsOrderBy.
 const (
-	Cost     SearchTracesParamsOrderBy = "cost"
-	Duration SearchTracesParamsOrderBy = "duration"
-	Started  SearchTracesParamsOrderBy = "started"
+	SearchTracesParamsOrderByCost     SearchTracesParamsOrderBy = "cost"
+	SearchTracesParamsOrderByDuration SearchTracesParamsOrderBy = "duration"
+	SearchTracesParamsOrderByStarted  SearchTracesParamsOrderBy = "started"
 )
 
 // Valid indicates whether the value is a known member of the SearchTracesParamsOrderBy enum.
 func (e SearchTracesParamsOrderBy) Valid() bool {
 	switch e {
-	case Cost:
+	case SearchTracesParamsOrderByCost:
 		return true
-	case Duration:
+	case SearchTracesParamsOrderByDuration:
 		return true
-	case Started:
+	case SearchTracesParamsOrderByStarted:
 		return true
 	default:
 		return false
@@ -4303,16 +4381,16 @@ func (e SearchTracesParamsOrderBy) Valid() bool {
 
 // Defines values for SearchTracesParamsDirection.
 const (
-	Asc  SearchTracesParamsDirection = "asc"
-	Desc SearchTracesParamsDirection = "desc"
+	SearchTracesParamsDirectionAsc  SearchTracesParamsDirection = "asc"
+	SearchTracesParamsDirectionDesc SearchTracesParamsDirection = "desc"
 )
 
 // Valid indicates whether the value is a known member of the SearchTracesParamsDirection enum.
 func (e SearchTracesParamsDirection) Valid() bool {
 	switch e {
-	case Asc:
+	case SearchTracesParamsDirectionAsc:
 		return true
-	case Desc:
+	case SearchTracesParamsDirectionDesc:
 		return true
 	default:
 		return false
@@ -8356,6 +8434,7 @@ type SessionUpdate struct {
 
 // SessionView defines model for SessionView.
 type SessionView struct {
+	Cost        nullable.Nullable[string] `json:"cost"`
 	CreatedAt   time.Time                 `json:"created_at"`
 	CreatedById string                    `json:"created_by_id"`
 	Id          string                    `json:"id"`
@@ -8363,16 +8442,17 @@ type SessionView struct {
 	LastRunId   nullable.Nullable[string] `json:"last_run_id"`
 
 	// Memory Participation and complete Space selection; policy belongs to each Space.
-	Memory      *SessionMemorySettings            `json:"memory,omitempty"`
-	Origin      nullable.Nullable[SessionOrigin]  `json:"origin,omitempty"`
-	Preview     nullable.Nullable[SessionPreview] `json:"preview,omitempty"`
-	Purpose     *SessionViewPurpose               `json:"purpose,omitempty"`
-	RunCount    *int                              `json:"run_count,omitempty"`
-	ScheduleId  nullable.Nullable[string]         `json:"schedule_id,omitempty"`
-	Title       nullable.Nullable[string]         `json:"title,omitempty"`
-	UpdatedAt   time.Time                         `json:"updated_at"`
-	Version     int                               `json:"version"`
-	WorkspaceId string                            `json:"workspace_id"`
+	Memory           *SessionMemorySettings            `json:"memory,omitempty"`
+	Origin           nullable.Nullable[SessionOrigin]  `json:"origin,omitempty"`
+	Preview          nullable.Nullable[SessionPreview] `json:"preview,omitempty"`
+	Purpose          *SessionViewPurpose               `json:"purpose,omitempty"`
+	RunCount         int                               `json:"run_count"`
+	ScheduleId       nullable.Nullable[string]         `json:"schedule_id,omitempty"`
+	Title            nullable.Nullable[string]         `json:"title,omitempty"`
+	UnpricedRequests int                               `json:"unpriced_requests"`
+	UpdatedAt        time.Time                         `json:"updated_at"`
+	Version          int                               `json:"version"`
+	WorkspaceId      string                            `json:"workspace_id"`
 }
 
 // SessionViewPurpose defines model for SessionView.Purpose.
@@ -8934,10 +9014,39 @@ type ThreadReference struct {
 // ThreadReferenceOrigin defines model for ThreadReference.Origin.
 type ThreadReferenceOrigin string
 
-// ThreadRunPage Newest first; first_number is the first item's 1-based chronological position in the thread.
+// ThreadRunItem Bounded navigation metadata and recorded model usage within one Thread.
+type ThreadRunItem struct {
+	AgentId          string                        `json:"agent_id"`
+	AgentRevisionId  string                        `json:"agent_revision_id"`
+	Attempts         int                           `json:"attempts"`
+	Cost             nullable.Nullable[string]     `json:"cost"`
+	CreatedAt        time.Time                     `json:"created_at"`
+	CurrentAttemptId nullable.Nullable[string]     `json:"current_attempt_id"`
+	Id               string                        `json:"id"`
+	InputPreview     RunInputPreview               `json:"input_preview"`
+	Lineage          Lineage                       `json:"lineage"`
+	MaxAttempts      int                           `json:"max_attempts"`
+	ModelCalls       int                           `json:"model_calls"`
+	Number           int                           `json:"number"`
+	ParentRunId      nullable.Nullable[string]     `json:"parent_run_id"`
+	PrincipalId      string                        `json:"principal_id"`
+	SealedAt         nullable.Nullable[time.Time]  `json:"sealed_at"`
+	SessionId        string                        `json:"session_id"`
+	SourceEntryId    nullable.Nullable[string]     `json:"source_entry_id"`
+	StartedAt        nullable.Nullable[time.Time]  `json:"started_at"`
+	Status           RunStatus                     `json:"status"`
+	ThreadId         string                        `json:"thread_id"`
+	Trigger          Trigger                       `json:"trigger"`
+	UnpricedRequests int                           `json:"unpriced_requests"`
+	UpdatedAt        time.Time                     `json:"updated_at"`
+	Version          int                           `json:"version"`
+	WaitReason       nullable.Nullable[WaitReason] `json:"wait_reason"`
+	WorkspaceId      string                        `json:"workspace_id"`
+}
+
+// ThreadRunPage Chronological history or a metric ranking, retaining each item's chronological number.
 type ThreadRunPage struct {
-	FirstNumber    int                       `json:"first_number"`
-	Items          []RunListItem             `json:"items"`
+	Items          []ThreadRunItem           `json:"items"`
 	NextCursor     nullable.Nullable[string] `json:"next_cursor"`
 	PreviousCursor nullable.Nullable[string] `json:"previous_cursor"`
 	Total          int                       `json:"total"`
@@ -11239,20 +11348,28 @@ type ListSessionsParams struct {
 	TextQuery *string `form:"text_query,omitempty" json:"text_query,omitempty"`
 
 	// Q Session/thread ID, title, origin, label value or retained conversation text
-	Q             *string      `form:"q,omitempty" json:"q,omitempty"`
-	Application   *string      `form:"application,omitempty" json:"application,omitempty"`
-	AgentId       *string      `form:"agent_id,omitempty" json:"agent_id,omitempty"`
-	Status        *[]RunStatus `form:"status,omitempty" json:"status,omitempty"`
-	Trigger       *[]Trigger   `form:"trigger,omitempty" json:"trigger,omitempty"`
-	UpdatedAfter  *time.Time   `form:"updated_after,omitempty" json:"updated_after,omitempty"`
-	UpdatedBefore *time.Time   `form:"updated_before,omitempty" json:"updated_before,omitempty"`
-	Label         *[]string    `form:"label,omitempty" json:"label,omitempty"`
-	Limit         *int         `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor        *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Q             *string                      `form:"q,omitempty" json:"q,omitempty"`
+	Application   *string                      `form:"application,omitempty" json:"application,omitempty"`
+	AgentId       *string                      `form:"agent_id,omitempty" json:"agent_id,omitempty"`
+	Status        *[]RunStatus                 `form:"status,omitempty" json:"status,omitempty"`
+	Trigger       *[]Trigger                   `form:"trigger,omitempty" json:"trigger,omitempty"`
+	UpdatedAfter  *time.Time                   `form:"updated_after,omitempty" json:"updated_after,omitempty"`
+	UpdatedBefore *time.Time                   `form:"updated_before,omitempty" json:"updated_before,omitempty"`
+	Label         *[]string                    `form:"label,omitempty" json:"label,omitempty"`
+	Sort          *ListSessionsParamsSort      `form:"sort,omitempty" json:"sort,omitempty"`
+	Direction     *ListSessionsParamsDirection `form:"direction,omitempty" json:"direction,omitempty"`
+	Limit         *int                         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor        *string                      `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// ListSessionsParamsSort defines parameters for ListSessions.
+type ListSessionsParamsSort string
+
+// ListSessionsParamsDirection defines parameters for ListSessions.
+type ListSessionsParamsDirection string
 
 // CreateSessionParams defines parameters for CreateSession.
 type CreateSessionParams struct {
@@ -11668,13 +11785,21 @@ type UpdateMemoryMountParams struct {
 
 // ListThreadRunsParams defines parameters for ListThreadRuns.
 type ListThreadRunsParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
-	Anchor *string `form:"anchor,omitempty" json:"anchor,omitempty"`
+	Limit     *int                           `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor    *string                        `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Anchor    *string                        `form:"anchor,omitempty" json:"anchor,omitempty"`
+	Sort      *ListThreadRunsParamsSort      `form:"sort,omitempty" json:"sort,omitempty"`
+	Direction *ListThreadRunsParamsDirection `form:"direction,omitempty" json:"direction,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// ListThreadRunsParamsSort defines parameters for ListThreadRuns.
+type ListThreadRunsParamsSort string
+
+// ListThreadRunsParamsDirection defines parameters for ListThreadRuns.
+type ListThreadRunsParamsDirection string
 
 // ThreadStreamParams defines parameters for ThreadStream.
 type ThreadStreamParams struct {
@@ -18967,7 +19092,7 @@ type ClientInterface interface {
 
 	// ListThreadRuns List Thread Runs
 	//
-	// Newest first, optionally starting at an anchor run; cursors page towards older or newer runs.
+	// Page chronological history from an anchor, or rank all Thread runs by a recorded metric.
 	//
 	// Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 	ListThreadRuns(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -25581,7 +25706,7 @@ func (c *Client) UpdateMemoryMount(ctx context.Context, threadId string, name st
 
 // ListThreadRuns List Thread Runs
 //
-// Newest first, optionally starting at an anchor run; cursors page towards older or newer runs.
+// Page chronological history from an anchor, or rank all Thread runs by a recorded metric.
 //
 // Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 func (c *Client) ListThreadRuns(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -42209,6 +42334,30 @@ func NewListSessionsRequest(server string, params *ListSessionsParams) (*http.Re
 
 		}
 
+		if params.Sort != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sort", *params.Sort, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Direction != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "direction", *params.Direction, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
@@ -45579,6 +45728,30 @@ func NewListThreadRunsRequest(server string, threadId string, params *ListThread
 		if params.Anchor != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "anchor", *params.Anchor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Sort != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sort", *params.Sort, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Direction != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "direction", *params.Direction, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -53436,7 +53609,7 @@ type ClientWithResponsesInterface interface {
 
 	// ListThreadRunsWithResponse List Thread Runs
 	//
-	// Newest first, optionally starting at an anchor run; cursors page towards older or newer runs.
+	// Page chronological history from an anchor, or rank all Thread runs by a recorded metric.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -82222,7 +82395,7 @@ func (c *ClientWithResponses) UpdateMemoryMountWithResponse(ctx context.Context,
 
 // ListThreadRunsWithResponse List Thread Runs
 //
-// Newest first, optionally starting at an anchor run; cursors page towards older or newer runs.
+// Page chronological history from an anchor, or rank all Thread runs by a recorded metric.
 //
 // Returns a wrapper object for the known response body format(s).
 //
