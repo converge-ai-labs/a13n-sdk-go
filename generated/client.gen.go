@@ -2753,6 +2753,24 @@ func (e ScheduleState) Valid() bool {
 	}
 }
 
+// Defines values for ScheduleTargetMode.
+const (
+	ScheduleTargetModeNewThread ScheduleTargetMode = "new_thread"
+	ScheduleTargetModeThread    ScheduleTargetMode = "thread"
+)
+
+// Valid indicates whether the value is a known member of the ScheduleTargetMode enum.
+func (e ScheduleTargetMode) Valid() bool {
+	switch e {
+	case ScheduleTargetModeNewThread:
+		return true
+	case ScheduleTargetModeThread:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ScheduleTrigger.
 const (
 	ScheduleTriggerManual    ScheduleTrigger = "manual"
@@ -8208,10 +8226,13 @@ type Schedule struct {
 	SessionId          string                                 `json:"session_id"`
 	State              ScheduleState                          `json:"state"`
 	StreamUrl          string                                 `json:"stream_url"`
-	UpdatedAt          time.Time                              `json:"updated_at"`
-	UpdatedById        string                                 `json:"updated_by_id"`
-	Version            int                                    `json:"version"`
-	WorkspaceId        string                                 `json:"workspace_id"`
+
+	// Target Omitted IDs create a session and, for thread mode, one empty reusable thread.
+	Target      ScheduleTarget `json:"target"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	UpdatedById string         `json:"updated_by_id"`
+	Version     int            `json:"version"`
+	WorkspaceId string         `json:"workspace_id"`
 }
 
 // SchedulePauseReason defines model for Schedule.PauseReason.
@@ -8229,6 +8250,9 @@ type ScheduleCreate struct {
 	Name               string                    `json:"name"`
 	Schedule           ScheduleRule              `json:"schedule"`
 	State              *ScheduleCreateState      `json:"state,omitempty"`
+
+	// Target Omitted IDs create a session and, for thread mode, one empty reusable thread.
+	Target *ScheduleTarget `json:"target,omitempty"`
 }
 
 // ScheduleCreateState defines model for ScheduleCreate.State.
@@ -8300,6 +8324,16 @@ type ScheduleStatus struct {
 	SessionId           string                       `json:"session_id"`
 }
 
+// ScheduleTarget Omitted IDs create a session and, for thread mode, one empty reusable thread.
+type ScheduleTarget struct {
+	Mode      *ScheduleTargetMode       `json:"mode,omitempty"`
+	SessionId nullable.Nullable[string] `json:"session_id,omitempty"`
+	ThreadId  nullable.Nullable[string] `json:"thread_id,omitempty"`
+}
+
+// ScheduleTargetMode defines model for ScheduleTarget.Mode.
+type ScheduleTargetMode string
+
 // ScheduleTime defines model for ScheduleTime.
 type ScheduleTime struct {
 	Local time.Time `json:"local"`
@@ -8317,6 +8351,7 @@ type ScheduleUpdate struct {
 	MaxLatenessSeconds nullable.Nullable[int]                     `json:"max_lateness_seconds,omitempty"`
 	Name               nullable.Nullable[string]                  `json:"name,omitempty"`
 	Schedule           nullable.Nullable[ScheduleRule]            `json:"schedule,omitempty"`
+	Target             nullable.Nullable[ScheduleTarget]          `json:"target,omitempty"`
 }
 
 // SelectedTrace defines model for SelectedTrace.
@@ -18707,7 +18742,7 @@ type ClientInterface interface {
 	// SessionStream Session Stream
 	//
 	// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-	// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
+	// frames, plus `schedule` and `occurrence` state scoped to this session. Every connection starts from a snapshot.
 	//
 	// Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStream` operationId).
 	SessionStream(ctx context.Context, sessionId string, params *SessionStreamParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -24761,7 +24796,7 @@ func (c *Client) GetMessageAuthors(ctx context.Context, sessionId string, params
 // SessionStream Session Stream
 //
 // The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
+// frames, plus `schedule` and `occurrence` state scoped to this session. Every connection starts from a snapshot.
 //
 // Corresponds with GET /api/v1/sessions/{session_id}/stream (the `SessionStream` operationId).
 func (c *Client) SessionStream(ctx context.Context, sessionId string, params *SessionStreamParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -53172,7 +53207,7 @@ type ClientWithResponsesInterface interface {
 	// SessionStreamWithResponse Session Stream
 	//
 	// The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-	// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
+	// frames, plus `schedule` and `occurrence` state scoped to this session. Every connection starts from a snapshot.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -81622,7 +81657,7 @@ func (c *ClientWithResponses) GetMessageAuthorsWithResponse(ctx context.Context,
 // SessionStreamWithResponse Session Stream
 //
 // The session's threads and the live output of their runs over SSE: `thread`, `items`, `delta` and `gap`
-// frames, plus `schedule` and `occurrence` state for Schedule-owned sessions. Every connection starts from a snapshot.
+// frames, plus `schedule` and `occurrence` state scoped to this session. Every connection starts from a snapshot.
 //
 // Returns a wrapper object for the known response body format(s).
 //
