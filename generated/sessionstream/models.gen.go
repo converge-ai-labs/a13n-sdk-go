@@ -272,14 +272,17 @@ func (e EntryStatus) Valid() bool {
 
 // Defines values for EntryViewKind.
 const (
-	EntryViewKindChildResult EntryViewKind = "child_result"
-	EntryViewKindMessage     EntryViewKind = "message"
-	EntryViewKindToolResult  EntryViewKind = "tool_result"
+	EntryViewKindBrowserHandback EntryViewKind = "browser_handback"
+	EntryViewKindChildResult     EntryViewKind = "child_result"
+	EntryViewKindMessage         EntryViewKind = "message"
+	EntryViewKindToolResult      EntryViewKind = "tool_result"
 )
 
 // Valid indicates whether the value is a known member of the EntryViewKind enum.
 func (e EntryViewKind) Valid() bool {
 	switch e {
+	case EntryViewKindBrowserHandback:
+		return true
 	case EntryViewKindChildResult:
 		return true
 	case EntryViewKindMessage:
@@ -1047,6 +1050,7 @@ func (e ToolSearchGroupCapabilities) Valid() bool {
 // Defines values for ToolsetKey0.
 const (
 	ToolsetKey0Assets   ToolsetKey0 = "assets"
+	ToolsetKey0Browser  ToolsetKey0 = "browser"
 	ToolsetKey0Computer ToolsetKey0 = "computer"
 	ToolsetKey0Files    ToolsetKey0 = "files"
 	ToolsetKey0Memory   ToolsetKey0 = "memory"
@@ -1058,6 +1062,8 @@ const (
 func (e ToolsetKey0) Valid() bool {
 	switch e {
 	case ToolsetKey0Assets:
+		return true
+	case ToolsetKey0Browser:
 		return true
 	case ToolsetKey0Computer:
 		return true
@@ -1076,17 +1082,20 @@ func (e ToolsetKey0) Valid() bool {
 
 // Defines values for Trigger.
 const (
-	TriggerChildResult Trigger = "child_result"
-	TriggerInput       Trigger = "input"
-	TriggerQueued      Trigger = "queued"
-	TriggerResume      Trigger = "resume"
-	TriggerSpawned     Trigger = "spawned"
-	TriggerToolResult  Trigger = "tool_result"
+	TriggerBrowserHandback Trigger = "browser_handback"
+	TriggerChildResult     Trigger = "child_result"
+	TriggerInput           Trigger = "input"
+	TriggerQueued          Trigger = "queued"
+	TriggerResume          Trigger = "resume"
+	TriggerSpawned         Trigger = "spawned"
+	TriggerToolResult      Trigger = "tool_result"
 )
 
 // Valid indicates whether the value is a known member of the Trigger enum.
 func (e Trigger) Valid() bool {
 	switch e {
+	case TriggerBrowserHandback:
+		return true
 	case TriggerChildResult:
 		return true
 	case TriggerInput:
