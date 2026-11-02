@@ -4643,6 +4643,42 @@ func (e ReadSpanContentParamsSection) Valid() bool {
 	}
 }
 
+// Defines values for UsageOverviewParamsGroupBy.
+const (
+	UsageOverviewParamsGroupByAgents UsageOverviewParamsGroupBy = "agents"
+	UsageOverviewParamsGroupByModels UsageOverviewParamsGroupBy = "models"
+)
+
+// Valid indicates whether the value is a known member of the UsageOverviewParamsGroupBy enum.
+func (e UsageOverviewParamsGroupBy) Valid() bool {
+	switch e {
+	case UsageOverviewParamsGroupByAgents:
+		return true
+	case UsageOverviewParamsGroupByModels:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UsageOverviewParamsMetric.
+const (
+	UsageOverviewParamsMetricCost   UsageOverviewParamsMetric = "cost"
+	UsageOverviewParamsMetricTokens UsageOverviewParamsMetric = "tokens"
+)
+
+// Valid indicates whether the value is a known member of the UsageOverviewParamsMetric enum.
+func (e UsageOverviewParamsMetric) Valid() bool {
+	switch e {
+	case UsageOverviewParamsMetricCost:
+		return true
+	case UsageOverviewParamsMetricTokens:
+		return true
+	default:
+		return false
+	}
+}
+
 // Access defines model for Access.
 type Access struct {
 	Assistance       View       `json:"assistance"`
@@ -9639,9 +9675,17 @@ type UsageLimitsOutput struct {
 
 // UsageOverview defines model for UsageOverview.
 type UsageOverview struct {
-	Daily []DailyUsage `json:"daily"`
-	Runs  RunMetrics   `json:"runs"`
-	Usage ModelMetrics `json:"usage"`
+	Daily  []DailyUsage   `json:"daily"`
+	Runs   RunMetrics     `json:"runs"`
+	Series *[]UsageSeries `json:"series,omitempty"`
+	Usage  ModelMetrics   `json:"usage"`
+}
+
+// UsageSeries defines model for UsageSeries.
+type UsageSeries struct {
+	Daily []DailyUsage              `json:"daily"`
+	Key   nullable.Nullable[string] `json:"key"`
+	Name  nullable.Nullable[string] `json:"name"`
 }
 
 // UsageSummary defines model for UsageSummary.
@@ -12531,12 +12575,20 @@ type UsageOverviewParams struct {
 	End   time.Time `form:"end" json:"end"`
 
 	// PrincipalId Filter by Run execution identity; requires workspace admin.
-	PrincipalId *string `form:"principal_id,omitempty" json:"principal_id,omitempty"`
-	Timezone    *string `form:"timezone,omitempty" json:"timezone,omitempty"`
+	PrincipalId *string                     `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	GroupBy     *UsageOverviewParamsGroupBy `form:"group_by,omitempty" json:"group_by,omitempty"`
+	Metric      *UsageOverviewParamsMetric  `form:"metric,omitempty" json:"metric,omitempty"`
+	Timezone    *string                     `form:"timezone,omitempty" json:"timezone,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// UsageOverviewParamsGroupBy defines parameters for UsageOverview.
+type UsageOverviewParamsGroupBy string
+
+// UsageOverviewParamsMetric defines parameters for UsageOverview.
+type UsageOverviewParamsMetric string
 
 // ModelRequestMetricsParams defines parameters for ModelRequestMetrics.
 type ModelRequestMetricsParams struct {
@@ -50128,6 +50180,30 @@ func NewUsageOverviewRequest(server string, params *UsageOverviewParams) (*http.
 		if params.PrincipalId != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.GroupBy != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "group_by", *params.GroupBy, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Metric != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "metric", *params.Metric, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
