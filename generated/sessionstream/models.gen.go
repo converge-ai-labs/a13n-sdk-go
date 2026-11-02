@@ -81,6 +81,42 @@ func (e AssetPartType) Valid() bool {
 	}
 }
 
+// Defines values for BrowserBindingPreparation.
+const (
+	FirstUse BrowserBindingPreparation = "first_use"
+	RunStart BrowserBindingPreparation = "run_start"
+)
+
+// Valid indicates whether the value is a known member of the BrowserBindingPreparation enum.
+func (e BrowserBindingPreparation) Valid() bool {
+	switch e {
+	case FirstUse:
+		return true
+	case RunStart:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrowserBindingTabAccess.
+const (
+	Global BrowserBindingTabAccess = "global"
+	Thread BrowserBindingTabAccess = "thread"
+)
+
+// Valid indicates whether the value is a known member of the BrowserBindingTabAccess enum.
+func (e BrowserBindingTabAccess) Valid() bool {
+	switch e {
+	case Global:
+		return true
+	case Thread:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for BuiltinSkillName.
 const (
 	PlatformOperations BuiltinSkillName = "platform-operations"
@@ -1265,6 +1301,19 @@ type AssetPart struct {
 // AssetPartType defines model for AssetPart.Type.
 type AssetPartType string
 
+// BrowserBinding defines model for BrowserBinding.
+type BrowserBinding struct {
+	BrowserId   string                     `json:"browser_id"`
+	Preparation *BrowserBindingPreparation `json:"preparation,omitempty"`
+	TabAccess   *BrowserBindingTabAccess   `json:"tab_access,omitempty"`
+}
+
+// BrowserBindingPreparation defines model for BrowserBinding.Preparation.
+type BrowserBindingPreparation string
+
+// BrowserBindingTabAccess defines model for BrowserBinding.TabAccess.
+type BrowserBindingTabAccess string
+
 // BuiltinSkillName defines model for BuiltinSkillName.
 type BuiltinSkillName string
 
@@ -1788,6 +1837,7 @@ type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
 	AgentRevisionId   string                                  `json:"agent_revision_id"`
 	Attempts          int                                     `json:"attempts"`
+	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
 	CreatedAt         time.Time                               `json:"created_at"`
 	CurrentAttemptId  nullable.Nullable[string]               `json:"current_attempt_id"`

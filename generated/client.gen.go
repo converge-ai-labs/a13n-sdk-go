@@ -352,6 +352,9 @@ const (
 	BrowserStatusLost     BrowserStatus = "lost"
 	BrowserStatusReady    BrowserStatus = "ready"
 	BrowserStatusReserved BrowserStatus = "reserved"
+	BrowserStatusStarting BrowserStatus = "starting"
+	BrowserStatusStopped  BrowserStatus = "stopped"
+	BrowserStatusStopping BrowserStatus = "stopping"
 )
 
 // Valid indicates whether the value is a known member of the BrowserStatus enum.
@@ -368,6 +371,12 @@ func (e BrowserStatus) Valid() bool {
 	case BrowserStatusReady:
 		return true
 	case BrowserStatusReserved:
+		return true
+	case BrowserStatusStarting:
+		return true
+	case BrowserStatusStopped:
+		return true
+	case BrowserStatusStopping:
 		return true
 	default:
 		return false
@@ -3818,6 +3827,24 @@ func (e ViewCause) Valid() bool {
 	}
 }
 
+// Defines values for ViewerProtocol.
+const (
+	Iframe ViewerProtocol = "iframe"
+	Vnc    ViewerProtocol = "vnc"
+)
+
+// Valid indicates whether the value is a known member of the ViewerProtocol enum.
+func (e ViewerProtocol) Valid() bool {
+	switch e {
+	case Iframe:
+		return true
+	case Vnc:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WaitReason.
 const (
 	Approval       WaitReason = "approval"
@@ -5257,23 +5284,25 @@ type BootstrapInput struct {
 
 // Browser defines model for Browser.
 type Browser struct {
-	Control          ControlStatus                `json:"control"`
-	ControlExpiresAt nullable.Nullable[time.Time] `json:"control_expires_at"`
-	CreatedAt        time.Time                    `json:"created_at"`
-	Episode          int                          `json:"episode"`
-	ExpiresAt        nullable.Nullable[time.Time] `json:"expires_at"`
-	Failure          nullable.Nullable[string]    `json:"failure"`
-	Generation       int                          `json:"generation"`
-	Id               string                       `json:"id"`
-	IdleSeconds      nullable.Nullable[int]       `json:"idle_seconds"`
-	Name             string                       `json:"name"`
-	OrganizationId   string                       `json:"organization_id"`
-	ProviderId       nullable.Nullable[string]    `json:"provider_id"`
-	Source           BrowserSource                `json:"source"`
-	Status           BrowserStatus                `json:"status"`
-	UpdatedAt        time.Time                    `json:"updated_at"`
-	Version          int                          `json:"version"`
-	WorkspaceId      string                       `json:"workspace_id"`
+	Control            ControlStatus                `json:"control"`
+	ControlExpiresAt   nullable.Nullable[time.Time] `json:"control_expires_at"`
+	CreatedAt          time.Time                    `json:"created_at"`
+	DeleteAfterSeconds nullable.Nullable[int]       `json:"delete_after_seconds"`
+	Episode            int                          `json:"episode"`
+	ExpiresAt          nullable.Nullable[time.Time] `json:"expires_at"`
+	Failure            nullable.Nullable[string]    `json:"failure"`
+	Generation         int                          `json:"generation"`
+	Id                 string                       `json:"id"`
+	IdleSeconds        nullable.Nullable[int]       `json:"idle_seconds"`
+	Name               string                       `json:"name"`
+	OrganizationId     string                       `json:"organization_id"`
+	ProviderId         nullable.Nullable[string]    `json:"provider_id"`
+	Source             BrowserSource                `json:"source"`
+	Status             BrowserStatus                `json:"status"`
+	StopAfterSeconds   nullable.Nullable[int]       `json:"stop_after_seconds"`
+	UpdatedAt          time.Time                    `json:"updated_at"`
+	Version            int                          `json:"version"`
+	WorkspaceId        string                       `json:"workspace_id"`
 }
 
 // BrowserSource defines model for Browser.Source.
@@ -5303,11 +5332,13 @@ type BrowserBindingTabAccess string
 
 // BrowserCreate defines model for BrowserCreate.
 type BrowserCreate struct {
-	IdleSeconds nullable.Nullable[int] `json:"idle_seconds,omitempty"`
-	Name        string                 `json:"name"`
-	Prepare     *bool                  `json:"prepare,omitempty"`
-	ProviderId  string                 `json:"provider_id"`
-	Recipe      *map[string]JsonValue  `json:"recipe,omitempty"`
+	DeleteAfterSeconds nullable.Nullable[int] `json:"delete_after_seconds,omitempty"`
+	IdleSeconds        nullable.Nullable[int] `json:"idle_seconds,omitempty"`
+	Name               string                 `json:"name"`
+	Prepare            *bool                  `json:"prepare,omitempty"`
+	ProviderId         string                 `json:"provider_id"`
+	Recipe             *map[string]JsonValue  `json:"recipe,omitempty"`
+	StopAfterSeconds   nullable.Nullable[int] `json:"stop_after_seconds,omitempty"`
 }
 
 // BrowserPage defines model for BrowserPage.
@@ -8395,6 +8426,7 @@ type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
 	AgentRevisionId   string                                  `json:"agent_revision_id"`
 	Attempts          int                                     `json:"attempts"`
+	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
 	CreatedAt         time.Time                               `json:"created_at"`
 	CurrentAttemptId  nullable.Nullable[string]               `json:"current_attempt_id"`
@@ -9754,10 +9786,17 @@ type ViewCause string
 
 // Viewer Sensitive, authorized control response; excluded from ordinary Browser reads.
 type Viewer struct {
-	Episode   int       `json:"episode"`
-	ExpiresAt time.Time `json:"expires_at"`
-	Url       string    `json:"url"`
+	Episode    int                       `json:"episode"`
+	ExpiresAt  time.Time                 `json:"expires_at"`
+	Generation nullable.Nullable[int]    `json:"generation,omitempty"`
+	Password   nullable.Nullable[string] `json:"password,omitempty"`
+	Protocol   *ViewerProtocol           `json:"protocol,omitempty"`
+	Token      nullable.Nullable[string] `json:"token,omitempty"`
+	Url        string                    `json:"url"`
 }
+
+// ViewerProtocol defines model for Viewer.Protocol.
+type ViewerProtocol string
 
 // WaitReason defines model for WaitReason.
 type WaitReason string
@@ -10131,6 +10170,15 @@ type ReleaseBrowserParams struct {
 
 // RenewBrowserControlParams defines parameters for RenewBrowserControl.
 type RenewBrowserControlParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// StopBrowserParams defines parameters for StopBrowser.
+type StopBrowserParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -17503,6 +17551,11 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/browsers/{browser_id}/renew (the `RenewBrowserControl` operationId).
 	RenewBrowserControl(ctx context.Context, browserId string, params *RenewBrowserControlParams, body RenewBrowserControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// StopBrowser Stop Browser
+	//
+	// Corresponds with POST /api/v1/browsers/{browser_id}/stop (the `StopBrowser` operationId).
+	StopBrowser(ctx context.Context, browserId string, params *StopBrowserParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// TakeoverBrowserWithBody Takeover Browser
 	//
 	// Takes any type of body and a specified content type.
@@ -21224,6 +21277,21 @@ func (c *Client) RenewBrowserControlWithBody(ctx context.Context, browserId stri
 // Corresponds with POST /api/v1/browsers/{browser_id}/renew (the `RenewBrowserControl` operationId).
 func (c *Client) RenewBrowserControl(ctx context.Context, browserId string, params *RenewBrowserControlParams, body RenewBrowserControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRenewBrowserControlRequest(c.Server, browserId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// StopBrowser Stop Browser
+//
+// Corresponds with POST /api/v1/browsers/{browser_id}/stop (the `StopBrowser` operationId).
+func (c *Client) StopBrowser(ctx context.Context, browserId string, params *StopBrowserParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStopBrowserRequest(c.Server, browserId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -30828,6 +30896,66 @@ func NewRenewBrowserControlRequestWithBody(server string, browserId string, para
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewStopBrowserRequest constructs an http.Request for the StopBrowser method
+func NewStopBrowserRequest(server string, browserId string, params *StopBrowserParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "browser_id", browserId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/browsers/%s/stop", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
 		}
 
 	}
@@ -53400,6 +53528,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/browsers/{browser_id}/renew (the `RenewBrowserControl` operationId).
 	RenewBrowserControlWithResponse(ctx context.Context, browserId string, params *RenewBrowserControlParams, body RenewBrowserControlJSONRequestBody, reqEditors ...RequestEditorFn) (*RenewBrowserControlResponse, error)
 
+	// StopBrowserWithResponse Stop Browser
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/browsers/{browser_id}/stop (the `StopBrowser` operationId).
+	StopBrowserWithResponse(ctx context.Context, browserId string, params *StopBrowserParams, reqEditors ...RequestEditorFn) (*StopBrowserResponse, error)
+
 	// TakeoverBrowserWithBodyWithResponse Takeover Browser
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -59498,6 +59633,75 @@ func (r RenewBrowserControlResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r RenewBrowserControlResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// StopBrowserResponse400Headers the declared response headers of an HTTP 400 response for StopBrowser
+type StopBrowserResponse400Headers struct {
+	XRequestId *string
+}
+
+// StopBrowserResponseDefaultHeaders the declared response headers of an HTTP default response for StopBrowser
+type StopBrowserResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type StopBrowserResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Browser
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *StopBrowserResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *StopBrowserResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r StopBrowserResponse) GetJSON200() *Browser {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r StopBrowserResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r StopBrowserResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r StopBrowserResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r StopBrowserResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StopBrowserResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r StopBrowserResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -81776,6 +81980,19 @@ func (c *ClientWithResponses) RenewBrowserControlWithResponse(ctx context.Contex
 	return ParseRenewBrowserControlResponse(rsp)
 }
 
+// StopBrowserWithResponse Stop Browser
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/browsers/{browser_id}/stop (the `StopBrowser` operationId).
+func (c *ClientWithResponses) StopBrowserWithResponse(ctx context.Context, browserId string, params *StopBrowserParams, reqEditors ...RequestEditorFn) (*StopBrowserResponse, error) {
+	rsp, err := c.StopBrowser(ctx, browserId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStopBrowserResponse(rsp)
+}
+
 // TakeoverBrowserWithBodyWithResponse Takeover Browser
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -90095,6 +90312,69 @@ func ParseRenewBrowserControlResponse(rsp *http.Response) (*RenewBrowserControlR
 		response.Headers400 = &headers
 	case true:
 		var headers RenewBrowserControlResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseStopBrowserResponse parses an HTTP response from a StopBrowserWithResponse call
+func ParseStopBrowserResponse(rsp *http.Response) (*StopBrowserResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StopBrowserResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Browser
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers StopBrowserResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers StopBrowserResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
