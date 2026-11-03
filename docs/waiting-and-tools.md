@@ -1,6 +1,6 @@
 # Waiting, approvals and external calls
 
-A Run with `Status == a13n.RunWaiting` is sealed but needs explicit answers. Its direct `Pending` snapshot has **two arrays**: `Approvals` authorizes or denies server-side work; `Calls` requires a result from a client tool, human-operated tool or built-in question. Items expose `ToolCallId`, `ToolName`, JSON arguments and optional presentation. Display them to an authorized person or dispatch only to a known tool. The SDK never approves or executes tools automatically.
+A Run with `Status == a13n.RunWaiting` is sealed but needs explicit answers. Its `Pending` union can be decoded with `AsPending()` for current deferred work, which has **two arrays**: `Approvals` authorizes or denies server-side work; `Calls` requires a result from a client tool, human-operated tool or built-in question. Items expose `ToolCallId`, `ToolName`, JSON arguments and optional presentation. Display them to an authorized person or dispatch only to a known tool. The SDK never approves or executes tools automatically.
 
 ## Submit a reviewer's decision
 
@@ -11,7 +11,8 @@ func resumeSingleApproval(ctx context.Context, waiting a13n.RunOutcome, approved
     if waiting.Status != a13n.RunWaiting || waiting.Pending == nil {
         return a13n.RunOutcome{}, fmt.Errorf("run %s is not waiting for an answer", waiting.RunID)
     }
-    pending := waiting.Pending
+    pending, err := waiting.Pending.AsPending()
+    if err != nil { return a13n.RunOutcome{}, err }
     if len(pending.Approvals) != 1 || len(pending.Calls) != 0 {
         return a13n.RunOutcome{}, fmt.Errorf("expected one approval and no external calls")
     }
@@ -44,7 +45,8 @@ func resumeEcho(ctx context.Context, waiting a13n.RunOutcome, additionalText str
     if waiting.Status != a13n.RunWaiting || waiting.Pending == nil {
         return a13n.RunOutcome{}, fmt.Errorf("run %s is not waiting", waiting.RunID)
     }
-    pending := waiting.Pending
+    pending, err := waiting.Pending.AsPending()
+    if err != nil { return a13n.RunOutcome{}, err }
     if len(pending.Approvals) != 0 || len(pending.Calls) != 1 || pending.Calls[0].ToolName != "echo_text" {
         return a13n.RunOutcome{}, fmt.Errorf("expected one echo_text call and no approvals")
     }
@@ -69,6 +71,6 @@ For durable reconciliation, save your `ResumeOptions.IdempotencyKey` and logical
 
 ## Reply to a built-in question
 
-A built-in `ask_user_question` appears in `Pending.Calls`. Render its original arguments to the person and submit their answer as `Returned(value)` on the exact waiting Run. The native answer value has an `answers` map keyed by question text and optionally a general `response`. Service checks it against the original question arguments. Intentional skipping uses `Failed` with a meaningful message. Ordinary Agent Send stays queued while the Run waits and cannot answer it.
+A built-in `ask_user_question` appears in the current pending value's `Calls`. Render its original arguments to the person and submit their answer as `Returned(value)` on the exact waiting Run. The native answer value has an `answers` map keyed by question text and optionally a general `response`. Service checks it against the original question arguments. Intentional skipping uses `Failed` with a meaningful message. Ordinary Agent Send stays queued while the Run waits and cannot answer it.
 
 After completed, failed or cancelled Runs, use explicit ordinary `Agent.Send` to continue checkpoint history instead. Resume is not a generic retry or implicit fork. See the [pinned Run contract](../contract/semantics/runs.md#waiting-interrupt-and-fork).

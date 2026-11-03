@@ -95,6 +95,8 @@ def test_generated_operations_are_exactly_pinned_contract() -> None:
         # oapi-codegen removes input/output separators and exports a leading
         # underscore as Underscore (the nested display continuation schemas).
         name = schema_name.replace("-", "")
+        if "__" in name:
+            name = "".join(part[:1].upper() + part[1:] for part in name.split("_") if part)
         if name.startswith("_"):
             name = "Underscore" + name[1:]
         assert re.search(rf"^type {name}\b", generated, re.MULTILINE)

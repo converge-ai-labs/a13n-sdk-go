@@ -288,7 +288,8 @@ func live() {
 	waitingOutcome := must(waiting.Result(ctx))
 	check(waitingOutcome.Status == generated.RunStatusWaiting, "client-tool waiting")
 	checkConfiguration(waitingOutcome.Evidence().Value, waitingOptions)
-	pending := waitingOutcome.Pending
+	check(waitingOutcome.Pending != nil, "pending client call present")
+	pending := must(waitingOutcome.Pending.AsPending())
 	check(len(pending.Approvals) == 0 && len(pending.Calls) == 1, "pending client call count")
 	delivery := generated.DeliveryNextRun
 	queuedPayload := testTextPayload("Follow up after the client tool answer.")

@@ -141,7 +141,7 @@ For result-only applications, `Start`/`Send` plus `Result` is enough. Public `In
 
 A Thread's `LastRunId` is its latest sealed Run of any outcome. Continue completed, failed or cancelled history with normal explicit `Send`; failed/cancelled outcomes stop automatic advancement but do not discard history. Resume is only for the exact idle waiting last Run with full approvals/calls, not a generic retry.
 
-Desktop waits finish the finite Interaction normally. Use the explicit native control/completion APIs before deciding whether to resume; the SDK does not acquire or renew a human lease. See [desktop control, typed tool discovery and nullable context usage](docs/desktop-and-tool-discovery.md).
+Environment desktop viewers and takeovers use explicit generated operations. Historical desktop waits remain readable without implying a resumable current wait. See [desktop control, typed tool discovery and nullable context usage](docs/desktop-and-tool-discovery.md).
 
 ## License
 
