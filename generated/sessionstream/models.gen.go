@@ -132,6 +132,39 @@ func (e BuiltinSkillName) Valid() bool {
 	}
 }
 
+// Defines values for BuiltinToolsetKey.
+const (
+	Assets   BuiltinToolsetKey = "assets"
+	Browser  BuiltinToolsetKey = "browser"
+	Computer BuiltinToolsetKey = "computer"
+	Files    BuiltinToolsetKey = "files"
+	Memory   BuiltinToolsetKey = "memory"
+	Shell    BuiltinToolsetKey = "shell"
+	Web      BuiltinToolsetKey = "web"
+)
+
+// Valid indicates whether the value is a known member of the BuiltinToolsetKey enum.
+func (e BuiltinToolsetKey) Valid() bool {
+	switch e {
+	case Assets:
+		return true
+	case Browser:
+		return true
+	case Computer:
+		return true
+	case Files:
+		return true
+	case Memory:
+		return true
+	case Shell:
+		return true
+	case Web:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ChildEnvironmentPolicyMode.
 const (
 	ChildEnvironmentPolicyModeDedicated ChildEnvironmentPolicyMode = "dedicated"
@@ -1068,57 +1101,6 @@ func (e ToolSearchConfigMode) Valid() bool {
 	}
 }
 
-// Defines values for ToolSearchGroupCapabilities.
-const (
-	ToolSearchGroupCapabilitiesEnvironment ToolSearchGroupCapabilities = "environment"
-	ToolSearchGroupCapabilitiesWeb         ToolSearchGroupCapabilities = "web"
-)
-
-// Valid indicates whether the value is a known member of the ToolSearchGroupCapabilities enum.
-func (e ToolSearchGroupCapabilities) Valid() bool {
-	switch e {
-	case ToolSearchGroupCapabilitiesEnvironment:
-		return true
-	case ToolSearchGroupCapabilitiesWeb:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ToolsetKey0.
-const (
-	ToolsetKey0Assets   ToolsetKey0 = "assets"
-	ToolsetKey0Browser  ToolsetKey0 = "browser"
-	ToolsetKey0Computer ToolsetKey0 = "computer"
-	ToolsetKey0Files    ToolsetKey0 = "files"
-	ToolsetKey0Memory   ToolsetKey0 = "memory"
-	ToolsetKey0Shell    ToolsetKey0 = "shell"
-	ToolsetKey0Web      ToolsetKey0 = "web"
-)
-
-// Valid indicates whether the value is a known member of the ToolsetKey0 enum.
-func (e ToolsetKey0) Valid() bool {
-	switch e {
-	case ToolsetKey0Assets:
-		return true
-	case ToolsetKey0Browser:
-		return true
-	case ToolsetKey0Computer:
-		return true
-	case ToolsetKey0Files:
-		return true
-	case ToolsetKey0Memory:
-		return true
-	case ToolsetKey0Shell:
-		return true
-	case ToolsetKey0Web:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for Trigger.
 const (
 	TriggerBrowserHandback Trigger = "browser_handback"
@@ -1149,6 +1131,21 @@ func (e Trigger) Valid() bool {
 	case TriggerSpawned:
 		return true
 	case TriggerToolResult:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UnavailableConfigurationReason.
+const (
+	ConfigurationUnavailable UnavailableConfigurationReason = "configuration_unavailable"
+)
+
+// Valid indicates whether the value is a known member of the UnavailableConfigurationReason enum.
+func (e UnavailableConfigurationReason) Valid() bool {
+	switch e {
+	case ConfigurationUnavailable:
 		return true
 	default:
 		return false
@@ -1307,6 +1304,14 @@ type AssetPart struct {
 // AssetPartType defines model for AssetPart.Type.
 type AssetPartType string
 
+// AutomaticToolSearch Group Service-owned sources individually, following the agent's selections.
+type AutomaticToolSearch struct {
+	Capabilities       *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
+	Connections        *bool                `json:"connections,omitempty"`
+	ExcludeConnections *[]string            `json:"exclude_connections,omitempty"`
+	ExcludePlatform    *bool                `json:"exclude_platform,omitempty"`
+}
+
 // BrowserBinding defines model for BrowserBinding.
 type BrowserBinding struct {
 	BrowserId   string                     `json:"browser_id"`
@@ -1322,6 +1327,9 @@ type BrowserBindingTabAccess string
 
 // BuiltinSkillName defines model for BuiltinSkillName.
 type BuiltinSkillName string
+
+// BuiltinToolsetKey defines model for BuiltinToolsetKey.
+type BuiltinToolsetKey string
 
 // CallResult defines model for CallResult.
 type CallResult struct {
@@ -1975,10 +1983,11 @@ type TextPartType string
 
 // ThreadState A thread's current state: the thread, the runs its pointers name and its open inbox entries.
 type ThreadState struct {
-	CurrentRun nullable.Nullable[RunView] `json:"current_run"`
-	Entries    []EntryView                `json:"entries"`
-	LastRun    nullable.Nullable[RunView] `json:"last_run"`
-	Thread     ThreadView                 `json:"thread"`
+	CurrentRun  nullable.Nullable[RunView]  `json:"current_run"`
+	Entries     []EntryView                 `json:"entries"`
+	LastRun     nullable.Nullable[RunView]  `json:"last_run"`
+	Thread      ThreadView                  `json:"thread"`
+	Unavailable *[]UnavailableConfiguration `json:"unavailable,omitempty"`
 }
 
 // ThreadView defines model for ThreadView.
@@ -2047,6 +2056,8 @@ type ToolRiskLevel string
 
 // ToolSearch Presentation of already-selected sources, composed by Harness once per agent.
 type ToolSearch struct {
+	Automatic nullable.Nullable[AutomaticToolSearch] `json:"automatic,omitempty"`
+
 	// Config Names and bounded discovery settings for one Agent's proxy surface.
 	Config *ToolSearchConfig           `json:"config,omitempty"`
 	Groups *map[string]ToolSearchGroup `json:"groups,omitempty"`
@@ -2069,15 +2080,12 @@ type ToolSearchConfigMode string
 
 // ToolSearchGroup defines model for ToolSearchGroup.
 type ToolSearchGroup struct {
-	Capabilities *[]ToolSearchGroupCapabilities `json:"capabilities,omitempty"`
-	Connections  *[]string                      `json:"connections,omitempty"`
-	Description  string                         `json:"description"`
-	Platform     *bool                          `json:"platform,omitempty"`
-	Plugins      *[]string                      `json:"plugins,omitempty"`
+	Capabilities *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
+	Connections  *[]string            `json:"connections,omitempty"`
+	Description  string               `json:"description"`
+	Platform     *bool                `json:"platform,omitempty"`
+	Plugins      *[]string            `json:"plugins,omitempty"`
 }
-
-// ToolSearchGroupCapabilities defines model for ToolSearchGroup.Capabilities.
-type ToolSearchGroupCapabilities string
 
 // ToolSelection defines model for ToolSelection.
 type ToolSelection struct {
@@ -2091,9 +2099,6 @@ type ToolsetKey struct {
 	union json.RawMessage
 }
 
-// ToolsetKey0 defines model for ToolsetKey.0.
-type ToolsetKey0 string
-
 // ToolsetSelection defines model for ToolsetSelection.
 type ToolsetSelection struct {
 	Config  *map[string]JsonValue   `json:"config,omitempty"`
@@ -2103,6 +2108,16 @@ type ToolsetSelection struct {
 
 // Trigger defines model for Trigger.
 type Trigger string
+
+// UnavailableConfiguration A collection member whose stored configuration requires operator repair.
+type UnavailableConfiguration struct {
+	Id     string                          `json:"id"`
+	Kind   string                          `json:"kind"`
+	Reason *UnavailableConfigurationReason `json:"reason,omitempty"`
+}
+
+// UnavailableConfigurationReason defines model for UnavailableConfiguration.Reason.
+type UnavailableConfigurationReason string
 
 // UrlPart defines model for UrlPart.
 type UrlPart struct {
@@ -2899,22 +2914,22 @@ func (t *ToolPermissionSetting) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-// AsToolsetKey0 returns the union data inside the ToolsetKey as a ToolsetKey0
-func (t ToolsetKey) AsToolsetKey0() (ToolsetKey0, error) {
-	var body ToolsetKey0
+// AsBuiltinToolsetKey returns the union data inside the ToolsetKey as a BuiltinToolsetKey
+func (t ToolsetKey) AsBuiltinToolsetKey() (BuiltinToolsetKey, error) {
+	var body BuiltinToolsetKey
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromToolsetKey0 overwrites any union data inside the ToolsetKey as the provided ToolsetKey0
-func (t *ToolsetKey) FromToolsetKey0(v ToolsetKey0) error {
+// FromBuiltinToolsetKey overwrites any union data inside the ToolsetKey as the provided BuiltinToolsetKey
+func (t *ToolsetKey) FromBuiltinToolsetKey(v BuiltinToolsetKey) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeToolsetKey0 performs a merge with any union data inside the ToolsetKey, using the provided ToolsetKey0
-func (t *ToolsetKey) MergeToolsetKey0(v ToolsetKey0) error {
+// MergeBuiltinToolsetKey performs a merge with any union data inside the ToolsetKey, using the provided BuiltinToolsetKey
+func (t *ToolsetKey) MergeBuiltinToolsetKey(v BuiltinToolsetKey) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err

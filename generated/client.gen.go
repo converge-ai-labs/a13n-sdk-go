@@ -380,6 +380,39 @@ func (e BuiltinSkillName) Valid() bool {
 	}
 }
 
+// Defines values for BuiltinToolsetKey.
+const (
+	BuiltinToolsetKeyAssets   BuiltinToolsetKey = "assets"
+	BuiltinToolsetKeyBrowser  BuiltinToolsetKey = "browser"
+	BuiltinToolsetKeyComputer BuiltinToolsetKey = "computer"
+	BuiltinToolsetKeyFiles    BuiltinToolsetKey = "files"
+	BuiltinToolsetKeyMemory   BuiltinToolsetKey = "memory"
+	BuiltinToolsetKeyShell    BuiltinToolsetKey = "shell"
+	BuiltinToolsetKeyWeb      BuiltinToolsetKey = "web"
+)
+
+// Valid indicates whether the value is a known member of the BuiltinToolsetKey enum.
+func (e BuiltinToolsetKey) Valid() bool {
+	switch e {
+	case BuiltinToolsetKeyAssets:
+		return true
+	case BuiltinToolsetKeyBrowser:
+		return true
+	case BuiltinToolsetKeyComputer:
+		return true
+	case BuiltinToolsetKeyFiles:
+		return true
+	case BuiltinToolsetKeyMemory:
+		return true
+	case BuiltinToolsetKeyShell:
+		return true
+	case BuiltinToolsetKeyWeb:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Category.
 const (
 	AnswerQuality     Category = "answer_quality"
@@ -1073,6 +1106,27 @@ const (
 func (e DenyAction) Valid() bool {
 	switch e {
 	case DenyActionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DiscoverySourceKind.
+const (
+	DiscoverySourceKindCapabilities DiscoverySourceKind = "capabilities"
+	DiscoverySourceKindConnections  DiscoverySourceKind = "connections"
+	DiscoverySourceKindPlatform     DiscoverySourceKind = "platform"
+)
+
+// Valid indicates whether the value is a known member of the DiscoverySourceKind enum.
+func (e DiscoverySourceKind) Valid() bool {
+	switch e {
+	case DiscoverySourceKindCapabilities:
+		return true
+	case DiscoverySourceKindConnections:
+		return true
+	case DiscoverySourceKindPlatform:
 		return true
 	default:
 		return false
@@ -3461,57 +3515,6 @@ func (e ToolSearchConfigMode) Valid() bool {
 	}
 }
 
-// Defines values for ToolSearchGroupCapabilities.
-const (
-	ToolSearchGroupCapabilitiesEnvironment ToolSearchGroupCapabilities = "environment"
-	ToolSearchGroupCapabilitiesWeb         ToolSearchGroupCapabilities = "web"
-)
-
-// Valid indicates whether the value is a known member of the ToolSearchGroupCapabilities enum.
-func (e ToolSearchGroupCapabilities) Valid() bool {
-	switch e {
-	case ToolSearchGroupCapabilitiesEnvironment:
-		return true
-	case ToolSearchGroupCapabilitiesWeb:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ToolsetKey0.
-const (
-	ToolsetKey0Assets   ToolsetKey0 = "assets"
-	ToolsetKey0Browser  ToolsetKey0 = "browser"
-	ToolsetKey0Computer ToolsetKey0 = "computer"
-	ToolsetKey0Files    ToolsetKey0 = "files"
-	ToolsetKey0Memory   ToolsetKey0 = "memory"
-	ToolsetKey0Shell    ToolsetKey0 = "shell"
-	ToolsetKey0Web      ToolsetKey0 = "web"
-)
-
-// Valid indicates whether the value is a known member of the ToolsetKey0 enum.
-func (e ToolsetKey0) Valid() bool {
-	switch e {
-	case ToolsetKey0Assets:
-		return true
-	case ToolsetKey0Browser:
-		return true
-	case ToolsetKey0Computer:
-		return true
-	case ToolsetKey0Files:
-		return true
-	case ToolsetKey0Memory:
-		return true
-	case ToolsetKey0Shell:
-		return true
-	case ToolsetKey0Web:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for TraceBackendType.
 const (
 	Langfuse TraceBackendType = "langfuse"
@@ -3716,6 +3719,21 @@ func (e TypedQueryMetric1) Valid() bool {
 	case TypedQueryMetric1NetworkReceivedBytesPerSecond:
 		return true
 	case TypedQueryMetric1NetworkTransmittedBytesPerSecond:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UnavailableConfigurationReason.
+const (
+	ConfigurationUnavailable UnavailableConfigurationReason = "configuration_unavailable"
+)
+
+// Valid indicates whether the value is a known member of the UnavailableConfigurationReason enum.
+func (e UnavailableConfigurationReason) Valid() bool {
+	switch e {
+	case ConfigurationUnavailable:
 		return true
 	default:
 		return false
@@ -4945,8 +4963,9 @@ type AgentRevisionCreate struct {
 
 // AgentRevisionPage defines model for AgentRevisionPage.
 type AgentRevisionPage struct {
-	Items      []AgentRevision           `json:"items"`
-	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+	Items       []AgentRevision             `json:"items"`
+	NextCursor  nullable.Nullable[string]   `json:"next_cursor"`
+	Unavailable *[]UnavailableConfiguration `json:"unavailable,omitempty"`
 }
 
 // AgentSource defines model for AgentSource.
@@ -5265,6 +5284,14 @@ type AuthorizationStatus struct {
 // AuthorizationStatusState defines model for AuthorizationStatus.State.
 type AuthorizationStatusState string
 
+// AutomaticToolSearch Group Service-owned sources individually, following the agent's selections.
+type AutomaticToolSearch struct {
+	Capabilities       *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
+	Connections        *bool                `json:"connections,omitempty"`
+	ExcludeConnections *[]string            `json:"exclude_connections,omitempty"`
+	ExcludePlatform    *bool                `json:"exclude_platform,omitempty"`
+}
+
 // BackgroundCompactionPolicy Host-selected overlap policy, separate from the common compaction trigger.
 type BackgroundCompactionPolicy struct {
 	BlockingThreshold *float32 `json:"blocking_threshold,omitempty"`
@@ -5373,6 +5400,9 @@ type BuiltinSkillDetail struct {
 
 // BuiltinSkillName defines model for BuiltinSkillName.
 type BuiltinSkillName string
+
+// BuiltinToolsetKey defines model for BuiltinToolsetKey.
+type BuiltinToolsetKey string
 
 // BusyOccurrence defines model for BusyOccurrence.
 type BusyOccurrence struct {
@@ -6034,6 +6064,18 @@ type DeviceUpdate struct {
 	Name                nullable.Nullable[string] `json:"name,omitempty"`
 }
 
+// DiscoverySource defines model for DiscoverySource.
+type DiscoverySource struct {
+	Description string                    `json:"description"`
+	DisplayName string                    `json:"display_name"`
+	GroupName   nullable.Nullable[string] `json:"group_name"`
+	Id          string                    `json:"id"`
+	Kind        DiscoverySourceKind       `json:"kind"`
+}
+
+// DiscoverySourceKind defines model for DiscoverySource.Kind.
+type DiscoverySourceKind string
+
 // DiskIoMetrics defines model for DiskIoMetrics.
 type DiskIoMetrics struct {
 	BusyTimeMs      nullable.Nullable[int] `json:"busy_time_ms,omitempty"`
@@ -6066,8 +6108,9 @@ type EnteredCredential struct {
 
 // EntryPage defines model for EntryPage.
 type EntryPage struct {
-	Items      []EntryView               `json:"items"`
-	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+	Items       []EntryView                 `json:"items"`
+	NextCursor  nullable.Nullable[string]   `json:"next_cursor"`
+	Unavailable *[]UnavailableConfiguration `json:"unavailable,omitempty"`
 }
 
 // EntryStatus defines model for EntryStatus.
@@ -6106,8 +6149,9 @@ type EntrySummaryView string
 
 // EntrySummaryPage defines model for EntrySummaryPage.
 type EntrySummaryPage struct {
-	Items      []EntrySummary            `json:"items"`
-	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+	Items       []EntrySummary              `json:"items"`
+	NextCursor  nullable.Nullable[string]   `json:"next_cursor"`
+	Unavailable *[]UnavailableConfiguration `json:"unavailable,omitempty"`
 }
 
 // EntryUpdate Pending entries only; the original request digest never changes.
@@ -8209,8 +8253,9 @@ type RevisionSummaryView string
 
 // RevisionSummaryPage defines model for RevisionSummaryPage.
 type RevisionSummaryPage struct {
-	Items      []RevisionSummary         `json:"items"`
-	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+	Items       []RevisionSummary           `json:"items"`
+	NextCursor  nullable.Nullable[string]   `json:"next_cursor"`
+	Unavailable *[]UnavailableConfiguration `json:"unavailable,omitempty"`
 }
 
 // RevokedConnection defines model for RevokedConnection.
@@ -8569,8 +8614,9 @@ type ScheduleOrigin struct {
 
 // SchedulePage defines model for SchedulePage.
 type SchedulePage struct {
-	Items      []Schedule                `json:"items"`
-	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
+	Items       []Schedule                  `json:"items"`
+	NextCursor  nullable.Nullable[string]   `json:"next_cursor,omitempty"`
+	Unavailable *[]UnavailableConfiguration `json:"unavailable,omitempty"`
 }
 
 // SchedulePreview defines model for SchedulePreview.
@@ -9485,6 +9531,8 @@ type ToolRiskLevel string
 
 // ToolSearch Presentation of already-selected sources, composed by Harness once per agent.
 type ToolSearch struct {
+	Automatic nullable.Nullable[AutomaticToolSearch] `json:"automatic,omitempty"`
+
 	// Config Names and bounded discovery settings for one Agent's proxy surface.
 	Config *ToolSearchConfig           `json:"config,omitempty"`
 	Groups *map[string]ToolSearchGroup `json:"groups,omitempty"`
@@ -9507,15 +9555,12 @@ type ToolSearchConfigMode string
 
 // ToolSearchGroup defines model for ToolSearchGroup.
 type ToolSearchGroup struct {
-	Capabilities *[]ToolSearchGroupCapabilities `json:"capabilities,omitempty"`
-	Connections  *[]string                      `json:"connections,omitempty"`
-	Description  string                         `json:"description"`
-	Platform     *bool                          `json:"platform,omitempty"`
-	Plugins      *[]string                      `json:"plugins,omitempty"`
+	Capabilities *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
+	Connections  *[]string            `json:"connections,omitempty"`
+	Description  string               `json:"description"`
+	Platform     *bool                `json:"platform,omitempty"`
+	Plugins      *[]string            `json:"plugins,omitempty"`
 }
-
-// ToolSearchGroupCapabilities defines model for ToolSearchGroup.Capabilities.
-type ToolSearchGroupCapabilities string
 
 // ToolSelection defines model for ToolSelection.
 type ToolSelection struct {
@@ -9526,7 +9571,10 @@ type ToolSelection struct {
 
 // ToolsetCatalog defines model for ToolsetCatalog.
 type ToolsetCatalog struct {
-	Items []ToolsetDefinition `json:"items"`
+	// DiscoveryDefaults Group Service-owned sources individually, following the agent's selections.
+	DiscoveryDefaults AutomaticToolSearch `json:"discovery_defaults"`
+	DiscoverySources  []DiscoverySource   `json:"discovery_sources"`
+	Items             []ToolsetDefinition `json:"items"`
 }
 
 // ToolsetDefinition defines model for ToolsetDefinition.
@@ -9544,9 +9592,6 @@ type ToolsetDefinition struct {
 type ToolsetKey struct {
 	union json.RawMessage
 }
-
-// ToolsetKey0 defines model for ToolsetKey.0.
-type ToolsetKey0 string
 
 // ToolsetSelection defines model for ToolsetSelection.
 type ToolsetSelection struct {
@@ -9609,6 +9654,16 @@ type TypedQueryMetric1 string
 type TypedQuery_Metric struct {
 	union json.RawMessage
 }
+
+// UnavailableConfiguration A collection member whose stored configuration requires operator repair.
+type UnavailableConfiguration struct {
+	Id     string                          `json:"id"`
+	Kind   string                          `json:"kind"`
+	Reason *UnavailableConfigurationReason `json:"reason,omitempty"`
+}
+
+// UnavailableConfigurationReason defines model for UnavailableConfiguration.Reason.
+type UnavailableConfigurationReason string
 
 // UnlimitedCpuLimit defines model for UnlimitedCpuLimit.
 type UnlimitedCpuLimit struct {
@@ -12322,6 +12377,8 @@ type GetToolExecutionResultParams struct {
 
 // ListToolsetsParams defines parameters for ListToolsets.
 type ListToolsetsParams struct {
+	ConnectionIds *[]string `form:"connection_ids,omitempty" json:"connection_ids,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -15483,22 +15540,22 @@ func (t *ToolPermissionSetting) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-// AsToolsetKey0 returns the union data inside the ToolsetKey as a ToolsetKey0
-func (t ToolsetKey) AsToolsetKey0() (ToolsetKey0, error) {
-	var body ToolsetKey0
+// AsBuiltinToolsetKey returns the union data inside the ToolsetKey as a BuiltinToolsetKey
+func (t ToolsetKey) AsBuiltinToolsetKey() (BuiltinToolsetKey, error) {
+	var body BuiltinToolsetKey
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromToolsetKey0 overwrites any union data inside the ToolsetKey as the provided ToolsetKey0
-func (t *ToolsetKey) FromToolsetKey0(v ToolsetKey0) error {
+// FromBuiltinToolsetKey overwrites any union data inside the ToolsetKey as the provided BuiltinToolsetKey
+func (t *ToolsetKey) FromBuiltinToolsetKey(v BuiltinToolsetKey) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeToolsetKey0 performs a merge with any union data inside the ToolsetKey, using the provided ToolsetKey0
-func (t *ToolsetKey) MergeToolsetKey0(v ToolsetKey0) error {
+// MergeBuiltinToolsetKey performs a merge with any union data inside the ToolsetKey, using the provided BuiltinToolsetKey
+func (t *ToolsetKey) MergeBuiltinToolsetKey(v BuiltinToolsetKey) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -48128,6 +48185,33 @@ func NewListToolsetsRequest(server string, params *ListToolsetsParams) (*http.Re
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ConnectionIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "connection_ids", *params.ConnectionIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
