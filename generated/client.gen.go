@@ -8054,6 +8054,7 @@ type ProviderTestStatus string
 // ProviderType defines model for ProviderType.
 type ProviderType struct {
 	Authentication         Authentication                                     `json:"authentication"`
+	BrowserRecipeSchema    nullable.Nullable[map[string]JsonValue]            `json:"browser_recipe_schema,omitempty"`
 	CatalogProviders       nullable.Nullable[[]string]                        `json:"catalog_providers,omitempty"`
 	ConfigurationSchema    map[string]JsonValue                               `json:"configuration_schema"`
 	CredentialSchema       nullable.Nullable[map[string]JsonValue]            `json:"credential_schema"`
@@ -8071,6 +8072,7 @@ type ProviderType struct {
 	SupportsModelDiscovery *bool                                              `json:"supports_model_discovery,omitempty"`
 	SupportsStop           nullable.Nullable[bool]                            `json:"supports_stop,omitempty"`
 	SupportsTest           bool                                               `json:"supports_test"`
+	SupportsViewer         nullable.Nullable[bool]                            `json:"supports_viewer,omitempty"`
 	Type                   string                                             `json:"type"`
 }
 
