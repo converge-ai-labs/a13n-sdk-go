@@ -83,21 +83,13 @@ func TestToolSearchProxyConfiguration(t *testing.T) {
 	}
 }
 
-func TestDesktopWaitingIsFiniteAndResumeStaysExplicit(t *testing.T) {
-	gets, resumes := 0, 0
+func TestHistoricalDesktopWaitingIsFinite(t *testing.T) {
+	gets := 0
 	waiting := `{"id":"run","thread_id":"thr","status":"waiting","wait_reason":"desktop_control","pending":{"approvals":[],"calls":[],"desktop_control_id":"control"},"output":null}`
 	client := coverageClient(t, func(req *http.Request) *http.Response {
 		if req.Method == "GET" && strings.HasSuffix(req.URL.Path, "/api/v1/runs/run") {
 			gets++
 			return coverageResponse(200, waiting)
-		}
-		if req.Method == "POST" && strings.HasSuffix(req.URL.Path, "/api/v1/runs/run/resume") {
-			resumes++
-			data, _ := io.ReadAll(req.Body)
-			if string(data) != `{"approvals":{},"calls":{}}` {
-				t.Errorf("desktop-only resume changed: %s", data)
-			}
-			return coverageResponse(201, runView("successor", "completed", "thr"))
 		}
 		t.Errorf("unrequested desktop mutation or successor follow: %s %s", req.Method, req.URL)
 		return coverageResponse(500, `{}`)
@@ -107,30 +99,59 @@ func TestDesktopWaitingIsFiniteAndResumeStaysExplicit(t *testing.T) {
 		t.Fatal(err)
 	}
 	result, err := interaction.Result(context.Background())
-	if err != nil || result.Status != RunWaiting || result.Pending == nil || len(result.Pending.Calls) != 0 || len(result.Pending.Approvals) != 0 {
+	if err != nil || result.Status != RunWaiting || result.Pending == nil {
 		t.Fatal(result, err)
 	}
-	id, err := result.Pending.DesktopControlId.Get()
-	if err != nil || id != "control" || !strings.Contains(string(result.Evidence().RawJSON()), `"wait_reason":"desktop_control"`) {
-		t.Fatal(id, err)
+	historical, err := result.Pending.AsHistoricalDesktopPending()
+	if err != nil || historical.DesktopControlId != "control" || len(historical.Calls) != 0 || len(historical.Approvals) != 0 || !strings.Contains(string(result.Evidence().RawJSON()), `"wait_reason":"desktop_control"`) {
+		t.Fatal(historical, err)
 	}
 	if _, err := interaction.Next(); !errors.Is(err, io.EOF) {
 		t.Fatal(err)
 	}
 	_ = interaction.Close()
-	if gets != 1 || resumes != 0 {
-		t.Fatal(gets, resumes)
+	if gets != 1 {
+		t.Fatal(gets)
 	}
-	// The application completes the separate control record first. The SDK
-	// sends an empty full batch explicitly, leaving readiness checks to Service.
-	next, err := client.Run("run").Resume(context.Background(), Answers{}, ResumeOptions{IdempotencyKey: "explicit-after-handback"})
+}
+
+func TestCurrentPendingHTTPAndSession(t *testing.T) {
+	waiting := `{"id":"run","thread_id":"thr","status":"waiting","wait_reason":"call","pending":{"approvals":[],"calls":[]},"output":null}`
+	client := coverageClient(t, func(req *http.Request) *http.Response {
+		return coverageResponse(200, waiting)
+	})
+	interaction, err := client.Run("run").Observe(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer next.Close()
-	final, err := next.Result(context.Background())
-	if err != nil || final.RunID != "successor" || gets != 1 || resumes != 1 {
-		t.Fatal(final, err, gets, resumes)
+	defer interaction.Close()
+	result, err := interaction.Result(context.Background())
+	if err != nil || result.Pending == nil {
+		t.Fatal(result, err)
+	}
+	current, err := result.Pending.AsPending()
+	if err != nil || len(current.Calls) != 0 || len(current.Approvals) != 0 {
+		t.Fatal(current, err)
+	}
+	run := strings.Replace(sessionRunJSON, `"status":"accepted"`, `"status":"waiting"`, 1)
+	run = strings.Replace(run, `"wait_reason":null`, `"wait_reason":"call"`, 1)
+	run = strings.Replace(run, `"pending":null`, `"pending":{"approvals":[],"calls":[]}`, 1)
+	data := strings.Replace(sessionThreadJSON, `"last_run":null`, `"last_run":`+run, 1)
+	frame, err := parseSessionFrame(sseEvent{event: "thread", data: []byte(data)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	last, err := frame.(*SessionThreadFrame).LastRun.Get()
+	if err != nil {
+		t.Fatal(err)
+	}
+	pending, err := last.Pending.Get()
+	if err != nil {
+		t.Fatal(err)
+	}
+	native, err := pending.AsPending()
+	if err != nil || len(native.Calls) != 0 || len(native.Approvals) != 0 {
+		t.Fatal(native, err)
 	}
 }
 
@@ -150,8 +171,8 @@ func TestSessionDesktopWaitAndToolSearchNativeProjection(t *testing.T) {
 	}
 	reason, _ := last.WaitReason.Get()
 	pending, _ := last.Pending.Get()
-	id, _ := pending.DesktopControlId.Get()
-	if reason != sessionstream.DesktopControl || id != "control" {
+	historical, err := pending.AsHistoricalDesktopPending()
+	if err != nil || reason != sessionstream.DesktopControl || historical.DesktopControlId != "control" {
 		t.Fatal(last)
 	}
 	overrides, _ := last.Options.Overrides.Get()
@@ -193,5 +214,46 @@ func TestParseJSONNativeNullableSuccessIsExplicit(t *testing.T) {
 		if _, err := ParseJSON[*generated.ContextUsage](client, coverageResponse(200, body), nil, 200); !errors.Is(err, ErrProtocol) {
 			t.Fatal("nullable body bypassed JSON validation", err)
 		}
+	}
+}
+
+func TestEnvironmentDesktopGeneratedRequests(t *testing.T) {
+	workspace, etag := "workspace", `"control:3"`
+	get, err := generated.NewGetDesktopControlRequest("https://example.test", "env", &generated.GetDesktopControlParams{XWorkspaceID: &workspace})
+	if err != nil {
+		t.Fatal(err)
+	}
+	viewer, err := generated.NewOpenDesktopViewerRequest("https://example.test", "env", nil, generated.OpenViewer{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	takeover, err := generated.NewTakeOverDesktopRequest("https://example.test", "env", &generated.TakeOverDesktopParams{IfMatch: &etag}, generated.A13nServiceRunsEnvironmentsDesktopSchemasTakeover{ThreadId: "thread"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	handback, err := generated.NewReturnDesktopControlRequest("https://example.test", "env", &generated.ReturnDesktopControlParams{IfMatch: &etag})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, item := range []struct {
+		req          *http.Request
+		method, path string
+	}{
+		{get, "GET", "/api/v1/environments/env/desktop-control"},
+		{viewer, "POST", "/api/v1/environments/env/desktop-viewer"},
+		{takeover, "POST", "/api/v1/environments/env/desktop-control/takeover"},
+		{handback, "POST", "/api/v1/environments/env/desktop-control/handback"},
+	} {
+		if item.req.Method != item.method || item.req.URL.Path != item.path {
+			t.Fatal(item.req)
+		}
+	}
+	body, err := io.ReadAll(takeover.Body)
+	if err != nil || string(body) != `{"thread_id":"thread"}` || takeover.Header.Get("If-Match") != etag || handback.Header.Get("If-Match") != etag || get.Header.Get("X-Workspace-ID") != workspace {
+		t.Fatal(string(body), err)
+	}
+	var view generated.A13nServiceRunsEnvironmentsDesktopSchemasViewer
+	if err := json.Unmarshal([]byte(`{"episode":0,"generation":2,"mode":"view","password":"secret","websocket_url":"wss://example.test","expires_at":"2026-01-01T00:00:00Z"}`), &view); err != nil || view.Episode != 0 || view.Generation != 2 || view.Password != "secret" {
+		t.Fatal(view, err)
 	}
 }

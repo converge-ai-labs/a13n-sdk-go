@@ -9,6 +9,8 @@ func (BearerCredential) String() string        { return "BearerCredential { .. }
 func (BearerCredential) GoString() string      { return "BearerCredential { .. }" }
 func (BootstrapInput) String() string          { return "BootstrapInput { .. }" }
 func (BootstrapInput) GoString() string        { return "BootstrapInput { .. }" }
+func (BrowserAttach) String() string           { return "BrowserAttach { .. }" }
+func (BrowserAttach) GoString() string         { return "BrowserAttach { .. }" }
 func (ConnectionCreate) String() string        { return "ConnectionCreate { .. }" }
 func (ConnectionCreate) GoString() string      { return "ConnectionCreate { .. }" }
 func (ConnectionUpdate) String() string        { return "ConnectionUpdate { .. }" }

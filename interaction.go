@@ -84,7 +84,7 @@ type RunOutcome struct {
 	RunID     string
 	Status    RunStatus
 	Output    any
-	Pending   *Pending
+	Pending   *generated.RunView_Pending
 	Failure   *Failure
 	evidence  Result[generated.RunView]
 	rawOutput json.RawMessage
