@@ -20,24 +20,6 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-// Defines values for AccessMode.
-const (
-	AccessModeControl AccessMode = "control"
-	AccessModeView    AccessMode = "view"
-)
-
-// Valid indicates whether the value is a known member of the AccessMode enum.
-func (e AccessMode) Valid() bool {
-	switch e {
-	case AccessModeControl:
-		return true
-	case AccessModeView:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AgentConfigInputSubagentMode.
 const (
 	AgentConfigInputSubagentModeAsync  AgentConfigInputSubagentMode = "async"
@@ -626,24 +608,6 @@ func (e CollectorStatusState1) Valid() bool {
 	}
 }
 
-// Defines values for CompletionOutcome.
-const (
-	CompletionOutcomeAbandoned CompletionOutcome = "abandoned"
-	CompletionOutcomeCompleted CompletionOutcome = "completed"
-)
-
-// Valid indicates whether the value is a known member of the CompletionOutcome enum.
-func (e CompletionOutcome) Valid() bool {
-	switch e {
-	case CompletionOutcomeAbandoned:
-		return true
-	case CompletionOutcomeCompleted:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ComputerCheckStatus.
 const (
 	ComputerCheckStatusChecked     ComputerCheckStatus = "checked"
@@ -887,24 +851,48 @@ func (e ContentSummaryView) Valid() bool {
 	}
 }
 
+// Defines values for ControlControl.
+const (
+	ControlControlAutomation ControlControl = "automation"
+	ControlControlDraining   ControlControl = "draining"
+	ControlControlHuman      ControlControl = "human"
+	ControlControlReturning  ControlControl = "returning"
+)
+
+// Valid indicates whether the value is a known member of the ControlControl enum.
+func (e ControlControl) Valid() bool {
+	switch e {
+	case ControlControlAutomation:
+		return true
+	case ControlControlDraining:
+		return true
+	case ControlControlHuman:
+		return true
+	case ControlControlReturning:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ControlStatus.
 const (
-	Automation ControlStatus = "automation"
-	Draining   ControlStatus = "draining"
-	Human      ControlStatus = "human"
-	Returning  ControlStatus = "returning"
+	ControlStatusAutomation ControlStatus = "automation"
+	ControlStatusDraining   ControlStatus = "draining"
+	ControlStatusHuman      ControlStatus = "human"
+	ControlStatusReturning  ControlStatus = "returning"
 )
 
 // Valid indicates whether the value is a known member of the ControlStatus enum.
 func (e ControlStatus) Valid() bool {
 	switch e {
-	case Automation:
+	case ControlStatusAutomation:
 		return true
-	case Draining:
+	case ControlStatusDraining:
 		return true
-	case Human:
+	case ControlStatusHuman:
 		return true
-	case Returning:
+	case ControlStatusReturning:
 		return true
 	default:
 		return false
@@ -1173,6 +1161,7 @@ func (e EntrySummaryView) Valid() bool {
 const (
 	EntryViewKindBrowserHandback EntryViewKind = "browser_handback"
 	EntryViewKindChildResult     EntryViewKind = "child_result"
+	EntryViewKindDesktopHandback EntryViewKind = "desktop_handback"
 	EntryViewKindMessage         EntryViewKind = "message"
 	EntryViewKindToolResult      EntryViewKind = "tool_result"
 )
@@ -1183,6 +1172,8 @@ func (e EntryViewKind) Valid() bool {
 	case EntryViewKindBrowserHandback:
 		return true
 	case EntryViewKindChildResult:
+		return true
+	case EntryViewKindDesktopHandback:
 		return true
 	case EntryViewKindMessage:
 		return true
@@ -2309,6 +2300,24 @@ const (
 func (e OnceScheduleType) Valid() bool {
 	switch e {
 	case Once:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OpenViewerMode.
+const (
+	OpenViewerModeControl OpenViewerMode = "control"
+	OpenViewerModeView    OpenViewerMode = "view"
+)
+
+// Valid indicates whether the value is a known member of the OpenViewerMode enum.
+func (e OpenViewerMode) Valid() bool {
+	switch e {
+	case OpenViewerModeControl:
+		return true
+	case OpenViewerModeView:
 		return true
 	default:
 		return false
@@ -3525,6 +3534,7 @@ func (e TraceBackendType) Valid() bool {
 const (
 	TriggerBrowserHandback Trigger = "browser_handback"
 	TriggerChildResult     Trigger = "child_result"
+	TriggerDesktopHandback Trigger = "desktop_handback"
 	TriggerInput           Trigger = "input"
 	TriggerQueued          Trigger = "queued"
 	TriggerResume          Trigger = "resume"
@@ -3538,6 +3548,8 @@ func (e Trigger) Valid() bool {
 	case TriggerBrowserHandback:
 		return true
 	case TriggerChildResult:
+		return true
+	case TriggerDesktopHandback:
 		return true
 	case TriggerInput:
 		return true
@@ -3809,42 +3821,6 @@ func (e VideoUrlType) Valid() bool {
 	}
 }
 
-// Defines values for ViewCause.
-const (
-	ViewCauseAgent ViewCause = "agent"
-	ViewCauseUser  ViewCause = "user"
-)
-
-// Valid indicates whether the value is a known member of the ViewCause enum.
-func (e ViewCause) Valid() bool {
-	switch e {
-	case ViewCauseAgent:
-		return true
-	case ViewCauseUser:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for ViewerProtocol.
-const (
-	Iframe ViewerProtocol = "iframe"
-	Vnc    ViewerProtocol = "vnc"
-)
-
-// Valid indicates whether the value is a known member of the ViewerProtocol enum.
-func (e ViewerProtocol) Valid() bool {
-	switch e {
-	case Iframe:
-		return true
-	case Vnc:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for WaitReason.
 const (
 	Approval       WaitReason = "approval"
@@ -3902,6 +3878,42 @@ func (e WebhookDeliveryStatus) Valid() bool {
 	case WebhookDeliveryStatusDelivered:
 		return true
 	case WebhookDeliveryStatusPending:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for A13nServiceRunsBrowsersSchemasViewerProtocol.
+const (
+	Iframe A13nServiceRunsBrowsersSchemasViewerProtocol = "iframe"
+	Vnc    A13nServiceRunsBrowsersSchemasViewerProtocol = "vnc"
+)
+
+// Valid indicates whether the value is a known member of the A13nServiceRunsBrowsersSchemasViewerProtocol enum.
+func (e A13nServiceRunsBrowsersSchemasViewerProtocol) Valid() bool {
+	switch e {
+	case Iframe:
+		return true
+	case Vnc:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for A13nServiceRunsEnvironmentsDesktopSchemasViewerMode.
+const (
+	A13nServiceRunsEnvironmentsDesktopSchemasViewerModeControl A13nServiceRunsEnvironmentsDesktopSchemasViewerMode = "control"
+	A13nServiceRunsEnvironmentsDesktopSchemasViewerModeView    A13nServiceRunsEnvironmentsDesktopSchemasViewerMode = "view"
+)
+
+// Valid indicates whether the value is a known member of the A13nServiceRunsEnvironmentsDesktopSchemasViewerMode enum.
+func (e A13nServiceRunsEnvironmentsDesktopSchemasViewerMode) Valid() bool {
+	switch e {
+	case A13nServiceRunsEnvironmentsDesktopSchemasViewerModeControl:
+		return true
+	case A13nServiceRunsEnvironmentsDesktopSchemasViewerModeView:
 		return true
 	default:
 		return false
@@ -4705,18 +4717,6 @@ func (e UsageOverviewParamsMetric) Valid() bool {
 		return false
 	}
 }
-
-// Access defines model for Access.
-type Access struct {
-	Assistance       View       `json:"assistance"`
-	ExpiresInSeconds float32    `json:"expires_in_seconds"`
-	Mode             AccessMode `json:"mode"`
-	Password         string     `json:"password"`
-	WebsocketUrl     string     `json:"websocket_url"`
-}
-
-// AccessMode defines model for Access.Mode.
-type AccessMode string
 
 // AccountDisable defines model for AccountDisable.
 type AccountDisable struct {
@@ -5533,17 +5533,6 @@ type CollectorStatus_State struct {
 	union json.RawMessage
 }
 
-// Completion defines model for Completion.
-type Completion struct {
-	Epoch     int                `json:"epoch"`
-	Note      *string            `json:"note,omitempty"`
-	Outcome   *CompletionOutcome `json:"outcome,omitempty"`
-	SessionId string             `json:"session_id"`
-}
-
-// CompletionOutcome defines model for Completion.Outcome.
-type CompletionOutcome string
-
 // ComputerCheck A point-in-time capability probe, not an Agent or mount permission grant.
 type ComputerCheck struct {
 	DisplayCount *int                 `json:"display_count,omitempty"`
@@ -5756,9 +5745,19 @@ type ContextUsage struct {
 
 // Control defines model for Control.
 type Control struct {
-	Epoch     int    `json:"epoch"`
-	SessionId string `json:"session_id"`
+	Control            ControlControl               `json:"control"`
+	ControllerId       nullable.Nullable[string]    `json:"controller_id"`
+	ControllerThreadId nullable.Nullable[string]    `json:"controller_thread_id"`
+	Episode            int                          `json:"episode"`
+	ExpiresAt          nullable.Nullable[time.Time] `json:"expires_at"`
+	Failure            nullable.Nullable[string]    `json:"failure"`
+	Generation         int                          `json:"generation"`
+	Id                 string                       `json:"id"`
+	Version            int                          `json:"version"`
 }
+
+// ControlControl defines model for Control.Control.
+type ControlControl string
 
 // ControlStatus defines model for ControlStatus.
 type ControlStatus string
@@ -6560,6 +6559,13 @@ type HarnessModelCharacteristicsOutput struct {
 // HeadersCredential defines model for HeadersCredential.
 type HeadersCredential struct {
 	Headers map[string]string `json:"headers"`
+}
+
+// HistoricalDesktopPending Read-only projection of sealed desktop suspensions predating Computer-scoped control.
+type HistoricalDesktopPending struct {
+	Approvals        []PendingCall `json:"approvals"`
+	Calls            []PendingCall `json:"calls"`
+	DesktopControlId string        `json:"desktop_control_id"`
 }
 
 // History defines model for History.
@@ -7490,6 +7496,8 @@ type MountUpdate struct {
 
 // MountView defines model for MountView.
 type MountView struct {
+	// DesktopEnabled Frozen instance configuration enables human desktop access; not authorization or a health check.
+	DesktopEnabled    bool                            `json:"desktop_enabled"`
 	EnvironmentId     string                          `json:"environment_id"`
 	Name              string                          `json:"name"`
 	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
@@ -7667,12 +7675,16 @@ type OnceSchedule struct {
 // OnceScheduleType defines model for OnceSchedule.Type.
 type OnceScheduleType string
 
-// OpenView defines model for OpenView.
-type OpenView struct {
-	Mount     string `json:"mount"`
-	Reason    string `json:"reason"`
-	SessionId string `json:"session_id"`
+// OpenViewer defines model for OpenViewer.
+type OpenViewer struct {
+	Episode    nullable.Nullable[int]    `json:"episode,omitempty"`
+	Generation nullable.Nullable[int]    `json:"generation,omitempty"`
+	Mode       *OpenViewerMode           `json:"mode,omitempty"`
+	ViewerId   nullable.Nullable[string] `json:"viewer_id,omitempty"`
 }
+
+// OpenViewerMode defines model for OpenViewer.Mode.
+type OpenViewerMode string
 
 // OpenedApp defines model for OpenedApp.
 type OpenedApp struct {
@@ -7799,9 +7811,8 @@ type PasswordResetConfirm struct {
 
 // Pending Public projection; complete native requests and private metadata stay in the checkpoint.
 type Pending struct {
-	Approvals        []PendingCall             `json:"approvals"`
-	Calls            []PendingCall             `json:"calls"`
-	DesktopControlId nullable.Nullable[string] `json:"desktop_control_id,omitempty"`
+	Approvals []PendingCall `json:"approvals"`
+	Calls     []PendingCall `json:"calls"`
 }
 
 // PendingCall defines model for PendingCall.
@@ -8132,17 +8143,18 @@ type RangeQueryKind string
 // ReadView defines model for ReadView.
 type ReadView string
 
-// RenewControl defines model for RenewControl.
-type RenewControl struct {
+// Renew defines model for Renew.
+type Renew struct {
 	Episode      int                    `json:"episode"`
 	Generation   int                    `json:"generation"`
 	LeaseSeconds nullable.Nullable[int] `json:"lease_seconds,omitempty"`
 }
 
-// Request defines model for Request.
-type Request struct {
-	Mount  string `json:"mount"`
-	Reason string `json:"reason"`
+// RenewControl defines model for RenewControl.
+type RenewControl struct {
+	Episode      int                    `json:"episode"`
+	Generation   int                    `json:"generation"`
+	LeaseSeconds nullable.Nullable[int] `json:"lease_seconds,omitempty"`
 }
 
 // RequestContext Explicit business headers, frozen in accepted Run options and kept out of model projections.
@@ -8445,7 +8457,7 @@ type RunView struct {
 	Options           RunOptionsOutput                        `json:"options"`
 	Output            nullable.Nullable[JsonValue]            `json:"output"`
 	ParentRunId       nullable.Nullable[string]               `json:"parent_run_id"`
-	Pending           nullable.Nullable[Pending]              `json:"pending"`
+	Pending           nullable.Nullable[RunView_Pending]      `json:"pending"`
 	PrincipalId       string                                  `json:"principal_id"`
 	Resume            nullable.Nullable[Resume]               `json:"resume"`
 	ResumedById       nullable.Nullable[string]               `json:"resumed_by_id"`
@@ -8467,6 +8479,11 @@ type RunView struct {
 
 // RunView_MemoryMounts_Item defines model for RunView.memory_mounts.Item.
 type RunView_MemoryMounts_Item struct {
+	union json.RawMessage
+}
+
+// RunView_Pending defines model for RunView.Pending.
+type RunView_Pending struct {
 	union json.RawMessage
 }
 
@@ -9189,12 +9206,6 @@ type SystemMetrics struct {
 	ThreadCount           nullable.Nullable[int]            `json:"thread_count,omitempty"`
 }
 
-// Takeover defines model for Takeover.
-type Takeover struct {
-	LeaseSeconds nullable.Nullable[int] `json:"lease_seconds,omitempty"`
-	ThreadId     string                 `json:"thread_id"`
-}
-
 // Template defines model for Template.
 type Template struct {
 	Config         TemplateConfig            `json:"config"`
@@ -9765,41 +9776,6 @@ type VideoInputPolicy struct {
 // VideoUrlType defines model for VideoUrlType.
 type VideoUrlType string
 
-// View defines model for View.
-type View struct {
-	Cause          ViewCause                                 `json:"cause"`
-	ControllerId   nullable.Nullable[string]                 `json:"controller_id"`
-	Deadline       time.Time                                 `json:"deadline"`
-	EnvironmentId  string                                    `json:"environment_id"`
-	Epoch          int                                       `json:"epoch"`
-	Failure        nullable.Nullable[string]                 `json:"failure"`
-	Id             string                                    `json:"id"`
-	LeaseExpiresAt nullable.Nullable[time.Time]              `json:"lease_expires_at"`
-	Mount          string                                    `json:"mount"`
-	Outcome        nullable.Nullable[map[string]interface{}] `json:"outcome"`
-	Reason         string                                    `json:"reason"`
-	RunId          string                                    `json:"run_id"`
-	State          string                                    `json:"state"`
-	ToolCallId     nullable.Nullable[string]                 `json:"tool_call_id"`
-}
-
-// ViewCause defines model for View.Cause.
-type ViewCause string
-
-// Viewer Sensitive, authorized control response; excluded from ordinary Browser reads.
-type Viewer struct {
-	Episode    int                       `json:"episode"`
-	ExpiresAt  time.Time                 `json:"expires_at"`
-	Generation nullable.Nullable[int]    `json:"generation,omitempty"`
-	Password   nullable.Nullable[string] `json:"password,omitempty"`
-	Protocol   *ViewerProtocol           `json:"protocol,omitempty"`
-	Token      nullable.Nullable[string] `json:"token,omitempty"`
-	Url        string                    `json:"url"`
-}
-
-// ViewerProtocol defines model for Viewer.Protocol.
-type ViewerProtocol string
-
 // WaitReason defines model for WaitReason.
 type WaitReason string
 
@@ -9852,6 +9828,46 @@ type WorkspacePage struct {
 type WorkspaceUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
 }
+
+// A13nServiceRunsBrowsersSchemasTakeover defines model for a13n_service__runs__browsers__schemas__Takeover.
+type A13nServiceRunsBrowsersSchemasTakeover struct {
+	LeaseSeconds nullable.Nullable[int] `json:"lease_seconds,omitempty"`
+	ThreadId     string                 `json:"thread_id"`
+}
+
+// A13nServiceRunsBrowsersSchemasViewer Sensitive, authorized control response; excluded from ordinary Browser reads.
+type A13nServiceRunsBrowsersSchemasViewer struct {
+	Episode    int                                           `json:"episode"`
+	ExpiresAt  time.Time                                     `json:"expires_at"`
+	Generation nullable.Nullable[int]                        `json:"generation,omitempty"`
+	Password   nullable.Nullable[string]                     `json:"password,omitempty"`
+	Protocol   *A13nServiceRunsBrowsersSchemasViewerProtocol `json:"protocol,omitempty"`
+	Token      nullable.Nullable[string]                     `json:"token,omitempty"`
+	Url        string                                        `json:"url"`
+}
+
+// A13nServiceRunsBrowsersSchemasViewerProtocol defines model for A13nServiceRunsBrowsersSchemasViewer.Protocol.
+type A13nServiceRunsBrowsersSchemasViewerProtocol string
+
+// A13nServiceRunsEnvironmentsDesktopSchemasTakeover defines model for a13n_service__runs__environments__desktop__schemas__Takeover.
+type A13nServiceRunsEnvironmentsDesktopSchemasTakeover struct {
+	LeaseSeconds nullable.Nullable[int] `json:"lease_seconds,omitempty"`
+	ThreadId     string                 `json:"thread_id"`
+}
+
+// A13nServiceRunsEnvironmentsDesktopSchemasViewer defines model for a13n_service__runs__environments__desktop__schemas__Viewer.
+type A13nServiceRunsEnvironmentsDesktopSchemasViewer struct {
+	Episode      int                                                 `json:"episode"`
+	ExpiresAt    time.Time                                           `json:"expires_at"`
+	Generation   int                                                 `json:"generation"`
+	Mode         A13nServiceRunsEnvironmentsDesktopSchemasViewerMode `json:"mode"`
+	Password     string                                              `json:"password"`
+	ViewerId     nullable.Nullable[string]                           `json:"viewer_id,omitempty"`
+	WebsocketUrl string                                              `json:"websocket_url"`
+}
+
+// A13nServiceRunsEnvironmentsDesktopSchemasViewerMode defines model for A13nServiceRunsEnvironmentsDesktopSchemasViewer.Mode.
+type A13nServiceRunsEnvironmentsDesktopSchemasViewerMode string
 
 // Error How every failure answers, whatever its status.
 type Error = ErrorEnvelope
@@ -10427,40 +10443,6 @@ type TestConnectorProviderParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
-// CompleteAssistanceParams defines parameters for CompleteAssistance.
-type CompleteAssistanceParams struct {
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
-// ControlDesktopParams defines parameters for ControlDesktop.
-type ControlDesktopParams struct {
-	Renew *bool `form:"renew,omitempty" json:"renew,omitempty"`
-
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
-// DisconnectDesktopParams defines parameters for DisconnectDesktop.
-type DisconnectDesktopParams struct {
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
-// RequestControlParams defines parameters for RequestControl.
-type RequestControlParams struct {
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
-// ViewDesktopParams defines parameters for ViewDesktop.
-type ViewDesktopParams struct {
-	Renew *bool `form:"renew,omitempty" json:"renew,omitempty"`
-
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
 // ListDevicesParams defines parameters for ListDevices.
 type ListDevicesParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -10665,8 +10647,44 @@ type GetEnvironmentCreationParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// GetDesktopControlParams defines parameters for GetDesktopControl.
+type GetDesktopControlParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ReturnDesktopControlParams defines parameters for ReturnDesktopControl.
+type ReturnDesktopControlParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RenewDesktopControlParams defines parameters for RenewDesktopControl.
+type RenewDesktopControlParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// TakeOverDesktopParams defines parameters for TakeOverDesktop.
+type TakeOverDesktopParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // GetEnvironmentDesktopPreviewParams defines parameters for GetEnvironmentDesktopPreview.
 type GetEnvironmentDesktopPreviewParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// OpenDesktopViewerParams defines parameters for OpenDesktopViewer.
+type OpenDesktopViewerParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -11567,30 +11585,6 @@ type GetRunContentParams struct {
 // GetRunContent200JSONResponseBody defines parameters for GetRunContent.
 type GetRunContent200JSONResponseBody struct {
 	union json.RawMessage
-}
-
-// GetAssistanceParams defines parameters for GetAssistance.
-type GetAssistanceParams struct {
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
-// GetControlParams defines parameters for GetControl.
-type GetControlParams struct {
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
-// OpenControlParams defines parameters for OpenControl.
-type OpenControlParams struct {
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
-}
-
-// OpenViewParams defines parameters for OpenView.
-type OpenViewParams struct {
-	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
-	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
 // ForkRunParams defines parameters for ForkRun.
@@ -12894,7 +12888,7 @@ type AttachBrowserJSONRequestBody = BrowserAttach
 type RenewBrowserControlJSONRequestBody = RenewControl
 
 // TakeoverBrowserJSONRequestBody defines body for TakeoverBrowser for application/json ContentType.
-type TakeoverBrowserJSONRequestBody = Takeover
+type TakeoverBrowserJSONRequestBody = A13nServiceRunsBrowsersSchemasTakeover
 
 // CreateConnectionJSONRequestBody defines body for CreateConnection for application/json ContentType.
 type CreateConnectionJSONRequestBody = ConnectionCreate
@@ -12910,18 +12904,6 @@ type CreateConnectorProviderJSONRequestBody = ProviderCreate
 
 // UpdateConnectorProviderJSONRequestBody defines body for UpdateConnectorProvider for application/json ContentType.
 type UpdateConnectorProviderJSONRequestBody = ProviderUpdate
-
-// CompleteAssistanceJSONRequestBody defines body for CompleteAssistance for application/json ContentType.
-type CompleteAssistanceJSONRequestBody = Completion
-
-// ControlDesktopJSONRequestBody defines body for ControlDesktop for application/json ContentType.
-type ControlDesktopJSONRequestBody = Control
-
-// DisconnectDesktopJSONRequestBody defines body for DisconnectDesktop for application/json ContentType.
-type DisconnectDesktopJSONRequestBody = Control
-
-// ViewDesktopJSONRequestBody defines body for ViewDesktop for application/json ContentType.
-type ViewDesktopJSONRequestBody = Control
 
 // CreateDeviceJSONRequestBody defines body for CreateDevice for application/json ContentType.
 type CreateDeviceJSONRequestBody = DeviceCreate
@@ -12952,6 +12934,15 @@ type CreateEnvironmentJSONRequestBody CreateEnvironmentJSONBody
 
 // UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
 type UpdateEnvironmentJSONRequestBody = EnvironmentUpdate
+
+// RenewDesktopControlJSONRequestBody defines body for RenewDesktopControl for application/json ContentType.
+type RenewDesktopControlJSONRequestBody = Renew
+
+// TakeOverDesktopJSONRequestBody defines body for TakeOverDesktop for application/json ContentType.
+type TakeOverDesktopJSONRequestBody = A13nServiceRunsEnvironmentsDesktopSchemasTakeover
+
+// OpenDesktopViewerJSONRequestBody defines body for OpenDesktopViewer for application/json ContentType.
+type OpenDesktopViewerJSONRequestBody = OpenViewer
 
 // SelectMetricsSourceJSONRequestBody defines body for SelectMetricsSource for application/json ContentType.
 type SelectMetricsSourceJSONRequestBody = Selection
@@ -13066,12 +13057,6 @@ type ReadRunAppResourceJSONRequestBody = AppResourceRead
 
 // CallRunAppToolJSONRequestBody defines body for CallRunAppTool for application/json ContentType.
 type CallRunAppToolJSONRequestBody = AppToolCall
-
-// OpenControlJSONRequestBody defines body for OpenControl for application/json ContentType.
-type OpenControlJSONRequestBody = Request
-
-// OpenViewJSONRequestBody defines body for OpenView for application/json ContentType.
-type OpenViewJSONRequestBody = OpenView
 
 // ForkRunJSONRequestBody defines body for ForkRun for application/json ContentType.
 type ForkRunJSONRequestBody = Fork
@@ -14614,6 +14599,68 @@ func (t RunView_MemoryMounts_Item) MarshalJSON() ([]byte, error) {
 }
 
 func (t *RunView_MemoryMounts_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPending returns the union data inside the RunView_Pending as a Pending
+func (t RunView_Pending) AsPending() (Pending, error) {
+	var body Pending
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPending overwrites any union data inside the RunView_Pending as the provided Pending
+func (t *RunView_Pending) FromPending(v Pending) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePending performs a merge with any union data inside the RunView_Pending, using the provided Pending
+func (t *RunView_Pending) MergePending(v Pending) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsHistoricalDesktopPending returns the union data inside the RunView_Pending as a HistoricalDesktopPending
+func (t RunView_Pending) AsHistoricalDesktopPending() (HistoricalDesktopPending, error) {
+	var body HistoricalDesktopPending
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromHistoricalDesktopPending overwrites any union data inside the RunView_Pending as the provided HistoricalDesktopPending
+func (t *RunView_Pending) FromHistoricalDesktopPending(v HistoricalDesktopPending) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeHistoricalDesktopPending performs a merge with any union data inside the RunView_Pending, using the provided HistoricalDesktopPending
+func (t *RunView_Pending) MergeHistoricalDesktopPending(v HistoricalDesktopPending) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunView_Pending) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunView_Pending) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -17783,67 +17830,6 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestConnectorProvider` operationId).
 	TestConnectorProvider(ctx context.Context, providerId string, params *TestConnectorProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CompleteAssistanceWithBody Complete Assistance
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-	CompleteAssistanceWithBody(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CompleteAssistance Complete Assistance
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-	CompleteAssistance(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, body CompleteAssistanceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ControlDesktopWithBody Control Desktop
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-	ControlDesktopWithBody(ctx context.Context, assistanceId string, params *ControlDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ControlDesktop Control Desktop
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-	ControlDesktop(ctx context.Context, assistanceId string, params *ControlDesktopParams, body ControlDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DisconnectDesktopWithBody Disconnect Desktop
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-	DisconnectDesktopWithBody(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DisconnectDesktop Disconnect Desktop
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-	DisconnectDesktop(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, body DisconnectDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// RequestControl Request Control
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControl` operationId).
-	RequestControl(ctx context.Context, assistanceId string, params *RequestControlParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ViewDesktopWithBody View Desktop
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-	ViewDesktopWithBody(ctx context.Context, assistanceId string, params *ViewDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ViewDesktop View Desktop
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-	ViewDesktop(ctx context.Context, assistanceId string, params *ViewDesktopParams, body ViewDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// ListDevices List Devices
 	//
 	// Corresponds with GET /api/v1/devices (the `ListDevices` operationId).
@@ -18078,10 +18064,62 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreation(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetDesktopControl Get Desktop Control
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
+	GetDesktopControl(ctx context.Context, environmentId string, params *GetDesktopControlParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReturnDesktopControl Return Desktop Control
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/handback (the `ReturnDesktopControl` operationId).
+	ReturnDesktopControl(ctx context.Context, environmentId string, params *ReturnDesktopControlParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RenewDesktopControlWithBody Renew Desktop Control
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+	RenewDesktopControlWithBody(ctx context.Context, environmentId string, params *RenewDesktopControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RenewDesktopControl Renew Desktop Control
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+	RenewDesktopControl(ctx context.Context, environmentId string, params *RenewDesktopControlParams, body RenewDesktopControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TakeOverDesktopWithBody Take Over Desktop
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+	TakeOverDesktopWithBody(ctx context.Context, environmentId string, params *TakeOverDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TakeOverDesktop Take Over Desktop
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+	TakeOverDesktop(ctx context.Context, environmentId string, params *TakeOverDesktopParams, body TakeOverDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetEnvironmentDesktopPreview Get Environment Desktop Preview
 	//
 	// Corresponds with GET /api/v1/environments/{environment_id}/desktop-preview (the `GetEnvironmentDesktopPreview` operationId).
 	GetEnvironmentDesktopPreview(ctx context.Context, environmentId string, params *GetEnvironmentDesktopPreviewParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OpenDesktopViewerWithBody Open Desktop Viewer
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+	OpenDesktopViewerWithBody(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OpenDesktopViewer Open Desktop Viewer
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+	OpenDesktopViewer(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// SelectMetricsSourceWithBody Select Metrics Source
 	//
@@ -19066,44 +19104,6 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `GetRunContent` operationId).
 	GetRunContent(ctx context.Context, runId string, contentId string, params *GetRunContentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetAssistance Get Assistance
-	//
-	// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistance` operationId).
-	GetAssistance(ctx context.Context, runId string, callId string, params *GetAssistanceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetControl Get Control
-	//
-	// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControl` operationId).
-	GetControl(ctx context.Context, runId string, params *GetControlParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OpenControlWithBody Open Control
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-	OpenControlWithBody(ctx context.Context, runId string, params *OpenControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OpenControl Open Control
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-	OpenControl(ctx context.Context, runId string, params *OpenControlParams, body OpenControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OpenViewWithBody Open View
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-	OpenViewWithBody(ctx context.Context, runId string, params *OpenViewParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// OpenView Open View
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-	OpenView(ctx context.Context, runId string, params *OpenViewParams, body OpenViewJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ForkRunWithBody Fork Run
 	//
@@ -21869,157 +21869,6 @@ func (c *Client) TestConnectorProvider(ctx context.Context, providerId string, p
 	return c.Client.Do(req)
 }
 
-// CompleteAssistanceWithBody Complete Assistance
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-func (c *Client) CompleteAssistanceWithBody(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCompleteAssistanceRequestWithBody(c.Server, assistanceId, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// CompleteAssistance Complete Assistance
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-func (c *Client) CompleteAssistance(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, body CompleteAssistanceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCompleteAssistanceRequest(c.Server, assistanceId, params, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// ControlDesktopWithBody Control Desktop
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-func (c *Client) ControlDesktopWithBody(ctx context.Context, assistanceId string, params *ControlDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewControlDesktopRequestWithBody(c.Server, assistanceId, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// ControlDesktop Control Desktop
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-func (c *Client) ControlDesktop(ctx context.Context, assistanceId string, params *ControlDesktopParams, body ControlDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewControlDesktopRequest(c.Server, assistanceId, params, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// DisconnectDesktopWithBody Disconnect Desktop
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-func (c *Client) DisconnectDesktopWithBody(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDisconnectDesktopRequestWithBody(c.Server, assistanceId, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// DisconnectDesktop Disconnect Desktop
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-func (c *Client) DisconnectDesktop(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, body DisconnectDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDisconnectDesktopRequest(c.Server, assistanceId, params, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// RequestControl Request Control
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControl` operationId).
-func (c *Client) RequestControl(ctx context.Context, assistanceId string, params *RequestControlParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRequestControlRequest(c.Server, assistanceId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// ViewDesktopWithBody View Desktop
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-func (c *Client) ViewDesktopWithBody(ctx context.Context, assistanceId string, params *ViewDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewViewDesktopRequestWithBody(c.Server, assistanceId, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// ViewDesktop View Desktop
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-func (c *Client) ViewDesktop(ctx context.Context, assistanceId string, params *ViewDesktopParams, body ViewDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewViewDesktopRequest(c.Server, assistanceId, params, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 // ListDevices List Devices
 //
 // Corresponds with GET /api/v1/devices (the `ListDevices` operationId).
@@ -22614,11 +22463,143 @@ func (c *Client) GetEnvironmentCreation(ctx context.Context, environmentId strin
 	return c.Client.Do(req)
 }
 
+// GetDesktopControl Get Desktop Control
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
+func (c *Client) GetDesktopControl(ctx context.Context, environmentId string, params *GetDesktopControlParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDesktopControlRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReturnDesktopControl Return Desktop Control
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/handback (the `ReturnDesktopControl` operationId).
+func (c *Client) ReturnDesktopControl(ctx context.Context, environmentId string, params *ReturnDesktopControlParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReturnDesktopControlRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RenewDesktopControlWithBody Renew Desktop Control
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+func (c *Client) RenewDesktopControlWithBody(ctx context.Context, environmentId string, params *RenewDesktopControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRenewDesktopControlRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RenewDesktopControl Renew Desktop Control
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+func (c *Client) RenewDesktopControl(ctx context.Context, environmentId string, params *RenewDesktopControlParams, body RenewDesktopControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRenewDesktopControlRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TakeOverDesktopWithBody Take Over Desktop
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+func (c *Client) TakeOverDesktopWithBody(ctx context.Context, environmentId string, params *TakeOverDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTakeOverDesktopRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TakeOverDesktop Take Over Desktop
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+func (c *Client) TakeOverDesktop(ctx context.Context, environmentId string, params *TakeOverDesktopParams, body TakeOverDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTakeOverDesktopRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetEnvironmentDesktopPreview Get Environment Desktop Preview
 //
 // Corresponds with GET /api/v1/environments/{environment_id}/desktop-preview (the `GetEnvironmentDesktopPreview` operationId).
 func (c *Client) GetEnvironmentDesktopPreview(ctx context.Context, environmentId string, params *GetEnvironmentDesktopPreviewParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetEnvironmentDesktopPreviewRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OpenDesktopViewerWithBody Open Desktop Viewer
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+func (c *Client) OpenDesktopViewerWithBody(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOpenDesktopViewerRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OpenDesktopViewer Open Desktop Viewer
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+func (c *Client) OpenDesktopViewer(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOpenDesktopViewerRequest(c.Server, environmentId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -25103,104 +25084,6 @@ func (c *Client) ListAttemptSpans(ctx context.Context, runId string, attemptId s
 // Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `GetRunContent` operationId).
 func (c *Client) GetRunContent(ctx context.Context, runId string, contentId string, params *GetRunContentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRunContentRequest(c.Server, runId, contentId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetAssistance Get Assistance
-//
-// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistance` operationId).
-func (c *Client) GetAssistance(ctx context.Context, runId string, callId string, params *GetAssistanceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAssistanceRequest(c.Server, runId, callId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetControl Get Control
-//
-// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControl` operationId).
-func (c *Client) GetControl(ctx context.Context, runId string, params *GetControlParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetControlRequest(c.Server, runId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// OpenControlWithBody Open Control
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-func (c *Client) OpenControlWithBody(ctx context.Context, runId string, params *OpenControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOpenControlRequestWithBody(c.Server, runId, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// OpenControl Open Control
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-func (c *Client) OpenControl(ctx context.Context, runId string, params *OpenControlParams, body OpenControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOpenControlRequest(c.Server, runId, params, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// OpenViewWithBody Open View
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-func (c *Client) OpenViewWithBody(ctx context.Context, runId string, params *OpenViewParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOpenViewRequestWithBody(c.Server, runId, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// OpenView Open View
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-func (c *Client) OpenView(ctx context.Context, runId string, params *OpenViewParams, body OpenViewJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewOpenViewRequest(c.Server, runId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -32921,357 +32804,6 @@ func NewTestConnectorProviderRequest(server string, providerId string, params *T
 	return req, nil
 }
 
-// NewCompleteAssistanceRequest calls the generic CompleteAssistance builder with application/json body
-func NewCompleteAssistanceRequest(server string, assistanceId string, params *CompleteAssistanceParams, body CompleteAssistanceJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCompleteAssistanceRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
-}
-
-// NewCompleteAssistanceRequestWithBody constructs an http.Request for the CompleteAssistance method, with any body, and a specified content type
-func NewCompleteAssistanceRequestWithBody(server string, assistanceId string, params *CompleteAssistanceParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/complete", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewControlDesktopRequest calls the generic ControlDesktop builder with application/json body
-func NewControlDesktopRequest(server string, assistanceId string, params *ControlDesktopParams, body ControlDesktopJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewControlDesktopRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
-}
-
-// NewControlDesktopRequestWithBody constructs an http.Request for the ControlDesktop method, with any body, and a specified content type
-func NewControlDesktopRequestWithBody(server string, assistanceId string, params *ControlDesktopParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/control", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		// queryValues collects non-styled parameters (passthrough, JSON)
-		// that are safe to round-trip through url.Values.Encode().
-		queryValues := queryURL.Query()
-		// rawQueryFragments collects pre-encoded query fragments from
-		// styled parameters, preserving literal commas as delimiters
-		// per the OpenAPI spec (e.g. "color=blue,black,brown").
-		var rawQueryFragments []string
-
-		if params.Renew != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "renew", *params.Renew, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
-				return nil, err
-			} else {
-				for _, qp := range strings.Split(queryFrag, "&") {
-					rawQueryFragments = append(rawQueryFragments, qp)
-				}
-			}
-
-		}
-
-		if encoded := queryValues.Encode(); encoded != "" {
-			rawQueryFragments = append(rawQueryFragments, encoded)
-		}
-		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewDisconnectDesktopRequest calls the generic DisconnectDesktop builder with application/json body
-func NewDisconnectDesktopRequest(server string, assistanceId string, params *DisconnectDesktopParams, body DisconnectDesktopJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewDisconnectDesktopRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
-}
-
-// NewDisconnectDesktopRequestWithBody constructs an http.Request for the DisconnectDesktop method, with any body, and a specified content type
-func NewDisconnectDesktopRequestWithBody(server string, assistanceId string, params *DisconnectDesktopParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/disconnect", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewRequestControlRequest constructs an http.Request for the RequestControl method
-func NewRequestControlRequest(server string, assistanceId string, params *RequestControlParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/request-control", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewViewDesktopRequest calls the generic ViewDesktop builder with application/json body
-func NewViewDesktopRequest(server string, assistanceId string, params *ViewDesktopParams, body ViewDesktopJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewViewDesktopRequestWithBody(server, assistanceId, params, "application/json", bodyReader)
-}
-
-// NewViewDesktopRequestWithBody constructs an http.Request for the ViewDesktop method, with any body, and a specified content type
-func NewViewDesktopRequestWithBody(server string, assistanceId string, params *ViewDesktopParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "assistance_id", assistanceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/desktop-assistance/%s/view", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		// queryValues collects non-styled parameters (passthrough, JSON)
-		// that are safe to round-trip through url.Values.Encode().
-		queryValues := queryURL.Query()
-		// rawQueryFragments collects pre-encoded query fragments from
-		// styled parameters, preserving literal commas as delimiters
-		// per the OpenAPI spec (e.g. "color=blue,black,brown").
-		var rawQueryFragments []string
-
-		if params.Renew != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "renew", *params.Renew, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
-				return nil, err
-			} else {
-				for _, qp := range strings.Split(queryFrag, "&") {
-					rawQueryFragments = append(rawQueryFragments, qp)
-				}
-			}
-
-		}
-
-		if encoded := queryValues.Encode(); encoded != "" {
-			rawQueryFragments = append(rawQueryFragments, encoded)
-		}
-		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
 // NewListDevicesRequest constructs an http.Request for the ListDevices method
 func NewListDevicesRequest(server string, params *ListDevicesParams) (*http.Request, error) {
 	var err error
@@ -34881,6 +34413,250 @@ func NewGetEnvironmentCreationRequest(server string, environmentId string, param
 	return req, nil
 }
 
+// NewGetDesktopControlRequest constructs an http.Request for the GetDesktopControl method
+func NewGetDesktopControlRequest(server string, environmentId string, params *GetDesktopControlParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/desktop-control", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewReturnDesktopControlRequest constructs an http.Request for the ReturnDesktopControl method
+func NewReturnDesktopControlRequest(server string, environmentId string, params *ReturnDesktopControlParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/desktop-control/handback", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRenewDesktopControlRequest calls the generic RenewDesktopControl builder with application/json body
+func NewRenewDesktopControlRequest(server string, environmentId string, params *RenewDesktopControlParams, body RenewDesktopControlJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRenewDesktopControlRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewRenewDesktopControlRequestWithBody constructs an http.Request for the RenewDesktopControl method, with any body, and a specified content type
+func NewRenewDesktopControlRequestWithBody(server string, environmentId string, params *RenewDesktopControlParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/desktop-control/renew", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewTakeOverDesktopRequest calls the generic TakeOverDesktop builder with application/json body
+func NewTakeOverDesktopRequest(server string, environmentId string, params *TakeOverDesktopParams, body TakeOverDesktopJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewTakeOverDesktopRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewTakeOverDesktopRequestWithBody constructs an http.Request for the TakeOverDesktop method, with any body, and a specified content type
+func NewTakeOverDesktopRequestWithBody(server string, environmentId string, params *TakeOverDesktopParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/desktop-control/takeover", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetEnvironmentDesktopPreviewRequest constructs an http.Request for the GetEnvironmentDesktopPreview method
 func NewGetEnvironmentDesktopPreviewRequest(server string, environmentId string, params *GetEnvironmentDesktopPreviewParams) (*http.Request, error) {
 	var err error
@@ -34911,6 +34687,68 @@ func NewGetEnvironmentDesktopPreviewRequest(server string, environmentId string,
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewOpenDesktopViewerRequest calls the generic OpenDesktopViewer builder with application/json body
+func NewOpenDesktopViewerRequest(server string, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewOpenDesktopViewerRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewOpenDesktopViewerRequestWithBody constructs an http.Request for the OpenDesktopViewer method, with any body, and a specified content type
+func NewOpenDesktopViewerRequestWithBody(server string, environmentId string, params *OpenDesktopViewerParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/desktop-viewer", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -42470,235 +42308,6 @@ func NewGetRunContentRequest(server string, runId string, contentId string, para
 	if err != nil {
 		return nil, err
 	}
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewGetAssistanceRequest constructs an http.Request for the GetAssistance method
-func NewGetAssistanceRequest(server string, runId string, callId string, params *GetAssistanceParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "call_id", callId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/runs/%s/desktop-assistance/%s", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewGetControlRequest constructs an http.Request for the GetControl method
-func NewGetControlRequest(server string, runId string, params *GetControlParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/runs/%s/desktop-control", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewOpenControlRequest calls the generic OpenControl builder with application/json body
-func NewOpenControlRequest(server string, runId string, params *OpenControlParams, body OpenControlJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewOpenControlRequestWithBody(server, runId, params, "application/json", bodyReader)
-}
-
-// NewOpenControlRequestWithBody constructs an http.Request for the OpenControl method, with any body, and a specified content type
-func NewOpenControlRequestWithBody(server string, runId string, params *OpenControlParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/runs/%s/desktop-control", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	if params != nil {
-
-		if params.XWorkspaceID != nil {
-			var headerParam0 string
-
-			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Set("X-Workspace-ID", headerParam0)
-		}
-
-	}
-
-	return req, nil
-}
-
-// NewOpenViewRequest calls the generic OpenView builder with application/json body
-func NewOpenViewRequest(server string, runId string, params *OpenViewParams, body OpenViewJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewOpenViewRequestWithBody(server, runId, params, "application/json", bodyReader)
-}
-
-// NewOpenViewRequestWithBody constructs an http.Request for the OpenView method, with any body, and a specified content type
-func NewOpenViewRequestWithBody(server string, runId string, params *OpenViewParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/runs/%s/desktop-control/view", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -53806,69 +53415,6 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestConnectorProvider` operationId).
 	TestConnectorProviderWithResponse(ctx context.Context, providerId string, params *TestConnectorProviderParams, reqEditors ...RequestEditorFn) (*TestConnectorProviderResponse, error)
 
-	// CompleteAssistanceWithBodyWithResponse Complete Assistance
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-	CompleteAssistanceWithBodyWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteAssistanceResponse, error)
-
-	// CompleteAssistanceWithResponse Complete Assistance
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-	CompleteAssistanceWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, body CompleteAssistanceJSONRequestBody, reqEditors ...RequestEditorFn) (*CompleteAssistanceResponse, error)
-
-	// ControlDesktopWithBodyWithResponse Control Desktop
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-	ControlDesktopWithBodyWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ControlDesktopResponse, error)
-
-	// ControlDesktopWithResponse Control Desktop
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-	ControlDesktopWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopParams, body ControlDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*ControlDesktopResponse, error)
-
-	// DisconnectDesktopWithBodyWithResponse Disconnect Desktop
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-	DisconnectDesktopWithBodyWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DisconnectDesktopResponse, error)
-
-	// DisconnectDesktopWithResponse Disconnect Desktop
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-	DisconnectDesktopWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, body DisconnectDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*DisconnectDesktopResponse, error)
-
-	// RequestControlWithResponse Request Control
-	//
-	// Returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControl` operationId).
-	RequestControlWithResponse(ctx context.Context, assistanceId string, params *RequestControlParams, reqEditors ...RequestEditorFn) (*RequestControlResponse, error)
-
-	// ViewDesktopWithBodyWithResponse View Desktop
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-	ViewDesktopWithBodyWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ViewDesktopResponse, error)
-
-	// ViewDesktopWithResponse View Desktop
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-	ViewDesktopWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopParams, body ViewDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*ViewDesktopResponse, error)
-
 	// ListDevicesWithResponse List Devices
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -54135,12 +53681,68 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreationWithResponse(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*GetEnvironmentCreationResponse, error)
 
+	// GetDesktopControlWithResponse Get Desktop Control
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
+	GetDesktopControlWithResponse(ctx context.Context, environmentId string, params *GetDesktopControlParams, reqEditors ...RequestEditorFn) (*GetDesktopControlResponse, error)
+
+	// ReturnDesktopControlWithResponse Return Desktop Control
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/handback (the `ReturnDesktopControl` operationId).
+	ReturnDesktopControlWithResponse(ctx context.Context, environmentId string, params *ReturnDesktopControlParams, reqEditors ...RequestEditorFn) (*ReturnDesktopControlResponse, error)
+
+	// RenewDesktopControlWithBodyWithResponse Renew Desktop Control
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+	RenewDesktopControlWithBodyWithResponse(ctx context.Context, environmentId string, params *RenewDesktopControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RenewDesktopControlResponse, error)
+
+	// RenewDesktopControlWithResponse Renew Desktop Control
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+	RenewDesktopControlWithResponse(ctx context.Context, environmentId string, params *RenewDesktopControlParams, body RenewDesktopControlJSONRequestBody, reqEditors ...RequestEditorFn) (*RenewDesktopControlResponse, error)
+
+	// TakeOverDesktopWithBodyWithResponse Take Over Desktop
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+	TakeOverDesktopWithBodyWithResponse(ctx context.Context, environmentId string, params *TakeOverDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TakeOverDesktopResponse, error)
+
+	// TakeOverDesktopWithResponse Take Over Desktop
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+	TakeOverDesktopWithResponse(ctx context.Context, environmentId string, params *TakeOverDesktopParams, body TakeOverDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*TakeOverDesktopResponse, error)
+
 	// GetEnvironmentDesktopPreviewWithResponse Get Environment Desktop Preview
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /api/v1/environments/{environment_id}/desktop-preview (the `GetEnvironmentDesktopPreview` operationId).
 	GetEnvironmentDesktopPreviewWithResponse(ctx context.Context, environmentId string, params *GetEnvironmentDesktopPreviewParams, reqEditors ...RequestEditorFn) (*GetEnvironmentDesktopPreviewResponse, error)
+
+	// OpenDesktopViewerWithBodyWithResponse Open Desktop Viewer
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+	OpenDesktopViewerWithBodyWithResponse(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenDesktopViewerResponse, error)
+
+	// OpenDesktopViewerWithResponse Open Desktop Viewer
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+	OpenDesktopViewerWithResponse(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenDesktopViewerResponse, error)
 
 	// SelectMetricsSourceWithBodyWithResponse Select Metrics Source
 	//
@@ -55271,48 +54873,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/contents/{content_id} (the `GetRunContent` operationId).
 	GetRunContentWithResponse(ctx context.Context, runId string, contentId string, params *GetRunContentParams, reqEditors ...RequestEditorFn) (*GetRunContentResponse, error)
-
-	// GetAssistanceWithResponse Get Assistance
-	//
-	// Returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistance` operationId).
-	GetAssistanceWithResponse(ctx context.Context, runId string, callId string, params *GetAssistanceParams, reqEditors ...RequestEditorFn) (*GetAssistanceResponse, error)
-
-	// GetControlWithResponse Get Control
-	//
-	// Returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControl` operationId).
-	GetControlWithResponse(ctx context.Context, runId string, params *GetControlParams, reqEditors ...RequestEditorFn) (*GetControlResponse, error)
-
-	// OpenControlWithBodyWithResponse Open Control
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-	OpenControlWithBodyWithResponse(ctx context.Context, runId string, params *OpenControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenControlResponse, error)
-
-	// OpenControlWithResponse Open Control
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-	OpenControlWithResponse(ctx context.Context, runId string, params *OpenControlParams, body OpenControlJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenControlResponse, error)
-
-	// OpenViewWithBodyWithResponse Open View
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-	OpenViewWithBodyWithResponse(ctx context.Context, runId string, params *OpenViewParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenViewResponse, error)
-
-	// OpenViewWithResponse Open View
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-	OpenViewWithResponse(ctx context.Context, runId string, params *OpenViewParams, body OpenViewJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenViewResponse, error)
 
 	// ForkRunWithBodyWithResponse Fork Run
 	//
@@ -59793,7 +59353,7 @@ type BrowserViewerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *Viewer
+	JSON200 *A13nServiceRunsBrowsersSchemasViewer
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *Error
 	// JSONDefault the response for an HTTP default `application/json` response
@@ -59805,7 +59365,7 @@ type BrowserViewerResponse struct {
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r BrowserViewerResponse) GetJSON200() *Viewer {
+func (r BrowserViewerResponse) GetJSON200() *A13nServiceRunsBrowsersSchemasViewer {
 	return r.JSON200
 }
 
@@ -61614,351 +61174,6 @@ func (r TestConnectorProviderResponse) ContentType() string {
 	return ""
 }
 
-// CompleteAssistanceResponse400Headers the declared response headers of an HTTP 400 response for CompleteAssistance
-type CompleteAssistanceResponse400Headers struct {
-	XRequestId *string
-}
-
-// CompleteAssistanceResponseDefaultHeaders the declared response headers of an HTTP default response for CompleteAssistance
-type CompleteAssistanceResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type CompleteAssistanceResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *View
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *CompleteAssistanceResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *CompleteAssistanceResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r CompleteAssistanceResponse) GetJSON200() *View {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r CompleteAssistanceResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r CompleteAssistanceResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r CompleteAssistanceResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r CompleteAssistanceResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CompleteAssistanceResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r CompleteAssistanceResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// ControlDesktopResponse400Headers the declared response headers of an HTTP 400 response for ControlDesktop
-type ControlDesktopResponse400Headers struct {
-	XRequestId *string
-}
-
-// ControlDesktopResponseDefaultHeaders the declared response headers of an HTTP default response for ControlDesktop
-type ControlDesktopResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type ControlDesktopResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *Access
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *ControlDesktopResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *ControlDesktopResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ControlDesktopResponse) GetJSON200() *Access {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r ControlDesktopResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r ControlDesktopResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r ControlDesktopResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r ControlDesktopResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ControlDesktopResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r ControlDesktopResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// DisconnectDesktopResponse400Headers the declared response headers of an HTTP 400 response for DisconnectDesktop
-type DisconnectDesktopResponse400Headers struct {
-	XRequestId *string
-}
-
-// DisconnectDesktopResponseDefaultHeaders the declared response headers of an HTTP default response for DisconnectDesktop
-type DisconnectDesktopResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type DisconnectDesktopResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *View
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *DisconnectDesktopResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *DisconnectDesktopResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r DisconnectDesktopResponse) GetJSON200() *View {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r DisconnectDesktopResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r DisconnectDesktopResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r DisconnectDesktopResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r DisconnectDesktopResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DisconnectDesktopResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r DisconnectDesktopResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// RequestControlResponse400Headers the declared response headers of an HTTP 400 response for RequestControl
-type RequestControlResponse400Headers struct {
-	XRequestId *string
-}
-
-// RequestControlResponseDefaultHeaders the declared response headers of an HTTP default response for RequestControl
-type RequestControlResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type RequestControlResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *View
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *RequestControlResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *RequestControlResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r RequestControlResponse) GetJSON200() *View {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r RequestControlResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r RequestControlResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r RequestControlResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r RequestControlResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r RequestControlResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r RequestControlResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// ViewDesktopResponse400Headers the declared response headers of an HTTP 400 response for ViewDesktop
-type ViewDesktopResponse400Headers struct {
-	XRequestId *string
-}
-
-// ViewDesktopResponseDefaultHeaders the declared response headers of an HTTP default response for ViewDesktop
-type ViewDesktopResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type ViewDesktopResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *Access
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *ViewDesktopResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *ViewDesktopResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r ViewDesktopResponse) GetJSON200() *Access {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r ViewDesktopResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r ViewDesktopResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r ViewDesktopResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r ViewDesktopResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ViewDesktopResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r ViewDesktopResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
 // ListDevicesResponse400Headers the declared response headers of an HTTP 400 response for ListDevices
 type ListDevicesResponse400Headers struct {
 	XRequestId *string
@@ -63739,6 +62954,282 @@ func (r GetEnvironmentCreationResponse) ContentType() string {
 	return ""
 }
 
+// GetDesktopControlResponse400Headers the declared response headers of an HTTP 400 response for GetDesktopControl
+type GetDesktopControlResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetDesktopControlResponseDefaultHeaders the declared response headers of an HTTP default response for GetDesktopControl
+type GetDesktopControlResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetDesktopControlResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Control
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetDesktopControlResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetDesktopControlResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetDesktopControlResponse) GetJSON200() *Control {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetDesktopControlResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetDesktopControlResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetDesktopControlResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetDesktopControlResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetDesktopControlResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetDesktopControlResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ReturnDesktopControlResponse400Headers the declared response headers of an HTTP 400 response for ReturnDesktopControl
+type ReturnDesktopControlResponse400Headers struct {
+	XRequestId *string
+}
+
+// ReturnDesktopControlResponseDefaultHeaders the declared response headers of an HTTP default response for ReturnDesktopControl
+type ReturnDesktopControlResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ReturnDesktopControlResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Control
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ReturnDesktopControlResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ReturnDesktopControlResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ReturnDesktopControlResponse) GetJSON200() *Control {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ReturnDesktopControlResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReturnDesktopControlResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReturnDesktopControlResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReturnDesktopControlResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReturnDesktopControlResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReturnDesktopControlResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RenewDesktopControlResponse400Headers the declared response headers of an HTTP 400 response for RenewDesktopControl
+type RenewDesktopControlResponse400Headers struct {
+	XRequestId *string
+}
+
+// RenewDesktopControlResponseDefaultHeaders the declared response headers of an HTTP default response for RenewDesktopControl
+type RenewDesktopControlResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RenewDesktopControlResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Control
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RenewDesktopControlResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RenewDesktopControlResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RenewDesktopControlResponse) GetJSON200() *Control {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RenewDesktopControlResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RenewDesktopControlResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RenewDesktopControlResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RenewDesktopControlResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RenewDesktopControlResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RenewDesktopControlResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// TakeOverDesktopResponse400Headers the declared response headers of an HTTP 400 response for TakeOverDesktop
+type TakeOverDesktopResponse400Headers struct {
+	XRequestId *string
+}
+
+// TakeOverDesktopResponseDefaultHeaders the declared response headers of an HTTP default response for TakeOverDesktop
+type TakeOverDesktopResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type TakeOverDesktopResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Control
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *TakeOverDesktopResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TakeOverDesktopResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TakeOverDesktopResponse) GetJSON200() *Control {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r TakeOverDesktopResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TakeOverDesktopResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TakeOverDesktopResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TakeOverDesktopResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TakeOverDesktopResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TakeOverDesktopResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetEnvironmentDesktopPreviewResponse400Headers the declared response headers of an HTTP 400 response for GetEnvironmentDesktopPreview
 type GetEnvironmentDesktopPreviewResponse400Headers struct {
 	XRequestId *string
@@ -63795,6 +63286,75 @@ func (r GetEnvironmentDesktopPreviewResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetEnvironmentDesktopPreviewResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// OpenDesktopViewerResponse400Headers the declared response headers of an HTTP 400 response for OpenDesktopViewer
+type OpenDesktopViewerResponse400Headers struct {
+	XRequestId *string
+}
+
+// OpenDesktopViewerResponseDefaultHeaders the declared response headers of an HTTP default response for OpenDesktopViewer
+type OpenDesktopViewerResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type OpenDesktopViewerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *A13nServiceRunsEnvironmentsDesktopSchemasViewer
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *OpenDesktopViewerResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *OpenDesktopViewerResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r OpenDesktopViewerResponse) GetJSON200() *A13nServiceRunsEnvironmentsDesktopSchemasViewer {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r OpenDesktopViewerResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r OpenDesktopViewerResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r OpenDesktopViewerResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r OpenDesktopViewerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OpenDesktopViewerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r OpenDesktopViewerResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -71453,282 +71013,6 @@ func (r GetRunContentResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetRunContentResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// GetAssistanceResponse400Headers the declared response headers of an HTTP 400 response for GetAssistance
-type GetAssistanceResponse400Headers struct {
-	XRequestId *string
-}
-
-// GetAssistanceResponseDefaultHeaders the declared response headers of an HTTP default response for GetAssistance
-type GetAssistanceResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type GetAssistanceResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *View
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *GetAssistanceResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *GetAssistanceResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetAssistanceResponse) GetJSON200() *View {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r GetAssistanceResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r GetAssistanceResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r GetAssistanceResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetAssistanceResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetAssistanceResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetAssistanceResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// GetControlResponse400Headers the declared response headers of an HTTP 400 response for GetControl
-type GetControlResponse400Headers struct {
-	XRequestId *string
-}
-
-// GetControlResponseDefaultHeaders the declared response headers of an HTTP default response for GetControl
-type GetControlResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type GetControlResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *View
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *GetControlResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *GetControlResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r GetControlResponse) GetJSON200() *View {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r GetControlResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r GetControlResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r GetControlResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetControlResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetControlResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetControlResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// OpenControlResponse400Headers the declared response headers of an HTTP 400 response for OpenControl
-type OpenControlResponse400Headers struct {
-	XRequestId *string
-}
-
-// OpenControlResponseDefaultHeaders the declared response headers of an HTTP default response for OpenControl
-type OpenControlResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type OpenControlResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *View
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *OpenControlResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *OpenControlResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r OpenControlResponse) GetJSON200() *View {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r OpenControlResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r OpenControlResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r OpenControlResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r OpenControlResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OpenControlResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r OpenControlResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// OpenViewResponse400Headers the declared response headers of an HTTP 400 response for OpenView
-type OpenViewResponse400Headers struct {
-	XRequestId *string
-}
-
-// OpenViewResponseDefaultHeaders the declared response headers of an HTTP default response for OpenView
-type OpenViewResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type OpenViewResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *Access
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *OpenViewResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *OpenViewResponseDefaultHeaders
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r OpenViewResponse) GetJSON200() *Access {
-	return r.JSON200
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r OpenViewResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r OpenViewResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r OpenViewResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r OpenViewResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r OpenViewResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r OpenViewResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -82468,123 +81752,6 @@ func (c *ClientWithResponses) TestConnectorProviderWithResponse(ctx context.Cont
 	return ParseTestConnectorProviderResponse(rsp)
 }
 
-// CompleteAssistanceWithBodyWithResponse Complete Assistance
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-func (c *ClientWithResponses) CompleteAssistanceWithBodyWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteAssistanceResponse, error) {
-	rsp, err := c.CompleteAssistanceWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCompleteAssistanceResponse(rsp)
-}
-
-// CompleteAssistanceWithResponse Complete Assistance
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/complete (the `CompleteAssistance` operationId).
-func (c *ClientWithResponses) CompleteAssistanceWithResponse(ctx context.Context, assistanceId string, params *CompleteAssistanceParams, body CompleteAssistanceJSONRequestBody, reqEditors ...RequestEditorFn) (*CompleteAssistanceResponse, error) {
-	rsp, err := c.CompleteAssistance(ctx, assistanceId, params, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCompleteAssistanceResponse(rsp)
-}
-
-// ControlDesktopWithBodyWithResponse Control Desktop
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-func (c *ClientWithResponses) ControlDesktopWithBodyWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ControlDesktopResponse, error) {
-	rsp, err := c.ControlDesktopWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseControlDesktopResponse(rsp)
-}
-
-// ControlDesktopWithResponse Control Desktop
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/control (the `ControlDesktop` operationId).
-func (c *ClientWithResponses) ControlDesktopWithResponse(ctx context.Context, assistanceId string, params *ControlDesktopParams, body ControlDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*ControlDesktopResponse, error) {
-	rsp, err := c.ControlDesktop(ctx, assistanceId, params, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseControlDesktopResponse(rsp)
-}
-
-// DisconnectDesktopWithBodyWithResponse Disconnect Desktop
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-func (c *ClientWithResponses) DisconnectDesktopWithBodyWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DisconnectDesktopResponse, error) {
-	rsp, err := c.DisconnectDesktopWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDisconnectDesktopResponse(rsp)
-}
-
-// DisconnectDesktopWithResponse Disconnect Desktop
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/disconnect (the `DisconnectDesktop` operationId).
-func (c *ClientWithResponses) DisconnectDesktopWithResponse(ctx context.Context, assistanceId string, params *DisconnectDesktopParams, body DisconnectDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*DisconnectDesktopResponse, error) {
-	rsp, err := c.DisconnectDesktop(ctx, assistanceId, params, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDisconnectDesktopResponse(rsp)
-}
-
-// RequestControlWithResponse Request Control
-//
-// Returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/request-control (the `RequestControl` operationId).
-func (c *ClientWithResponses) RequestControlWithResponse(ctx context.Context, assistanceId string, params *RequestControlParams, reqEditors ...RequestEditorFn) (*RequestControlResponse, error) {
-	rsp, err := c.RequestControl(ctx, assistanceId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseRequestControlResponse(rsp)
-}
-
-// ViewDesktopWithBodyWithResponse View Desktop
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-func (c *ClientWithResponses) ViewDesktopWithBodyWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ViewDesktopResponse, error) {
-	rsp, err := c.ViewDesktopWithBody(ctx, assistanceId, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseViewDesktopResponse(rsp)
-}
-
-// ViewDesktopWithResponse View Desktop
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/desktop-assistance/{assistance_id}/view (the `ViewDesktop` operationId).
-func (c *ClientWithResponses) ViewDesktopWithResponse(ctx context.Context, assistanceId string, params *ViewDesktopParams, body ViewDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*ViewDesktopResponse, error) {
-	rsp, err := c.ViewDesktop(ctx, assistanceId, params, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseViewDesktopResponse(rsp)
-}
-
 // ListDevicesWithResponse List Devices
 //
 // Returns a wrapper object for the known response body format(s).
@@ -83067,6 +82234,84 @@ func (c *ClientWithResponses) GetEnvironmentCreationWithResponse(ctx context.Con
 	return ParseGetEnvironmentCreationResponse(rsp)
 }
 
+// GetDesktopControlWithResponse Get Desktop Control
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
+func (c *ClientWithResponses) GetDesktopControlWithResponse(ctx context.Context, environmentId string, params *GetDesktopControlParams, reqEditors ...RequestEditorFn) (*GetDesktopControlResponse, error) {
+	rsp, err := c.GetDesktopControl(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetDesktopControlResponse(rsp)
+}
+
+// ReturnDesktopControlWithResponse Return Desktop Control
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/handback (the `ReturnDesktopControl` operationId).
+func (c *ClientWithResponses) ReturnDesktopControlWithResponse(ctx context.Context, environmentId string, params *ReturnDesktopControlParams, reqEditors ...RequestEditorFn) (*ReturnDesktopControlResponse, error) {
+	rsp, err := c.ReturnDesktopControl(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReturnDesktopControlResponse(rsp)
+}
+
+// RenewDesktopControlWithBodyWithResponse Renew Desktop Control
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+func (c *ClientWithResponses) RenewDesktopControlWithBodyWithResponse(ctx context.Context, environmentId string, params *RenewDesktopControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RenewDesktopControlResponse, error) {
+	rsp, err := c.RenewDesktopControlWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRenewDesktopControlResponse(rsp)
+}
+
+// RenewDesktopControlWithResponse Renew Desktop Control
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/renew (the `RenewDesktopControl` operationId).
+func (c *ClientWithResponses) RenewDesktopControlWithResponse(ctx context.Context, environmentId string, params *RenewDesktopControlParams, body RenewDesktopControlJSONRequestBody, reqEditors ...RequestEditorFn) (*RenewDesktopControlResponse, error) {
+	rsp, err := c.RenewDesktopControl(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRenewDesktopControlResponse(rsp)
+}
+
+// TakeOverDesktopWithBodyWithResponse Take Over Desktop
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+func (c *ClientWithResponses) TakeOverDesktopWithBodyWithResponse(ctx context.Context, environmentId string, params *TakeOverDesktopParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TakeOverDesktopResponse, error) {
+	rsp, err := c.TakeOverDesktopWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTakeOverDesktopResponse(rsp)
+}
+
+// TakeOverDesktopWithResponse Take Over Desktop
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-control/takeover (the `TakeOverDesktop` operationId).
+func (c *ClientWithResponses) TakeOverDesktopWithResponse(ctx context.Context, environmentId string, params *TakeOverDesktopParams, body TakeOverDesktopJSONRequestBody, reqEditors ...RequestEditorFn) (*TakeOverDesktopResponse, error) {
+	rsp, err := c.TakeOverDesktop(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTakeOverDesktopResponse(rsp)
+}
+
 // GetEnvironmentDesktopPreviewWithResponse Get Environment Desktop Preview
 //
 // Returns a wrapper object for the known response body format(s).
@@ -83078,6 +82323,32 @@ func (c *ClientWithResponses) GetEnvironmentDesktopPreviewWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseGetEnvironmentDesktopPreviewResponse(rsp)
+}
+
+// OpenDesktopViewerWithBodyWithResponse Open Desktop Viewer
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+func (c *ClientWithResponses) OpenDesktopViewerWithBodyWithResponse(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenDesktopViewerResponse, error) {
+	rsp, err := c.OpenDesktopViewerWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOpenDesktopViewerResponse(rsp)
+}
+
+// OpenDesktopViewerWithResponse Open Desktop Viewer
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
+func (c *ClientWithResponses) OpenDesktopViewerWithResponse(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenDesktopViewerResponse, error) {
+	rsp, err := c.OpenDesktopViewer(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOpenDesktopViewerResponse(rsp)
 }
 
 // SelectMetricsSourceWithBodyWithResponse Select Metrics Source
@@ -85108,84 +84379,6 @@ func (c *ClientWithResponses) GetRunContentWithResponse(ctx context.Context, run
 		return nil, err
 	}
 	return ParseGetRunContentResponse(rsp)
-}
-
-// GetAssistanceWithResponse Get Assistance
-//
-// Returns a wrapper object for the known response body format(s).
-//
-// Corresponds with GET /api/v1/runs/{run_id}/desktop-assistance/{call_id} (the `GetAssistance` operationId).
-func (c *ClientWithResponses) GetAssistanceWithResponse(ctx context.Context, runId string, callId string, params *GetAssistanceParams, reqEditors ...RequestEditorFn) (*GetAssistanceResponse, error) {
-	rsp, err := c.GetAssistance(ctx, runId, callId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetAssistanceResponse(rsp)
-}
-
-// GetControlWithResponse Get Control
-//
-// Returns a wrapper object for the known response body format(s).
-//
-// Corresponds with GET /api/v1/runs/{run_id}/desktop-control (the `GetControl` operationId).
-func (c *ClientWithResponses) GetControlWithResponse(ctx context.Context, runId string, params *GetControlParams, reqEditors ...RequestEditorFn) (*GetControlResponse, error) {
-	rsp, err := c.GetControl(ctx, runId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetControlResponse(rsp)
-}
-
-// OpenControlWithBodyWithResponse Open Control
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-func (c *ClientWithResponses) OpenControlWithBodyWithResponse(ctx context.Context, runId string, params *OpenControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenControlResponse, error) {
-	rsp, err := c.OpenControlWithBody(ctx, runId, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOpenControlResponse(rsp)
-}
-
-// OpenControlWithResponse Open Control
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control (the `OpenControl` operationId).
-func (c *ClientWithResponses) OpenControlWithResponse(ctx context.Context, runId string, params *OpenControlParams, body OpenControlJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenControlResponse, error) {
-	rsp, err := c.OpenControl(ctx, runId, params, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOpenControlResponse(rsp)
-}
-
-// OpenViewWithBodyWithResponse Open View
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-func (c *ClientWithResponses) OpenViewWithBodyWithResponse(ctx context.Context, runId string, params *OpenViewParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OpenViewResponse, error) {
-	rsp, err := c.OpenViewWithBody(ctx, runId, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOpenViewResponse(rsp)
-}
-
-// OpenViewWithResponse Open View
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with POST /api/v1/runs/{run_id}/desktop-control/view (the `OpenView` operationId).
-func (c *ClientWithResponses) OpenViewWithResponse(ctx context.Context, runId string, params *OpenViewParams, body OpenViewJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenViewResponse, error) {
-	rsp, err := c.OpenView(ctx, runId, params, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseOpenViewResponse(rsp)
 }
 
 // ForkRunWithBodyWithResponse Fork Run
@@ -90468,7 +89661,7 @@ func ParseBrowserViewerResponse(rsp *http.Response) (*BrowserViewerResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Viewer
+		var dest A13nServiceRunsBrowsersSchemasViewer
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -92129,321 +91322,6 @@ func ParseTestConnectorProviderResponse(rsp *http.Response) (*TestConnectorProvi
 	return response, nil
 }
 
-// ParseCompleteAssistanceResponse parses an HTTP response from a CompleteAssistanceWithResponse call
-func ParseCompleteAssistanceResponse(rsp *http.Response) (*CompleteAssistanceResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CompleteAssistanceResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest View
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers CompleteAssistanceResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers CompleteAssistanceResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseControlDesktopResponse parses an HTTP response from a ControlDesktopWithResponse call
-func ParseControlDesktopResponse(rsp *http.Response) (*ControlDesktopResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ControlDesktopResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Access
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers ControlDesktopResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers ControlDesktopResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseDisconnectDesktopResponse parses an HTTP response from a DisconnectDesktopWithResponse call
-func ParseDisconnectDesktopResponse(rsp *http.Response) (*DisconnectDesktopResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DisconnectDesktopResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest View
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers DisconnectDesktopResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers DisconnectDesktopResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseRequestControlResponse parses an HTTP response from a RequestControlWithResponse call
-func ParseRequestControlResponse(rsp *http.Response) (*RequestControlResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &RequestControlResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest View
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers RequestControlResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers RequestControlResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseViewDesktopResponse parses an HTTP response from a ViewDesktopWithResponse call
-func ParseViewDesktopResponse(rsp *http.Response) (*ViewDesktopResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ViewDesktopResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Access
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers ViewDesktopResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers ViewDesktopResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
 // ParseListDevicesResponse parses an HTTP response from a ListDevicesWithResponse call
 func ParseListDevicesResponse(rsp *http.Response) (*ListDevicesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -94074,6 +92952,258 @@ func ParseGetEnvironmentCreationResponse(rsp *http.Response) (*GetEnvironmentCre
 	return response, nil
 }
 
+// ParseGetDesktopControlResponse parses an HTTP response from a GetDesktopControlWithResponse call
+func ParseGetDesktopControlResponse(rsp *http.Response) (*GetDesktopControlResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetDesktopControlResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Control
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetDesktopControlResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetDesktopControlResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseReturnDesktopControlResponse parses an HTTP response from a ReturnDesktopControlWithResponse call
+func ParseReturnDesktopControlResponse(rsp *http.Response) (*ReturnDesktopControlResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReturnDesktopControlResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Control
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ReturnDesktopControlResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ReturnDesktopControlResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRenewDesktopControlResponse parses an HTTP response from a RenewDesktopControlWithResponse call
+func ParseRenewDesktopControlResponse(rsp *http.Response) (*RenewDesktopControlResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RenewDesktopControlResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Control
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RenewDesktopControlResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RenewDesktopControlResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTakeOverDesktopResponse parses an HTTP response from a TakeOverDesktopWithResponse call
+func ParseTakeOverDesktopResponse(rsp *http.Response) (*TakeOverDesktopResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TakeOverDesktopResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Control
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers TakeOverDesktopResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers TakeOverDesktopResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetEnvironmentDesktopPreviewResponse parses an HTTP response from a GetEnvironmentDesktopPreviewWithResponse call
 func ParseGetEnvironmentDesktopPreviewResponse(rsp *http.Response) (*GetEnvironmentDesktopPreviewResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -94117,6 +93247,69 @@ func ParseGetEnvironmentDesktopPreviewResponse(rsp *http.Response) (*GetEnvironm
 		response.Headers400 = &headers
 	case true:
 		var headers GetEnvironmentDesktopPreviewResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseOpenDesktopViewerResponse parses an HTTP response from a OpenDesktopViewerWithResponse call
+func ParseOpenDesktopViewerResponse(rsp *http.Response) (*OpenDesktopViewerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OpenDesktopViewerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest A13nServiceRunsEnvironmentsDesktopSchemasViewer
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers OpenDesktopViewerResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers OpenDesktopViewerResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -101130,258 +100323,6 @@ func ParseGetRunContentResponse(rsp *http.Response) (*GetRunContentResponse, err
 		response.Headers400 = &headers
 	case true:
 		var headers GetRunContentResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseGetAssistanceResponse parses an HTTP response from a GetAssistanceWithResponse call
-func ParseGetAssistanceResponse(rsp *http.Response) (*GetAssistanceResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetAssistanceResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest View
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers GetAssistanceResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers GetAssistanceResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseGetControlResponse parses an HTTP response from a GetControlWithResponse call
-func ParseGetControlResponse(rsp *http.Response) (*GetControlResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetControlResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest View
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers GetControlResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers GetControlResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseOpenControlResponse parses an HTTP response from a OpenControlWithResponse call
-func ParseOpenControlResponse(rsp *http.Response) (*OpenControlResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OpenControlResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest View
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers OpenControlResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers OpenControlResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseOpenViewResponse parses an HTTP response from a OpenViewWithResponse call
-func ParseOpenViewResponse(rsp *http.Response) (*OpenViewResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &OpenViewResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Access
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers OpenViewResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers OpenViewResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

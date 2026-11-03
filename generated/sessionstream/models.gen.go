@@ -310,6 +310,7 @@ func (e EntryStatus) Valid() bool {
 const (
 	EntryViewKindBrowserHandback EntryViewKind = "browser_handback"
 	EntryViewKindChildResult     EntryViewKind = "child_result"
+	EntryViewKindDesktopHandback EntryViewKind = "desktop_handback"
 	EntryViewKindMessage         EntryViewKind = "message"
 	EntryViewKindToolResult      EntryViewKind = "tool_result"
 )
@@ -320,6 +321,8 @@ func (e EntryViewKind) Valid() bool {
 	case EntryViewKindBrowserHandback:
 		return true
 	case EntryViewKindChildResult:
+		return true
+	case EntryViewKindDesktopHandback:
 		return true
 	case EntryViewKindMessage:
 		return true
@@ -1120,6 +1123,7 @@ func (e ToolsetKey0) Valid() bool {
 const (
 	TriggerBrowserHandback Trigger = "browser_handback"
 	TriggerChildResult     Trigger = "child_result"
+	TriggerDesktopHandback Trigger = "desktop_handback"
 	TriggerInput           Trigger = "input"
 	TriggerQueued          Trigger = "queued"
 	TriggerResume          Trigger = "resume"
@@ -1133,6 +1137,8 @@ func (e Trigger) Valid() bool {
 	case TriggerBrowserHandback:
 		return true
 	case TriggerChildResult:
+		return true
+	case TriggerDesktopHandback:
 		return true
 	case TriggerInput:
 		return true
@@ -1542,6 +1548,13 @@ type Gap struct {
 	ThreadId string `json:"thread_id"`
 }
 
+// HistoricalDesktopPending Read-only projection of sealed desktop suspensions predating Computer-scoped control.
+type HistoricalDesktopPending struct {
+	Approvals        []PendingCall `json:"approvals"`
+	Calls            []PendingCall `json:"calls"`
+	DesktopControlId string        `json:"desktop_control_id"`
+}
+
 // InitialRun defines model for InitialRun.
 type InitialRun struct {
 	Id     string    `json:"id"`
@@ -1735,9 +1748,8 @@ type Part struct {
 
 // Pending Public projection; complete native requests and private metadata stay in the checkpoint.
 type Pending struct {
-	Approvals        []PendingCall             `json:"approvals"`
-	Calls            []PendingCall             `json:"calls"`
-	DesktopControlId nullable.Nullable[string] `json:"desktop_control_id,omitempty"`
+	Approvals []PendingCall `json:"approvals"`
+	Calls     []PendingCall `json:"calls"`
 }
 
 // PendingCall defines model for PendingCall.
@@ -1854,7 +1866,7 @@ type RunView struct {
 	Options           RunOptions                              `json:"options"`
 	Output            nullable.Nullable[JsonValue]            `json:"output"`
 	ParentRunId       nullable.Nullable[string]               `json:"parent_run_id"`
-	Pending           nullable.Nullable[Pending]              `json:"pending"`
+	Pending           nullable.Nullable[RunView_Pending]      `json:"pending"`
 	PrincipalId       string                                  `json:"principal_id"`
 	Resume            nullable.Nullable[Resume]               `json:"resume"`
 	ResumedById       nullable.Nullable[string]               `json:"resumed_by_id"`
@@ -1876,6 +1888,11 @@ type RunView struct {
 
 // RunView_MemoryMounts_Item defines model for RunView.memory_mounts.Item.
 type RunView_MemoryMounts_Item struct {
+	union json.RawMessage
+}
+
+// RunView_Pending defines model for RunView.Pending.
+type RunView_Pending struct {
 	union json.RawMessage
 }
 
@@ -2591,6 +2608,68 @@ func (t RunView_MemoryMounts_Item) MarshalJSON() ([]byte, error) {
 }
 
 func (t *RunView_MemoryMounts_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPending returns the union data inside the RunView_Pending as a Pending
+func (t RunView_Pending) AsPending() (Pending, error) {
+	var body Pending
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPending overwrites any union data inside the RunView_Pending as the provided Pending
+func (t *RunView_Pending) FromPending(v Pending) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePending performs a merge with any union data inside the RunView_Pending, using the provided Pending
+func (t *RunView_Pending) MergePending(v Pending) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsHistoricalDesktopPending returns the union data inside the RunView_Pending as a HistoricalDesktopPending
+func (t RunView_Pending) AsHistoricalDesktopPending() (HistoricalDesktopPending, error) {
+	var body HistoricalDesktopPending
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromHistoricalDesktopPending overwrites any union data inside the RunView_Pending as the provided HistoricalDesktopPending
+func (t *RunView_Pending) FromHistoricalDesktopPending(v HistoricalDesktopPending) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeHistoricalDesktopPending performs a merge with any union data inside the RunView_Pending, using the provided HistoricalDesktopPending
+func (t *RunView_Pending) MergeHistoricalDesktopPending(v HistoricalDesktopPending) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunView_Pending) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunView_Pending) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
