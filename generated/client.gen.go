@@ -20,42 +20,6 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-// Defines values for AgentConfigInputSubagentMode.
-const (
-	AgentConfigInputSubagentModeAsync  AgentConfigInputSubagentMode = "async"
-	AgentConfigInputSubagentModeInline AgentConfigInputSubagentMode = "inline"
-)
-
-// Valid indicates whether the value is a known member of the AgentConfigInputSubagentMode enum.
-func (e AgentConfigInputSubagentMode) Valid() bool {
-	switch e {
-	case AgentConfigInputSubagentModeAsync:
-		return true
-	case AgentConfigInputSubagentModeInline:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for AgentConfigOutputSubagentMode.
-const (
-	AgentConfigOutputSubagentModeAsync  AgentConfigOutputSubagentMode = "async"
-	AgentConfigOutputSubagentModeInline AgentConfigOutputSubagentMode = "inline"
-)
-
-// Valid indicates whether the value is a known member of the AgentConfigOutputSubagentMode enum.
-func (e AgentConfigOutputSubagentMode) Valid() bool {
-	switch e {
-	case AgentConfigOutputSubagentModeAsync:
-		return true
-	case AgentConfigOutputSubagentModeInline:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AgentReviewerOnError.
 const (
 	AgentReviewerOnErrorAllow            AgentReviewerOnError = "allow"
@@ -454,19 +418,19 @@ func (e Category) Valid() bool {
 
 // Defines values for Certainty.
 const (
-	Known         Certainty = "known"
-	NotDispatched Certainty = "not_dispatched"
-	Unknown       Certainty = "unknown"
+	CertaintyKnown         Certainty = "known"
+	CertaintyNotDispatched Certainty = "not_dispatched"
+	CertaintyUnknown       Certainty = "unknown"
 )
 
 // Valid indicates whether the value is a known member of the Certainty enum.
 func (e Certainty) Valid() bool {
 	switch e {
-	case Known:
+	case CertaintyKnown:
 		return true
-	case NotDispatched:
+	case CertaintyNotDispatched:
 		return true
-	case Unknown:
+	case CertaintyUnknown:
 		return true
 	default:
 		return false
@@ -683,7 +647,6 @@ const (
 	ConfigSectionReviewer                     ConfigSection = "reviewer"
 	ConfigSectionSkillSync                    ConfigSection = "skill_sync"
 	ConfigSectionSkills                       ConfigSection = "skills"
-	ConfigSectionSubagentMode                 ConfigSection = "subagent_mode"
 	ConfigSectionSubagents                    ConfigSection = "subagents"
 	ConfigSectionSummarize                    ConfigSection = "summarize"
 	ConfigSectionToolSearch                   ConfigSection = "tool_search"
@@ -731,8 +694,6 @@ func (e ConfigSection) Valid() bool {
 	case ConfigSectionSkillSync:
 		return true
 	case ConfigSectionSkills:
-		return true
-	case ConfigSectionSubagentMode:
 		return true
 	case ConfigSectionSubagents:
 		return true
@@ -1106,6 +1067,24 @@ const (
 func (e DenyAction) Valid() bool {
 	switch e {
 	case DenyActionDeny:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DiagnosticsEnvd.
+const (
+	NotVerified     DiagnosticsEnvd = "not_verified"
+	PreviouslyReady DiagnosticsEnvd = "previously_ready"
+)
+
+// Valid indicates whether the value is a known member of the DiagnosticsEnvd enum.
+func (e DiagnosticsEnvd) Valid() bool {
+	switch e {
+	case NotVerified:
+		return true
+	case PreviouslyReady:
 		return true
 	default:
 		return false
@@ -1625,6 +1604,36 @@ func (e ExecutionViewStatus) Valid() bool {
 	}
 }
 
+// Defines values for ExistingRunEnvironmentInputMode.
+const (
+	ExistingRunEnvironmentInputModeExisting ExistingRunEnvironmentInputMode = "existing"
+)
+
+// Valid indicates whether the value is a known member of the ExistingRunEnvironmentInputMode enum.
+func (e ExistingRunEnvironmentInputMode) Valid() bool {
+	switch e {
+	case ExistingRunEnvironmentInputModeExisting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ExistingRunEnvironmentOutputMode.
+const (
+	ExistingRunEnvironmentOutputModeExisting ExistingRunEnvironmentOutputMode = "existing"
+)
+
+// Valid indicates whether the value is a known member of the ExistingRunEnvironmentOutputMode enum.
+func (e ExistingRunEnvironmentOutputMode) Valid() bool {
+	switch e {
+	case ExistingRunEnvironmentOutputModeExisting:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ExportProtocol.
 const (
 	Grpc         ExportProtocol = "grpc"
@@ -1667,6 +1676,36 @@ const (
 func (e ForkKind) Valid() bool {
 	switch e {
 	case ForkKindMessage:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FreshRunEnvironmentInputMode.
+const (
+	FreshRunEnvironmentInputModeFresh FreshRunEnvironmentInputMode = "fresh"
+)
+
+// Valid indicates whether the value is a known member of the FreshRunEnvironmentInputMode enum.
+func (e FreshRunEnvironmentInputMode) Valid() bool {
+	switch e {
+	case FreshRunEnvironmentInputModeFresh:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FreshRunEnvironmentOutputMode.
+const (
+	FreshRunEnvironmentOutputModeFresh FreshRunEnvironmentOutputMode = "fresh"
+)
+
+// Valid indicates whether the value is a known member of the FreshRunEnvironmentOutputMode enum.
+func (e FreshRunEnvironmentOutputMode) Valid() bool {
+	switch e {
+	case FreshRunEnvironmentOutputModeFresh:
 		return true
 	default:
 		return false
@@ -2681,6 +2720,78 @@ func (e ReadView) Valid() bool {
 	}
 }
 
+// Defines values for ResourceDisposition.
+const (
+	ResourceDispositionBorrowed ResourceDisposition = "borrowed"
+	ResourceDispositionDelete   ResourceDisposition = "delete"
+	ResourceDispositionRetain   ResourceDisposition = "retain"
+)
+
+// Valid indicates whether the value is a known member of the ResourceDisposition enum.
+func (e ResourceDisposition) Valid() bool {
+	switch e {
+	case ResourceDispositionBorrowed:
+		return true
+	case ResourceDispositionDelete:
+		return true
+	case ResourceDispositionRetain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ResourceKind.
+const (
+	ConfigMap             ResourceKind = "ConfigMap"
+	NetworkPolicy         ResourceKind = "NetworkPolicy"
+	PersistentVolumeClaim ResourceKind = "PersistentVolumeClaim"
+	Pod                   ResourceKind = "Pod"
+	Secret                ResourceKind = "Secret"
+)
+
+// Valid indicates whether the value is a known member of the ResourceKind enum.
+func (e ResourceKind) Valid() bool {
+	switch e {
+	case ConfigMap:
+		return true
+	case NetworkPolicy:
+		return true
+	case PersistentVolumeClaim:
+		return true
+	case Pod:
+		return true
+	case Secret:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ResourceObservationObservation.
+const (
+	ResourceObservationObservationAbsent   ResourceObservationObservation = "absent"
+	ResourceObservationObservationConflict ResourceObservationObservation = "conflict"
+	ResourceObservationObservationPresent  ResourceObservationObservation = "present"
+	ResourceObservationObservationUnknown  ResourceObservationObservation = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the ResourceObservationObservation enum.
+func (e ResourceObservationObservation) Valid() bool {
+	switch e {
+	case ResourceObservationObservationAbsent:
+		return true
+	case ResourceObservationObservationConflict:
+		return true
+	case ResourceObservationObservationPresent:
+		return true
+	case ResourceObservationObservationUnknown:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ReturnedStatus.
 const (
 	ReturnedStatusReturned ReturnedStatus = "returned"
@@ -2726,6 +2837,24 @@ func (e RevokedConnectionRemoteRevocation) Valid() bool {
 	case RevokedConnectionRemoteRevocationRevoked:
 		return true
 	case RevokedConnectionRemoteRevocationSkipped:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunAgentSource.
+const (
+	Revision       RunAgentSource = "revision"
+	ThreadSnapshot RunAgentSource = "thread_snapshot"
+)
+
+// Valid indicates whether the value is a known member of the RunAgentSource enum.
+func (e RunAgentSource) Valid() bool {
+	switch e {
+	case Revision:
+		return true
+	case ThreadSnapshot:
 		return true
 	default:
 		return false
@@ -2821,6 +2950,7 @@ const (
 	RunSummaryRevisionSelectionDefault   RunSummaryRevisionSelection = "default"
 	RunSummaryRevisionSelectionInherited RunSummaryRevisionSelection = "inherited"
 	RunSummaryRevisionSelectionPinned    RunSummaryRevisionSelection = "pinned"
+	RunSummaryRevisionSelectionSnapshot  RunSummaryRevisionSelection = "snapshot"
 )
 
 // Valid indicates whether the value is a known member of the RunSummaryRevisionSelection enum.
@@ -2831,6 +2961,8 @@ func (e RunSummaryRevisionSelection) Valid() bool {
 	case RunSummaryRevisionSelectionInherited:
 		return true
 	case RunSummaryRevisionSelectionPinned:
+		return true
+	case RunSummaryRevisionSelectionSnapshot:
 		return true
 	default:
 		return false
@@ -2857,6 +2989,7 @@ const (
 	RunViewRevisionSelectionDefault   RunViewRevisionSelection = "default"
 	RunViewRevisionSelectionInherited RunViewRevisionSelection = "inherited"
 	RunViewRevisionSelectionPinned    RunViewRevisionSelection = "pinned"
+	RunViewRevisionSelectionSnapshot  RunViewRevisionSelection = "snapshot"
 )
 
 // Valid indicates whether the value is a known member of the RunViewRevisionSelection enum.
@@ -2867,6 +3000,8 @@ func (e RunViewRevisionSelection) Valid() bool {
 	case RunViewRevisionSelectionInherited:
 		return true
 	case RunViewRevisionSelectionPinned:
+		return true
+	case RunViewRevisionSelectionSnapshot:
 		return true
 	default:
 		return false
@@ -3224,6 +3359,42 @@ func (e Steering) Valid() bool {
 	case Boundary:
 		return true
 	case Immediate:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SubagentsInputMode.
+const (
+	SubagentsInputModeAsync  SubagentsInputMode = "async"
+	SubagentsInputModeInline SubagentsInputMode = "inline"
+)
+
+// Valid indicates whether the value is a known member of the SubagentsInputMode enum.
+func (e SubagentsInputMode) Valid() bool {
+	switch e {
+	case SubagentsInputModeAsync:
+		return true
+	case SubagentsInputModeInline:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SubagentsOutputMode.
+const (
+	SubagentsOutputModeAsync  SubagentsOutputMode = "async"
+	SubagentsOutputModeInline SubagentsOutputMode = "inline"
+)
+
+// Valid indicates whether the value is a known member of the SubagentsOutputMode enum.
+func (e SubagentsOutputMode) Valid() bool {
+	switch e {
+	case SubagentsOutputModeAsync:
+		return true
+	case SubagentsOutputModeInline:
 		return true
 	default:
 		return false
@@ -3959,7 +4130,6 @@ const (
 	CompareAgentRevisionsParamsSectionReviewer                     CompareAgentRevisionsParamsSection = "reviewer"
 	CompareAgentRevisionsParamsSectionSkillSync                    CompareAgentRevisionsParamsSection = "skill_sync"
 	CompareAgentRevisionsParamsSectionSkills                       CompareAgentRevisionsParamsSection = "skills"
-	CompareAgentRevisionsParamsSectionSubagentMode                 CompareAgentRevisionsParamsSection = "subagent_mode"
 	CompareAgentRevisionsParamsSectionSubagents                    CompareAgentRevisionsParamsSection = "subagents"
 	CompareAgentRevisionsParamsSectionSummarize                    CompareAgentRevisionsParamsSection = "summarize"
 	CompareAgentRevisionsParamsSectionToolSearch                   CompareAgentRevisionsParamsSection = "tool_search"
@@ -4007,8 +4177,6 @@ func (e CompareAgentRevisionsParamsSection) Valid() bool {
 	case CompareAgentRevisionsParamsSectionSkillSync:
 		return true
 	case CompareAgentRevisionsParamsSectionSkills:
-		return true
-	case CompareAgentRevisionsParamsSectionSubagentMode:
 		return true
 	case CompareAgentRevisionsParamsSectionSubagents:
 		return true
@@ -4208,7 +4376,6 @@ const (
 	GetRunAgentParamsPartReviewer                     GetRunAgentParamsPart = "reviewer"
 	GetRunAgentParamsPartSkillSync                    GetRunAgentParamsPart = "skill_sync"
 	GetRunAgentParamsPartSkills                       GetRunAgentParamsPart = "skills"
-	GetRunAgentParamsPartSubagentMode                 GetRunAgentParamsPart = "subagent_mode"
 	GetRunAgentParamsPartSubagents                    GetRunAgentParamsPart = "subagents"
 	GetRunAgentParamsPartSummarize                    GetRunAgentParamsPart = "summarize"
 	GetRunAgentParamsPartToolSearch                   GetRunAgentParamsPart = "tool_search"
@@ -4256,8 +4423,6 @@ func (e GetRunAgentParamsPart) Valid() bool {
 	case GetRunAgentParamsPartSkillSync:
 		return true
 	case GetRunAgentParamsPartSkills:
-		return true
-	case GetRunAgentParamsPartSubagentMode:
 		return true
 	case GetRunAgentParamsPartSubagents:
 		return true
@@ -4790,16 +4955,12 @@ type AgentConfigInput struct {
 	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
 	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
+	Subagents            *SubagentsInput                  `json:"subagents,omitempty"`
 	Summarize            *bool                            `json:"summarize,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
 }
-
-// AgentConfigInputSubagentMode defines model for AgentConfigInput.SubagentMode.
-type AgentConfigInputSubagentMode string
 
 // AgentConfigOutput defines model for AgentConfig-Output.
 type AgentConfigOutput struct {
@@ -4830,16 +4991,12 @@ type AgentConfigOutput struct {
 	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
 	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
+	Subagents            *SubagentsOutput                 `json:"subagents,omitempty"`
 	Summarize            *bool                            `json:"summarize,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
 }
-
-// AgentConfigOutputSubagentMode defines model for AgentConfigOutput.SubagentMode.
-type AgentConfigOutputSubagentMode string
 
 // AgentCreate defines model for AgentCreate.
 type AgentCreate struct {
@@ -4866,8 +5023,8 @@ type AgentModelCharacteristics struct {
 
 // AgentOverrideInput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
-// `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
-// edge removes it; every other field replaces the revision's value.
+// `toolsets` replaces whole toolsets; `retries` replaces supplied members.
+// Every other field, including `subagents`, replaces the whole value.
 type AgentOverrideInput struct {
 	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
@@ -4884,15 +5041,15 @@ type AgentOverrideInput struct {
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
 	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	Subagents            nullable.Nullable[SubagentsInput]              `json:"subagents,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
 
 // AgentOverrideOutput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
-// `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
-// edge removes it; every other field replaces the revision's value.
+// `toolsets` replaces whole toolsets; `retries` replaces supplied members.
+// Every other field, including `subagents`, replaces the whole value.
 type AgentOverrideOutput struct {
 	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
@@ -4909,7 +5066,7 @@ type AgentOverrideOutput struct {
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
 	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	Subagents            nullable.Nullable[SubagentsOutput]             `json:"subagents,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
@@ -5066,14 +5223,14 @@ type ApiKeyPage struct {
 
 // AppReference defines model for AppReference.
 type AppReference struct {
-	AgentRevisionId string `json:"agent_revision_id"`
-	AppId           string `json:"app_id"`
-	ConnectionId    string `json:"connection_id"`
-	ResourceUri     string `json:"resource_uri"`
-	SourceRunId     string `json:"source_run_id"`
-	ToolCallId      string `json:"tool_call_id"`
-	ToolName        string `json:"tool_name"`
-	Unavailable     *bool  `json:"unavailable,omitempty"`
+	AgentDefinitionId string `json:"agent_definition_id"`
+	AppId             string `json:"app_id"`
+	ConnectionId      string `json:"connection_id"`
+	ResourceUri       string `json:"resource_uri"`
+	SourceRunId       string `json:"source_run_id"`
+	ToolCallId        string `json:"tool_call_id"`
+	ToolName          string `json:"tool_name"`
+	Unavailable       *bool  `json:"unavailable,omitempty"`
 }
 
 // AppResource defines model for AppResource.
@@ -5964,6 +6121,11 @@ type DataSourceUpdate struct {
 	QueryCredentials  nullable.Nullable[Credentials]   `json:"query_credentials,omitempty"`
 }
 
+// DebugHold Delay automatic retirement for at most one day; null clears the hold.
+type DebugHold struct {
+	Seconds nullable.Nullable[int] `json:"seconds"`
+}
+
 // Definition defines model for Definition.
 type Definition struct {
 	Definition map[string]JsonValue `json:"definition"`
@@ -6064,6 +6226,28 @@ type DeviceUpdate struct {
 	Name                nullable.Nullable[string] `json:"name,omitempty"`
 }
 
+// Diagnostics defines model for Diagnostics.
+type Diagnostics struct {
+	Cluster         string                    `json:"cluster"`
+	Commands        []string                  `json:"commands"`
+	Connection      string                    `json:"connection"`
+	Envd            DiagnosticsEnvd           `json:"envd"`
+	Errors          []string                  `json:"errors"`
+	Events          []Event                   `json:"events"`
+	EventsTruncated bool                      `json:"events_truncated"`
+	Namespace       string                    `json:"namespace"`
+	ObservedAt      time.Time                 `json:"observed_at"`
+	OwnershipId     string                    `json:"ownership_id"`
+	PodName         string                    `json:"pod_name"`
+	PodUid          nullable.Nullable[string] `json:"pod_uid"`
+	Rendered        []map[string]JsonValue    `json:"rendered"`
+	Resources       []ResourceObservation     `json:"resources"`
+	Stage           string                    `json:"stage"`
+}
+
+// DiagnosticsEnvd defines model for Diagnostics.Envd.
+type DiagnosticsEnvd string
+
 // DiscoverySource defines model for DiscoverySource.
 type DiscoverySource struct {
 	Description string                    `json:"description"`
@@ -6094,6 +6278,44 @@ type DiskIoMetrics struct {
 type DiskMetrics struct {
 	Devices   *map[string]DiskIoMetrics `json:"devices,omitempty"`
 	Truncated bool                      `json:"truncated"`
+}
+
+// DynamicSubagentsInput Root-only task-specific delegation within the parent's capability boundary.
+type DynamicSubagentsInput struct {
+	AllowedModels   *[]string                                                `json:"allowed_models,omitempty"`
+	DefaultModel    nullable.Nullable[string]                                `json:"default_model,omitempty"`
+	DefaultThinking nullable.Nullable[DynamicSubagentsInput_DefaultThinking] `json:"default_thinking,omitempty"`
+	Enabled         *bool                                                    `json:"enabled,omitempty"`
+}
+
+// DynamicSubagentsInputDefaultThinking0 defines model for DynamicSubagentsInput.DefaultThinking.0.
+type DynamicSubagentsInputDefaultThinking0 = string
+
+// DynamicSubagentsInputDefaultThinking1 defines model for DynamicSubagentsInput.DefaultThinking.1.
+type DynamicSubagentsInputDefaultThinking1 = bool
+
+// DynamicSubagentsInput_DefaultThinking defines model for DynamicSubagentsInput.DefaultThinking.
+type DynamicSubagentsInput_DefaultThinking struct {
+	union json.RawMessage
+}
+
+// DynamicSubagentsOutput Root-only task-specific delegation within the parent's capability boundary.
+type DynamicSubagentsOutput struct {
+	AllowedModels   *[]string                                                 `json:"allowed_models,omitempty"`
+	DefaultModel    nullable.Nullable[string]                                 `json:"default_model,omitempty"`
+	DefaultThinking nullable.Nullable[DynamicSubagentsOutput_DefaultThinking] `json:"default_thinking,omitempty"`
+	Enabled         *bool                                                     `json:"enabled,omitempty"`
+}
+
+// DynamicSubagentsOutputDefaultThinking0 defines model for DynamicSubagentsOutput.DefaultThinking.0.
+type DynamicSubagentsOutputDefaultThinking0 = string
+
+// DynamicSubagentsOutputDefaultThinking1 defines model for DynamicSubagentsOutput.DefaultThinking.1.
+type DynamicSubagentsOutputDefaultThinking1 = bool
+
+// DynamicSubagentsOutput_DefaultThinking defines model for DynamicSubagentsOutput.DefaultThinking.
+type DynamicSubagentsOutput_DefaultThinking struct {
+	union json.RawMessage
 }
 
 // EmailChangeConfirm defines model for EmailChangeConfirm.
@@ -6262,6 +6484,13 @@ type EnvironmentQuery_Metric struct {
 	union json.RawMessage
 }
 
+// EnvironmentState Provider-owned portable semantic soft reference for one target.
+type EnvironmentState struct {
+	ProviderKey  string    `json:"provider_key"`
+	State        JsonValue `json:"state"`
+	StateVersion string    `json:"state_version"`
+}
+
 // EnvironmentUpdate Fields left out stay unchanged. Only an external target has an endpoint and token; a new endpoint comes with
 // its token, so a stored token never reaches an endpoint it was not entered for.
 type EnvironmentUpdate struct {
@@ -6277,6 +6506,7 @@ type EnvironmentVariables map[string]string
 type EnvironmentView struct {
 	CreatedAt           time.Time                             `json:"created_at"`
 	CreatedById         string                                `json:"created_by_id"`
+	DebugHoldUntil      nullable.Nullable[time.Time]          `json:"debug_hold_until,omitempty"`
 	DeviceId            nullable.Nullable[string]             `json:"device_id"`
 	Endpoint            nullable.Nullable[string]             `json:"endpoint"`
 	Failure             nullable.Nullable[EnvironmentFailure] `json:"failure"`
@@ -6290,7 +6520,11 @@ type EnvironmentView struct {
 	OperationStartedAt  nullable.Nullable[time.Time]          `json:"operation_started_at"`
 	OrganizationId      string                                `json:"organization_id"`
 	OwnerPrincipalId    nullable.Nullable[string]             `json:"owner_principal_id"`
+	PreparationDeadline nullable.Nullable[time.Time]          `json:"preparation_deadline,omitempty"`
+	PreparationFailedAt nullable.Nullable[time.Time]          `json:"preparation_failed_at,omitempty"`
 	ProviderId          nullable.Nullable[string]             `json:"provider_id"`
+	Reclamation         nullable.Nullable[Reclamation]        `json:"reclamation,omitempty"`
+	RetirementState     nullable.Nullable[EnvironmentState]   `json:"retirement_state,omitempty"`
 	Status              string                                `json:"status"`
 	TemplateId          nullable.Nullable[string]             `json:"template_id"`
 	UpdatedAt           time.Time                             `json:"updated_at"`
@@ -6312,6 +6546,17 @@ type ErrorCode string
 // ErrorEnvelope How every failure answers, whatever its status.
 type ErrorEnvelope struct {
 	Error ErrorBody `json:"error"`
+}
+
+// Event defines model for Event.
+type Event struct {
+	Count          nullable.Nullable[int]    `json:"count,omitempty"`
+	FirstTimestamp nullable.Nullable[string] `json:"first_timestamp,omitempty"`
+	LastTimestamp  nullable.Nullable[string] `json:"last_timestamp,omitempty"`
+	Message        nullable.Nullable[string] `json:"message,omitempty"`
+	Reason         nullable.Nullable[string] `json:"reason,omitempty"`
+	ResourceUid    string                    `json:"resource_uid"`
+	Type           nullable.Nullable[string] `json:"type,omitempty"`
 }
 
 // Evidence defines model for Evidence.
@@ -6368,6 +6613,28 @@ type ExecutionView struct {
 
 // ExecutionViewStatus defines model for ExecutionView.Status.
 type ExecutionViewStatus string
+
+// ExistingRunEnvironmentInput Use this exact primary instance for the Run; absence never triggers allocation.
+type ExistingRunEnvironmentInput struct {
+	EnvironmentId     string                          `json:"environment_id"`
+	Mode              ExistingRunEnvironmentInputMode `json:"mode"`
+	PermissionCeiling *EnvironmentPermissionSetInput  `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
+}
+
+// ExistingRunEnvironmentInputMode defines model for ExistingRunEnvironmentInput.Mode.
+type ExistingRunEnvironmentInputMode string
+
+// ExistingRunEnvironmentOutput Use this exact primary instance for the Run; absence never triggers allocation.
+type ExistingRunEnvironmentOutput struct {
+	EnvironmentId     string                           `json:"environment_id"`
+	Mode              ExistingRunEnvironmentOutputMode `json:"mode"`
+	PermissionCeiling *EnvironmentPermissionSetOutput  `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]        `json:"working_directory,omitempty"`
+}
+
+// ExistingRunEnvironmentOutputMode defines model for ExistingRunEnvironmentOutput.Mode.
+type ExistingRunEnvironmentOutputMode string
 
 // Export defines model for Export.
 type Export struct {
@@ -6442,7 +6709,7 @@ type FilesystemObservation struct {
 // Finding defines model for Finding.
 type Finding struct {
 	AgentId         string                    `json:"agent_id"`
-	AgentRevisionId string                    `json:"agent_revision_id"`
+	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
 	AnalysisId      nullable.Nullable[string] `json:"analysis_id"`
 	Assessment      Assessment                `json:"assessment"`
 	AssessmentNote  string                    `json:"assessment_note"`
@@ -6468,8 +6735,8 @@ type Finding struct {
 
 // FindingCreate defines model for FindingCreate.
 type FindingCreate struct {
-	AgentId         string `json:"agent_id"`
-	AgentRevisionId string `json:"agent_revision_id"`
+	AgentId         string                    `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
 
 	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
 	Category    Category   `json:"category"`
@@ -6512,6 +6779,28 @@ type Fork struct {
 
 // ForkKind defines model for Fork.Kind.
 type ForkKind string
+
+// FreshRunEnvironmentInput Reserve a primary instance for this accepted Run without changing Thread mounts.
+type FreshRunEnvironmentInput struct {
+	Mode              FreshRunEnvironmentInputMode   `json:"mode"`
+	PermissionCeiling *EnvironmentPermissionSetInput `json:"permission_ceiling,omitempty"`
+	TemplateId        string                         `json:"template_id"`
+	WorkingDirectory  nullable.Nullable[string]      `json:"working_directory,omitempty"`
+}
+
+// FreshRunEnvironmentInputMode defines model for FreshRunEnvironmentInput.Mode.
+type FreshRunEnvironmentInputMode string
+
+// FreshRunEnvironmentOutput Reserve a primary instance for this accepted Run without changing Thread mounts.
+type FreshRunEnvironmentOutput struct {
+	Mode              FreshRunEnvironmentOutputMode   `json:"mode"`
+	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
+	TemplateId        string                          `json:"template_id"`
+	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
+}
+
+// FreshRunEnvironmentOutputMode defines model for FreshRunEnvironmentOutput.Mode.
+type FreshRunEnvironmentOutputMode string
 
 // FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
 type FrozenMemoryMount struct {
@@ -6664,6 +6953,12 @@ type InitialMounts = []MountCreate
 type InitialRun struct {
 	Id     string    `json:"id"`
 	Status RunStatus `json:"status"`
+}
+
+// InstanceDiagnostics defines model for InstanceDiagnostics.
+type InstanceDiagnostics struct {
+	Environment EnvironmentView `json:"environment"`
+	Native      Diagnostics     `json:"native"`
 }
 
 // InstantQuery defines model for InstantQuery.
@@ -6877,6 +7172,15 @@ type LoginSession struct {
 type LoginSessionPage struct {
 	Items      []LoginSession            `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// Logs defines model for Logs.
+type Logs struct {
+	Container  string `json:"container"`
+	LimitBytes *int   `json:"limit_bytes,omitempty"`
+	PodUid     string `json:"pod_uid"`
+	Previous   bool   `json:"previous"`
+	Text       string `json:"text"`
 }
 
 // ManagedEnvironmentCreate A workspace-managed sandbox reserved from a template, for threads to mount; maintenance creates it.
@@ -8187,6 +8491,13 @@ type RangeQueryKind string
 // ReadView defines model for ReadView.
 type ReadView string
 
+// Reclamation Instance-scoped reclamation settings copied at reservation; no stop/resume semantics.
+type Reclamation struct {
+	FailedRetentionSeconds *int                   `json:"failed_retention_seconds,omitempty"`
+	IdleDeleteSeconds      nullable.Nullable[int] `json:"idle_delete_seconds,omitempty"`
+	PreparationSeconds     *int                   `json:"preparation_seconds,omitempty"`
+}
+
 // Renew defines model for Renew.
 type Renew struct {
 	Episode      int                    `json:"episode"`
@@ -8205,6 +8516,35 @@ type RenewControl struct {
 type RequestContext struct {
 	Headers *map[string]string `json:"headers,omitempty"`
 }
+
+// Resource defines model for Resource.
+type Resource struct {
+	Disposition *ResourceDisposition      `json:"disposition,omitempty"`
+	Kind        ResourceKind              `json:"kind"`
+	Name        string                    `json:"name"`
+	SubPaths    *[]string                 `json:"sub_paths,omitempty"`
+	Uid         nullable.Nullable[string] `json:"uid,omitempty"`
+}
+
+// ResourceDisposition defines model for Resource.Disposition.
+type ResourceDisposition string
+
+// ResourceKind defines model for Resource.Kind.
+type ResourceKind string
+
+// ResourceObservation defines model for ResourceObservation.
+type ResourceObservation struct {
+	CreatedAt   nullable.Nullable[string]      `json:"created_at,omitempty"`
+	DeletingAt  nullable.Nullable[string]      `json:"deleting_at,omitempty"`
+	Finalizers  *[]string                      `json:"finalizers,omitempty"`
+	Observation ResourceObservationObservation `json:"observation"`
+	Reason      nullable.Nullable[string]      `json:"reason,omitempty"`
+	Reference   Resource                       `json:"reference"`
+	Status      *map[string]JsonValue          `json:"status,omitempty"`
+}
+
+// ResourceObservationObservation defines model for ResourceObservation.Observation.
+type ResourceObservationObservation string
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
@@ -8289,21 +8629,26 @@ type RevokedConnectionRemoteRevocation string
 // RunAgent The agent a run executes: its frozen revision, and that revision's configuration with the run's override
 // applied. Models, connections and templates the configuration names stay live.
 type RunAgent struct {
-	Config   AgentConfigOutput `json:"config"`
-	Revision AgentRevision     `json:"revision"`
+	Config       AgentConfigOutput                `json:"config"`
+	DefinitionId string                           `json:"definition_id"`
+	Revision     nullable.Nullable[AgentRevision] `json:"revision"`
+	Source       RunAgentSource                   `json:"source"`
 }
+
+// RunAgentSource defines model for RunAgent.Source.
+type RunAgentSource string
 
 // RunAgentSummary defines model for RunAgentSummary.
 type RunAgentSummary struct {
-	Config              ConfigSummary        `json:"config"`
-	ConnectionIds       []string             `json:"connection_ids"`
-	OmittedSections     *[]string            `json:"omitted_sections,omitempty"`
-	OverriddenPaths     []string             `json:"overridden_paths"`
-	ReferencesTruncated bool                 `json:"references_truncated"`
-	RevisionId          string               `json:"revision_id"`
-	SkillIds            []string             `json:"skill_ids"`
-	SubagentIds         []string             `json:"subagent_ids"`
-	View                *RunAgentSummaryView `json:"view,omitempty"`
+	Config              ConfigSummary             `json:"config"`
+	ConnectionIds       []string                  `json:"connection_ids"`
+	OmittedSections     *[]string                 `json:"omitted_sections,omitempty"`
+	OverriddenPaths     []string                  `json:"overridden_paths"`
+	ReferencesTruncated bool                      `json:"references_truncated"`
+	RevisionId          nullable.Nullable[string] `json:"revision_id"`
+	SkillIds            []string                  `json:"skill_ids"`
+	SubagentIds         []string                  `json:"subagent_ids"`
+	View                *RunAgentSummaryView      `json:"view,omitempty"`
 }
 
 // RunAgentSummaryView defines model for RunAgentSummary.View.
@@ -8340,6 +8685,16 @@ type RunContent struct {
 // RunContentMediaType defines model for RunContent.MediaType.
 type RunContentMediaType string
 
+// RunEnvironmentInput defines model for RunEnvironment-Input.
+type RunEnvironmentInput struct {
+	union json.RawMessage
+}
+
+// RunEnvironmentOutput defines model for RunEnvironment-Output.
+type RunEnvironmentOutput struct {
+	union json.RawMessage
+}
+
 // RunInputPreview defines model for RunInputPreview.
 type RunInputPreview struct {
 	// Text At most 200 Unicode code points of input text, in content order.
@@ -8363,7 +8718,7 @@ type RunLabels struct {
 // RunListItem Run discovery metadata. Full input, results and execution settings belong to the Run detail read.
 type RunListItem struct {
 	AgentId          string                        `json:"agent_id"`
-	AgentRevisionId  string                        `json:"agent_revision_id"`
+	AgentRevisionId  nullable.Nullable[string]     `json:"agent_revision_id"`
 	Attempts         int                           `json:"attempts"`
 	CreatedAt        time.Time                     `json:"created_at"`
 	CurrentAttemptId nullable.Nullable[string]     `json:"current_attempt_id"`
@@ -8396,6 +8751,7 @@ type RunMetrics struct {
 type RunOptionsInput struct {
 	Configuration nullable.Nullable[RunConfigurationInput] `json:"configuration,omitempty"`
 	Context       nullable.Nullable[RequestContext]        `json:"context,omitempty"`
+	Environment   nullable.Nullable[RunEnvironmentInput]   `json:"environment,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride]     `json:"execution,omitempty"`
 	Labels        *map[string]string                       `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]            `json:"max_usage,omitempty"`
@@ -8406,6 +8762,7 @@ type RunOptionsInput struct {
 type RunOptionsOutput struct {
 	Configuration nullable.Nullable[RunConfigurationOutput] `json:"configuration,omitempty"`
 	Context       nullable.Nullable[RequestContext]         `json:"context,omitempty"`
+	Environment   nullable.Nullable[RunEnvironmentOutput]   `json:"environment,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride]      `json:"execution,omitempty"`
 	Labels        *map[string]string                        `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]             `json:"max_usage,omitempty"`
@@ -8425,7 +8782,7 @@ type RunStatus string
 type RunSummary struct {
 	AgentId           string                            `json:"agent_id"`
 	AgentName         nullable.Nullable[string]         `json:"agent_name"`
-	AgentRevisionId   string                            `json:"agent_revision_id"`
+	AgentRevisionId   nullable.Nullable[string]         `json:"agent_revision_id"`
 	Attempts          int                               `json:"attempts"`
 	CreatedAt         time.Time                         `json:"created_at"`
 	CurrentAttemptId  nullable.Nullable[string]         `json:"current_attempt_id"`
@@ -8483,7 +8840,7 @@ type RunUsagePage struct {
 // RunView defines model for RunView.
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
-	AgentRevisionId   string                                  `json:"agent_revision_id"`
+	AgentRevisionId   nullable.Nullable[string]               `json:"agent_revision_id"`
 	Attempts          int                                     `json:"attempts"`
 	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
@@ -9118,26 +9475,6 @@ type Status string
 // Steering defines model for Steering.
 type Steering string
 
-// SubagentOverrideInput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
-type SubagentOverrideInput struct {
-	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
-	Context     nullable.Nullable[DelegationContextPolicy] `json:"context,omitempty"`
-	Description nullable.Nullable[string]                  `json:"description,omitempty"`
-	Environment nullable.Nullable[ChildEnvironmentPolicy]  `json:"environment,omitempty"`
-	RevisionId  nullable.Nullable[string]                  `json:"revision_id,omitempty"`
-	UsageLimits nullable.Nullable[UsageLimitsInput]        `json:"usage_limits,omitempty"`
-}
-
-// SubagentOverrideOutput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
-type SubagentOverrideOutput struct {
-	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
-	Context     nullable.Nullable[DelegationContextPolicy] `json:"context,omitempty"`
-	Description nullable.Nullable[string]                  `json:"description,omitempty"`
-	Environment nullable.Nullable[ChildEnvironmentPolicy]  `json:"environment,omitempty"`
-	RevisionId  nullable.Nullable[string]                  `json:"revision_id,omitempty"`
-	UsageLimits nullable.Nullable[UsageLimitsOutput]       `json:"usage_limits,omitempty"`
-}
-
 // SubagentSelectionInput defines model for SubagentSelection-Input.
 type SubagentSelectionInput struct {
 	AgentId     string                    `json:"agent_id"`
@@ -9161,6 +9498,28 @@ type SubagentSelectionOutput struct {
 	RevisionId  nullable.Nullable[string]            `json:"revision_id,omitempty"`
 	UsageLimits nullable.Nullable[UsageLimitsOutput] `json:"usage_limits,omitempty"`
 }
+
+// SubagentsInput defines model for Subagents-Input.
+type SubagentsInput struct {
+	// Dynamic Root-only task-specific delegation within the parent's capability boundary.
+	Dynamic *DynamicSubagentsInput  `json:"dynamic,omitempty"`
+	Mode    *SubagentsInputMode     `json:"mode,omitempty"`
+	Named   *map[string]interface{} `json:"named,omitempty"`
+}
+
+// SubagentsInputMode defines model for SubagentsInput.Mode.
+type SubagentsInputMode string
+
+// SubagentsOutput defines model for Subagents-Output.
+type SubagentsOutput struct {
+	// Dynamic Root-only task-specific delegation within the parent's capability boundary.
+	Dynamic *DynamicSubagentsOutput `json:"dynamic,omitempty"`
+	Mode    *SubagentsOutputMode    `json:"mode,omitempty"`
+	Named   *map[string]interface{} `json:"named,omitempty"`
+}
+
+// SubagentsOutputMode defines model for SubagentsOutput.Mode.
+type SubagentsOutputMode string
 
 // Submitted A submission receipt: the entry and, when the thread was idle, the run it started.
 type Submitted struct {
@@ -9272,9 +9631,10 @@ type Template struct {
 
 // TemplateConfig defines model for TemplateConfig.
 type TemplateConfig struct {
-	DeleteAfterSeconds nullable.Nullable[int] `json:"delete_after_seconds,omitempty"`
-	Recipe             *map[string]JsonValue  `json:"recipe,omitempty"`
-	StopAfterSeconds   nullable.Nullable[int] `json:"stop_after_seconds,omitempty"`
+	DeleteAfterSeconds nullable.Nullable[int]         `json:"delete_after_seconds,omitempty"`
+	Recipe             *map[string]JsonValue          `json:"recipe,omitempty"`
+	Reclamation        nullable.Nullable[Reclamation] `json:"reclamation,omitempty"`
+	StopAfterSeconds   nullable.Nullable[int]         `json:"stop_after_seconds,omitempty"`
 }
 
 // TemplateCreate defines model for TemplateCreate.
@@ -9379,7 +9739,7 @@ type ThreadReferenceOrigin string
 // ThreadRunItem Bounded navigation metadata and recorded model usage within one Thread.
 type ThreadRunItem struct {
 	AgentId          string                        `json:"agent_id"`
-	AgentRevisionId  string                        `json:"agent_revision_id"`
+	AgentRevisionId  nullable.Nullable[string]     `json:"agent_revision_id"`
 	Attempts         int                           `json:"attempts"`
 	Cost             nullable.Nullable[string]     `json:"cost"`
 	CreatedAt        time.Time                     `json:"created_at"`
@@ -10702,6 +11062,15 @@ type GetEnvironmentCreationParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// SetEnvironmentDebugHoldParams defines parameters for SetEnvironmentDebugHold.
+type SetEnvironmentDebugHoldParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // GetDesktopControlParams defines parameters for GetDesktopControl.
 type GetDesktopControlParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -10740,6 +11109,22 @@ type GetEnvironmentDesktopPreviewParams struct {
 
 // OpenDesktopViewerParams defines parameters for OpenDesktopViewer.
 type OpenDesktopViewerParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetKubernetesEnvironmentDiagnosticsParams defines parameters for GetKubernetesEnvironmentDiagnostics.
+type GetKubernetesEnvironmentDiagnosticsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetKubernetesEnvironmentLogsParams defines parameters for GetKubernetesEnvironmentLogs.
+type GetKubernetesEnvironmentLogsParams struct {
+	Container *string `form:"container,omitempty" json:"container,omitempty"`
+	Previous  *bool   `form:"previous,omitempty" json:"previous,omitempty"`
+	TailLines *int    `form:"tail_lines,omitempty" json:"tail_lines,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -12992,6 +13377,9 @@ type CreateEnvironmentJSONRequestBody CreateEnvironmentJSONBody
 // UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
 type UpdateEnvironmentJSONRequestBody = EnvironmentUpdate
 
+// SetEnvironmentDebugHoldJSONRequestBody defines body for SetEnvironmentDebugHold for application/json ContentType.
+type SetEnvironmentDebugHoldJSONRequestBody = DebugHold
+
 // RenewDesktopControlJSONRequestBody defines body for RenewDesktopControl for application/json ContentType.
 type RenewDesktopControlJSONRequestBody = Renew
 
@@ -13746,6 +14134,130 @@ func (t CpuLimit) MarshalJSON() ([]byte, error) {
 }
 
 func (t *CpuLimit) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDynamicSubagentsInputDefaultThinking0 returns the union data inside the DynamicSubagentsInput_DefaultThinking as a DynamicSubagentsInputDefaultThinking0
+func (t DynamicSubagentsInput_DefaultThinking) AsDynamicSubagentsInputDefaultThinking0() (DynamicSubagentsInputDefaultThinking0, error) {
+	var body DynamicSubagentsInputDefaultThinking0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsInputDefaultThinking0 overwrites any union data inside the DynamicSubagentsInput_DefaultThinking as the provided DynamicSubagentsInputDefaultThinking0
+func (t *DynamicSubagentsInput_DefaultThinking) FromDynamicSubagentsInputDefaultThinking0(v DynamicSubagentsInputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsInputDefaultThinking0 performs a merge with any union data inside the DynamicSubagentsInput_DefaultThinking, using the provided DynamicSubagentsInputDefaultThinking0
+func (t *DynamicSubagentsInput_DefaultThinking) MergeDynamicSubagentsInputDefaultThinking0(v DynamicSubagentsInputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDynamicSubagentsInputDefaultThinking1 returns the union data inside the DynamicSubagentsInput_DefaultThinking as a DynamicSubagentsInputDefaultThinking1
+func (t DynamicSubagentsInput_DefaultThinking) AsDynamicSubagentsInputDefaultThinking1() (DynamicSubagentsInputDefaultThinking1, error) {
+	var body DynamicSubagentsInputDefaultThinking1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsInputDefaultThinking1 overwrites any union data inside the DynamicSubagentsInput_DefaultThinking as the provided DynamicSubagentsInputDefaultThinking1
+func (t *DynamicSubagentsInput_DefaultThinking) FromDynamicSubagentsInputDefaultThinking1(v DynamicSubagentsInputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsInputDefaultThinking1 performs a merge with any union data inside the DynamicSubagentsInput_DefaultThinking, using the provided DynamicSubagentsInputDefaultThinking1
+func (t *DynamicSubagentsInput_DefaultThinking) MergeDynamicSubagentsInputDefaultThinking1(v DynamicSubagentsInputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DynamicSubagentsInput_DefaultThinking) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DynamicSubagentsInput_DefaultThinking) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDynamicSubagentsOutputDefaultThinking0 returns the union data inside the DynamicSubagentsOutput_DefaultThinking as a DynamicSubagentsOutputDefaultThinking0
+func (t DynamicSubagentsOutput_DefaultThinking) AsDynamicSubagentsOutputDefaultThinking0() (DynamicSubagentsOutputDefaultThinking0, error) {
+	var body DynamicSubagentsOutputDefaultThinking0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsOutputDefaultThinking0 overwrites any union data inside the DynamicSubagentsOutput_DefaultThinking as the provided DynamicSubagentsOutputDefaultThinking0
+func (t *DynamicSubagentsOutput_DefaultThinking) FromDynamicSubagentsOutputDefaultThinking0(v DynamicSubagentsOutputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsOutputDefaultThinking0 performs a merge with any union data inside the DynamicSubagentsOutput_DefaultThinking, using the provided DynamicSubagentsOutputDefaultThinking0
+func (t *DynamicSubagentsOutput_DefaultThinking) MergeDynamicSubagentsOutputDefaultThinking0(v DynamicSubagentsOutputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDynamicSubagentsOutputDefaultThinking1 returns the union data inside the DynamicSubagentsOutput_DefaultThinking as a DynamicSubagentsOutputDefaultThinking1
+func (t DynamicSubagentsOutput_DefaultThinking) AsDynamicSubagentsOutputDefaultThinking1() (DynamicSubagentsOutputDefaultThinking1, error) {
+	var body DynamicSubagentsOutputDefaultThinking1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsOutputDefaultThinking1 overwrites any union data inside the DynamicSubagentsOutput_DefaultThinking as the provided DynamicSubagentsOutputDefaultThinking1
+func (t *DynamicSubagentsOutput_DefaultThinking) FromDynamicSubagentsOutputDefaultThinking1(v DynamicSubagentsOutputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsOutputDefaultThinking1 performs a merge with any union data inside the DynamicSubagentsOutput_DefaultThinking, using the provided DynamicSubagentsOutputDefaultThinking1
+func (t *DynamicSubagentsOutput_DefaultThinking) MergeDynamicSubagentsOutputDefaultThinking1(v DynamicSubagentsOutputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DynamicSubagentsOutput_DefaultThinking) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DynamicSubagentsOutput_DefaultThinking) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -14594,6 +15106,208 @@ func (t PriceTierInput_Price) MarshalJSON() ([]byte, error) {
 }
 
 func (t *PriceTierInput_Price) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsFreshRunEnvironmentInput returns the union data inside the RunEnvironmentInput as a FreshRunEnvironmentInput
+func (t RunEnvironmentInput) AsFreshRunEnvironmentInput() (FreshRunEnvironmentInput, error) {
+	var body FreshRunEnvironmentInput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFreshRunEnvironmentInput overwrites any union data inside the RunEnvironmentInput as the provided FreshRunEnvironmentInput
+func (t *RunEnvironmentInput) FromFreshRunEnvironmentInput(v FreshRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	t.union = b
+	return err
+}
+
+// MergeFreshRunEnvironmentInput performs a merge with any union data inside the RunEnvironmentInput, using the provided FreshRunEnvironmentInput
+func (t *RunEnvironmentInput) MergeFreshRunEnvironmentInput(v FreshRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsExistingRunEnvironmentInput returns the union data inside the RunEnvironmentInput as a ExistingRunEnvironmentInput
+func (t RunEnvironmentInput) AsExistingRunEnvironmentInput() (ExistingRunEnvironmentInput, error) {
+	var body ExistingRunEnvironmentInput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromExistingRunEnvironmentInput overwrites any union data inside the RunEnvironmentInput as the provided ExistingRunEnvironmentInput
+func (t *RunEnvironmentInput) FromExistingRunEnvironmentInput(v ExistingRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	t.union = b
+	return err
+}
+
+// MergeExistingRunEnvironmentInput performs a merge with any union data inside the RunEnvironmentInput, using the provided ExistingRunEnvironmentInput
+func (t *RunEnvironmentInput) MergeExistingRunEnvironmentInput(v ExistingRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunEnvironmentInput) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t RunEnvironmentInput) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "existing":
+		return t.AsExistingRunEnvironmentInput()
+	case "fresh":
+		return t.AsFreshRunEnvironmentInput()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t RunEnvironmentInput) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunEnvironmentInput) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsFreshRunEnvironmentOutput returns the union data inside the RunEnvironmentOutput as a FreshRunEnvironmentOutput
+func (t RunEnvironmentOutput) AsFreshRunEnvironmentOutput() (FreshRunEnvironmentOutput, error) {
+	var body FreshRunEnvironmentOutput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFreshRunEnvironmentOutput overwrites any union data inside the RunEnvironmentOutput as the provided FreshRunEnvironmentOutput
+func (t *RunEnvironmentOutput) FromFreshRunEnvironmentOutput(v FreshRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	t.union = b
+	return err
+}
+
+// MergeFreshRunEnvironmentOutput performs a merge with any union data inside the RunEnvironmentOutput, using the provided FreshRunEnvironmentOutput
+func (t *RunEnvironmentOutput) MergeFreshRunEnvironmentOutput(v FreshRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsExistingRunEnvironmentOutput returns the union data inside the RunEnvironmentOutput as a ExistingRunEnvironmentOutput
+func (t RunEnvironmentOutput) AsExistingRunEnvironmentOutput() (ExistingRunEnvironmentOutput, error) {
+	var body ExistingRunEnvironmentOutput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromExistingRunEnvironmentOutput overwrites any union data inside the RunEnvironmentOutput as the provided ExistingRunEnvironmentOutput
+func (t *RunEnvironmentOutput) FromExistingRunEnvironmentOutput(v ExistingRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	t.union = b
+	return err
+}
+
+// MergeExistingRunEnvironmentOutput performs a merge with any union data inside the RunEnvironmentOutput, using the provided ExistingRunEnvironmentOutput
+func (t *RunEnvironmentOutput) MergeExistingRunEnvironmentOutput(v ExistingRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunEnvironmentOutput) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t RunEnvironmentOutput) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "existing":
+		return t.AsExistingRunEnvironmentOutput()
+	case "fresh":
+		return t.AsFreshRunEnvironmentOutput()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t RunEnvironmentOutput) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunEnvironmentOutput) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -18121,6 +18835,20 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreation(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// SetEnvironmentDebugHoldWithBody Set Environment Debug Hold
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHoldWithBody(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetEnvironmentDebugHold Set Environment Debug Hold
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHold(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetDesktopControl Get Desktop Control
 	//
 	// Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
@@ -18177,6 +18905,16 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
 	OpenDesktopViewer(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKubernetesEnvironmentDiagnostics Get Kubernetes Environment Diagnostics
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+	GetKubernetesEnvironmentDiagnostics(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKubernetesEnvironmentLogs Get Kubernetes Environment Logs
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+	GetKubernetesEnvironmentLogs(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// SelectMetricsSourceWithBody Select Metrics Source
 	//
@@ -22520,6 +23258,40 @@ func (c *Client) GetEnvironmentCreation(ctx context.Context, environmentId strin
 	return c.Client.Do(req)
 }
 
+// SetEnvironmentDebugHoldWithBody Set Environment Debug Hold
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *Client) SetEnvironmentDebugHoldWithBody(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetEnvironmentDebugHoldRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SetEnvironmentDebugHold Set Environment Debug Hold
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *Client) SetEnvironmentDebugHold(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetEnvironmentDebugHoldRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetDesktopControl Get Desktop Control
 //
 // Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
@@ -22657,6 +23429,36 @@ func (c *Client) OpenDesktopViewerWithBody(ctx context.Context, environmentId st
 // Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
 func (c *Client) OpenDesktopViewer(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOpenDesktopViewerRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetKubernetesEnvironmentDiagnostics Get Kubernetes Environment Diagnostics
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+func (c *Client) GetKubernetesEnvironmentDiagnostics(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKubernetesEnvironmentDiagnosticsRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetKubernetesEnvironmentLogs Get Kubernetes Environment Logs
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+func (c *Client) GetKubernetesEnvironmentLogs(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKubernetesEnvironmentLogsRequest(c.Server, environmentId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -34470,6 +35272,79 @@ func NewGetEnvironmentCreationRequest(server string, environmentId string, param
 	return req, nil
 }
 
+// NewSetEnvironmentDebugHoldRequest calls the generic SetEnvironmentDebugHold builder with application/json body
+func NewSetEnvironmentDebugHoldRequest(server string, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetEnvironmentDebugHoldRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewSetEnvironmentDebugHoldRequestWithBody constructs an http.Request for the SetEnvironmentDebugHold method, with any body, and a specified content type
+func NewSetEnvironmentDebugHoldRequestWithBody(server string, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/debug-hold", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetDesktopControlRequest constructs an http.Request for the GetDesktopControl method
 func NewGetDesktopControlRequest(server string, environmentId string, params *GetDesktopControlParams) (*http.Request, error) {
 	var err error
@@ -34806,6 +35681,155 @@ func NewOpenDesktopViewerRequestWithBody(server string, environmentId string, pa
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetKubernetesEnvironmentDiagnosticsRequest constructs an http.Request for the GetKubernetesEnvironmentDiagnostics method
+func NewGetKubernetesEnvironmentDiagnosticsRequest(server string, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/kubernetes/diagnostics", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetKubernetesEnvironmentLogsRequest constructs an http.Request for the GetKubernetesEnvironmentLogs method
+func NewGetKubernetesEnvironmentLogsRequest(server string, environmentId string, params *GetKubernetesEnvironmentLogsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/kubernetes/logs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Container != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "container", *params.Container, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Previous != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "previous", *params.Previous, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TailLines != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tail_lines", *params.TailLines, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	if params != nil {
 
@@ -53765,6 +54789,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreationWithResponse(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*GetEnvironmentCreationResponse, error)
 
+	// SetEnvironmentDebugHoldWithBodyWithResponse Set Environment Debug Hold
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHoldWithBodyWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error)
+
+	// SetEnvironmentDebugHoldWithResponse Set Environment Debug Hold
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHoldWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error)
+
 	// GetDesktopControlWithResponse Get Desktop Control
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -53827,6 +54865,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
 	OpenDesktopViewerWithResponse(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenDesktopViewerResponse, error)
+
+	// GetKubernetesEnvironmentDiagnosticsWithResponse Get Kubernetes Environment Diagnostics
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+	GetKubernetesEnvironmentDiagnosticsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentDiagnosticsResponse, error)
+
+	// GetKubernetesEnvironmentLogsWithResponse Get Kubernetes Environment Logs
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+	GetKubernetesEnvironmentLogsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentLogsResponse, error)
 
 	// SelectMetricsSourceWithBodyWithResponse Select Metrics Source
 	//
@@ -63038,6 +64090,75 @@ func (r GetEnvironmentCreationResponse) ContentType() string {
 	return ""
 }
 
+// SetEnvironmentDebugHoldResponse400Headers the declared response headers of an HTTP 400 response for SetEnvironmentDebugHold
+type SetEnvironmentDebugHoldResponse400Headers struct {
+	XRequestId *string
+}
+
+// SetEnvironmentDebugHoldResponseDefaultHeaders the declared response headers of an HTTP default response for SetEnvironmentDebugHold
+type SetEnvironmentDebugHoldResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type SetEnvironmentDebugHoldResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EnvironmentView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *SetEnvironmentDebugHoldResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *SetEnvironmentDebugHoldResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r SetEnvironmentDebugHoldResponse) GetJSON200() *EnvironmentView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r SetEnvironmentDebugHoldResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r SetEnvironmentDebugHoldResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r SetEnvironmentDebugHoldResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SetEnvironmentDebugHoldResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetEnvironmentDebugHoldResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SetEnvironmentDebugHoldResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetDesktopControlResponse400Headers the declared response headers of an HTTP 400 response for GetDesktopControl
 type GetDesktopControlResponse400Headers struct {
 	XRequestId *string
@@ -63439,6 +64560,144 @@ func (r OpenDesktopViewerResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r OpenDesktopViewerResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetKubernetesEnvironmentDiagnosticsResponse400Headers the declared response headers of an HTTP 400 response for GetKubernetesEnvironmentDiagnostics
+type GetKubernetesEnvironmentDiagnosticsResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders the declared response headers of an HTTP default response for GetKubernetesEnvironmentDiagnostics
+type GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetKubernetesEnvironmentDiagnosticsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *InstanceDiagnostics
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetKubernetesEnvironmentDiagnosticsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetJSON200() *InstanceDiagnostics {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKubernetesEnvironmentDiagnosticsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKubernetesEnvironmentDiagnosticsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetKubernetesEnvironmentDiagnosticsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetKubernetesEnvironmentLogsResponse400Headers the declared response headers of an HTTP 400 response for GetKubernetesEnvironmentLogs
+type GetKubernetesEnvironmentLogsResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetKubernetesEnvironmentLogsResponseDefaultHeaders the declared response headers of an HTTP default response for GetKubernetesEnvironmentLogs
+type GetKubernetesEnvironmentLogsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetKubernetesEnvironmentLogsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Logs
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetKubernetesEnvironmentLogsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetKubernetesEnvironmentLogsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetKubernetesEnvironmentLogsResponse) GetJSON200() *Logs {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetKubernetesEnvironmentLogsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetKubernetesEnvironmentLogsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetKubernetesEnvironmentLogsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKubernetesEnvironmentLogsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKubernetesEnvironmentLogsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetKubernetesEnvironmentLogsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -82318,6 +83577,32 @@ func (c *ClientWithResponses) GetEnvironmentCreationWithResponse(ctx context.Con
 	return ParseGetEnvironmentCreationResponse(rsp)
 }
 
+// SetEnvironmentDebugHoldWithBodyWithResponse Set Environment Debug Hold
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *ClientWithResponses) SetEnvironmentDebugHoldWithBodyWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error) {
+	rsp, err := c.SetEnvironmentDebugHoldWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetEnvironmentDebugHoldResponse(rsp)
+}
+
+// SetEnvironmentDebugHoldWithResponse Set Environment Debug Hold
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *ClientWithResponses) SetEnvironmentDebugHoldWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error) {
+	rsp, err := c.SetEnvironmentDebugHold(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetEnvironmentDebugHoldResponse(rsp)
+}
+
 // GetDesktopControlWithResponse Get Desktop Control
 //
 // Returns a wrapper object for the known response body format(s).
@@ -82433,6 +83718,32 @@ func (c *ClientWithResponses) OpenDesktopViewerWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseOpenDesktopViewerResponse(rsp)
+}
+
+// GetKubernetesEnvironmentDiagnosticsWithResponse Get Kubernetes Environment Diagnostics
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+func (c *ClientWithResponses) GetKubernetesEnvironmentDiagnosticsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentDiagnosticsResponse, error) {
+	rsp, err := c.GetKubernetesEnvironmentDiagnostics(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKubernetesEnvironmentDiagnosticsResponse(rsp)
+}
+
+// GetKubernetesEnvironmentLogsWithResponse Get Kubernetes Environment Logs
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+func (c *ClientWithResponses) GetKubernetesEnvironmentLogsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentLogsResponse, error) {
+	rsp, err := c.GetKubernetesEnvironmentLogs(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKubernetesEnvironmentLogsResponse(rsp)
 }
 
 // SelectMetricsSourceWithBodyWithResponse Select Metrics Source
@@ -93036,6 +94347,69 @@ func ParseGetEnvironmentCreationResponse(rsp *http.Response) (*GetEnvironmentCre
 	return response, nil
 }
 
+// ParseSetEnvironmentDebugHoldResponse parses an HTTP response from a SetEnvironmentDebugHoldWithResponse call
+func ParseSetEnvironmentDebugHoldResponse(rsp *http.Response) (*SetEnvironmentDebugHoldResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetEnvironmentDebugHoldResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EnvironmentView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers SetEnvironmentDebugHoldResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers SetEnvironmentDebugHoldResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetDesktopControlResponse parses an HTTP response from a GetDesktopControlWithResponse call
 func ParseGetDesktopControlResponse(rsp *http.Response) (*GetDesktopControlResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -93394,6 +94768,132 @@ func ParseOpenDesktopViewerResponse(rsp *http.Response) (*OpenDesktopViewerRespo
 		response.Headers400 = &headers
 	case true:
 		var headers OpenDesktopViewerResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetKubernetesEnvironmentDiagnosticsResponse parses an HTTP response from a GetKubernetesEnvironmentDiagnosticsWithResponse call
+func ParseGetKubernetesEnvironmentDiagnosticsResponse(rsp *http.Response) (*GetKubernetesEnvironmentDiagnosticsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKubernetesEnvironmentDiagnosticsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest InstanceDiagnostics
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetKubernetesEnvironmentDiagnosticsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetKubernetesEnvironmentLogsResponse parses an HTTP response from a GetKubernetesEnvironmentLogsWithResponse call
+func ParseGetKubernetesEnvironmentLogsResponse(rsp *http.Response) (*GetKubernetesEnvironmentLogsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKubernetesEnvironmentLogsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Logs
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetKubernetesEnvironmentLogsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetKubernetesEnvironmentLogsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

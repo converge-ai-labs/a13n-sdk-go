@@ -504,6 +504,21 @@ func (e EnvironmentAction) Valid() bool {
 	}
 }
 
+// Defines values for ExistingRunEnvironmentMode.
+const (
+	Existing ExistingRunEnvironmentMode = "existing"
+)
+
+// Valid indicates whether the value is a known member of the ExistingRunEnvironmentMode enum.
+func (e ExistingRunEnvironmentMode) Valid() bool {
+	switch e {
+	case Existing:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for FailedStatus.
 const (
 	FailedStatusFailed FailedStatus = "failed"
@@ -513,6 +528,21 @@ const (
 func (e FailedStatus) Valid() bool {
 	switch e {
 	case FailedStatusFailed:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FreshRunEnvironmentMode.
+const (
+	Fresh FreshRunEnvironmentMode = "fresh"
+)
+
+// Valid indicates whether the value is a known member of the FreshRunEnvironmentMode enum.
+func (e FreshRunEnvironmentMode) Valid() bool {
+	switch e {
+	case Fresh:
 		return true
 	default:
 		return false
@@ -842,6 +872,7 @@ const (
 	Default   RunViewRevisionSelection = "default"
 	Inherited RunViewRevisionSelection = "inherited"
 	Pinned    RunViewRevisionSelection = "pinned"
+	Snapshot  RunViewRevisionSelection = "snapshot"
 )
 
 // Valid indicates whether the value is a known member of the RunViewRevisionSelection enum.
@@ -852,6 +883,8 @@ func (e RunViewRevisionSelection) Valid() bool {
 	case Inherited:
 		return true
 	case Pinned:
+		return true
+	case Snapshot:
 		return true
 	default:
 		return false
@@ -933,6 +966,24 @@ func (e Steering) Valid() bool {
 	}
 }
 
+// Defines values for SubagentsMode.
+const (
+	SubagentsModeAsync  SubagentsMode = "async"
+	SubagentsModeInline SubagentsMode = "inline"
+)
+
+// Valid indicates whether the value is a known member of the SubagentsMode enum.
+func (e SubagentsMode) Valid() bool {
+	switch e {
+	case SubagentsModeAsync:
+		return true
+	case SubagentsModeInline:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TextPartType.
 const (
 	TextPartTypeText TextPartType = "text"
@@ -989,16 +1040,16 @@ func (e ThreadViewPurpose) Valid() bool {
 
 // Defines values for ToolExecutionOverrideMode.
 const (
-	Auto   ToolExecutionOverrideMode = "auto"
-	Inline ToolExecutionOverrideMode = "inline"
+	ToolExecutionOverrideModeAuto   ToolExecutionOverrideMode = "auto"
+	ToolExecutionOverrideModeInline ToolExecutionOverrideMode = "inline"
 )
 
 // Valid indicates whether the value is a known member of the ToolExecutionOverrideMode enum.
 func (e ToolExecutionOverrideMode) Valid() bool {
 	switch e {
-	case Auto:
+	case ToolExecutionOverrideModeAuto:
 		return true
-	case Inline:
+	case ToolExecutionOverrideModeInline:
 		return true
 	default:
 		return false
@@ -1221,8 +1272,8 @@ type AgentModelCharacteristics struct {
 
 // AgentOverride What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
-// `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
-// edge removes it; every other field replaces the revision's value.
+// `toolsets` replaces whole toolsets; `retries` replaces supplied members.
+// Every other field, including `subagents`, replaces the whole value.
 type AgentOverride struct {
 	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
@@ -1239,7 +1290,7 @@ type AgentOverride struct {
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
 	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	Subagents            nullable.Nullable[Subagents]                   `json:"subagents,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
@@ -1272,14 +1323,14 @@ type AppReady struct {
 
 // AppReference defines model for AppReference.
 type AppReference struct {
-	AgentRevisionId string `json:"agent_revision_id"`
-	AppId           string `json:"app_id"`
-	ConnectionId    string `json:"connection_id"`
-	ResourceUri     string `json:"resource_uri"`
-	SourceRunId     string `json:"source_run_id"`
-	ToolCallId      string `json:"tool_call_id"`
-	ToolName        string `json:"tool_name"`
-	Unavailable     *bool  `json:"unavailable,omitempty"`
+	AgentDefinitionId string `json:"agent_definition_id"`
+	AppId             string `json:"app_id"`
+	ConnectionId      string `json:"connection_id"`
+	ResourceUri       string `json:"resource_uri"`
+	SourceRunId       string `json:"source_run_id"`
+	ToolCallId        string `json:"tool_call_id"`
+	ToolName          string `json:"tool_name"`
+	Unavailable       *bool  `json:"unavailable,omitempty"`
 }
 
 // ApprovalDecision defines model for ApprovalDecision.
@@ -1453,6 +1504,25 @@ type DisplayContinuation struct {
 	RunId          string                `json:"run_id"`
 }
 
+// DynamicSubagents Root-only task-specific delegation within the parent's capability boundary.
+type DynamicSubagents struct {
+	AllowedModels   *[]string                                           `json:"allowed_models,omitempty"`
+	DefaultModel    nullable.Nullable[string]                           `json:"default_model,omitempty"`
+	DefaultThinking nullable.Nullable[DynamicSubagents_DefaultThinking] `json:"default_thinking,omitempty"`
+	Enabled         *bool                                               `json:"enabled,omitempty"`
+}
+
+// DynamicSubagentsDefaultThinking0 defines model for DynamicSubagents.DefaultThinking.0.
+type DynamicSubagentsDefaultThinking0 = string
+
+// DynamicSubagentsDefaultThinking1 defines model for DynamicSubagents.DefaultThinking.1.
+type DynamicSubagentsDefaultThinking1 = bool
+
+// DynamicSubagents_DefaultThinking defines model for DynamicSubagents.DefaultThinking.
+type DynamicSubagents_DefaultThinking struct {
+	union json.RawMessage
+}
+
 // EntryStatus defines model for EntryStatus.
 type EntryStatus string
 
@@ -1509,6 +1579,17 @@ type ExecutionOverride struct {
 	Tools       nullable.Nullable[ToolExecutionOverride] `json:"tools,omitempty"`
 }
 
+// ExistingRunEnvironment Use this exact primary instance for the Run; absence never triggers allocation.
+type ExistingRunEnvironment struct {
+	EnvironmentId     string                     `json:"environment_id"`
+	Mode              ExistingRunEnvironmentMode `json:"mode"`
+	PermissionCeiling *EnvironmentPermissionSet  `json:"permission_ceiling,omitempty"`
+	WorkingDirectory  nullable.Nullable[string]  `json:"working_directory,omitempty"`
+}
+
+// ExistingRunEnvironmentMode defines model for ExistingRunEnvironment.Mode.
+type ExistingRunEnvironmentMode string
+
 // Failed An explicit external tool failure, including an intentional unanswered question.
 type Failed struct {
 	Message string       `json:"message"`
@@ -1539,6 +1620,17 @@ type FragmentState struct {
 	MaxPending *int                           `json:"max_pending,omitempty"`
 	Pending    *map[string]UnderscoreAssembly `json:"pending,omitempty"`
 }
+
+// FreshRunEnvironment Reserve a primary instance for this accepted Run without changing Thread mounts.
+type FreshRunEnvironment struct {
+	Mode              FreshRunEnvironmentMode   `json:"mode"`
+	PermissionCeiling *EnvironmentPermissionSet `json:"permission_ceiling,omitempty"`
+	TemplateId        string                    `json:"template_id"`
+	WorkingDirectory  nullable.Nullable[string] `json:"working_directory,omitempty"`
+}
+
+// FreshRunEnvironmentMode defines model for FreshRunEnvironment.Mode.
+type FreshRunEnvironmentMode string
 
 // FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
 type FrozenMemoryMount struct {
@@ -1828,10 +1920,16 @@ type RunConfiguration struct {
 	Extensions   *map[string]JsonValue       `json:"extensions,omitempty"`
 }
 
+// RunEnvironment defines model for RunEnvironment.
+type RunEnvironment struct {
+	union json.RawMessage
+}
+
 // RunOptions What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptions struct {
 	Configuration nullable.Nullable[RunConfiguration]  `json:"configuration,omitempty"`
 	Context       nullable.Nullable[RequestContext]    `json:"context,omitempty"`
+	Environment   nullable.Nullable[RunEnvironment]    `json:"environment,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
 	Labels        *map[string]string                   `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]        `json:"max_usage,omitempty"`
@@ -1855,7 +1953,7 @@ type RunStatus string
 // RunView defines model for RunView.
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
-	AgentRevisionId   string                                  `json:"agent_revision_id"`
+	AgentRevisionId   nullable.Nullable[string]               `json:"agent_revision_id"`
 	Attempts          int                                     `json:"attempts"`
 	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
@@ -1962,15 +2060,28 @@ type StreamPosition struct {
 	Sequence int `json:"sequence"`
 }
 
-// SubagentOverride Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
-type SubagentOverride struct {
-	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
-	Context     nullable.Nullable[DelegationContextPolicy] `json:"context,omitempty"`
-	Description nullable.Nullable[string]                  `json:"description,omitempty"`
-	Environment nullable.Nullable[ChildEnvironmentPolicy]  `json:"environment,omitempty"`
-	RevisionId  nullable.Nullable[string]                  `json:"revision_id,omitempty"`
-	UsageLimits nullable.Nullable[UsageLimits]             `json:"usage_limits,omitempty"`
+// SubagentSelection defines model for SubagentSelection.
+type SubagentSelection struct {
+	AgentId     string                    `json:"agent_id"`
+	Context     *DelegationContextPolicy  `json:"context,omitempty"`
+	Description nullable.Nullable[string] `json:"description,omitempty"`
+
+	// Environment What a child run mounts: no environment, the parent's, or a new one from `template_id`.
+	Environment *ChildEnvironmentPolicy        `json:"environment,omitempty"`
+	RevisionId  nullable.Nullable[string]      `json:"revision_id,omitempty"`
+	UsageLimits nullable.Nullable[UsageLimits] `json:"usage_limits,omitempty"`
 }
+
+// Subagents defines model for Subagents.
+type Subagents struct {
+	// Dynamic Root-only task-specific delegation within the parent's capability boundary.
+	Dynamic *DynamicSubagents       `json:"dynamic,omitempty"`
+	Mode    *SubagentsMode          `json:"mode,omitempty"`
+	Named   *map[string]interface{} `json:"named,omitempty"`
+}
+
+// SubagentsMode defines model for Subagents.Mode.
+type SubagentsMode string
 
 // TextPart defines model for TextPart.
 type TextPart struct {
@@ -2392,6 +2503,68 @@ func (t *CallResult) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsDynamicSubagentsDefaultThinking0 returns the union data inside the DynamicSubagents_DefaultThinking as a DynamicSubagentsDefaultThinking0
+func (t DynamicSubagents_DefaultThinking) AsDynamicSubagentsDefaultThinking0() (DynamicSubagentsDefaultThinking0, error) {
+	var body DynamicSubagentsDefaultThinking0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsDefaultThinking0 overwrites any union data inside the DynamicSubagents_DefaultThinking as the provided DynamicSubagentsDefaultThinking0
+func (t *DynamicSubagents_DefaultThinking) FromDynamicSubagentsDefaultThinking0(v DynamicSubagentsDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsDefaultThinking0 performs a merge with any union data inside the DynamicSubagents_DefaultThinking, using the provided DynamicSubagentsDefaultThinking0
+func (t *DynamicSubagents_DefaultThinking) MergeDynamicSubagentsDefaultThinking0(v DynamicSubagentsDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDynamicSubagentsDefaultThinking1 returns the union data inside the DynamicSubagents_DefaultThinking as a DynamicSubagentsDefaultThinking1
+func (t DynamicSubagents_DefaultThinking) AsDynamicSubagentsDefaultThinking1() (DynamicSubagentsDefaultThinking1, error) {
+	var body DynamicSubagentsDefaultThinking1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsDefaultThinking1 overwrites any union data inside the DynamicSubagents_DefaultThinking as the provided DynamicSubagentsDefaultThinking1
+func (t *DynamicSubagents_DefaultThinking) FromDynamicSubagentsDefaultThinking1(v DynamicSubagentsDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsDefaultThinking1 performs a merge with any union data inside the DynamicSubagents_DefaultThinking, using the provided DynamicSubagentsDefaultThinking1
+func (t *DynamicSubagents_DefaultThinking) MergeDynamicSubagentsDefaultThinking1(v DynamicSubagentsDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DynamicSubagents_DefaultThinking) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DynamicSubagents_DefaultThinking) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsTextPart returns the union data inside the Part as a TextPart
 func (t Part) AsTextPart() (TextPart, error) {
 	var body TextPart
@@ -2561,6 +2734,107 @@ func (t Part) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Part) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsFreshRunEnvironment returns the union data inside the RunEnvironment as a FreshRunEnvironment
+func (t RunEnvironment) AsFreshRunEnvironment() (FreshRunEnvironment, error) {
+	var body FreshRunEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFreshRunEnvironment overwrites any union data inside the RunEnvironment as the provided FreshRunEnvironment
+func (t *RunEnvironment) FromFreshRunEnvironment(v FreshRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	t.union = b
+	return err
+}
+
+// MergeFreshRunEnvironment performs a merge with any union data inside the RunEnvironment, using the provided FreshRunEnvironment
+func (t *RunEnvironment) MergeFreshRunEnvironment(v FreshRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsExistingRunEnvironment returns the union data inside the RunEnvironment as a ExistingRunEnvironment
+func (t RunEnvironment) AsExistingRunEnvironment() (ExistingRunEnvironment, error) {
+	var body ExistingRunEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromExistingRunEnvironment overwrites any union data inside the RunEnvironment as the provided ExistingRunEnvironment
+func (t *RunEnvironment) FromExistingRunEnvironment(v ExistingRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	t.union = b
+	return err
+}
+
+// MergeExistingRunEnvironment performs a merge with any union data inside the RunEnvironment, using the provided ExistingRunEnvironment
+func (t *RunEnvironment) MergeExistingRunEnvironment(v ExistingRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunEnvironment) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t RunEnvironment) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "existing":
+		return t.AsExistingRunEnvironment()
+	case "fresh":
+		return t.AsFreshRunEnvironment()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t RunEnvironment) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunEnvironment) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
