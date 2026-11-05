@@ -5181,6 +5181,7 @@ type AnalysisCreate struct {
 	Instructions  *string                      `json:"instructions,omitempty"`
 	MaxTraces     *int                         `json:"max_traces,omitempty"`
 	Presets       *[]Preset                    `json:"presets,omitempty"`
+	SessionIds    *[]string                    `json:"session_ids,omitempty"`
 	StartedAfter  nullable.Nullable[time.Time] `json:"started_after,omitempty"`
 	StartedBefore nullable.Nullable[time.Time] `json:"started_before,omitempty"`
 	TraceId       nullable.Nullable[string]    `json:"trace_id,omitempty"`
@@ -9040,8 +9041,9 @@ type ScheduleUpdate struct {
 
 // SelectedTrace defines model for SelectedTrace.
 type SelectedTrace struct {
-	RunId   string `json:"run_id"`
-	TraceId string `json:"trace_id"`
+	RunId     string                    `json:"run_id"`
+	SessionId nullable.Nullable[string] `json:"session_id,omitempty"`
+	TraceId   string                    `json:"trace_id"`
 }
 
 // Selection defines model for Selection.
