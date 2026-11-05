@@ -9259,10 +9259,11 @@ type ServiceAccountUpdateStatus string
 
 // SessionCreate defines model for SessionCreate.
 type SessionCreate struct {
-	Labels *map[string]string                       `json:"labels,omitempty"`
-	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
-	Origin nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
-	Title  nullable.Nullable[string]                `json:"title,omitempty"`
+	AutoRecreateLostEnvironment *bool                                    `json:"auto_recreate_lost_environment,omitempty"`
+	Labels                      *map[string]string                       `json:"labels,omitempty"`
+	Memory                      nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+	Origin                      nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
+	Title                       nullable.Nullable[string]                `json:"title,omitempty"`
 }
 
 // SessionMemorySettings Participation and complete Space selection; policy belongs to each Space.
@@ -9304,20 +9305,22 @@ type SessionProfile struct {
 
 // SessionUpdate defines model for SessionUpdate.
 type SessionUpdate struct {
-	Labels nullable.Nullable[map[string]string]     `json:"labels,omitempty"`
-	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
-	Origin nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
-	Title  nullable.Nullable[string]                `json:"title,omitempty"`
+	AutoRecreateLostEnvironment *bool                                    `json:"auto_recreate_lost_environment,omitempty"`
+	Labels                      nullable.Nullable[map[string]string]     `json:"labels,omitempty"`
+	Memory                      nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+	Origin                      nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
+	Title                       nullable.Nullable[string]                `json:"title,omitempty"`
 }
 
 // SessionView defines model for SessionView.
 type SessionView struct {
-	Cost        nullable.Nullable[string] `json:"cost"`
-	CreatedAt   time.Time                 `json:"created_at"`
-	CreatedById string                    `json:"created_by_id"`
-	Id          string                    `json:"id"`
-	Labels      map[string]string         `json:"labels"`
-	LastRunId   nullable.Nullable[string] `json:"last_run_id"`
+	AutoRecreateLostEnvironment bool                      `json:"auto_recreate_lost_environment"`
+	Cost                        nullable.Nullable[string] `json:"cost"`
+	CreatedAt                   time.Time                 `json:"created_at"`
+	CreatedById                 string                    `json:"created_by_id"`
+	Id                          string                    `json:"id"`
+	Labels                      map[string]string         `json:"labels"`
+	LastRunId                   nullable.Nullable[string] `json:"last_run_id"`
 
 	// Memory Participation and complete Space selection; policy belongs to each Space.
 	Memory           *SessionMemorySettings            `json:"memory,omitempty"`
