@@ -6734,6 +6734,7 @@ type ExecutionPage struct {
 // ExecutionView Run identity is the Service Run; attempt and worker identify the retained owner.
 type ExecutionView struct {
 	AttemptId            string                       `json:"attempt_id"`
+	CancelRequested      *bool                        `json:"cancel_requested,omitempty"`
 	CancelRequestedAt    nullable.Nullable[time.Time] `json:"cancel_requested_at"`
 	CompletedAt          nullable.Nullable[time.Time] `json:"completed_at,omitempty"`
 	CreatedAt            *time.Time                   `json:"created_at,omitempty"`
