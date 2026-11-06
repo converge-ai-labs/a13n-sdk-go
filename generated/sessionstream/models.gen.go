@@ -1632,16 +1632,6 @@ type FreshRunEnvironment struct {
 // FreshRunEnvironmentMode defines model for FreshRunEnvironment.Mode.
 type FreshRunEnvironmentMode string
 
-// FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
-type FrozenMemoryMount struct {
-	Access   MemoryAccess              `json:"access"`
-	MemoryId string                    `json:"memory_id"`
-	Name     string                    `json:"name"`
-	Recall   *bool                     `json:"recall,omitempty"`
-	Roots    *[]string                 `json:"roots,omitempty"`
-	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
-}
-
 // Gap Output of a followed run was lost: its deltas are held until an `items` frame repairs it.
 type Gap struct {
 	RunId    string `json:"run_id"`
@@ -1923,6 +1913,16 @@ type RunConfiguration struct {
 // RunEnvironment defines model for RunEnvironment.
 type RunEnvironment struct {
 	union json.RawMessage
+}
+
+// RunMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
+type RunMemoryMount struct {
+	Access   MemoryAccess              `json:"access"`
+	MemoryId string                    `json:"memory_id"`
+	Name     string                    `json:"name"`
+	Recall   *bool                     `json:"recall,omitempty"`
+	Roots    *[]string                 `json:"roots,omitempty"`
+	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
 }
 
 // RunOptions What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
@@ -2865,22 +2865,22 @@ func (t *RunView_MemoryMounts_Item) MergeMemoryMount(v MemoryMount) error {
 	return err
 }
 
-// AsFrozenMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a FrozenMemoryMount
-func (t RunView_MemoryMounts_Item) AsFrozenMemoryMount() (FrozenMemoryMount, error) {
-	var body FrozenMemoryMount
+// AsRunMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a RunMemoryMount
+func (t RunView_MemoryMounts_Item) AsRunMemoryMount() (RunMemoryMount, error) {
+	var body RunMemoryMount
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrozenMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) FromFrozenMemoryMount(v FrozenMemoryMount) error {
+// FromRunMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) FromRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrozenMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) MergeFrozenMemoryMount(v FrozenMemoryMount) error {
+// MergeRunMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) MergeRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err

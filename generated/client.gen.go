@@ -3488,6 +3488,24 @@ func (e SubagentsOutputMode) Valid() bool {
 	}
 }
 
+// Defines values for SystemPreset.
+const (
+	General SystemPreset = "general"
+	Journal SystemPreset = "journal"
+)
+
+// Valid indicates whether the value is a known member of the SystemPreset enum.
+func (e SystemPreset) Valid() bool {
+	switch e {
+	case General:
+		return true
+	case Journal:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TextPartType.
 const (
 	TextPartTypeText TextPartType = "text"
@@ -6827,6 +6845,14 @@ type FailureSummary struct {
 	Message Preview `json:"message"`
 }
 
+// FileMemoryGuidance defines model for FileMemoryGuidance.
+type FileMemoryGuidance struct {
+	Custom         *string                   `json:"custom,omitempty"`
+	SystemOverride nullable.Nullable[string] `json:"system_override,omitempty"`
+	SystemPreset   *SystemPreset             `json:"system_preset,omitempty"`
+	Timezone       *string                   `json:"timezone,omitempty"`
+}
+
 // FilesystemInventory defines model for FilesystemInventory.
 type FilesystemInventory struct {
 	Filesystems *map[string]FilesystemObservation `json:"filesystems,omitempty"`
@@ -6943,16 +6969,6 @@ type FreshRunEnvironmentOutput struct {
 
 // FreshRunEnvironmentOutputMode defines model for FreshRunEnvironmentOutput.Mode.
 type FreshRunEnvironmentOutputMode string
-
-// FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
-type FrozenMemoryMount struct {
-	Access   MemoryAccess              `json:"access"`
-	MemoryId string                    `json:"memory_id"`
-	Name     string                    `json:"name"`
-	Recall   *bool                     `json:"recall,omitempty"`
-	Roots    *[]string                 `json:"roots,omitempty"`
-	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
-}
 
 // GitHubSource A directory of a public GitHub repository.
 //
@@ -7413,27 +7429,28 @@ type MemberUsagePage struct {
 
 // Memory defines model for Memory.
 type Memory struct {
-	AlwaysLoad     []string                  `json:"always_load"`
-	ContentBytes   nullable.Nullable[int]    `json:"content_bytes"`
-	CreatedAt      time.Time                 `json:"created_at"`
-	CreatedById    string                    `json:"created_by_id"`
-	Description    nullable.Nullable[string] `json:"description"`
-	FileCount      nullable.Nullable[int]    `json:"file_count"`
-	Guide          nullable.Nullable[string] `json:"guide"`
-	HistoryBytes   nullable.Nullable[int]    `json:"history_bytes"`
-	Id             string                    `json:"id"`
-	InheritedGuide string                    `json:"inherited_guide"`
-	Kind           MemoryKind                `json:"kind"`
-	Labels         map[string]string         `json:"labels"`
-	Name           string                    `json:"name"`
-	Namespace      nullable.Nullable[string] `json:"namespace"`
-	OrganizationId string                    `json:"organization_id"`
-	ProviderId     nullable.Nullable[string] `json:"provider_id"`
-	Type           string                    `json:"type"`
-	UpdatedAt      time.Time                 `json:"updated_at"`
-	UpdatedById    string                    `json:"updated_by_id"`
-	Version        int                       `json:"version"`
-	WorkspaceId    string                    `json:"workspace_id"`
+	AlwaysLoad     []string                              `json:"always_load"`
+	ContentBytes   nullable.Nullable[int]                `json:"content_bytes"`
+	CreatedAt      time.Time                             `json:"created_at"`
+	CreatedById    string                                `json:"created_by_id"`
+	Description    nullable.Nullable[string]             `json:"description"`
+	FileCount      nullable.Nullable[int]                `json:"file_count"`
+	Guidance       nullable.Nullable[FileMemoryGuidance] `json:"guidance"`
+	Guide          nullable.Nullable[string]             `json:"guide"`
+	HistoryBytes   nullable.Nullable[int]                `json:"history_bytes"`
+	Id             string                                `json:"id"`
+	InheritedGuide nullable.Nullable[string]             `json:"inherited_guide"`
+	Kind           MemoryKind                            `json:"kind"`
+	Labels         map[string]string                     `json:"labels"`
+	Name           string                                `json:"name"`
+	Namespace      nullable.Nullable[string]             `json:"namespace"`
+	OrganizationId string                                `json:"organization_id"`
+	ProviderId     nullable.Nullable[string]             `json:"provider_id"`
+	Type           string                                `json:"type"`
+	UpdatedAt      time.Time                             `json:"updated_at"`
+	UpdatedById    string                                `json:"updated_by_id"`
+	Version        int                                   `json:"version"`
+	WorkspaceId    string                                `json:"workspace_id"`
 }
 
 // MemoryAccess defines model for MemoryAccess.
@@ -7442,14 +7459,15 @@ type MemoryAccess string
 // MemoryCreate `postgres` makes a file memory the Service stores; a Memory Provider's type makes a record memory in that
 // provider's backend, under a new namespace or the existing one `namespace` adopts.
 type MemoryCreate struct {
-	AlwaysLoad  *[]string                 `json:"always_load,omitempty"`
-	Description nullable.Nullable[string] `json:"description,omitempty"`
-	Guide       nullable.Nullable[string] `json:"guide,omitempty"`
-	Labels      *map[string]string        `json:"labels,omitempty"`
-	Name        string                    `json:"name"`
-	Namespace   nullable.Nullable[string] `json:"namespace,omitempty"`
-	ProviderId  nullable.Nullable[string] `json:"provider_id,omitempty"`
-	Type        *string                   `json:"type,omitempty"`
+	AlwaysLoad  *[]string                             `json:"always_load,omitempty"`
+	Description nullable.Nullable[string]             `json:"description,omitempty"`
+	Guidance    nullable.Nullable[FileMemoryGuidance] `json:"guidance,omitempty"`
+	Guide       nullable.Nullable[string]             `json:"guide,omitempty"`
+	Labels      *map[string]string                    `json:"labels,omitempty"`
+	Name        string                                `json:"name"`
+	Namespace   nullable.Nullable[string]             `json:"namespace,omitempty"`
+	ProviderId  nullable.Nullable[string]             `json:"provider_id,omitempty"`
+	Type        *string                               `json:"type,omitempty"`
 }
 
 // MemoryEvents defines model for MemoryEvents.
@@ -7516,6 +7534,19 @@ type MemoryFileReplace struct {
 type MemoryFileState struct {
 	File nullable.Nullable[MemoryFile] `json:"file"`
 	Path string                        `json:"path"`
+}
+
+// MemoryGuidancePreset defines model for MemoryGuidancePreset.
+type MemoryGuidancePreset struct {
+	Description string       `json:"description"`
+	Id          SystemPreset `json:"id"`
+	Name        string       `json:"name"`
+	SystemGuide string       `json:"system_guide"`
+}
+
+// MemoryGuidancePresets defines model for MemoryGuidancePresets.
+type MemoryGuidancePresets struct {
+	Items []MemoryGuidancePreset `json:"items"`
 }
 
 // MemoryKind defines model for MemoryKind.
@@ -7646,7 +7677,7 @@ type MemorySpace struct {
 	Description    nullable.Nullable[string] `json:"description"`
 	Enabled        bool                      `json:"enabled"`
 	FileCount      int                       `json:"file_count"`
-	Guide          nullable.Nullable[string] `json:"guide"`
+	Guidance       FileMemoryGuidance        `json:"guidance"`
 	HistoryBytes   int                       `json:"history_bytes"`
 	Id             string                    `json:"id"`
 	Labels         map[string]string         `json:"labels"`
@@ -7665,7 +7696,7 @@ type MemorySpaceCreate struct {
 	AlwaysLoad   *[]string                 `json:"always_load,omitempty"`
 	Description  nullable.Nullable[string] `json:"description,omitempty"`
 	Enabled      *bool                     `json:"enabled,omitempty"`
-	Guide        nullable.Nullable[string] `json:"guide,omitempty"`
+	Guidance     *FileMemoryGuidance       `json:"guidance,omitempty"`
 	Labels       *map[string]string        `json:"labels,omitempty"`
 	Name         string                    `json:"name"`
 	Organization *OrganizationPolicy       `json:"organization,omitempty"`
@@ -7682,7 +7713,7 @@ type MemorySpaceUpdate struct {
 	AlwaysLoad   nullable.Nullable[[]string]           `json:"always_load,omitempty"`
 	Description  nullable.Nullable[string]             `json:"description,omitempty"`
 	Enabled      nullable.Nullable[bool]               `json:"enabled,omitempty"`
-	Guide        nullable.Nullable[string]             `json:"guide,omitempty"`
+	Guidance     nullable.Nullable[FileMemoryGuidance] `json:"guidance,omitempty"`
 	Labels       nullable.Nullable[map[string]string]  `json:"labels,omitempty"`
 	Name         nullable.Nullable[string]             `json:"name,omitempty"`
 	Organization nullable.Nullable[OrganizationPolicy] `json:"organization,omitempty"`
@@ -7690,11 +7721,12 @@ type MemorySpaceUpdate struct {
 
 // MemoryUpdate Fields left out stay unchanged; `description: null` clears it and `guide: null` inherits the default.
 type MemoryUpdate struct {
-	AlwaysLoad  nullable.Nullable[[]string]          `json:"always_load,omitempty"`
-	Description nullable.Nullable[string]            `json:"description,omitempty"`
-	Guide       nullable.Nullable[string]            `json:"guide,omitempty"`
-	Labels      nullable.Nullable[map[string]string] `json:"labels,omitempty"`
-	Name        nullable.Nullable[string]            `json:"name,omitempty"`
+	AlwaysLoad  nullable.Nullable[[]string]           `json:"always_load,omitempty"`
+	Description nullable.Nullable[string]             `json:"description,omitempty"`
+	Guidance    nullable.Nullable[FileMemoryGuidance] `json:"guidance,omitempty"`
+	Guide       nullable.Nullable[string]             `json:"guide,omitempty"`
+	Labels      nullable.Nullable[map[string]string]  `json:"labels,omitempty"`
+	Name        nullable.Nullable[string]             `json:"name,omitempty"`
 }
 
 // Message defines model for Message.
@@ -8900,6 +8932,16 @@ type RunListItem struct {
 	WorkspaceId      string                        `json:"workspace_id"`
 }
 
+// RunMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
+type RunMemoryMount struct {
+	Access   MemoryAccess              `json:"access"`
+	MemoryId string                    `json:"memory_id"`
+	Name     string                    `json:"name"`
+	Recall   *bool                     `json:"recall,omitempty"`
+	Roots    *[]string                 `json:"roots,omitempty"`
+	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
+}
+
 // RunMetrics defines model for RunMetrics.
 type RunMetrics struct {
 	AverageDurationSeconds nullable.Nullable[float32] `json:"average_duration_seconds"`
@@ -9781,6 +9823,9 @@ type SystemMetrics struct {
 	SwapUsedBytes         nullable.Nullable[int]            `json:"swap_used_bytes,omitempty"`
 	ThreadCount           nullable.Nullable[int]            `json:"thread_count,omitempty"`
 }
+
+// SystemPreset defines model for SystemPreset.
+type SystemPreset string
 
 // Template defines model for Template.
 type Template struct {
@@ -11483,6 +11528,12 @@ type ListMemoriesParams struct {
 
 // CreateMemoryParams defines parameters for CreateMemory.
 type CreateMemoryParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListMemoryGuidancePresetsParams defines parameters for ListMemoryGuidancePresets.
+type ListMemoryGuidancePresetsParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -15563,22 +15614,22 @@ func (t *RunView_MemoryMounts_Item) MergeMemoryMount(v MemoryMount) error {
 	return err
 }
 
-// AsFrozenMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a FrozenMemoryMount
-func (t RunView_MemoryMounts_Item) AsFrozenMemoryMount() (FrozenMemoryMount, error) {
-	var body FrozenMemoryMount
+// AsRunMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a RunMemoryMount
+func (t RunView_MemoryMounts_Item) AsRunMemoryMount() (RunMemoryMount, error) {
+	var body RunMemoryMount
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrozenMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) FromFrozenMemoryMount(v FrozenMemoryMount) error {
+// FromRunMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) FromRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrozenMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) MergeFrozenMemoryMount(v FrozenMemoryMount) error {
+// MergeRunMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) MergeRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -19375,6 +19426,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/memories (the `CreateMemory` operationId).
 	CreateMemory(ctx context.Context, params *CreateMemoryParams, body CreateMemoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListMemoryGuidancePresets List Memory Guidance Presets
+	//
+	// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+	ListMemoryGuidancePresets(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteMemory Delete Memory
 	//
@@ -24326,6 +24382,21 @@ func (c *Client) CreateMemoryWithBody(ctx context.Context, params *CreateMemoryP
 // Corresponds with POST /api/v1/memories (the `CreateMemory` operationId).
 func (c *Client) CreateMemory(ctx context.Context, params *CreateMemoryParams, body CreateMemoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateMemoryRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListMemoryGuidancePresets List Memory Guidance Presets
+//
+// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+func (c *Client) ListMemoryGuidancePresets(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListMemoryGuidancePresetsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -37825,6 +37896,48 @@ func NewCreateMemoryRequestWithBody(server string, params *CreateMemoryParams, c
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListMemoryGuidancePresetsRequest constructs an http.Request for the ListMemoryGuidancePresets method
+func NewListMemoryGuidancePresetsRequest(server string, params *ListMemoryGuidancePresetsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memories/guidance-presets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	if params != nil {
 
@@ -55922,6 +56035,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/memories (the `CreateMemory` operationId).
 	CreateMemoryWithResponse(ctx context.Context, params *CreateMemoryParams, body CreateMemoryJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMemoryResponse, error)
 
+	// ListMemoryGuidancePresetsWithResponse List Memory Guidance Presets
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+	ListMemoryGuidancePresetsWithResponse(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*ListMemoryGuidancePresetsResponse, error)
+
 	// DeleteMemoryWithResponse Delete Memory
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -67212,6 +67332,75 @@ func (r CreateMemoryResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CreateMemoryResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListMemoryGuidancePresetsResponse400Headers the declared response headers of an HTTP 400 response for ListMemoryGuidancePresets
+type ListMemoryGuidancePresetsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListMemoryGuidancePresetsResponseDefaultHeaders the declared response headers of an HTTP default response for ListMemoryGuidancePresets
+type ListMemoryGuidancePresetsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListMemoryGuidancePresetsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemoryGuidancePresets
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListMemoryGuidancePresetsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListMemoryGuidancePresetsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListMemoryGuidancePresetsResponse) GetJSON200() *MemoryGuidancePresets {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListMemoryGuidancePresetsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListMemoryGuidancePresetsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListMemoryGuidancePresetsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListMemoryGuidancePresetsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListMemoryGuidancePresetsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListMemoryGuidancePresetsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -85489,6 +85678,19 @@ func (c *ClientWithResponses) CreateMemoryWithResponse(ctx context.Context, para
 	return ParseCreateMemoryResponse(rsp)
 }
 
+// ListMemoryGuidancePresetsWithResponse List Memory Guidance Presets
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+func (c *ClientWithResponses) ListMemoryGuidancePresetsWithResponse(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*ListMemoryGuidancePresetsResponse, error) {
+	rsp, err := c.ListMemoryGuidancePresets(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListMemoryGuidancePresetsResponse(rsp)
+}
+
 // DeleteMemoryWithResponse Delete Memory
 //
 // Returns a wrapper object for the known response body format(s).
@@ -97809,6 +98011,69 @@ func ParseCreateMemoryResponse(rsp *http.Response) (*CreateMemoryResponse, error
 		response.Headers400 = &headers
 	case true:
 		var headers CreateMemoryResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListMemoryGuidancePresetsResponse parses an HTTP response from a ListMemoryGuidancePresetsWithResponse call
+func ParseListMemoryGuidancePresetsResponse(rsp *http.Response) (*ListMemoryGuidancePresetsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListMemoryGuidancePresetsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemoryGuidancePresets
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListMemoryGuidancePresetsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListMemoryGuidancePresetsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
