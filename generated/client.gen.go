@@ -77,6 +77,21 @@ func (e AgentSource) Valid() bool {
 	}
 }
 
+// Defines values for AllowlistDestinationsMode.
+const (
+	Allowlist AllowlistDestinationsMode = "allowlist"
+)
+
+// Valid indicates whether the value is a known member of the AllowlistDestinationsMode enum.
+func (e AllowlistDestinationsMode) Valid() bool {
+	switch e {
+	case Allowlist:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AnyChangeTriggerType.
 const (
 	AnyChange AnyChangeTriggerType = "any_change"
@@ -1118,6 +1133,21 @@ func (e DiagnosticsEnvd) Valid() bool {
 	}
 }
 
+// Defines values for DisabledSandboxMode.
+const (
+	DisabledSandboxModeDisabled DisabledSandboxMode = "disabled"
+)
+
+// Valid indicates whether the value is a known member of the DisabledSandboxMode enum.
+func (e DisabledSandboxMode) Valid() bool {
+	switch e {
+	case DisabledSandboxModeDisabled:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DiscoverySourceKind.
 const (
 	DiscoverySourceKindCapabilities DiscoverySourceKind = "capabilities"
@@ -1133,6 +1163,27 @@ func (e DiscoverySourceKind) Valid() bool {
 	case DiscoverySourceKindConnections:
 		return true
 	case DiscoverySourceKindPlatform:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EgressMode.
+const (
+	EgressModeControlled EgressMode = "controlled"
+	EgressModeDeny       EgressMode = "deny"
+	EgressModeInherit    EgressMode = "inherit"
+)
+
+// Valid indicates whether the value is a known member of the EgressMode enum.
+func (e EgressMode) Valid() bool {
+	switch e {
+	case EgressModeControlled:
+		return true
+	case EgressModeDeny:
+		return true
+	case EgressModeInherit:
 		return true
 	default:
 		return false
@@ -1376,6 +1427,21 @@ func (e EnvironmentAction) Valid() bool {
 	case EnvironmentStateExport:
 		return true
 	case EnvironmentStateRestore:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EnvironmentCredentialSourceKind.
+const (
+	EnvironmentCredentialSourceKindEnvironment EnvironmentCredentialSourceKind = "environment"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentCredentialSourceKind enum.
+func (e EnvironmentCredentialSourceKind) Valid() bool {
+	switch e {
+	case EnvironmentCredentialSourceKindEnvironment:
 		return true
 	default:
 		return false
@@ -1790,6 +1856,24 @@ const (
 func (e GitHubSourceKind) Valid() bool {
 	switch e {
 	case GitHubSourceKindGithub:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GrantAccess.
+const (
+	ReadOnly  GrantAccess = "read_only"
+	ReadWrite GrantAccess = "read_write"
+)
+
+// Valid indicates whether the value is a known member of the GrantAccess enum.
+func (e GrantAccess) Valid() bool {
+	switch e {
+	case ReadOnly:
+		return true
+	case ReadWrite:
 		return true
 	default:
 		return false
@@ -2348,6 +2432,21 @@ func (e ModelSummaryView) Valid() bool {
 	}
 }
 
+// Defines values for NativeIsolationMode.
+const (
+	NativeIsolationModeNative NativeIsolationMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeIsolationMode enum.
+func (e NativeIsolationMode) Valid() bool {
+	switch e {
+	case NativeIsolationModeNative:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for NewThreadKind.
 const (
 	NewThreadKindMessage NewThreadKind = "message"
@@ -2717,6 +2816,21 @@ func (e ProviderTestStatus) Valid() bool {
 	}
 }
 
+// Defines values for PublicDestinationsMode.
+const (
+	Public PublicDestinationsMode = "public"
+)
+
+// Valid indicates whether the value is a known member of the PublicDestinationsMode enum.
+func (e PublicDestinationsMode) Valid() bool {
+	switch e {
+	case Public:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for QueryDataResultType.
 const (
 	Matrix QueryDataResultType = "matrix"
@@ -2855,6 +2969,21 @@ func (e ResourceObservationObservation) Valid() bool {
 	case ResourceObservationObservationPresent:
 		return true
 	case ResourceObservationObservationUnknown:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RestrictedSandboxMode.
+const (
+	Restricted RestrictedSandboxMode = "restricted"
+)
+
+// Valid indicates whether the value is a known member of the RestrictedSandboxMode enum.
+func (e RestrictedSandboxMode) Valid() bool {
+	switch e {
+	case Restricted:
 		return true
 	default:
 		return false
@@ -4115,6 +4244,39 @@ func (e VideoUrlType) Valid() bool {
 	}
 }
 
+// Defines values for VmBackend.
+const (
+	Boxlite      VmBackend = "boxlite"
+	Microsandbox VmBackend = "microsandbox"
+)
+
+// Valid indicates whether the value is a known member of the VmBackend enum.
+func (e VmBackend) Valid() bool {
+	switch e {
+	case Boxlite:
+		return true
+	case Microsandbox:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VmIsolationMode.
+const (
+	Vm VmIsolationMode = "vm"
+)
+
+// Valid indicates whether the value is a known member of the VmIsolationMode enum.
+func (e VmIsolationMode) Valid() bool {
+	switch e {
+	case Vm:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WaitReason.
 const (
 	Approval       WaitReason = "approval"
@@ -5271,6 +5433,15 @@ type AgentValidate struct {
 	Config  AgentConfigInput          `json:"config"`
 }
 
+// AllowlistDestinations defines model for AllowlistDestinations.
+type AllowlistDestinations struct {
+	Hosts *[]string                 `json:"hosts,omitempty"`
+	Mode  AllowlistDestinationsMode `json:"mode"`
+}
+
+// AllowlistDestinationsMode defines model for AllowlistDestinations.Mode.
+type AllowlistDestinationsMode string
+
 // Analysis defines model for Analysis.
 type Analysis struct {
 	AgentId            nullable.Nullable[string] `json:"agent_id"`
@@ -6398,6 +6569,14 @@ type Diagnostics struct {
 // DiagnosticsEnvd defines model for Diagnostics.Envd.
 type DiagnosticsEnvd string
 
+// DisabledSandbox defines model for DisabledSandbox.
+type DisabledSandbox struct {
+	Mode DisabledSandboxMode `json:"mode"`
+}
+
+// DisabledSandboxMode defines model for DisabledSandbox.Mode.
+type DisabledSandboxMode string
+
 // DiscoverySource defines model for DiscoverySource.
 type DiscoverySource struct {
 	Description string                    `json:"description"`
@@ -6467,6 +6646,14 @@ type DynamicSubagentsOutputDefaultThinking1 = bool
 type DynamicSubagentsOutput_DefaultThinking struct {
 	union json.RawMessage
 }
+
+// EgressDestinations defines model for EgressDestinations.
+type EgressDestinations struct {
+	union json.RawMessage
+}
+
+// EgressMode defines model for EgressMode.
+type EgressMode string
 
 // EmailChangeConfirm defines model for EmailChangeConfirm.
 type EmailChangeConfirm struct {
@@ -6561,8 +6748,30 @@ type EntryView struct {
 // EntryViewKind defines model for EntryView.Kind.
 type EntryViewKind string
 
+// EnvdEgressConfiguration defines model for EnvdEgressConfiguration.
+type EnvdEgressConfiguration struct {
+	Destinations EgressDestinations     `json:"destinations"`
+	Secrets      *[]EnvdSecretReference `json:"secrets,omitempty"`
+}
+
+// EnvdSecretReference defines model for EnvdSecretReference.
+type EnvdSecretReference struct {
+	Env         string                      `json:"env"`
+	InjectHosts []string                    `json:"inject_hosts"`
+	Source      EnvironmentCredentialSource `json:"source"`
+}
+
 // EnvironmentAction Exact authorization values in the locked first-party catalog.
 type EnvironmentAction string
+
+// EnvironmentCredentialSource defines model for EnvironmentCredentialSource.
+type EnvironmentCredentialSource struct {
+	Kind EnvironmentCredentialSourceKind `json:"kind"`
+	Name string                          `json:"name"`
+}
+
+// EnvironmentCredentialSourceKind defines model for EnvironmentCredentialSource.Kind.
+type EnvironmentCredentialSourceKind string
 
 // EnvironmentFailure The last error of the outstanding operation or, on a ready instance, of its last renewal.
 //
@@ -6583,7 +6792,12 @@ type EnvironmentMount struct {
 	EnvironmentId     string                          `json:"environment_id"`
 	Name              string                          `json:"name"`
 	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
+	SessionBinding    *string                         `json:"session_binding,omitempty"`
+
+	// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+	SessionConfiguration *SessionConfiguration     `json:"session_configuration,omitempty"`
+	SessionVersion       *int                      `json:"session_version,omitempty"`
+	WorkingDirectory     nullable.Nullable[string] `json:"working_directory,omitempty"`
 }
 
 // EnvironmentPage defines model for EnvironmentPage.
@@ -6776,10 +6990,12 @@ type ExecutionViewStatus string
 
 // ExistingRunEnvironmentInput Use this exact primary instance for the Run; absence never triggers allocation.
 type ExistingRunEnvironmentInput struct {
-	EnvironmentId     string                          `json:"environment_id"`
-	Mode              ExistingRunEnvironmentInputMode `json:"mode"`
-	PermissionCeiling *EnvironmentPermissionSetInput  `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
+	EnvironmentId        string                                  `json:"environment_id"`
+	Mode                 ExistingRunEnvironmentInputMode         `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetInput          `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // ExistingRunEnvironmentInputMode defines model for ExistingRunEnvironmentInput.Mode.
@@ -6787,10 +7003,12 @@ type ExistingRunEnvironmentInputMode string
 
 // ExistingRunEnvironmentOutput Use this exact primary instance for the Run; absence never triggers allocation.
 type ExistingRunEnvironmentOutput struct {
-	EnvironmentId     string                           `json:"environment_id"`
-	Mode              ExistingRunEnvironmentOutputMode `json:"mode"`
-	PermissionCeiling *EnvironmentPermissionSetOutput  `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string]        `json:"working_directory,omitempty"`
+	EnvironmentId        string                                  `json:"environment_id"`
+	Mode                 ExistingRunEnvironmentOutputMode        `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetOutput         `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // ExistingRunEnvironmentOutputMode defines model for ExistingRunEnvironmentOutput.Mode.
@@ -6950,10 +7168,12 @@ type ForkKind string
 
 // FreshRunEnvironmentInput Reserve a primary instance for this accepted Run without changing Thread mounts.
 type FreshRunEnvironmentInput struct {
-	Mode              FreshRunEnvironmentInputMode   `json:"mode"`
-	PermissionCeiling *EnvironmentPermissionSetInput `json:"permission_ceiling,omitempty"`
-	TemplateId        string                         `json:"template_id"`
-	WorkingDirectory  nullable.Nullable[string]      `json:"working_directory,omitempty"`
+	Mode                 FreshRunEnvironmentInputMode            `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetInput          `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	TemplateId           string                                  `json:"template_id"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // FreshRunEnvironmentInputMode defines model for FreshRunEnvironmentInput.Mode.
@@ -6961,10 +7181,12 @@ type FreshRunEnvironmentInputMode string
 
 // FreshRunEnvironmentOutput Reserve a primary instance for this accepted Run without changing Thread mounts.
 type FreshRunEnvironmentOutput struct {
-	Mode              FreshRunEnvironmentOutputMode   `json:"mode"`
-	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
-	TemplateId        string                          `json:"template_id"`
-	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
+	Mode                 FreshRunEnvironmentOutputMode           `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetOutput         `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	TemplateId           string                                  `json:"template_id"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // FreshRunEnvironmentOutputMode defines model for FreshRunEnvironmentOutput.Mode.
@@ -6984,6 +7206,9 @@ type GitHubSource struct {
 
 // GitHubSourceKind defines model for GitHubSource.Kind.
 type GitHubSourceKind string
+
+// GrantAccess defines model for GrantAccess.
+type GrantAccess string
 
 // GrantCreate defines model for GrantCreate.
 type GrantCreate struct {
@@ -7999,10 +8224,12 @@ type ModelUsagePage struct {
 
 // MountCreate defines model for MountCreate.
 type MountCreate struct {
-	EnvironmentId     string                         `json:"environment_id"`
-	Name              string                         `json:"name"`
-	PermissionCeiling *EnvironmentPermissionSetInput `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string]      `json:"working_directory,omitempty"`
+	EnvironmentId        string                                  `json:"environment_id"`
+	Name                 string                                  `json:"name"`
+	PermissionCeiling    *EnvironmentPermissionSetInput          `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // MountPage defines model for MountPage.
@@ -8023,8 +8250,17 @@ type MountView struct {
 	EnvironmentId     string                          `json:"environment_id"`
 	Name              string                          `json:"name"`
 	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
+	SessionBinding    string                          `json:"session_binding"`
 	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory"`
 }
+
+// NativeIsolation defines model for NativeIsolation.
+type NativeIsolation struct {
+	Mode NativeIsolationMode `json:"mode"`
+}
+
+// NativeIsolationMode defines model for NativeIsolation.Mode.
+type NativeIsolationMode string
 
 // NetworkInterfaceMetrics defines model for NetworkInterfaceMetrics.
 type NetworkInterfaceMetrics struct {
@@ -8624,6 +8860,14 @@ type ProviderUpdate struct {
 	Name         nullable.Nullable[string]               `json:"name,omitempty"`
 }
 
+// PublicDestinations defines model for PublicDestinations.
+type PublicDestinations struct {
+	Mode PublicDestinationsMode `json:"mode"`
+}
+
+// PublicDestinationsMode defines model for PublicDestinations.Mode.
+type PublicDestinationsMode string
+
 // Query defines model for Query.
 type Query struct {
 	Endpoint    string                  `json:"endpoint"`
@@ -8736,6 +8980,16 @@ type ResourceObservation struct {
 
 // ResourceObservationObservation defines model for ResourceObservation.Observation.
 type ResourceObservationObservation string
+
+// RestrictedSandbox defines model for RestrictedSandbox.
+type RestrictedSandbox struct {
+	FullDiskRead *bool                 `json:"full_disk_read,omitempty"`
+	Grants       *[]SandboxGrant       `json:"grants,omitempty"`
+	Mode         RestrictedSandboxMode `json:"mode"`
+}
+
+// RestrictedSandboxMode defines model for RestrictedSandbox.Mode.
+type RestrictedSandboxMode string
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
@@ -9093,6 +9347,17 @@ type RunView_Pending struct {
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
 
+// SandboxGrant defines model for SandboxGrant.
+type SandboxGrant struct {
+	Access GrantAccess `json:"access"`
+	Path   string      `json:"path"`
+}
+
+// SandboxPolicy defines model for SandboxPolicy.
+type SandboxPolicy struct {
+	union json.RawMessage
+}
+
 // Schedule defines model for Schedule.
 type Schedule struct {
 	ArchivedAt         nullable.Nullable[time.Time]           `json:"archived_at"`
@@ -9300,6 +9565,32 @@ type ServiceAccountUpdate struct {
 // ServiceAccountUpdateStatus defines model for ServiceAccountUpdate.Status.
 type ServiceAccountUpdateStatus string
 
+// SessionBindingUpdate defines model for SessionBindingUpdate.
+type SessionBindingUpdate struct {
+	// Configuration Tenant-authored Session policy; Service credentials are not process-environment references.
+	Configuration SessionConfiguration `json:"configuration"`
+}
+
+// SessionBindingView defines model for SessionBindingView.
+type SessionBindingView struct {
+	// Configuration Tenant-authored Session policy; Service credentials are not process-environment references.
+	Configuration SessionConfiguration `json:"configuration"`
+	EnvironmentId string               `json:"environment_id"`
+	Name          string               `json:"name"`
+	Version       int                  `json:"version"`
+}
+
+// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+type SessionConfiguration struct {
+	Commands         nullable.Nullable[bool]                    `json:"commands,omitempty"`
+	Egress           nullable.Nullable[EnvdEgressConfiguration] `json:"egress,omitempty"`
+	EgressMode       nullable.Nullable[EgressMode]              `json:"egress_mode,omitempty"`
+	Isolation        nullable.Nullable[SessionIsolation]        `json:"isolation,omitempty"`
+	Lifecycle        nullable.Nullable[SessionLifecyclePolicy]  `json:"lifecycle,omitempty"`
+	Sandbox          nullable.Nullable[SandboxPolicy]           `json:"sandbox,omitempty"`
+	WorkingDirectory nullable.Nullable[string]                  `json:"working_directory,omitempty"`
+}
+
 // SessionCreate defines model for SessionCreate.
 type SessionCreate struct {
 	AutoRecreateLostEnvironment *bool                                    `json:"auto_recreate_lost_environment,omitempty"`
@@ -9307,6 +9598,17 @@ type SessionCreate struct {
 	Memory                      nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
 	Origin                      nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
 	Title                       nullable.Nullable[string]                `json:"title,omitempty"`
+}
+
+// SessionIsolation defines model for SessionIsolation.
+type SessionIsolation struct {
+	union json.RawMessage
+}
+
+// SessionLifecyclePolicy defines model for SessionLifecyclePolicy.
+type SessionLifecyclePolicy struct {
+	IdleTimeoutMs int                    `json:"idle_timeout_ms"`
+	MaxLifetimeMs nullable.Nullable[int] `json:"max_lifetime_ms,omitempty"`
 }
 
 // SessionMemorySettings Participation and complete Space selection; policy belongs to each Space.
@@ -10406,6 +10708,29 @@ type VideoInputPolicy struct {
 
 // VideoUrlType defines model for VideoUrlType.
 type VideoUrlType string
+
+// VmBackend defines model for VmBackend.
+type VmBackend string
+
+// VmIsolation defines model for VmIsolation.
+type VmIsolation struct {
+	Backend   VmBackend       `json:"backend"`
+	Cpus      int             `json:"cpus"`
+	Image     string          `json:"image"`
+	MemoryMib int             `json:"memory_mib"`
+	Mode      VmIsolationMode `json:"mode"`
+	Mounts    *[]VmMount      `json:"mounts,omitempty"`
+}
+
+// VmIsolationMode defines model for VmIsolation.Mode.
+type VmIsolationMode string
+
+// VmMount defines model for VmMount.
+type VmMount struct {
+	Access GrantAccess `json:"access"`
+	Source string      `json:"source"`
+	Target string      `json:"target"`
+}
 
 // WaitReason defines model for WaitReason.
 type WaitReason string
@@ -12973,6 +13298,21 @@ type ListThreadRunsParamsSort string
 // ListThreadRunsParamsDirection defines parameters for ListThreadRuns.
 type ListThreadRunsParamsDirection string
 
+// GetSessionBindingParams defines parameters for GetSessionBinding.
+type GetSessionBindingParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateSessionBindingParams defines parameters for UpdateSessionBinding.
+type UpdateSessionBindingParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ThreadStreamParams defines parameters for ThreadStream.
 type ThreadStreamParams struct {
 	Run         *string `form:"run,omitempty" json:"run,omitempty"`
@@ -13857,6 +14197,9 @@ type AddMemoryMountJSONRequestBody = MemoryMount
 // UpdateMemoryMountJSONRequestBody defines body for UpdateMemoryMount for application/json ContentType.
 type UpdateMemoryMountJSONRequestBody = MemoryMountUpdate
 
+// UpdateSessionBindingJSONRequestBody defines body for UpdateSessionBinding for application/json ContentType.
+type UpdateSessionBindingJSONRequestBody = SessionBindingUpdate
+
 // CreateUploadMultipartRequestBody defines body for CreateUpload for multipart/form-data ContentType.
 type CreateUploadMultipartRequestBody = UploadCreate
 
@@ -14534,6 +14877,107 @@ func (t DynamicSubagentsOutput_DefaultThinking) MarshalJSON() ([]byte, error) {
 }
 
 func (t *DynamicSubagentsOutput_DefaultThinking) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPublicDestinations returns the union data inside the EgressDestinations as a PublicDestinations
+func (t EgressDestinations) AsPublicDestinations() (PublicDestinations, error) {
+	var body PublicDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPublicDestinations overwrites any union data inside the EgressDestinations as the provided PublicDestinations
+func (t *EgressDestinations) FromPublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	t.union = b
+	return err
+}
+
+// MergePublicDestinations performs a merge with any union data inside the EgressDestinations, using the provided PublicDestinations
+func (t *EgressDestinations) MergePublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAllowlistDestinations returns the union data inside the EgressDestinations as a AllowlistDestinations
+func (t EgressDestinations) AsAllowlistDestinations() (AllowlistDestinations, error) {
+	var body AllowlistDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAllowlistDestinations overwrites any union data inside the EgressDestinations as the provided AllowlistDestinations
+func (t *EgressDestinations) FromAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	t.union = b
+	return err
+}
+
+// MergeAllowlistDestinations performs a merge with any union data inside the EgressDestinations, using the provided AllowlistDestinations
+func (t *EgressDestinations) MergeAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t EgressDestinations) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t EgressDestinations) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "allowlist":
+		return t.AsAllowlistDestinations()
+	case "public":
+		return t.AsPublicDestinations()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t EgressDestinations) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *EgressDestinations) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -15712,6 +16156,107 @@ func (t *RunView_Pending) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsDisabledSandbox returns the union data inside the SandboxPolicy as a DisabledSandbox
+func (t SandboxPolicy) AsDisabledSandbox() (DisabledSandbox, error) {
+	var body DisabledSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDisabledSandbox overwrites any union data inside the SandboxPolicy as the provided DisabledSandbox
+func (t *SandboxPolicy) FromDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	t.union = b
+	return err
+}
+
+// MergeDisabledSandbox performs a merge with any union data inside the SandboxPolicy, using the provided DisabledSandbox
+func (t *SandboxPolicy) MergeDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRestrictedSandbox returns the union data inside the SandboxPolicy as a RestrictedSandbox
+func (t SandboxPolicy) AsRestrictedSandbox() (RestrictedSandbox, error) {
+	var body RestrictedSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRestrictedSandbox overwrites any union data inside the SandboxPolicy as the provided RestrictedSandbox
+func (t *SandboxPolicy) FromRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	t.union = b
+	return err
+}
+
+// MergeRestrictedSandbox performs a merge with any union data inside the SandboxPolicy, using the provided RestrictedSandbox
+func (t *SandboxPolicy) MergeRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SandboxPolicy) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SandboxPolicy) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "disabled":
+		return t.AsDisabledSandbox()
+	case "restricted":
+		return t.AsRestrictedSandbox()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SandboxPolicy) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SandboxPolicy) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsCronSchedule returns the union data inside the ScheduleRule as a CronSchedule
 func (t ScheduleRule) AsCronSchedule() (CronSchedule, error) {
 	var body CronSchedule
@@ -15770,6 +16315,107 @@ func (t ScheduleRule) MarshalJSON() ([]byte, error) {
 }
 
 func (t *ScheduleRule) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsNativeIsolation returns the union data inside the SessionIsolation as a NativeIsolation
+func (t SessionIsolation) AsNativeIsolation() (NativeIsolation, error) {
+	var body NativeIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeIsolation overwrites any union data inside the SessionIsolation as the provided NativeIsolation
+func (t *SessionIsolation) FromNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	t.union = b
+	return err
+}
+
+// MergeNativeIsolation performs a merge with any union data inside the SessionIsolation, using the provided NativeIsolation
+func (t *SessionIsolation) MergeNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsVmIsolation returns the union data inside the SessionIsolation as a VmIsolation
+func (t SessionIsolation) AsVmIsolation() (VmIsolation, error) {
+	var body VmIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromVmIsolation overwrites any union data inside the SessionIsolation as the provided VmIsolation
+func (t *SessionIsolation) FromVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	t.union = b
+	return err
+}
+
+// MergeVmIsolation performs a merge with any union data inside the SessionIsolation, using the provided VmIsolation
+func (t *SessionIsolation) MergeVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SessionIsolation) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SessionIsolation) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "native":
+		return t.AsNativeIsolation()
+	case "vm":
+		return t.AsVmIsolation()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SessionIsolation) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SessionIsolation) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -20891,6 +21537,25 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 	ListThreadRuns(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSessionBinding Get Session Binding
+	//
+	// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+	GetSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSessionBindingWithBody Update Session Binding
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBindingWithBody(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSessionBinding Update Session Binding
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ThreadStream Thread Stream
 	//
@@ -28037,6 +28702,55 @@ func (c *Client) UpdateMemoryMount(ctx context.Context, threadId string, name st
 // Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 func (c *Client) ListThreadRuns(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListThreadRunsRequest(c.Server, threadId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetSessionBinding Get Session Binding
+//
+// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+func (c *Client) GetSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSessionBindingRequest(c.Server, threadId, environmentId, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSessionBindingWithBody Update Session Binding
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *Client) UpdateSessionBindingWithBody(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSessionBindingRequestWithBody(c.Server, threadId, environmentId, name, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSessionBinding Update Session Binding
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *Client) UpdateSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSessionBindingRequest(c.Server, threadId, environmentId, name, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -49600,6 +50314,156 @@ func NewListThreadRunsRequest(server string, threadId string, params *ListThread
 	return req, nil
 }
 
+// NewGetSessionBindingRequest constructs an http.Request for the GetSessionBinding method
+func NewGetSessionBindingRequest(server string, threadId string, environmentId string, name string, params *GetSessionBindingParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/threads/%s/session-bindings/%s/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateSessionBindingRequest calls the generic UpdateSessionBinding builder with application/json body
+func NewUpdateSessionBindingRequest(server string, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSessionBindingRequestWithBody(server, threadId, environmentId, name, params, "application/json", bodyReader)
+}
+
+// NewUpdateSessionBindingRequestWithBody constructs an http.Request for the UpdateSessionBinding method, with any body, and a specified content type
+func NewUpdateSessionBindingRequestWithBody(server string, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/threads/%s/session-bindings/%s/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewThreadStreamRequest constructs an http.Request for the ThreadStream method
 func NewThreadStreamRequest(server string, threadId string, params *ThreadStreamParams) (*http.Request, error) {
 	var err error
@@ -57711,6 +58575,27 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 	ListThreadRunsWithResponse(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*ListThreadRunsResponse, error)
+
+	// GetSessionBindingWithResponse Get Session Binding
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+	GetSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*GetSessionBindingResponse, error)
+
+	// UpdateSessionBindingWithBodyWithResponse Update Session Binding
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBindingWithBodyWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error)
+
+	// UpdateSessionBindingWithResponse Update Session Binding
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error)
 
 	// ThreadStreamWithResponse Thread Stream
 	//
@@ -78487,6 +79372,144 @@ func (r ListThreadRunsResponse) ContentType() string {
 	return ""
 }
 
+// GetSessionBindingResponse400Headers the declared response headers of an HTTP 400 response for GetSessionBinding
+type GetSessionBindingResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetSessionBindingResponseDefaultHeaders the declared response headers of an HTTP default response for GetSessionBinding
+type GetSessionBindingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetSessionBindingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionBindingView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetSessionBindingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetSessionBindingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetSessionBindingResponse) GetJSON200() *SessionBindingView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetSessionBindingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetSessionBindingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetSessionBindingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSessionBindingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSessionBindingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSessionBindingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateSessionBindingResponse400Headers the declared response headers of an HTTP 400 response for UpdateSessionBinding
+type UpdateSessionBindingResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateSessionBindingResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateSessionBinding
+type UpdateSessionBindingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateSessionBindingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionBindingView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateSessionBindingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateSessionBindingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateSessionBindingResponse) GetJSON200() *SessionBindingView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateSessionBindingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateSessionBindingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateSessionBindingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSessionBindingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSessionBindingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateSessionBindingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ThreadStreamResponse400Headers the declared response headers of an HTTP 400 response for ThreadStream
 type ThreadStreamResponse400Headers struct {
 	XRequestId *string
@@ -88667,6 +89690,45 @@ func (c *ClientWithResponses) ListThreadRunsWithResponse(ctx context.Context, th
 		return nil, err
 	}
 	return ParseListThreadRunsResponse(rsp)
+}
+
+// GetSessionBindingWithResponse Get Session Binding
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+func (c *ClientWithResponses) GetSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*GetSessionBindingResponse, error) {
+	rsp, err := c.GetSessionBinding(ctx, threadId, environmentId, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSessionBindingResponse(rsp)
+}
+
+// UpdateSessionBindingWithBodyWithResponse Update Session Binding
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *ClientWithResponses) UpdateSessionBindingWithBodyWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error) {
+	rsp, err := c.UpdateSessionBindingWithBody(ctx, threadId, environmentId, name, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSessionBindingResponse(rsp)
+}
+
+// UpdateSessionBindingWithResponse Update Session Binding
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *ClientWithResponses) UpdateSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error) {
+	rsp, err := c.UpdateSessionBinding(ctx, threadId, environmentId, name, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSessionBindingResponse(rsp)
 }
 
 // ThreadStreamWithResponse Thread Stream
@@ -108221,6 +109283,132 @@ func ParseListThreadRunsResponse(rsp *http.Response) (*ListThreadRunsResponse, e
 		response.Headers400 = &headers
 	case true:
 		var headers ListThreadRunsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetSessionBindingResponse parses an HTTP response from a GetSessionBindingWithResponse call
+func ParseGetSessionBindingResponse(rsp *http.Response) (*GetSessionBindingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSessionBindingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionBindingView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetSessionBindingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetSessionBindingResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSessionBindingResponse parses an HTTP response from a UpdateSessionBindingWithResponse call
+func ParseUpdateSessionBindingResponse(rsp *http.Response) (*UpdateSessionBindingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSessionBindingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionBindingView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateSessionBindingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateSessionBindingResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

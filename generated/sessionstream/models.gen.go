@@ -51,6 +51,21 @@ func (e AgentReviewerOnFlagged) Valid() bool {
 	}
 }
 
+// Defines values for AllowlistDestinationsMode.
+const (
+	Allowlist AllowlistDestinationsMode = "allowlist"
+)
+
+// Valid indicates whether the value is a known member of the AllowlistDestinationsMode enum.
+func (e AllowlistDestinationsMode) Valid() bool {
+	switch e {
+	case Allowlist:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ApproveAction.
 const (
 	ApproveActionApprove ApproveAction = "approve"
@@ -312,6 +327,42 @@ func (e DenyAction) Valid() bool {
 	}
 }
 
+// Defines values for DisabledSandboxMode.
+const (
+	Disabled DisabledSandboxMode = "disabled"
+)
+
+// Valid indicates whether the value is a known member of the DisabledSandboxMode enum.
+func (e DisabledSandboxMode) Valid() bool {
+	switch e {
+	case Disabled:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EgressMode.
+const (
+	EgressModeControlled EgressMode = "controlled"
+	EgressModeDeny       EgressMode = "deny"
+	EgressModeInherit    EgressMode = "inherit"
+)
+
+// Valid indicates whether the value is a known member of the EgressMode enum.
+func (e EgressMode) Valid() bool {
+	switch e {
+	case EgressModeControlled:
+		return true
+	case EgressModeDeny:
+		return true
+	case EgressModeInherit:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for EntryStatus.
 const (
 	EntryStatusAssigned  EntryStatus = "assigned"
@@ -504,6 +555,21 @@ func (e EnvironmentAction) Valid() bool {
 	}
 }
 
+// Defines values for EnvironmentCredentialSourceKind.
+const (
+	Environment EnvironmentCredentialSourceKind = "environment"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentCredentialSourceKind enum.
+func (e EnvironmentCredentialSourceKind) Valid() bool {
+	switch e {
+	case Environment:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ExistingRunEnvironmentMode.
 const (
 	Existing ExistingRunEnvironmentMode = "existing"
@@ -543,6 +609,24 @@ const (
 func (e FreshRunEnvironmentMode) Valid() bool {
 	switch e {
 	case Fresh:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GrantAccess.
+const (
+	ReadOnly  GrantAccess = "read_only"
+	ReadWrite GrantAccess = "read_write"
+)
+
+// Valid indicates whether the value is a known member of the GrantAccess enum.
+func (e GrantAccess) Valid() bool {
+	switch e {
+	case ReadOnly:
+		return true
+	case ReadWrite:
 		return true
 	default:
 		return false
@@ -720,6 +804,21 @@ func (e MemorySourceStatus) Valid() bool {
 	}
 }
 
+// Defines values for NativeIsolationMode.
+const (
+	Native NativeIsolationMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeIsolationMode enum.
+func (e NativeIsolationMode) Valid() bool {
+	switch e {
+	case Native:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OccurrenceStatus.
 const (
 	OccurrenceStatusCancelled OccurrenceStatus = "cancelled"
@@ -816,6 +915,36 @@ func (e PlatformGroup) Valid() bool {
 	case Schedules:
 		return true
 	case Skills:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PublicDestinationsMode.
+const (
+	Public PublicDestinationsMode = "public"
+)
+
+// Valid indicates whether the value is a known member of the PublicDestinationsMode enum.
+func (e PublicDestinationsMode) Valid() bool {
+	switch e {
+	case Public:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RestrictedSandboxMode.
+const (
+	Restricted RestrictedSandboxMode = "restricted"
+)
+
+// Valid indicates whether the value is a known member of the RestrictedSandboxMode enum.
+func (e RestrictedSandboxMode) Valid() bool {
+	switch e {
+	case Restricted:
 		return true
 	default:
 		return false
@@ -1218,6 +1347,39 @@ func (e UrlPartType) Valid() bool {
 	}
 }
 
+// Defines values for VmBackend.
+const (
+	Boxlite      VmBackend = "boxlite"
+	Microsandbox VmBackend = "microsandbox"
+)
+
+// Valid indicates whether the value is a known member of the VmBackend enum.
+func (e VmBackend) Valid() bool {
+	switch e {
+	case Boxlite:
+		return true
+	case Microsandbox:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VmIsolationMode.
+const (
+	Vm VmIsolationMode = "vm"
+)
+
+// Valid indicates whether the value is a known member of the VmIsolationMode enum.
+func (e VmIsolationMode) Valid() bool {
+	switch e {
+	case Vm:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WaitReason.
 const (
 	Approval       WaitReason = "approval"
@@ -1313,6 +1475,15 @@ type AgentReviewerOnError string
 
 // AgentReviewerOnFlagged defines model for AgentReviewer.OnFlagged.
 type AgentReviewerOnFlagged string
+
+// AllowlistDestinations defines model for AllowlistDestinations.
+type AllowlistDestinations struct {
+	Hosts *[]string                 `json:"hosts,omitempty"`
+	Mode  AllowlistDestinationsMode `json:"mode"`
+}
+
+// AllowlistDestinationsMode defines model for AllowlistDestinations.Mode.
+type AllowlistDestinationsMode string
 
 // AppReady App originals and references are committed; opening still checks access and fetches current HTML.
 type AppReady struct {
@@ -1487,6 +1658,14 @@ type Deny struct {
 // DenyAction defines model for Deny.Action.
 type DenyAction string
 
+// DisabledSandbox defines model for DisabledSandbox.
+type DisabledSandbox struct {
+	Mode DisabledSandboxMode `json:"mode"`
+}
+
+// DisabledSandboxMode defines model for DisabledSandbox.Mode.
+type DisabledSandboxMode string
+
 // DisplayContinuation Parsing state at a semantic cut; Host paging may retire only immutable items.
 type DisplayContinuation struct {
 	Arguments nullable.Nullable[UnderscoreArguments] `json:"arguments,omitempty"`
@@ -1523,6 +1702,14 @@ type DynamicSubagents_DefaultThinking struct {
 	union json.RawMessage
 }
 
+// EgressDestinations defines model for EgressDestinations.
+type EgressDestinations struct {
+	union json.RawMessage
+}
+
+// EgressMode defines model for EgressMode.
+type EgressMode string
+
 // EntryStatus defines model for EntryStatus.
 type EntryStatus string
 
@@ -1553,15 +1740,42 @@ type EntryView struct {
 // EntryViewKind defines model for EntryView.Kind.
 type EntryViewKind string
 
+// EnvdEgressConfiguration defines model for EnvdEgressConfiguration.
+type EnvdEgressConfiguration struct {
+	Destinations EgressDestinations     `json:"destinations"`
+	Secrets      *[]EnvdSecretReference `json:"secrets,omitempty"`
+}
+
+// EnvdSecretReference defines model for EnvdSecretReference.
+type EnvdSecretReference struct {
+	Env         string                      `json:"env"`
+	InjectHosts []string                    `json:"inject_hosts"`
+	Source      EnvironmentCredentialSource `json:"source"`
+}
+
 // EnvironmentAction Exact authorization values in the locked first-party catalog.
 type EnvironmentAction string
+
+// EnvironmentCredentialSource defines model for EnvironmentCredentialSource.
+type EnvironmentCredentialSource struct {
+	Kind EnvironmentCredentialSourceKind `json:"kind"`
+	Name string                          `json:"name"`
+}
+
+// EnvironmentCredentialSourceKind defines model for EnvironmentCredentialSource.Kind.
+type EnvironmentCredentialSourceKind string
 
 // EnvironmentMount defines model for EnvironmentMount.
 type EnvironmentMount struct {
 	EnvironmentId     string                    `json:"environment_id"`
 	Name              string                    `json:"name"`
 	PermissionCeiling *EnvironmentPermissionSet `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string] `json:"working_directory,omitempty"`
+	SessionBinding    *string                   `json:"session_binding,omitempty"`
+
+	// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+	SessionConfiguration *SessionConfiguration     `json:"session_configuration,omitempty"`
+	SessionVersion       *int                      `json:"session_version,omitempty"`
+	WorkingDirectory     nullable.Nullable[string] `json:"working_directory,omitempty"`
 }
 
 // EnvironmentPermissionSet defines model for EnvironmentPermissionSet.
@@ -1581,10 +1795,12 @@ type ExecutionOverride struct {
 
 // ExistingRunEnvironment Use this exact primary instance for the Run; absence never triggers allocation.
 type ExistingRunEnvironment struct {
-	EnvironmentId     string                     `json:"environment_id"`
-	Mode              ExistingRunEnvironmentMode `json:"mode"`
-	PermissionCeiling *EnvironmentPermissionSet  `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string]  `json:"working_directory,omitempty"`
+	EnvironmentId        string                                  `json:"environment_id"`
+	Mode                 ExistingRunEnvironmentMode              `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSet               `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // ExistingRunEnvironmentMode defines model for ExistingRunEnvironment.Mode.
@@ -1623,10 +1839,12 @@ type FragmentState struct {
 
 // FreshRunEnvironment Reserve a primary instance for this accepted Run without changing Thread mounts.
 type FreshRunEnvironment struct {
-	Mode              FreshRunEnvironmentMode   `json:"mode"`
-	PermissionCeiling *EnvironmentPermissionSet `json:"permission_ceiling,omitempty"`
-	TemplateId        string                    `json:"template_id"`
-	WorkingDirectory  nullable.Nullable[string] `json:"working_directory,omitempty"`
+	Mode                 FreshRunEnvironmentMode                 `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSet               `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	TemplateId           string                                  `json:"template_id"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // FreshRunEnvironmentMode defines model for FreshRunEnvironment.Mode.
@@ -1637,6 +1855,9 @@ type Gap struct {
 	RunId    string `json:"run_id"`
 	ThreadId string `json:"thread_id"`
 }
+
+// GrantAccess defines model for GrantAccess.
+type GrantAccess string
 
 // HistoricalDesktopPending Read-only projection of sealed desktop suspensions predating Computer-scoped control.
 type HistoricalDesktopPending struct {
@@ -1747,6 +1968,14 @@ type MemorySourceStatus string
 type MessagePayload struct {
 	Content []Part `json:"content"`
 }
+
+// NativeIsolation defines model for NativeIsolation.
+type NativeIsolation struct {
+	Mode NativeIsolationMode `json:"mode"`
+}
+
+// NativeIsolationMode defines model for NativeIsolation.Mode.
+type NativeIsolationMode string
 
 // ObserverContinuation Native conversion cursors required to resume mid-part, without raw history.
 type ObserverContinuation struct {
@@ -1867,6 +2096,14 @@ type Progress struct {
 	PendingOccurrenceId nullable.Nullable[string]    `json:"pending_occurrence_id"`
 }
 
+// PublicDestinations defines model for PublicDestinations.
+type PublicDestinations struct {
+	Mode PublicDestinationsMode `json:"mode"`
+}
+
+// PublicDestinationsMode defines model for PublicDestinations.Mode.
+type PublicDestinationsMode string
+
 // RecordSource defines model for RecordSource.
 type RecordSource struct {
 	Id     string `json:"id"`
@@ -1877,6 +2114,16 @@ type RecordSource struct {
 type RequestContext struct {
 	Headers *map[string]string `json:"headers,omitempty"`
 }
+
+// RestrictedSandbox defines model for RestrictedSandbox.
+type RestrictedSandbox struct {
+	FullDiskRead *bool                 `json:"full_disk_read,omitempty"`
+	Grants       *[]SandboxGrant       `json:"grants,omitempty"`
+	Mode         RestrictedSandboxMode `json:"mode"`
+}
+
+// RestrictedSandboxMode defines model for RestrictedSandbox.Mode.
+type RestrictedSandboxMode string
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
@@ -2005,6 +2252,17 @@ type RunView_Pending struct {
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
 
+// SandboxGrant defines model for SandboxGrant.
+type SandboxGrant struct {
+	Access GrantAccess `json:"access"`
+	Path   string      `json:"path"`
+}
+
+// SandboxPolicy defines model for SandboxPolicy.
+type SandboxPolicy struct {
+	union json.RawMessage
+}
+
 // ScheduleEvent defines model for ScheduleEvent.
 type ScheduleEvent struct {
 	Configuration Configuration `json:"configuration"`
@@ -2029,6 +2287,28 @@ type ScheduleState string
 
 // ScheduleTrigger defines model for ScheduleTrigger.
 type ScheduleTrigger string
+
+// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+type SessionConfiguration struct {
+	Commands         nullable.Nullable[bool]                    `json:"commands,omitempty"`
+	Egress           nullable.Nullable[EnvdEgressConfiguration] `json:"egress,omitempty"`
+	EgressMode       nullable.Nullable[EgressMode]              `json:"egress_mode,omitempty"`
+	Isolation        nullable.Nullable[SessionIsolation]        `json:"isolation,omitempty"`
+	Lifecycle        nullable.Nullable[SessionLifecyclePolicy]  `json:"lifecycle,omitempty"`
+	Sandbox          nullable.Nullable[SandboxPolicy]           `json:"sandbox,omitempty"`
+	WorkingDirectory nullable.Nullable[string]                  `json:"working_directory,omitempty"`
+}
+
+// SessionIsolation defines model for SessionIsolation.
+type SessionIsolation struct {
+	union json.RawMessage
+}
+
+// SessionLifecyclePolicy defines model for SessionLifecyclePolicy.
+type SessionLifecyclePolicy struct {
+	IdleTimeoutMs int                    `json:"idle_timeout_ms"`
+	MaxLifetimeMs nullable.Nullable[int] `json:"max_lifetime_ms,omitempty"`
+}
 
 // SharedSkillSync Publish mutable conventional names; the last completed publication wins.
 type SharedSkillSync struct {
@@ -2259,6 +2539,29 @@ type UsageLimits struct {
 	RequestLimit               nullable.Nullable[int]    `json:"request_limit,omitempty"`
 	ToolCallsLimit             nullable.Nullable[int]    `json:"tool_calls_limit,omitempty"`
 	TotalTokensLimit           nullable.Nullable[int]    `json:"total_tokens_limit,omitempty"`
+}
+
+// VmBackend defines model for VmBackend.
+type VmBackend string
+
+// VmIsolation defines model for VmIsolation.
+type VmIsolation struct {
+	Backend   VmBackend       `json:"backend"`
+	Cpus      int             `json:"cpus"`
+	Image     string          `json:"image"`
+	MemoryMib int             `json:"memory_mib"`
+	Mode      VmIsolationMode `json:"mode"`
+	Mounts    *[]VmMount      `json:"mounts,omitempty"`
+}
+
+// VmIsolationMode defines model for VmIsolation.Mode.
+type VmIsolationMode string
+
+// VmMount defines model for VmMount.
+type VmMount struct {
+	Access GrantAccess `json:"access"`
+	Source string      `json:"source"`
+	Target string      `json:"target"`
 }
 
 // WaitReason defines model for WaitReason.
@@ -2561,6 +2864,107 @@ func (t DynamicSubagents_DefaultThinking) MarshalJSON() ([]byte, error) {
 }
 
 func (t *DynamicSubagents_DefaultThinking) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPublicDestinations returns the union data inside the EgressDestinations as a PublicDestinations
+func (t EgressDestinations) AsPublicDestinations() (PublicDestinations, error) {
+	var body PublicDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPublicDestinations overwrites any union data inside the EgressDestinations as the provided PublicDestinations
+func (t *EgressDestinations) FromPublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	t.union = b
+	return err
+}
+
+// MergePublicDestinations performs a merge with any union data inside the EgressDestinations, using the provided PublicDestinations
+func (t *EgressDestinations) MergePublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAllowlistDestinations returns the union data inside the EgressDestinations as a AllowlistDestinations
+func (t EgressDestinations) AsAllowlistDestinations() (AllowlistDestinations, error) {
+	var body AllowlistDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAllowlistDestinations overwrites any union data inside the EgressDestinations as the provided AllowlistDestinations
+func (t *EgressDestinations) FromAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	t.union = b
+	return err
+}
+
+// MergeAllowlistDestinations performs a merge with any union data inside the EgressDestinations, using the provided AllowlistDestinations
+func (t *EgressDestinations) MergeAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t EgressDestinations) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t EgressDestinations) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "allowlist":
+		return t.AsAllowlistDestinations()
+	case "public":
+		return t.AsPublicDestinations()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t EgressDestinations) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *EgressDestinations) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -2963,6 +3367,107 @@ func (t *RunView_Pending) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsDisabledSandbox returns the union data inside the SandboxPolicy as a DisabledSandbox
+func (t SandboxPolicy) AsDisabledSandbox() (DisabledSandbox, error) {
+	var body DisabledSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDisabledSandbox overwrites any union data inside the SandboxPolicy as the provided DisabledSandbox
+func (t *SandboxPolicy) FromDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	t.union = b
+	return err
+}
+
+// MergeDisabledSandbox performs a merge with any union data inside the SandboxPolicy, using the provided DisabledSandbox
+func (t *SandboxPolicy) MergeDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRestrictedSandbox returns the union data inside the SandboxPolicy as a RestrictedSandbox
+func (t SandboxPolicy) AsRestrictedSandbox() (RestrictedSandbox, error) {
+	var body RestrictedSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRestrictedSandbox overwrites any union data inside the SandboxPolicy as the provided RestrictedSandbox
+func (t *SandboxPolicy) FromRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	t.union = b
+	return err
+}
+
+// MergeRestrictedSandbox performs a merge with any union data inside the SandboxPolicy, using the provided RestrictedSandbox
+func (t *SandboxPolicy) MergeRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SandboxPolicy) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SandboxPolicy) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "disabled":
+		return t.AsDisabledSandbox()
+	case "restricted":
+		return t.AsRestrictedSandbox()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SandboxPolicy) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SandboxPolicy) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsCronSchedule returns the union data inside the ScheduleRule as a CronSchedule
 func (t ScheduleRule) AsCronSchedule() (CronSchedule, error) {
 	var body CronSchedule
@@ -3021,6 +3526,107 @@ func (t ScheduleRule) MarshalJSON() ([]byte, error) {
 }
 
 func (t *ScheduleRule) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsNativeIsolation returns the union data inside the SessionIsolation as a NativeIsolation
+func (t SessionIsolation) AsNativeIsolation() (NativeIsolation, error) {
+	var body NativeIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeIsolation overwrites any union data inside the SessionIsolation as the provided NativeIsolation
+func (t *SessionIsolation) FromNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	t.union = b
+	return err
+}
+
+// MergeNativeIsolation performs a merge with any union data inside the SessionIsolation, using the provided NativeIsolation
+func (t *SessionIsolation) MergeNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsVmIsolation returns the union data inside the SessionIsolation as a VmIsolation
+func (t SessionIsolation) AsVmIsolation() (VmIsolation, error) {
+	var body VmIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromVmIsolation overwrites any union data inside the SessionIsolation as the provided VmIsolation
+func (t *SessionIsolation) FromVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	t.union = b
+	return err
+}
+
+// MergeVmIsolation performs a merge with any union data inside the SessionIsolation, using the provided VmIsolation
+func (t *SessionIsolation) MergeVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SessionIsolation) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SessionIsolation) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "native":
+		return t.AsNativeIsolation()
+	case "vm":
+		return t.AsVmIsolation()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SessionIsolation) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SessionIsolation) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
