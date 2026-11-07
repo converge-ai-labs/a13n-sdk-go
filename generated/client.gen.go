@@ -20,42 +20,6 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-// Defines values for AgentConfigInputSubagentMode.
-const (
-	AgentConfigInputSubagentModeAsync  AgentConfigInputSubagentMode = "async"
-	AgentConfigInputSubagentModeInline AgentConfigInputSubagentMode = "inline"
-)
-
-// Valid indicates whether the value is a known member of the AgentConfigInputSubagentMode enum.
-func (e AgentConfigInputSubagentMode) Valid() bool {
-	switch e {
-	case AgentConfigInputSubagentModeAsync:
-		return true
-	case AgentConfigInputSubagentModeInline:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for AgentConfigOutputSubagentMode.
-const (
-	AgentConfigOutputSubagentModeAsync  AgentConfigOutputSubagentMode = "async"
-	AgentConfigOutputSubagentModeInline AgentConfigOutputSubagentMode = "inline"
-)
-
-// Valid indicates whether the value is a known member of the AgentConfigOutputSubagentMode enum.
-func (e AgentConfigOutputSubagentMode) Valid() bool {
-	switch e {
-	case AgentConfigOutputSubagentModeAsync:
-		return true
-	case AgentConfigOutputSubagentModeInline:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AgentReviewerOnError.
 const (
 	AgentReviewerOnErrorAllow            AgentReviewerOnError = "allow"
@@ -107,6 +71,21 @@ func (e AgentSource) Valid() bool {
 	case Builtin:
 		return true
 	case Custom:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AllowlistDestinationsMode.
+const (
+	Allowlist AllowlistDestinationsMode = "allowlist"
+)
+
+// Valid indicates whether the value is a known member of the AllowlistDestinationsMode enum.
+func (e AllowlistDestinationsMode) Valid() bool {
+	switch e {
+	case Allowlist:
 		return true
 	default:
 		return false
@@ -274,16 +253,16 @@ func (e AuthorizationStatusState) Valid() bool {
 
 // Defines values for BrowserSource.
 const (
-	ExternalCdp BrowserSource = "external_cdp"
-	Managed     BrowserSource = "managed"
+	BrowserSourceExternalCdp BrowserSource = "external_cdp"
+	BrowserSourceManaged     BrowserSource = "managed"
 )
 
 // Valid indicates whether the value is a known member of the BrowserSource enum.
 func (e BrowserSource) Valid() bool {
 	switch e {
-	case ExternalCdp:
+	case BrowserSourceExternalCdp:
 		return true
-	case Managed:
+	case BrowserSourceManaged:
 		return true
 	default:
 		return false
@@ -454,19 +433,19 @@ func (e Category) Valid() bool {
 
 // Defines values for Certainty.
 const (
-	Known         Certainty = "known"
-	NotDispatched Certainty = "not_dispatched"
-	Unknown       Certainty = "unknown"
+	CertaintyKnown         Certainty = "known"
+	CertaintyNotDispatched Certainty = "not_dispatched"
+	CertaintyUnknown       Certainty = "unknown"
 )
 
 // Valid indicates whether the value is a known member of the Certainty enum.
 func (e Certainty) Valid() bool {
 	switch e {
-	case Known:
+	case CertaintyKnown:
 		return true
-	case NotDispatched:
+	case CertaintyNotDispatched:
 		return true
-	case Unknown:
+	case CertaintyUnknown:
 		return true
 	default:
 		return false
@@ -524,6 +503,30 @@ func (e ClientAuthentication) Valid() bool {
 	case ClientAuthenticationClientSecretPost:
 		return true
 	case ClientAuthenticationNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ClientConnectionObservationState.
+const (
+	ClientConnectionObservationStateConnecting ClientConnectionObservationState = "connecting"
+	ClientConnectionObservationStateOffline    ClientConnectionObservationState = "offline"
+	ClientConnectionObservationStateOnline     ClientConnectionObservationState = "online"
+	ClientConnectionObservationStateUnknown    ClientConnectionObservationState = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the ClientConnectionObservationState enum.
+func (e ClientConnectionObservationState) Valid() bool {
+	switch e {
+	case ClientConnectionObservationStateConnecting:
+		return true
+	case ClientConnectionObservationStateOffline:
+		return true
+	case ClientConnectionObservationStateOnline:
+		return true
+	case ClientConnectionObservationStateUnknown:
 		return true
 	default:
 		return false
@@ -668,6 +671,7 @@ const (
 	ConfigSectionBuiltinSkills                ConfigSection = "builtin_skills"
 	ConfigSectionClientTools                  ConfigSection = "client_tools"
 	ConfigSectionConnectionTools              ConfigSection = "connection_tools"
+	ConfigSectionDefaultEnvironmentId         ConfigSection = "default_environment_id"
 	ConfigSectionDefaultEnvironmentTemplateId ConfigSection = "default_environment_template_id"
 	ConfigSectionInstructions                 ConfigSection = "instructions"
 	ConfigSectionLazyEnvironment              ConfigSection = "lazy_environment"
@@ -683,7 +687,6 @@ const (
 	ConfigSectionReviewer                     ConfigSection = "reviewer"
 	ConfigSectionSkillSync                    ConfigSection = "skill_sync"
 	ConfigSectionSkills                       ConfigSection = "skills"
-	ConfigSectionSubagentMode                 ConfigSection = "subagent_mode"
 	ConfigSectionSubagents                    ConfigSection = "subagents"
 	ConfigSectionSummarize                    ConfigSection = "summarize"
 	ConfigSectionToolSearch                   ConfigSection = "tool_search"
@@ -701,6 +704,8 @@ func (e ConfigSection) Valid() bool {
 	case ConfigSectionClientTools:
 		return true
 	case ConfigSectionConnectionTools:
+		return true
+	case ConfigSectionDefaultEnvironmentId:
 		return true
 	case ConfigSectionDefaultEnvironmentTemplateId:
 		return true
@@ -731,8 +736,6 @@ func (e ConfigSection) Valid() bool {
 	case ConfigSectionSkillSync:
 		return true
 	case ConfigSectionSkills:
-		return true
-	case ConfigSectionSubagentMode:
 		return true
 	case ConfigSectionSubagents:
 		return true
@@ -1112,6 +1115,39 @@ func (e DenyAction) Valid() bool {
 	}
 }
 
+// Defines values for DiagnosticsEnvd.
+const (
+	NotVerified     DiagnosticsEnvd = "not_verified"
+	PreviouslyReady DiagnosticsEnvd = "previously_ready"
+)
+
+// Valid indicates whether the value is a known member of the DiagnosticsEnvd enum.
+func (e DiagnosticsEnvd) Valid() bool {
+	switch e {
+	case NotVerified:
+		return true
+	case PreviouslyReady:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DisabledSandboxMode.
+const (
+	DisabledSandboxModeDisabled DisabledSandboxMode = "disabled"
+)
+
+// Valid indicates whether the value is a known member of the DisabledSandboxMode enum.
+func (e DisabledSandboxMode) Valid() bool {
+	switch e {
+	case DisabledSandboxModeDisabled:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DiscoverySourceKind.
 const (
 	DiscoverySourceKindCapabilities DiscoverySourceKind = "capabilities"
@@ -1127,6 +1163,27 @@ func (e DiscoverySourceKind) Valid() bool {
 	case DiscoverySourceKindConnections:
 		return true
 	case DiscoverySourceKindPlatform:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EgressMode.
+const (
+	EgressModeControlled EgressMode = "controlled"
+	EgressModeDeny       EgressMode = "deny"
+	EgressModeInherit    EgressMode = "inherit"
+)
+
+// Valid indicates whether the value is a known member of the EgressMode enum.
+func (e EgressMode) Valid() bool {
+	switch e {
+	case EgressModeControlled:
+		return true
+	case EgressModeDeny:
+		return true
+	case EgressModeInherit:
 		return true
 	default:
 		return false
@@ -1376,6 +1433,21 @@ func (e EnvironmentAction) Valid() bool {
 	}
 }
 
+// Defines values for EnvironmentCredentialSourceKind.
+const (
+	EnvironmentCredentialSourceKindEnvironment EnvironmentCredentialSourceKind = "environment"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentCredentialSourceKind enum.
+func (e EnvironmentCredentialSourceKind) Valid() bool {
+	switch e {
+	case EnvironmentCredentialSourceKindEnvironment:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for EnvironmentQueryHistory.
 const (
 	EnvironmentQueryHistoryConfigured EnvironmentQueryHistory = "configured"
@@ -1517,6 +1589,48 @@ func (e EnvironmentQueryMetric1) Valid() bool {
 	}
 }
 
+// Defines values for EnvironmentViewDesktopPreview.
+const (
+	EnvironmentViewDesktopPreviewConnectionUnsupported EnvironmentViewDesktopPreview = "connection_unsupported"
+	EnvironmentViewDesktopPreviewNotConfigured         EnvironmentViewDesktopPreview = "not_configured"
+	EnvironmentViewDesktopPreviewSupported             EnvironmentViewDesktopPreview = "supported"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentViewDesktopPreview enum.
+func (e EnvironmentViewDesktopPreview) Valid() bool {
+	switch e {
+	case EnvironmentViewDesktopPreviewConnectionUnsupported:
+		return true
+	case EnvironmentViewDesktopPreviewNotConfigured:
+		return true
+	case EnvironmentViewDesktopPreviewSupported:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EnvironmentViewKind.
+const (
+	EnvironmentViewKindExternal     EnvironmentViewKind = "external"
+	EnvironmentViewKindExternalHttp EnvironmentViewKind = "external_http"
+	EnvironmentViewKindManaged      EnvironmentViewKind = "managed"
+)
+
+// Valid indicates whether the value is a known member of the EnvironmentViewKind enum.
+func (e EnvironmentViewKind) Valid() bool {
+	switch e {
+	case EnvironmentViewKindExternal:
+		return true
+	case EnvironmentViewKindExternalHttp:
+		return true
+	case EnvironmentViewKindManaged:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ErrorCode.
 const (
 	ErrorCodeAlreadyExists        ErrorCode = "already_exists"
@@ -1625,6 +1739,36 @@ func (e ExecutionViewStatus) Valid() bool {
 	}
 }
 
+// Defines values for ExistingRunEnvironmentInputMode.
+const (
+	ExistingRunEnvironmentInputModeExisting ExistingRunEnvironmentInputMode = "existing"
+)
+
+// Valid indicates whether the value is a known member of the ExistingRunEnvironmentInputMode enum.
+func (e ExistingRunEnvironmentInputMode) Valid() bool {
+	switch e {
+	case ExistingRunEnvironmentInputModeExisting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ExistingRunEnvironmentOutputMode.
+const (
+	ExistingRunEnvironmentOutputModeExisting ExistingRunEnvironmentOutputMode = "existing"
+)
+
+// Valid indicates whether the value is a known member of the ExistingRunEnvironmentOutputMode enum.
+func (e ExistingRunEnvironmentOutputMode) Valid() bool {
+	switch e {
+	case ExistingRunEnvironmentOutputModeExisting:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ExportProtocol.
 const (
 	Grpc         ExportProtocol = "grpc"
@@ -1673,6 +1817,36 @@ func (e ForkKind) Valid() bool {
 	}
 }
 
+// Defines values for FreshRunEnvironmentInputMode.
+const (
+	FreshRunEnvironmentInputModeFresh FreshRunEnvironmentInputMode = "fresh"
+)
+
+// Valid indicates whether the value is a known member of the FreshRunEnvironmentInputMode enum.
+func (e FreshRunEnvironmentInputMode) Valid() bool {
+	switch e {
+	case FreshRunEnvironmentInputModeFresh:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FreshRunEnvironmentOutputMode.
+const (
+	FreshRunEnvironmentOutputModeFresh FreshRunEnvironmentOutputMode = "fresh"
+)
+
+// Valid indicates whether the value is a known member of the FreshRunEnvironmentOutputMode enum.
+func (e FreshRunEnvironmentOutputMode) Valid() bool {
+	switch e {
+	case FreshRunEnvironmentOutputModeFresh:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GitHubSourceKind.
 const (
 	GitHubSourceKindGithub GitHubSourceKind = "github"
@@ -1682,6 +1856,24 @@ const (
 func (e GitHubSourceKind) Valid() bool {
 	switch e {
 	case GitHubSourceKindGithub:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GrantAccess.
+const (
+	ReadOnly  GrantAccess = "read_only"
+	ReadWrite GrantAccess = "read_write"
+)
+
+// Valid indicates whether the value is a known member of the GrantAccess enum.
+func (e GrantAccess) Valid() bool {
+	switch e {
+	case ReadOnly:
+		return true
+	case ReadWrite:
 		return true
 	default:
 		return false
@@ -2240,6 +2432,21 @@ func (e ModelSummaryView) Valid() bool {
 	}
 }
 
+// Defines values for NativeIsolationMode.
+const (
+	NativeIsolationModeNative NativeIsolationMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeIsolationMode enum.
+func (e NativeIsolationMode) Valid() bool {
+	switch e {
+	case NativeIsolationModeNative:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for NewThreadKind.
 const (
 	NewThreadKindMessage NewThreadKind = "message"
@@ -2609,6 +2816,21 @@ func (e ProviderTestStatus) Valid() bool {
 	}
 }
 
+// Defines values for PublicDestinationsMode.
+const (
+	Public PublicDestinationsMode = "public"
+)
+
+// Valid indicates whether the value is a known member of the PublicDestinationsMode enum.
+func (e PublicDestinationsMode) Valid() bool {
+	switch e {
+	case Public:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for QueryDataResultType.
 const (
 	Matrix QueryDataResultType = "matrix"
@@ -2681,6 +2903,93 @@ func (e ReadView) Valid() bool {
 	}
 }
 
+// Defines values for ResourceDisposition.
+const (
+	ResourceDispositionBorrowed ResourceDisposition = "borrowed"
+	ResourceDispositionDelete   ResourceDisposition = "delete"
+	ResourceDispositionRetain   ResourceDisposition = "retain"
+)
+
+// Valid indicates whether the value is a known member of the ResourceDisposition enum.
+func (e ResourceDisposition) Valid() bool {
+	switch e {
+	case ResourceDispositionBorrowed:
+		return true
+	case ResourceDispositionDelete:
+		return true
+	case ResourceDispositionRetain:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ResourceKind.
+const (
+	ConfigMap             ResourceKind = "ConfigMap"
+	NetworkPolicy         ResourceKind = "NetworkPolicy"
+	PersistentVolumeClaim ResourceKind = "PersistentVolumeClaim"
+	Pod                   ResourceKind = "Pod"
+	Secret                ResourceKind = "Secret"
+)
+
+// Valid indicates whether the value is a known member of the ResourceKind enum.
+func (e ResourceKind) Valid() bool {
+	switch e {
+	case ConfigMap:
+		return true
+	case NetworkPolicy:
+		return true
+	case PersistentVolumeClaim:
+		return true
+	case Pod:
+		return true
+	case Secret:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ResourceObservationObservation.
+const (
+	ResourceObservationObservationAbsent   ResourceObservationObservation = "absent"
+	ResourceObservationObservationConflict ResourceObservationObservation = "conflict"
+	ResourceObservationObservationPresent  ResourceObservationObservation = "present"
+	ResourceObservationObservationUnknown  ResourceObservationObservation = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the ResourceObservationObservation enum.
+func (e ResourceObservationObservation) Valid() bool {
+	switch e {
+	case ResourceObservationObservationAbsent:
+		return true
+	case ResourceObservationObservationConflict:
+		return true
+	case ResourceObservationObservationPresent:
+		return true
+	case ResourceObservationObservationUnknown:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RestrictedSandboxMode.
+const (
+	Restricted RestrictedSandboxMode = "restricted"
+)
+
+// Valid indicates whether the value is a known member of the RestrictedSandboxMode enum.
+func (e RestrictedSandboxMode) Valid() bool {
+	switch e {
+	case Restricted:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ReturnedStatus.
 const (
 	ReturnedStatusReturned ReturnedStatus = "returned"
@@ -2726,6 +3035,24 @@ func (e RevokedConnectionRemoteRevocation) Valid() bool {
 	case RevokedConnectionRemoteRevocationRevoked:
 		return true
 	case RevokedConnectionRemoteRevocationSkipped:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RunAgentSource.
+const (
+	Revision       RunAgentSource = "revision"
+	ThreadSnapshot RunAgentSource = "thread_snapshot"
+)
+
+// Valid indicates whether the value is a known member of the RunAgentSource enum.
+func (e RunAgentSource) Valid() bool {
+	switch e {
+	case Revision:
+		return true
+	case ThreadSnapshot:
 		return true
 	default:
 		return false
@@ -2821,6 +3148,7 @@ const (
 	RunSummaryRevisionSelectionDefault   RunSummaryRevisionSelection = "default"
 	RunSummaryRevisionSelectionInherited RunSummaryRevisionSelection = "inherited"
 	RunSummaryRevisionSelectionPinned    RunSummaryRevisionSelection = "pinned"
+	RunSummaryRevisionSelectionSnapshot  RunSummaryRevisionSelection = "snapshot"
 )
 
 // Valid indicates whether the value is a known member of the RunSummaryRevisionSelection enum.
@@ -2831,6 +3159,8 @@ func (e RunSummaryRevisionSelection) Valid() bool {
 	case RunSummaryRevisionSelectionInherited:
 		return true
 	case RunSummaryRevisionSelectionPinned:
+		return true
+	case RunSummaryRevisionSelectionSnapshot:
 		return true
 	default:
 		return false
@@ -2857,6 +3187,7 @@ const (
 	RunViewRevisionSelectionDefault   RunViewRevisionSelection = "default"
 	RunViewRevisionSelectionInherited RunViewRevisionSelection = "inherited"
 	RunViewRevisionSelectionPinned    RunViewRevisionSelection = "pinned"
+	RunViewRevisionSelectionSnapshot  RunViewRevisionSelection = "snapshot"
 )
 
 // Valid indicates whether the value is a known member of the RunViewRevisionSelection enum.
@@ -2867,6 +3198,8 @@ func (e RunViewRevisionSelection) Valid() bool {
 	case RunViewRevisionSelectionInherited:
 		return true
 	case RunViewRevisionSelectionPinned:
+		return true
+	case RunViewRevisionSelectionSnapshot:
 		return true
 	default:
 		return false
@@ -3212,6 +3545,24 @@ func (e Status) Valid() bool {
 	}
 }
 
+// Defines values for StatusChangeStatus.
+const (
+	StatusChangeStatusDisabled StatusChangeStatus = "disabled"
+	StatusChangeStatusReady    StatusChangeStatus = "ready"
+)
+
+// Valid indicates whether the value is a known member of the StatusChangeStatus enum.
+func (e StatusChangeStatus) Valid() bool {
+	switch e {
+	case StatusChangeStatusDisabled:
+		return true
+	case StatusChangeStatusReady:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Steering.
 const (
 	Boundary  Steering = "boundary"
@@ -3224,6 +3575,60 @@ func (e Steering) Valid() bool {
 	case Boundary:
 		return true
 	case Immediate:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SubagentsInputMode.
+const (
+	SubagentsInputModeAsync  SubagentsInputMode = "async"
+	SubagentsInputModeInline SubagentsInputMode = "inline"
+)
+
+// Valid indicates whether the value is a known member of the SubagentsInputMode enum.
+func (e SubagentsInputMode) Valid() bool {
+	switch e {
+	case SubagentsInputModeAsync:
+		return true
+	case SubagentsInputModeInline:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SubagentsOutputMode.
+const (
+	SubagentsOutputModeAsync  SubagentsOutputMode = "async"
+	SubagentsOutputModeInline SubagentsOutputMode = "inline"
+)
+
+// Valid indicates whether the value is a known member of the SubagentsOutputMode enum.
+func (e SubagentsOutputMode) Valid() bool {
+	switch e {
+	case SubagentsOutputModeAsync:
+		return true
+	case SubagentsOutputModeInline:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SystemPreset.
+const (
+	General SystemPreset = "general"
+	Journal SystemPreset = "journal"
+)
+
+// Valid indicates whether the value is a known member of the SystemPreset enum.
+func (e SystemPreset) Valid() bool {
+	switch e {
+	case General:
+		return true
+	case Journal:
 		return true
 	default:
 		return false
@@ -3839,6 +4244,39 @@ func (e VideoUrlType) Valid() bool {
 	}
 }
 
+// Defines values for VmBackend.
+const (
+	Boxlite      VmBackend = "boxlite"
+	Microsandbox VmBackend = "microsandbox"
+)
+
+// Valid indicates whether the value is a known member of the VmBackend enum.
+func (e VmBackend) Valid() bool {
+	switch e {
+	case Boxlite:
+		return true
+	case Microsandbox:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VmIsolationMode.
+const (
+	Vm VmIsolationMode = "vm"
+)
+
+// Valid indicates whether the value is a known member of the VmIsolationMode enum.
+func (e VmIsolationMode) Valid() bool {
+	switch e {
+	case Vm:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WaitReason.
 const (
 	Approval       WaitReason = "approval"
@@ -3944,6 +4382,7 @@ const (
 	CompareAgentRevisionsParamsSectionBuiltinSkills                CompareAgentRevisionsParamsSection = "builtin_skills"
 	CompareAgentRevisionsParamsSectionClientTools                  CompareAgentRevisionsParamsSection = "client_tools"
 	CompareAgentRevisionsParamsSectionConnectionTools              CompareAgentRevisionsParamsSection = "connection_tools"
+	CompareAgentRevisionsParamsSectionDefaultEnvironmentId         CompareAgentRevisionsParamsSection = "default_environment_id"
 	CompareAgentRevisionsParamsSectionDefaultEnvironmentTemplateId CompareAgentRevisionsParamsSection = "default_environment_template_id"
 	CompareAgentRevisionsParamsSectionInstructions                 CompareAgentRevisionsParamsSection = "instructions"
 	CompareAgentRevisionsParamsSectionLazyEnvironment              CompareAgentRevisionsParamsSection = "lazy_environment"
@@ -3959,7 +4398,6 @@ const (
 	CompareAgentRevisionsParamsSectionReviewer                     CompareAgentRevisionsParamsSection = "reviewer"
 	CompareAgentRevisionsParamsSectionSkillSync                    CompareAgentRevisionsParamsSection = "skill_sync"
 	CompareAgentRevisionsParamsSectionSkills                       CompareAgentRevisionsParamsSection = "skills"
-	CompareAgentRevisionsParamsSectionSubagentMode                 CompareAgentRevisionsParamsSection = "subagent_mode"
 	CompareAgentRevisionsParamsSectionSubagents                    CompareAgentRevisionsParamsSection = "subagents"
 	CompareAgentRevisionsParamsSectionSummarize                    CompareAgentRevisionsParamsSection = "summarize"
 	CompareAgentRevisionsParamsSectionToolSearch                   CompareAgentRevisionsParamsSection = "tool_search"
@@ -3977,6 +4415,8 @@ func (e CompareAgentRevisionsParamsSection) Valid() bool {
 	case CompareAgentRevisionsParamsSectionClientTools:
 		return true
 	case CompareAgentRevisionsParamsSectionConnectionTools:
+		return true
+	case CompareAgentRevisionsParamsSectionDefaultEnvironmentId:
 		return true
 	case CompareAgentRevisionsParamsSectionDefaultEnvironmentTemplateId:
 		return true
@@ -4007,8 +4447,6 @@ func (e CompareAgentRevisionsParamsSection) Valid() bool {
 	case CompareAgentRevisionsParamsSectionSkillSync:
 		return true
 	case CompareAgentRevisionsParamsSectionSkills:
-		return true
-	case CompareAgentRevisionsParamsSectionSubagentMode:
 		return true
 	case CompareAgentRevisionsParamsSectionSubagents:
 		return true
@@ -4193,6 +4631,7 @@ const (
 	GetRunAgentParamsPartBuiltinSkills                GetRunAgentParamsPart = "builtin_skills"
 	GetRunAgentParamsPartClientTools                  GetRunAgentParamsPart = "client_tools"
 	GetRunAgentParamsPartConnectionTools              GetRunAgentParamsPart = "connection_tools"
+	GetRunAgentParamsPartDefaultEnvironmentId         GetRunAgentParamsPart = "default_environment_id"
 	GetRunAgentParamsPartDefaultEnvironmentTemplateId GetRunAgentParamsPart = "default_environment_template_id"
 	GetRunAgentParamsPartInstructions                 GetRunAgentParamsPart = "instructions"
 	GetRunAgentParamsPartLazyEnvironment              GetRunAgentParamsPart = "lazy_environment"
@@ -4208,7 +4647,6 @@ const (
 	GetRunAgentParamsPartReviewer                     GetRunAgentParamsPart = "reviewer"
 	GetRunAgentParamsPartSkillSync                    GetRunAgentParamsPart = "skill_sync"
 	GetRunAgentParamsPartSkills                       GetRunAgentParamsPart = "skills"
-	GetRunAgentParamsPartSubagentMode                 GetRunAgentParamsPart = "subagent_mode"
 	GetRunAgentParamsPartSubagents                    GetRunAgentParamsPart = "subagents"
 	GetRunAgentParamsPartSummarize                    GetRunAgentParamsPart = "summarize"
 	GetRunAgentParamsPartToolSearch                   GetRunAgentParamsPart = "tool_search"
@@ -4226,6 +4664,8 @@ func (e GetRunAgentParamsPart) Valid() bool {
 	case GetRunAgentParamsPartClientTools:
 		return true
 	case GetRunAgentParamsPartConnectionTools:
+		return true
+	case GetRunAgentParamsPartDefaultEnvironmentId:
 		return true
 	case GetRunAgentParamsPartDefaultEnvironmentTemplateId:
 		return true
@@ -4256,8 +4696,6 @@ func (e GetRunAgentParamsPart) Valid() bool {
 	case GetRunAgentParamsPartSkillSync:
 		return true
 	case GetRunAgentParamsPartSkills:
-		return true
-	case GetRunAgentParamsPartSubagentMode:
 		return true
 	case GetRunAgentParamsPartSubagents:
 		return true
@@ -4768,6 +5206,7 @@ type AgentConfigInput struct {
 	BuiltinSkills                *[]BuiltinSkillName                  `json:"builtin_skills,omitempty"`
 	ClientTools                  *[]ClientToolDefinition              `json:"client_tools,omitempty"`
 	ConnectionTools              *[]ConnectionSelection               `json:"connection_tools,omitempty"`
+	DefaultEnvironmentId         nullable.Nullable[string]            `json:"default_environment_id,omitempty"`
 	DefaultEnvironmentTemplateId nullable.Nullable[string]            `json:"default_environment_template_id,omitempty"`
 	Execution                    nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
 	Instructions                 *string                              `json:"instructions,omitempty"`
@@ -4790,16 +5229,12 @@ type AgentConfigInput struct {
 	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
 	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigInputSubagentMode    `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
+	Subagents            *SubagentsInput                  `json:"subagents,omitempty"`
 	Summarize            *bool                            `json:"summarize,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
 }
-
-// AgentConfigInputSubagentMode defines model for AgentConfigInput.SubagentMode.
-type AgentConfigInputSubagentMode string
 
 // AgentConfigOutput defines model for AgentConfig-Output.
 type AgentConfigOutput struct {
@@ -4808,6 +5243,7 @@ type AgentConfigOutput struct {
 	BuiltinSkills                *[]BuiltinSkillName                  `json:"builtin_skills,omitempty"`
 	ClientTools                  *[]ClientToolDefinition              `json:"client_tools,omitempty"`
 	ConnectionTools              *[]ConnectionSelection               `json:"connection_tools,omitempty"`
+	DefaultEnvironmentId         nullable.Nullable[string]            `json:"default_environment_id,omitempty"`
 	DefaultEnvironmentTemplateId nullable.Nullable[string]            `json:"default_environment_template_id,omitempty"`
 	Execution                    nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
 	Instructions                 *string                              `json:"instructions,omitempty"`
@@ -4830,16 +5266,12 @@ type AgentConfigOutput struct {
 	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
 	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
 	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	SubagentMode         *AgentConfigOutputSubagentMode   `json:"subagent_mode,omitempty"`
-	Subagents            *map[string]interface{}          `json:"subagents,omitempty"`
+	Subagents            *SubagentsOutput                 `json:"subagents,omitempty"`
 	Summarize            *bool                            `json:"summarize,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
 	UserQuestions        *bool                            `json:"user_questions,omitempty"`
 }
-
-// AgentConfigOutputSubagentMode defines model for AgentConfigOutput.SubagentMode.
-type AgentConfigOutputSubagentMode string
 
 // AgentCreate defines model for AgentCreate.
 type AgentCreate struct {
@@ -4866,8 +5298,8 @@ type AgentModelCharacteristics struct {
 
 // AgentOverrideInput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
-// `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
-// edge removes it; every other field replaces the revision's value.
+// `toolsets` replaces whole toolsets; `retries` replaces supplied members.
+// Every other field, including `subagents`, replaces the whole value.
 type AgentOverrideInput struct {
 	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
@@ -4884,15 +5316,15 @@ type AgentOverrideInput struct {
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
 	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	Subagents            nullable.Nullable[SubagentsInput]              `json:"subagents,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
 
 // AgentOverrideOutput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
-// `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
-// edge removes it; every other field replaces the revision's value.
+// `toolsets` replaces whole toolsets; `retries` replaces supplied members.
+// Every other field, including `subagents`, replaces the whole value.
 type AgentOverrideOutput struct {
 	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
@@ -4909,7 +5341,7 @@ type AgentOverrideOutput struct {
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
 	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
+	Subagents            nullable.Nullable[SubagentsOutput]             `json:"subagents,omitempty"`
 	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
 }
@@ -5001,6 +5433,15 @@ type AgentValidate struct {
 	Config  AgentConfigInput          `json:"config"`
 }
 
+// AllowlistDestinations defines model for AllowlistDestinations.
+type AllowlistDestinations struct {
+	Hosts *[]string                 `json:"hosts,omitempty"`
+	Mode  AllowlistDestinationsMode `json:"mode"`
+}
+
+// AllowlistDestinationsMode defines model for AllowlistDestinations.Mode.
+type AllowlistDestinationsMode string
+
 // Analysis defines model for Analysis.
 type Analysis struct {
 	AgentId            nullable.Nullable[string] `json:"agent_id"`
@@ -5024,6 +5465,7 @@ type AnalysisCreate struct {
 	Instructions  *string                      `json:"instructions,omitempty"`
 	MaxTraces     *int                         `json:"max_traces,omitempty"`
 	Presets       *[]Preset                    `json:"presets,omitempty"`
+	SessionIds    *[]string                    `json:"session_ids,omitempty"`
 	StartedAfter  nullable.Nullable[time.Time] `json:"started_after,omitempty"`
 	StartedBefore nullable.Nullable[time.Time] `json:"started_before,omitempty"`
 	TraceId       nullable.Nullable[string]    `json:"trace_id,omitempty"`
@@ -5066,14 +5508,14 @@ type ApiKeyPage struct {
 
 // AppReference defines model for AppReference.
 type AppReference struct {
-	AgentRevisionId string `json:"agent_revision_id"`
-	AppId           string `json:"app_id"`
-	ConnectionId    string `json:"connection_id"`
-	ResourceUri     string `json:"resource_uri"`
-	SourceRunId     string `json:"source_run_id"`
-	ToolCallId      string `json:"tool_call_id"`
-	ToolName        string `json:"tool_name"`
-	Unavailable     *bool  `json:"unavailable,omitempty"`
+	AgentDefinitionId string `json:"agent_definition_id"`
+	AppId             string `json:"app_id"`
+	ConnectionId      string `json:"connection_id"`
+	ResourceUri       string `json:"resource_uri"`
+	SourceRunId       string `json:"source_run_id"`
+	ToolCallId        string `json:"tool_call_id"`
+	ToolName          string `json:"tool_name"`
+	Unavailable       *bool  `json:"unavailable,omitempty"`
 }
 
 // AppResource defines model for AppResource.
@@ -5519,6 +5961,31 @@ type ChildEnvironmentPolicyMode string
 // ClientAuthentication defines model for ClientAuthentication.
 type ClientAuthentication string
 
+// ClientConnectionObservation defines model for ClientConnectionObservation.
+type ClientConnectionObservation struct {
+	ObservedAt time.Time                        `json:"observed_at"`
+	State      ClientConnectionObservationState `json:"state"`
+}
+
+// ClientConnectionObservationState defines model for ClientConnectionObservation.State.
+type ClientConnectionObservationState string
+
+// ClientEnvironment defines model for ClientEnvironment.
+type ClientEnvironment struct {
+	Configuration     ClientEnvironmentConfiguration `json:"configuration"`
+	CredentialPresent bool                           `json:"credential_present"`
+	CredentialVersion int                            `json:"credential_version"`
+	Environment       EnvironmentView                `json:"environment"`
+}
+
+// ClientEnvironmentConfiguration defines model for ClientEnvironmentConfiguration.
+type ClientEnvironmentConfiguration struct {
+	DeclaredCapabilities    nullable.Nullable[EnvironmentPermissionSetOutput] `json:"declared_capabilities,omitempty"`
+	DefaultWorkingDirectory string                                            `json:"default_working_directory"`
+	Description             nullable.Nullable[string]                         `json:"description,omitempty"`
+	PermissionCeiling       *EnvironmentPermissionSetOutput                   `json:"permission_ceiling,omitempty"`
+}
+
 // ClientToolDefinition Portable model guidance for one externally executed client tool.
 type ClientToolDefinition struct {
 	Description          string                          `json:"description"`
@@ -5661,6 +6128,17 @@ type ConnectionMetrics struct {
 type ConnectionPage struct {
 	Items      []Connection              `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// ConnectionRequest defines model for ConnectionRequest.
+type ConnectionRequest struct {
+	DeclaredCapabilities    nullable.Nullable[EnvironmentPermissionSetInput] `json:"declared_capabilities,omitempty"`
+	DefaultWorkingDirectory string                                           `json:"default_working_directory"`
+	Description             nullable.Nullable[string]                        `json:"description,omitempty"`
+	DeviceId                string                                           `json:"device_id"`
+	EnvironmentId           nullable.Nullable[string]                        `json:"environment_id,omitempty"`
+	Name                    string                                           `json:"name"`
+	PermissionCeiling       *EnvironmentPermissionSetInput                   `json:"permission_ceiling,omitempty"`
 }
 
 // ConnectionSelection An agent's selected tools and permissions.
@@ -5964,6 +6442,11 @@ type DataSourceUpdate struct {
 	QueryCredentials  nullable.Nullable[Credentials]   `json:"query_credentials,omitempty"`
 }
 
+// DebugHold Delay automatic retirement for at most one day; null clears the hold.
+type DebugHold struct {
+	Seconds nullable.Nullable[int] `json:"seconds"`
+}
+
 // Definition defines model for Definition.
 type Definition struct {
 	Definition map[string]JsonValue `json:"definition"`
@@ -6064,6 +6547,36 @@ type DeviceUpdate struct {
 	Name                nullable.Nullable[string] `json:"name,omitempty"`
 }
 
+// Diagnostics defines model for Diagnostics.
+type Diagnostics struct {
+	Cluster         string                    `json:"cluster"`
+	Commands        []string                  `json:"commands"`
+	Connection      string                    `json:"connection"`
+	Envd            DiagnosticsEnvd           `json:"envd"`
+	Errors          []string                  `json:"errors"`
+	Events          []Event                   `json:"events"`
+	EventsTruncated bool                      `json:"events_truncated"`
+	Namespace       string                    `json:"namespace"`
+	ObservedAt      time.Time                 `json:"observed_at"`
+	OwnershipId     string                    `json:"ownership_id"`
+	PodName         string                    `json:"pod_name"`
+	PodUid          nullable.Nullable[string] `json:"pod_uid"`
+	Rendered        []map[string]JsonValue    `json:"rendered"`
+	Resources       []ResourceObservation     `json:"resources"`
+	Stage           string                    `json:"stage"`
+}
+
+// DiagnosticsEnvd defines model for Diagnostics.Envd.
+type DiagnosticsEnvd string
+
+// DisabledSandbox defines model for DisabledSandbox.
+type DisabledSandbox struct {
+	Mode DisabledSandboxMode `json:"mode"`
+}
+
+// DisabledSandboxMode defines model for DisabledSandbox.Mode.
+type DisabledSandboxMode string
+
 // DiscoverySource defines model for DiscoverySource.
 type DiscoverySource struct {
 	Description string                    `json:"description"`
@@ -6095,6 +6608,52 @@ type DiskMetrics struct {
 	Devices   *map[string]DiskIoMetrics `json:"devices,omitempty"`
 	Truncated bool                      `json:"truncated"`
 }
+
+// DynamicSubagentsInput Root-only task-specific delegation within the parent's capability boundary.
+type DynamicSubagentsInput struct {
+	AllowedModels   *[]string                                                `json:"allowed_models,omitempty"`
+	DefaultModel    nullable.Nullable[string]                                `json:"default_model,omitempty"`
+	DefaultThinking nullable.Nullable[DynamicSubagentsInput_DefaultThinking] `json:"default_thinking,omitempty"`
+	Enabled         *bool                                                    `json:"enabled,omitempty"`
+}
+
+// DynamicSubagentsInputDefaultThinking0 defines model for DynamicSubagentsInput.DefaultThinking.0.
+type DynamicSubagentsInputDefaultThinking0 = string
+
+// DynamicSubagentsInputDefaultThinking1 defines model for DynamicSubagentsInput.DefaultThinking.1.
+type DynamicSubagentsInputDefaultThinking1 = bool
+
+// DynamicSubagentsInput_DefaultThinking defines model for DynamicSubagentsInput.DefaultThinking.
+type DynamicSubagentsInput_DefaultThinking struct {
+	union json.RawMessage
+}
+
+// DynamicSubagentsOutput Root-only task-specific delegation within the parent's capability boundary.
+type DynamicSubagentsOutput struct {
+	AllowedModels   *[]string                                                 `json:"allowed_models,omitempty"`
+	DefaultModel    nullable.Nullable[string]                                 `json:"default_model,omitempty"`
+	DefaultThinking nullable.Nullable[DynamicSubagentsOutput_DefaultThinking] `json:"default_thinking,omitempty"`
+	Enabled         *bool                                                     `json:"enabled,omitempty"`
+}
+
+// DynamicSubagentsOutputDefaultThinking0 defines model for DynamicSubagentsOutput.DefaultThinking.0.
+type DynamicSubagentsOutputDefaultThinking0 = string
+
+// DynamicSubagentsOutputDefaultThinking1 defines model for DynamicSubagentsOutput.DefaultThinking.1.
+type DynamicSubagentsOutputDefaultThinking1 = bool
+
+// DynamicSubagentsOutput_DefaultThinking defines model for DynamicSubagentsOutput.DefaultThinking.
+type DynamicSubagentsOutput_DefaultThinking struct {
+	union json.RawMessage
+}
+
+// EgressDestinations defines model for EgressDestinations.
+type EgressDestinations struct {
+	union json.RawMessage
+}
+
+// EgressMode defines model for EgressMode.
+type EgressMode string
 
 // EmailChangeConfirm defines model for EmailChangeConfirm.
 type EmailChangeConfirm struct {
@@ -6189,8 +6748,30 @@ type EntryView struct {
 // EntryViewKind defines model for EntryView.Kind.
 type EntryViewKind string
 
+// EnvdEgressConfiguration defines model for EnvdEgressConfiguration.
+type EnvdEgressConfiguration struct {
+	Destinations EgressDestinations     `json:"destinations"`
+	Secrets      *[]EnvdSecretReference `json:"secrets,omitempty"`
+}
+
+// EnvdSecretReference defines model for EnvdSecretReference.
+type EnvdSecretReference struct {
+	Env         string                      `json:"env"`
+	InjectHosts []string                    `json:"inject_hosts"`
+	Source      EnvironmentCredentialSource `json:"source"`
+}
+
 // EnvironmentAction Exact authorization values in the locked first-party catalog.
 type EnvironmentAction string
+
+// EnvironmentCredentialSource defines model for EnvironmentCredentialSource.
+type EnvironmentCredentialSource struct {
+	Kind EnvironmentCredentialSourceKind `json:"kind"`
+	Name string                          `json:"name"`
+}
+
+// EnvironmentCredentialSourceKind defines model for EnvironmentCredentialSource.Kind.
+type EnvironmentCredentialSourceKind string
 
 // EnvironmentFailure The last error of the outstanding operation or, on a ready instance, of its last renewal.
 //
@@ -6211,7 +6792,12 @@ type EnvironmentMount struct {
 	EnvironmentId     string                          `json:"environment_id"`
 	Name              string                          `json:"name"`
 	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory,omitempty"`
+	SessionBinding    *string                         `json:"session_binding,omitempty"`
+
+	// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+	SessionConfiguration *SessionConfiguration     `json:"session_configuration,omitempty"`
+	SessionVersion       *int                      `json:"session_version,omitempty"`
+	WorkingDirectory     nullable.Nullable[string] `json:"working_directory,omitempty"`
 }
 
 // EnvironmentPage defines model for EnvironmentPage.
@@ -6262,6 +6848,13 @@ type EnvironmentQuery_Metric struct {
 	union json.RawMessage
 }
 
+// EnvironmentState Provider-owned portable semantic soft reference for one target.
+type EnvironmentState struct {
+	ProviderKey  string    `json:"provider_key"`
+	State        JsonValue `json:"state"`
+	StateVersion string    `json:"state_version"`
+}
+
 // EnvironmentUpdate Fields left out stay unchanged. Only an external target has an endpoint and token; a new endpoint comes with
 // its token, so a stored token never reaches an endpoint it was not entered for.
 type EnvironmentUpdate struct {
@@ -6275,28 +6868,42 @@ type EnvironmentVariables map[string]string
 
 // EnvironmentView defines model for EnvironmentView.
 type EnvironmentView struct {
-	CreatedAt           time.Time                             `json:"created_at"`
-	CreatedById         string                                `json:"created_by_id"`
-	DeviceId            nullable.Nullable[string]             `json:"device_id"`
-	Endpoint            nullable.Nullable[string]             `json:"endpoint"`
-	Failure             nullable.Nullable[EnvironmentFailure] `json:"failure"`
-	Id                  string                                `json:"id"`
-	LastUsedAt          nullable.Nullable[time.Time]          `json:"last_used_at"`
-	MetricsApplication  nullable.Nullable[MetricsApplication] `json:"metrics_application,omitempty"`
-	MetricsDataSourceId nullable.Nullable[string]             `json:"metrics_data_source_id,omitempty"`
-	MetricsLabels       *map[string]interface{}               `json:"metrics_labels,omitempty"`
-	Name                string                                `json:"name"`
-	OperationId         nullable.Nullable[string]             `json:"operation_id"`
-	OperationStartedAt  nullable.Nullable[time.Time]          `json:"operation_started_at"`
-	OrganizationId      string                                `json:"organization_id"`
-	OwnerPrincipalId    nullable.Nullable[string]             `json:"owner_principal_id"`
-	ProviderId          nullable.Nullable[string]             `json:"provider_id"`
-	Status              string                                `json:"status"`
-	TemplateId          nullable.Nullable[string]             `json:"template_id"`
-	UpdatedAt           time.Time                             `json:"updated_at"`
-	Version             int                                   `json:"version"`
-	WorkspaceId         string                                `json:"workspace_id"`
+	ClientConnection    nullable.Nullable[ClientConnectionObservation] `json:"client_connection,omitempty"`
+	CreatedAt           time.Time                                      `json:"created_at"`
+	CreatedById         string                                         `json:"created_by_id"`
+	DebugHoldUntil      nullable.Nullable[time.Time]                   `json:"debug_hold_until,omitempty"`
+	DesktopPreview      *EnvironmentViewDesktopPreview                 `json:"desktop_preview,omitempty"`
+	DeviceId            nullable.Nullable[string]                      `json:"device_id"`
+	Endpoint            nullable.Nullable[string]                      `json:"endpoint"`
+	Failure             nullable.Nullable[EnvironmentFailure]          `json:"failure"`
+	Id                  string                                         `json:"id"`
+	Kind                EnvironmentViewKind                            `json:"kind"`
+	LastUsedAt          nullable.Nullable[time.Time]                   `json:"last_used_at"`
+	MetricsApplication  nullable.Nullable[MetricsApplication]          `json:"metrics_application,omitempty"`
+	MetricsDataSourceId nullable.Nullable[string]                      `json:"metrics_data_source_id,omitempty"`
+	MetricsLabels       *map[string]interface{}                        `json:"metrics_labels,omitempty"`
+	Name                string                                         `json:"name"`
+	OperationId         nullable.Nullable[string]                      `json:"operation_id"`
+	OperationStartedAt  nullable.Nullable[time.Time]                   `json:"operation_started_at"`
+	OrganizationId      string                                         `json:"organization_id"`
+	OwnerPrincipalId    nullable.Nullable[string]                      `json:"owner_principal_id"`
+	PreparationDeadline nullable.Nullable[time.Time]                   `json:"preparation_deadline,omitempty"`
+	PreparationFailedAt nullable.Nullable[time.Time]                   `json:"preparation_failed_at,omitempty"`
+	ProviderId          nullable.Nullable[string]                      `json:"provider_id"`
+	Reclamation         nullable.Nullable[Reclamation]                 `json:"reclamation,omitempty"`
+	RetirementState     nullable.Nullable[EnvironmentState]            `json:"retirement_state,omitempty"`
+	Status              string                                         `json:"status"`
+	TemplateId          nullable.Nullable[string]                      `json:"template_id"`
+	UpdatedAt           time.Time                                      `json:"updated_at"`
+	Version             int                                            `json:"version"`
+	WorkspaceId         string                                         `json:"workspace_id"`
 }
+
+// EnvironmentViewDesktopPreview defines model for EnvironmentView.DesktopPreview.
+type EnvironmentViewDesktopPreview string
+
+// EnvironmentViewKind defines model for EnvironmentView.Kind.
+type EnvironmentViewKind string
 
 // ErrorBody defines model for ErrorBody.
 type ErrorBody struct {
@@ -6312,6 +6919,17 @@ type ErrorCode string
 // ErrorEnvelope How every failure answers, whatever its status.
 type ErrorEnvelope struct {
 	Error ErrorBody `json:"error"`
+}
+
+// Event defines model for Event.
+type Event struct {
+	Count          nullable.Nullable[int]    `json:"count,omitempty"`
+	FirstTimestamp nullable.Nullable[string] `json:"first_timestamp,omitempty"`
+	LastTimestamp  nullable.Nullable[string] `json:"last_timestamp,omitempty"`
+	Message        nullable.Nullable[string] `json:"message,omitempty"`
+	Reason         nullable.Nullable[string] `json:"reason,omitempty"`
+	ResourceUid    string                    `json:"resource_uid"`
+	Type           nullable.Nullable[string] `json:"type,omitempty"`
 }
 
 // Evidence defines model for Evidence.
@@ -6348,6 +6966,7 @@ type ExecutionPage struct {
 // ExecutionView Run identity is the Service Run; attempt and worker identify the retained owner.
 type ExecutionView struct {
 	AttemptId            string                       `json:"attempt_id"`
+	CancelRequested      *bool                        `json:"cancel_requested,omitempty"`
 	CancelRequestedAt    nullable.Nullable[time.Time] `json:"cancel_requested_at"`
 	CompletedAt          nullable.Nullable[time.Time] `json:"completed_at,omitempty"`
 	CreatedAt            *time.Time                   `json:"created_at,omitempty"`
@@ -6368,6 +6987,32 @@ type ExecutionView struct {
 
 // ExecutionViewStatus defines model for ExecutionView.Status.
 type ExecutionViewStatus string
+
+// ExistingRunEnvironmentInput Use this exact primary instance for the Run; absence never triggers allocation.
+type ExistingRunEnvironmentInput struct {
+	EnvironmentId        string                                  `json:"environment_id"`
+	Mode                 ExistingRunEnvironmentInputMode         `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetInput          `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
+}
+
+// ExistingRunEnvironmentInputMode defines model for ExistingRunEnvironmentInput.Mode.
+type ExistingRunEnvironmentInputMode string
+
+// ExistingRunEnvironmentOutput Use this exact primary instance for the Run; absence never triggers allocation.
+type ExistingRunEnvironmentOutput struct {
+	EnvironmentId        string                                  `json:"environment_id"`
+	Mode                 ExistingRunEnvironmentOutputMode        `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetOutput         `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
+}
+
+// ExistingRunEnvironmentOutputMode defines model for ExistingRunEnvironmentOutput.Mode.
+type ExistingRunEnvironmentOutputMode string
 
 // Export defines model for Export.
 type Export struct {
@@ -6418,6 +7063,14 @@ type FailureSummary struct {
 	Message Preview `json:"message"`
 }
 
+// FileMemoryGuidance defines model for FileMemoryGuidance.
+type FileMemoryGuidance struct {
+	Custom         *string                   `json:"custom,omitempty"`
+	SystemOverride nullable.Nullable[string] `json:"system_override,omitempty"`
+	SystemPreset   *SystemPreset             `json:"system_preset,omitempty"`
+	Timezone       *string                   `json:"timezone,omitempty"`
+}
+
 // FilesystemInventory defines model for FilesystemInventory.
 type FilesystemInventory struct {
 	Filesystems *map[string]FilesystemObservation `json:"filesystems,omitempty"`
@@ -6442,7 +7095,7 @@ type FilesystemObservation struct {
 // Finding defines model for Finding.
 type Finding struct {
 	AgentId         string                    `json:"agent_id"`
-	AgentRevisionId string                    `json:"agent_revision_id"`
+	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
 	AnalysisId      nullable.Nullable[string] `json:"analysis_id"`
 	Assessment      Assessment                `json:"assessment"`
 	AssessmentNote  string                    `json:"assessment_note"`
@@ -6468,8 +7121,8 @@ type Finding struct {
 
 // FindingCreate defines model for FindingCreate.
 type FindingCreate struct {
-	AgentId         string `json:"agent_id"`
-	AgentRevisionId string `json:"agent_revision_id"`
+	AgentId         string                    `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
 
 	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
 	Category    Category   `json:"category"`
@@ -6513,15 +7166,31 @@ type Fork struct {
 // ForkKind defines model for Fork.Kind.
 type ForkKind string
 
-// FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
-type FrozenMemoryMount struct {
-	Access   MemoryAccess              `json:"access"`
-	MemoryId string                    `json:"memory_id"`
-	Name     string                    `json:"name"`
-	Recall   *bool                     `json:"recall,omitempty"`
-	Roots    *[]string                 `json:"roots,omitempty"`
-	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
+// FreshRunEnvironmentInput Reserve a primary instance for this accepted Run without changing Thread mounts.
+type FreshRunEnvironmentInput struct {
+	Mode                 FreshRunEnvironmentInputMode            `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetInput          `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	TemplateId           string                                  `json:"template_id"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
+
+// FreshRunEnvironmentInputMode defines model for FreshRunEnvironmentInput.Mode.
+type FreshRunEnvironmentInputMode string
+
+// FreshRunEnvironmentOutput Reserve a primary instance for this accepted Run without changing Thread mounts.
+type FreshRunEnvironmentOutput struct {
+	Mode                 FreshRunEnvironmentOutputMode           `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSetOutput         `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	TemplateId           string                                  `json:"template_id"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
+}
+
+// FreshRunEnvironmentOutputMode defines model for FreshRunEnvironmentOutput.Mode.
+type FreshRunEnvironmentOutputMode string
 
 // GitHubSource A directory of a public GitHub repository.
 //
@@ -6537,6 +7206,9 @@ type GitHubSource struct {
 
 // GitHubSourceKind defines model for GitHubSource.Kind.
 type GitHubSourceKind string
+
+// GrantAccess defines model for GrantAccess.
+type GrantAccess string
 
 // GrantCreate defines model for GrantCreate.
 type GrantCreate struct {
@@ -6664,6 +7336,12 @@ type InitialMounts = []MountCreate
 type InitialRun struct {
 	Id     string    `json:"id"`
 	Status RunStatus `json:"status"`
+}
+
+// InstanceDiagnostics defines model for InstanceDiagnostics.
+type InstanceDiagnostics struct {
+	Environment EnvironmentView `json:"environment"`
+	Native      Diagnostics     `json:"native"`
 }
 
 // InstantQuery defines model for InstantQuery.
@@ -6879,6 +7557,15 @@ type LoginSessionPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// Logs defines model for Logs.
+type Logs struct {
+	Container  string `json:"container"`
+	LimitBytes *int   `json:"limit_bytes,omitempty"`
+	PodUid     string `json:"pod_uid"`
+	Previous   bool   `json:"previous"`
+	Text       string `json:"text"`
+}
+
 // ManagedEnvironmentCreate A workspace-managed sandbox reserved from a template, for threads to mount; maintenance creates it.
 type ManagedEnvironmentCreate struct {
 	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id,omitempty"`
@@ -6967,27 +7654,28 @@ type MemberUsagePage struct {
 
 // Memory defines model for Memory.
 type Memory struct {
-	AlwaysLoad     []string                  `json:"always_load"`
-	ContentBytes   nullable.Nullable[int]    `json:"content_bytes"`
-	CreatedAt      time.Time                 `json:"created_at"`
-	CreatedById    string                    `json:"created_by_id"`
-	Description    nullable.Nullable[string] `json:"description"`
-	FileCount      nullable.Nullable[int]    `json:"file_count"`
-	Guide          nullable.Nullable[string] `json:"guide"`
-	HistoryBytes   nullable.Nullable[int]    `json:"history_bytes"`
-	Id             string                    `json:"id"`
-	InheritedGuide string                    `json:"inherited_guide"`
-	Kind           MemoryKind                `json:"kind"`
-	Labels         map[string]string         `json:"labels"`
-	Name           string                    `json:"name"`
-	Namespace      nullable.Nullable[string] `json:"namespace"`
-	OrganizationId string                    `json:"organization_id"`
-	ProviderId     nullable.Nullable[string] `json:"provider_id"`
-	Type           string                    `json:"type"`
-	UpdatedAt      time.Time                 `json:"updated_at"`
-	UpdatedById    string                    `json:"updated_by_id"`
-	Version        int                       `json:"version"`
-	WorkspaceId    string                    `json:"workspace_id"`
+	AlwaysLoad     []string                              `json:"always_load"`
+	ContentBytes   nullable.Nullable[int]                `json:"content_bytes"`
+	CreatedAt      time.Time                             `json:"created_at"`
+	CreatedById    string                                `json:"created_by_id"`
+	Description    nullable.Nullable[string]             `json:"description"`
+	FileCount      nullable.Nullable[int]                `json:"file_count"`
+	Guidance       nullable.Nullable[FileMemoryGuidance] `json:"guidance"`
+	Guide          nullable.Nullable[string]             `json:"guide"`
+	HistoryBytes   nullable.Nullable[int]                `json:"history_bytes"`
+	Id             string                                `json:"id"`
+	InheritedGuide nullable.Nullable[string]             `json:"inherited_guide"`
+	Kind           MemoryKind                            `json:"kind"`
+	Labels         map[string]string                     `json:"labels"`
+	Name           string                                `json:"name"`
+	Namespace      nullable.Nullable[string]             `json:"namespace"`
+	OrganizationId string                                `json:"organization_id"`
+	ProviderId     nullable.Nullable[string]             `json:"provider_id"`
+	Type           string                                `json:"type"`
+	UpdatedAt      time.Time                             `json:"updated_at"`
+	UpdatedById    string                                `json:"updated_by_id"`
+	Version        int                                   `json:"version"`
+	WorkspaceId    string                                `json:"workspace_id"`
 }
 
 // MemoryAccess defines model for MemoryAccess.
@@ -6996,14 +7684,15 @@ type MemoryAccess string
 // MemoryCreate `postgres` makes a file memory the Service stores; a Memory Provider's type makes a record memory in that
 // provider's backend, under a new namespace or the existing one `namespace` adopts.
 type MemoryCreate struct {
-	AlwaysLoad  *[]string                 `json:"always_load,omitempty"`
-	Description nullable.Nullable[string] `json:"description,omitempty"`
-	Guide       nullable.Nullable[string] `json:"guide,omitempty"`
-	Labels      *map[string]string        `json:"labels,omitempty"`
-	Name        string                    `json:"name"`
-	Namespace   nullable.Nullable[string] `json:"namespace,omitempty"`
-	ProviderId  nullable.Nullable[string] `json:"provider_id,omitempty"`
-	Type        *string                   `json:"type,omitempty"`
+	AlwaysLoad  *[]string                             `json:"always_load,omitempty"`
+	Description nullable.Nullable[string]             `json:"description,omitempty"`
+	Guidance    nullable.Nullable[FileMemoryGuidance] `json:"guidance,omitempty"`
+	Guide       nullable.Nullable[string]             `json:"guide,omitempty"`
+	Labels      *map[string]string                    `json:"labels,omitempty"`
+	Name        string                                `json:"name"`
+	Namespace   nullable.Nullable[string]             `json:"namespace,omitempty"`
+	ProviderId  nullable.Nullable[string]             `json:"provider_id,omitempty"`
+	Type        *string                               `json:"type,omitempty"`
 }
 
 // MemoryEvents defines model for MemoryEvents.
@@ -7070,6 +7759,19 @@ type MemoryFileReplace struct {
 type MemoryFileState struct {
 	File nullable.Nullable[MemoryFile] `json:"file"`
 	Path string                        `json:"path"`
+}
+
+// MemoryGuidancePreset defines model for MemoryGuidancePreset.
+type MemoryGuidancePreset struct {
+	Description string       `json:"description"`
+	Id          SystemPreset `json:"id"`
+	Name        string       `json:"name"`
+	SystemGuide string       `json:"system_guide"`
+}
+
+// MemoryGuidancePresets defines model for MemoryGuidancePresets.
+type MemoryGuidancePresets struct {
+	Items []MemoryGuidancePreset `json:"items"`
 }
 
 // MemoryKind defines model for MemoryKind.
@@ -7200,7 +7902,7 @@ type MemorySpace struct {
 	Description    nullable.Nullable[string] `json:"description"`
 	Enabled        bool                      `json:"enabled"`
 	FileCount      int                       `json:"file_count"`
-	Guide          nullable.Nullable[string] `json:"guide"`
+	Guidance       FileMemoryGuidance        `json:"guidance"`
 	HistoryBytes   int                       `json:"history_bytes"`
 	Id             string                    `json:"id"`
 	Labels         map[string]string         `json:"labels"`
@@ -7219,7 +7921,7 @@ type MemorySpaceCreate struct {
 	AlwaysLoad   *[]string                 `json:"always_load,omitempty"`
 	Description  nullable.Nullable[string] `json:"description,omitempty"`
 	Enabled      *bool                     `json:"enabled,omitempty"`
-	Guide        nullable.Nullable[string] `json:"guide,omitempty"`
+	Guidance     *FileMemoryGuidance       `json:"guidance,omitempty"`
 	Labels       *map[string]string        `json:"labels,omitempty"`
 	Name         string                    `json:"name"`
 	Organization *OrganizationPolicy       `json:"organization,omitempty"`
@@ -7236,7 +7938,7 @@ type MemorySpaceUpdate struct {
 	AlwaysLoad   nullable.Nullable[[]string]           `json:"always_load,omitempty"`
 	Description  nullable.Nullable[string]             `json:"description,omitempty"`
 	Enabled      nullable.Nullable[bool]               `json:"enabled,omitempty"`
-	Guide        nullable.Nullable[string]             `json:"guide,omitempty"`
+	Guidance     nullable.Nullable[FileMemoryGuidance] `json:"guidance,omitempty"`
 	Labels       nullable.Nullable[map[string]string]  `json:"labels,omitempty"`
 	Name         nullable.Nullable[string]             `json:"name,omitempty"`
 	Organization nullable.Nullable[OrganizationPolicy] `json:"organization,omitempty"`
@@ -7244,11 +7946,12 @@ type MemorySpaceUpdate struct {
 
 // MemoryUpdate Fields left out stay unchanged; `description: null` clears it and `guide: null` inherits the default.
 type MemoryUpdate struct {
-	AlwaysLoad  nullable.Nullable[[]string]          `json:"always_load,omitempty"`
-	Description nullable.Nullable[string]            `json:"description,omitempty"`
-	Guide       nullable.Nullable[string]            `json:"guide,omitempty"`
-	Labels      nullable.Nullable[map[string]string] `json:"labels,omitempty"`
-	Name        nullable.Nullable[string]            `json:"name,omitempty"`
+	AlwaysLoad  nullable.Nullable[[]string]           `json:"always_load,omitempty"`
+	Description nullable.Nullable[string]             `json:"description,omitempty"`
+	Guidance    nullable.Nullable[FileMemoryGuidance] `json:"guidance,omitempty"`
+	Guide       nullable.Nullable[string]             `json:"guide,omitempty"`
+	Labels      nullable.Nullable[map[string]string]  `json:"labels,omitempty"`
+	Name        nullable.Nullable[string]             `json:"name,omitempty"`
 }
 
 // Message defines model for Message.
@@ -7521,10 +8224,12 @@ type ModelUsagePage struct {
 
 // MountCreate defines model for MountCreate.
 type MountCreate struct {
-	EnvironmentId     string                         `json:"environment_id"`
-	Name              string                         `json:"name"`
-	PermissionCeiling *EnvironmentPermissionSetInput `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string]      `json:"working_directory,omitempty"`
+	EnvironmentId        string                                  `json:"environment_id"`
+	Name                 string                                  `json:"name"`
+	PermissionCeiling    *EnvironmentPermissionSetInput          `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
 
 // MountPage defines model for MountPage.
@@ -7545,8 +8250,17 @@ type MountView struct {
 	EnvironmentId     string                          `json:"environment_id"`
 	Name              string                          `json:"name"`
 	PermissionCeiling *EnvironmentPermissionSetOutput `json:"permission_ceiling,omitempty"`
+	SessionBinding    string                          `json:"session_binding"`
 	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory"`
 }
+
+// NativeIsolation defines model for NativeIsolation.
+type NativeIsolation struct {
+	Mode NativeIsolationMode `json:"mode"`
+}
+
+// NativeIsolationMode defines model for NativeIsolation.Mode.
+type NativeIsolationMode string
 
 // NetworkInterfaceMetrics defines model for NetworkInterfaceMetrics.
 type NetworkInterfaceMetrics struct {
@@ -8146,6 +8860,14 @@ type ProviderUpdate struct {
 	Name         nullable.Nullable[string]               `json:"name,omitempty"`
 }
 
+// PublicDestinations defines model for PublicDestinations.
+type PublicDestinations struct {
+	Mode PublicDestinationsMode `json:"mode"`
+}
+
+// PublicDestinationsMode defines model for PublicDestinations.Mode.
+type PublicDestinationsMode string
+
 // Query defines model for Query.
 type Query struct {
 	Endpoint    string                  `json:"endpoint"`
@@ -8187,6 +8909,30 @@ type RangeQueryKind string
 // ReadView defines model for ReadView.
 type ReadView string
 
+// Reclamation Instance-scoped reclamation settings copied at reservation; no stop/resume semantics.
+type Reclamation struct {
+	FailedRetentionSeconds *int                   `json:"failed_retention_seconds,omitempty"`
+	IdleDeleteSeconds      nullable.Nullable[int] `json:"idle_delete_seconds,omitempty"`
+	PreparationSeconds     *int                   `json:"preparation_seconds,omitempty"`
+}
+
+// Registered defines model for Registered.
+type Registered struct {
+	Client         ClientEnvironment         `json:"client"`
+	ConnectionPath string                    `json:"connection_path"`
+	Token          nullable.Nullable[string] `json:"token,omitempty"`
+}
+
+// Registration defines model for Registration.
+type Registration struct {
+	DeclaredCapabilities    nullable.Nullable[EnvironmentPermissionSetInput] `json:"declared_capabilities,omitempty"`
+	DefaultWorkingDirectory string                                           `json:"default_working_directory"`
+	Description             nullable.Nullable[string]                        `json:"description,omitempty"`
+	DeviceId                string                                           `json:"device_id"`
+	Name                    string                                           `json:"name"`
+	PermissionCeiling       *EnvironmentPermissionSetInput                   `json:"permission_ceiling,omitempty"`
+}
+
 // Renew defines model for Renew.
 type Renew struct {
 	Episode      int                    `json:"episode"`
@@ -8205,6 +8951,45 @@ type RenewControl struct {
 type RequestContext struct {
 	Headers *map[string]string `json:"headers,omitempty"`
 }
+
+// Resource defines model for Resource.
+type Resource struct {
+	Disposition *ResourceDisposition      `json:"disposition,omitempty"`
+	Kind        ResourceKind              `json:"kind"`
+	Name        string                    `json:"name"`
+	SubPaths    *[]string                 `json:"sub_paths,omitempty"`
+	Uid         nullable.Nullable[string] `json:"uid,omitempty"`
+}
+
+// ResourceDisposition defines model for Resource.Disposition.
+type ResourceDisposition string
+
+// ResourceKind defines model for Resource.Kind.
+type ResourceKind string
+
+// ResourceObservation defines model for ResourceObservation.
+type ResourceObservation struct {
+	CreatedAt   nullable.Nullable[string]      `json:"created_at,omitempty"`
+	DeletingAt  nullable.Nullable[string]      `json:"deleting_at,omitempty"`
+	Finalizers  *[]string                      `json:"finalizers,omitempty"`
+	Observation ResourceObservationObservation `json:"observation"`
+	Reason      nullable.Nullable[string]      `json:"reason,omitempty"`
+	Reference   Resource                       `json:"reference"`
+	Status      *map[string]JsonValue          `json:"status,omitempty"`
+}
+
+// ResourceObservationObservation defines model for ResourceObservation.Observation.
+type ResourceObservationObservation string
+
+// RestrictedSandbox defines model for RestrictedSandbox.
+type RestrictedSandbox struct {
+	FullDiskRead *bool                 `json:"full_disk_read,omitempty"`
+	Grants       *[]SandboxGrant       `json:"grants,omitempty"`
+	Mode         RestrictedSandboxMode `json:"mode"`
+}
+
+// RestrictedSandboxMode defines model for RestrictedSandbox.Mode.
+type RestrictedSandboxMode string
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
@@ -8289,21 +9074,26 @@ type RevokedConnectionRemoteRevocation string
 // RunAgent The agent a run executes: its frozen revision, and that revision's configuration with the run's override
 // applied. Models, connections and templates the configuration names stay live.
 type RunAgent struct {
-	Config   AgentConfigOutput `json:"config"`
-	Revision AgentRevision     `json:"revision"`
+	Config       AgentConfigOutput                `json:"config"`
+	DefinitionId string                           `json:"definition_id"`
+	Revision     nullable.Nullable[AgentRevision] `json:"revision"`
+	Source       RunAgentSource                   `json:"source"`
 }
+
+// RunAgentSource defines model for RunAgent.Source.
+type RunAgentSource string
 
 // RunAgentSummary defines model for RunAgentSummary.
 type RunAgentSummary struct {
-	Config              ConfigSummary        `json:"config"`
-	ConnectionIds       []string             `json:"connection_ids"`
-	OmittedSections     *[]string            `json:"omitted_sections,omitempty"`
-	OverriddenPaths     []string             `json:"overridden_paths"`
-	ReferencesTruncated bool                 `json:"references_truncated"`
-	RevisionId          string               `json:"revision_id"`
-	SkillIds            []string             `json:"skill_ids"`
-	SubagentIds         []string             `json:"subagent_ids"`
-	View                *RunAgentSummaryView `json:"view,omitempty"`
+	Config              ConfigSummary             `json:"config"`
+	ConnectionIds       []string                  `json:"connection_ids"`
+	OmittedSections     *[]string                 `json:"omitted_sections,omitempty"`
+	OverriddenPaths     []string                  `json:"overridden_paths"`
+	ReferencesTruncated bool                      `json:"references_truncated"`
+	RevisionId          nullable.Nullable[string] `json:"revision_id"`
+	SkillIds            []string                  `json:"skill_ids"`
+	SubagentIds         []string                  `json:"subagent_ids"`
+	View                *RunAgentSummaryView      `json:"view,omitempty"`
 }
 
 // RunAgentSummaryView defines model for RunAgentSummary.View.
@@ -8340,6 +9130,16 @@ type RunContent struct {
 // RunContentMediaType defines model for RunContent.MediaType.
 type RunContentMediaType string
 
+// RunEnvironmentInput defines model for RunEnvironment-Input.
+type RunEnvironmentInput struct {
+	union json.RawMessage
+}
+
+// RunEnvironmentOutput defines model for RunEnvironment-Output.
+type RunEnvironmentOutput struct {
+	union json.RawMessage
+}
+
 // RunInputPreview defines model for RunInputPreview.
 type RunInputPreview struct {
 	// Text At most 200 Unicode code points of input text, in content order.
@@ -8363,7 +9163,7 @@ type RunLabels struct {
 // RunListItem Run discovery metadata. Full input, results and execution settings belong to the Run detail read.
 type RunListItem struct {
 	AgentId          string                        `json:"agent_id"`
-	AgentRevisionId  string                        `json:"agent_revision_id"`
+	AgentRevisionId  nullable.Nullable[string]     `json:"agent_revision_id"`
 	Attempts         int                           `json:"attempts"`
 	CreatedAt        time.Time                     `json:"created_at"`
 	CurrentAttemptId nullable.Nullable[string]     `json:"current_attempt_id"`
@@ -8386,6 +9186,16 @@ type RunListItem struct {
 	WorkspaceId      string                        `json:"workspace_id"`
 }
 
+// RunMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
+type RunMemoryMount struct {
+	Access   MemoryAccess              `json:"access"`
+	MemoryId string                    `json:"memory_id"`
+	Name     string                    `json:"name"`
+	Recall   *bool                     `json:"recall,omitempty"`
+	Roots    *[]string                 `json:"roots,omitempty"`
+	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
+}
+
 // RunMetrics defines model for RunMetrics.
 type RunMetrics struct {
 	AverageDurationSeconds nullable.Nullable[float32] `json:"average_duration_seconds"`
@@ -8396,6 +9206,7 @@ type RunMetrics struct {
 type RunOptionsInput struct {
 	Configuration nullable.Nullable[RunConfigurationInput] `json:"configuration,omitempty"`
 	Context       nullable.Nullable[RequestContext]        `json:"context,omitempty"`
+	Environment   nullable.Nullable[RunEnvironmentInput]   `json:"environment,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride]     `json:"execution,omitempty"`
 	Labels        *map[string]string                       `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]            `json:"max_usage,omitempty"`
@@ -8406,6 +9217,7 @@ type RunOptionsInput struct {
 type RunOptionsOutput struct {
 	Configuration nullable.Nullable[RunConfigurationOutput] `json:"configuration,omitempty"`
 	Context       nullable.Nullable[RequestContext]         `json:"context,omitempty"`
+	Environment   nullable.Nullable[RunEnvironmentOutput]   `json:"environment,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride]      `json:"execution,omitempty"`
 	Labels        *map[string]string                        `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]             `json:"max_usage,omitempty"`
@@ -8425,7 +9237,7 @@ type RunStatus string
 type RunSummary struct {
 	AgentId           string                            `json:"agent_id"`
 	AgentName         nullable.Nullable[string]         `json:"agent_name"`
-	AgentRevisionId   string                            `json:"agent_revision_id"`
+	AgentRevisionId   nullable.Nullable[string]         `json:"agent_revision_id"`
 	Attempts          int                               `json:"attempts"`
 	CreatedAt         time.Time                         `json:"created_at"`
 	CurrentAttemptId  nullable.Nullable[string]         `json:"current_attempt_id"`
@@ -8483,7 +9295,7 @@ type RunUsagePage struct {
 // RunView defines model for RunView.
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
-	AgentRevisionId   string                                  `json:"agent_revision_id"`
+	AgentRevisionId   nullable.Nullable[string]               `json:"agent_revision_id"`
 	Attempts          int                                     `json:"attempts"`
 	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
@@ -8534,6 +9346,17 @@ type RunView_Pending struct {
 
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
+
+// SandboxGrant defines model for SandboxGrant.
+type SandboxGrant struct {
+	Access GrantAccess `json:"access"`
+	Path   string      `json:"path"`
+}
+
+// SandboxPolicy defines model for SandboxPolicy.
+type SandboxPolicy struct {
+	union json.RawMessage
+}
 
 // Schedule defines model for Schedule.
 type Schedule struct {
@@ -8683,8 +9506,9 @@ type ScheduleUpdate struct {
 
 // SelectedTrace defines model for SelectedTrace.
 type SelectedTrace struct {
-	RunId   string `json:"run_id"`
-	TraceId string `json:"trace_id"`
+	RunId     string                    `json:"run_id"`
+	SessionId nullable.Nullable[string] `json:"session_id,omitempty"`
+	TraceId   string                    `json:"trace_id"`
 }
 
 // Selection defines model for Selection.
@@ -8741,12 +9565,50 @@ type ServiceAccountUpdate struct {
 // ServiceAccountUpdateStatus defines model for ServiceAccountUpdate.Status.
 type ServiceAccountUpdateStatus string
 
+// SessionBindingUpdate defines model for SessionBindingUpdate.
+type SessionBindingUpdate struct {
+	// Configuration Tenant-authored Session policy; Service credentials are not process-environment references.
+	Configuration SessionConfiguration `json:"configuration"`
+}
+
+// SessionBindingView defines model for SessionBindingView.
+type SessionBindingView struct {
+	// Configuration Tenant-authored Session policy; Service credentials are not process-environment references.
+	Configuration SessionConfiguration `json:"configuration"`
+	EnvironmentId string               `json:"environment_id"`
+	Name          string               `json:"name"`
+	Version       int                  `json:"version"`
+}
+
+// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+type SessionConfiguration struct {
+	Commands         nullable.Nullable[bool]                    `json:"commands,omitempty"`
+	Egress           nullable.Nullable[EnvdEgressConfiguration] `json:"egress,omitempty"`
+	EgressMode       nullable.Nullable[EgressMode]              `json:"egress_mode,omitempty"`
+	Isolation        nullable.Nullable[SessionIsolation]        `json:"isolation,omitempty"`
+	Lifecycle        nullable.Nullable[SessionLifecyclePolicy]  `json:"lifecycle,omitempty"`
+	Sandbox          nullable.Nullable[SandboxPolicy]           `json:"sandbox,omitempty"`
+	WorkingDirectory nullable.Nullable[string]                  `json:"working_directory,omitempty"`
+}
+
 // SessionCreate defines model for SessionCreate.
 type SessionCreate struct {
-	Labels *map[string]string                       `json:"labels,omitempty"`
-	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
-	Origin nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
-	Title  nullable.Nullable[string]                `json:"title,omitempty"`
+	AutoRecreateLostEnvironment *bool                                    `json:"auto_recreate_lost_environment,omitempty"`
+	Labels                      *map[string]string                       `json:"labels,omitempty"`
+	Memory                      nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+	Origin                      nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
+	Title                       nullable.Nullable[string]                `json:"title,omitempty"`
+}
+
+// SessionIsolation defines model for SessionIsolation.
+type SessionIsolation struct {
+	union json.RawMessage
+}
+
+// SessionLifecyclePolicy defines model for SessionLifecyclePolicy.
+type SessionLifecyclePolicy struct {
+	IdleTimeoutMs int                    `json:"idle_timeout_ms"`
+	MaxLifetimeMs nullable.Nullable[int] `json:"max_lifetime_ms,omitempty"`
 }
 
 // SessionMemorySettings Participation and complete Space selection; policy belongs to each Space.
@@ -8788,20 +9650,22 @@ type SessionProfile struct {
 
 // SessionUpdate defines model for SessionUpdate.
 type SessionUpdate struct {
-	Labels nullable.Nullable[map[string]string]     `json:"labels,omitempty"`
-	Memory nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
-	Origin nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
-	Title  nullable.Nullable[string]                `json:"title,omitempty"`
+	AutoRecreateLostEnvironment *bool                                    `json:"auto_recreate_lost_environment,omitempty"`
+	Labels                      nullable.Nullable[map[string]string]     `json:"labels,omitempty"`
+	Memory                      nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+	Origin                      nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
+	Title                       nullable.Nullable[string]                `json:"title,omitempty"`
 }
 
 // SessionView defines model for SessionView.
 type SessionView struct {
-	Cost        nullable.Nullable[string] `json:"cost"`
-	CreatedAt   time.Time                 `json:"created_at"`
-	CreatedById string                    `json:"created_by_id"`
-	Id          string                    `json:"id"`
-	Labels      map[string]string         `json:"labels"`
-	LastRunId   nullable.Nullable[string] `json:"last_run_id"`
+	AutoRecreateLostEnvironment bool                      `json:"auto_recreate_lost_environment"`
+	Cost                        nullable.Nullable[string] `json:"cost"`
+	CreatedAt                   time.Time                 `json:"created_at"`
+	CreatedById                 string                    `json:"created_by_id"`
+	Id                          string                    `json:"id"`
+	Labels                      map[string]string         `json:"labels"`
+	LastRunId                   nullable.Nullable[string] `json:"last_run_id"`
 
 	// Memory Participation and complete Space selection; policy belongs to each Space.
 	Memory           *SessionMemorySettings            `json:"memory,omitempty"`
@@ -9115,28 +9979,16 @@ type State string
 // Status defines model for Status.
 type Status string
 
+// StatusChange defines model for StatusChange.
+type StatusChange struct {
+	Status StatusChangeStatus `json:"status"`
+}
+
+// StatusChangeStatus defines model for StatusChange.Status.
+type StatusChangeStatus string
+
 // Steering defines model for Steering.
 type Steering string
-
-// SubagentOverrideInput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
-type SubagentOverrideInput struct {
-	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
-	Context     nullable.Nullable[DelegationContextPolicy] `json:"context,omitempty"`
-	Description nullable.Nullable[string]                  `json:"description,omitempty"`
-	Environment nullable.Nullable[ChildEnvironmentPolicy]  `json:"environment,omitempty"`
-	RevisionId  nullable.Nullable[string]                  `json:"revision_id,omitempty"`
-	UsageLimits nullable.Nullable[UsageLimitsInput]        `json:"usage_limits,omitempty"`
-}
-
-// SubagentOverrideOutput Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
-type SubagentOverrideOutput struct {
-	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
-	Context     nullable.Nullable[DelegationContextPolicy] `json:"context,omitempty"`
-	Description nullable.Nullable[string]                  `json:"description,omitempty"`
-	Environment nullable.Nullable[ChildEnvironmentPolicy]  `json:"environment,omitempty"`
-	RevisionId  nullable.Nullable[string]                  `json:"revision_id,omitempty"`
-	UsageLimits nullable.Nullable[UsageLimitsOutput]       `json:"usage_limits,omitempty"`
-}
 
 // SubagentSelectionInput defines model for SubagentSelection-Input.
 type SubagentSelectionInput struct {
@@ -9161,6 +10013,28 @@ type SubagentSelectionOutput struct {
 	RevisionId  nullable.Nullable[string]            `json:"revision_id,omitempty"`
 	UsageLimits nullable.Nullable[UsageLimitsOutput] `json:"usage_limits,omitempty"`
 }
+
+// SubagentsInput defines model for Subagents-Input.
+type SubagentsInput struct {
+	// Dynamic Root-only task-specific delegation within the parent's capability boundary.
+	Dynamic *DynamicSubagentsInput  `json:"dynamic,omitempty"`
+	Mode    *SubagentsInputMode     `json:"mode,omitempty"`
+	Named   *map[string]interface{} `json:"named,omitempty"`
+}
+
+// SubagentsInputMode defines model for SubagentsInput.Mode.
+type SubagentsInputMode string
+
+// SubagentsOutput defines model for Subagents-Output.
+type SubagentsOutput struct {
+	// Dynamic Root-only task-specific delegation within the parent's capability boundary.
+	Dynamic *DynamicSubagentsOutput `json:"dynamic,omitempty"`
+	Mode    *SubagentsOutputMode    `json:"mode,omitempty"`
+	Named   *map[string]interface{} `json:"named,omitempty"`
+}
+
+// SubagentsOutputMode defines model for SubagentsOutput.Mode.
+type SubagentsOutputMode string
 
 // Submitted A submission receipt: the entry and, when the thread was idle, the run it started.
 type Submitted struct {
@@ -9252,6 +10126,9 @@ type SystemMetrics struct {
 	ThreadCount           nullable.Nullable[int]            `json:"thread_count,omitempty"`
 }
 
+// SystemPreset defines model for SystemPreset.
+type SystemPreset string
+
 // Template defines model for Template.
 type Template struct {
 	Config         TemplateConfig            `json:"config"`
@@ -9272,9 +10149,10 @@ type Template struct {
 
 // TemplateConfig defines model for TemplateConfig.
 type TemplateConfig struct {
-	DeleteAfterSeconds nullable.Nullable[int] `json:"delete_after_seconds,omitempty"`
-	Recipe             *map[string]JsonValue  `json:"recipe,omitempty"`
-	StopAfterSeconds   nullable.Nullable[int] `json:"stop_after_seconds,omitempty"`
+	DeleteAfterSeconds nullable.Nullable[int]         `json:"delete_after_seconds,omitempty"`
+	Recipe             *map[string]JsonValue          `json:"recipe,omitempty"`
+	Reclamation        nullable.Nullable[Reclamation] `json:"reclamation,omitempty"`
+	StopAfterSeconds   nullable.Nullable[int]         `json:"stop_after_seconds,omitempty"`
 }
 
 // TemplateCreate defines model for TemplateCreate.
@@ -9379,7 +10257,7 @@ type ThreadReferenceOrigin string
 // ThreadRunItem Bounded navigation metadata and recorded model usage within one Thread.
 type ThreadRunItem struct {
 	AgentId          string                        `json:"agent_id"`
-	AgentRevisionId  string                        `json:"agent_revision_id"`
+	AgentRevisionId  nullable.Nullable[string]     `json:"agent_revision_id"`
 	Attempts         int                           `json:"attempts"`
 	Cost             nullable.Nullable[string]     `json:"cost"`
 	CreatedAt        time.Time                     `json:"created_at"`
@@ -9830,6 +10708,29 @@ type VideoInputPolicy struct {
 
 // VideoUrlType defines model for VideoUrlType.
 type VideoUrlType string
+
+// VmBackend defines model for VmBackend.
+type VmBackend string
+
+// VmIsolation defines model for VmIsolation.
+type VmIsolation struct {
+	Backend   VmBackend       `json:"backend"`
+	Cpus      int             `json:"cpus"`
+	Image     string          `json:"image"`
+	MemoryMib int             `json:"memory_mib"`
+	Mode      VmIsolationMode `json:"mode"`
+	Mounts    *[]VmMount      `json:"mounts,omitempty"`
+}
+
+// VmIsolationMode defines model for VmIsolation.Mode.
+type VmIsolationMode string
+
+// VmMount defines model for VmMount.
+type VmMount struct {
+	Access GrantAccess `json:"access"`
+	Source string      `json:"source"`
+	Target string      `json:"target"`
+}
 
 // WaitReason defines model for WaitReason.
 type WaitReason string
@@ -10291,6 +11192,51 @@ type ReadBuiltinSkillArchiveParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// RegisterClientEnvironmentParams defines parameters for RegisterClientEnvironment.
+type RegisterClientEnvironmentParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ConnectClientEnvironmentParams defines parameters for ConnectClientEnvironment.
+type ConnectClientEnvironmentParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetClientEnvironmentParams defines parameters for GetClientEnvironment.
+type GetClientEnvironmentParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RevokeClientEnvironmentCredentialParams defines parameters for RevokeClientEnvironmentCredential.
+type RevokeClientEnvironmentCredentialParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RotateClientEnvironmentCredentialParams defines parameters for RotateClientEnvironmentCredential.
+type RotateClientEnvironmentCredentialParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ChangeClientEnvironmentStatusParams defines parameters for ChangeClientEnvironmentStatus.
+type ChangeClientEnvironmentStatusParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListConnectionsParams defines parameters for ListConnections.
 type ListConnectionsParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -10702,6 +11648,15 @@ type GetEnvironmentCreationParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// SetEnvironmentDebugHoldParams defines parameters for SetEnvironmentDebugHold.
+type SetEnvironmentDebugHoldParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // GetDesktopControlParams defines parameters for GetDesktopControl.
 type GetDesktopControlParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -10740,6 +11695,22 @@ type GetEnvironmentDesktopPreviewParams struct {
 
 // OpenDesktopViewerParams defines parameters for OpenDesktopViewer.
 type OpenDesktopViewerParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetKubernetesEnvironmentDiagnosticsParams defines parameters for GetKubernetesEnvironmentDiagnostics.
+type GetKubernetesEnvironmentDiagnosticsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetKubernetesEnvironmentLogsParams defines parameters for GetKubernetesEnvironmentLogs.
+type GetKubernetesEnvironmentLogsParams struct {
+	Container *string `form:"container,omitempty" json:"container,omitempty"`
+	Previous  *bool   `form:"previous,omitempty" json:"previous,omitempty"`
+	TailLines *int    `form:"tail_lines,omitempty" json:"tail_lines,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -10882,6 +11853,12 @@ type ListMemoriesParams struct {
 
 // CreateMemoryParams defines parameters for CreateMemory.
 type CreateMemoryParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListMemoryGuidancePresetsParams defines parameters for ListMemoryGuidancePresets.
+type ListMemoryGuidancePresetsParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -12321,6 +13298,21 @@ type ListThreadRunsParamsSort string
 // ListThreadRunsParamsDirection defines parameters for ListThreadRuns.
 type ListThreadRunsParamsDirection string
 
+// GetSessionBindingParams defines parameters for GetSessionBinding.
+type GetSessionBindingParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateSessionBindingParams defines parameters for UpdateSessionBinding.
+type UpdateSessionBindingParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ThreadStreamParams defines parameters for ThreadStream.
 type ThreadStreamParams struct {
 	Run         *string `form:"run,omitempty" json:"run,omitempty"`
@@ -12947,6 +13939,15 @@ type RenewBrowserControlJSONRequestBody = RenewControl
 // TakeoverBrowserJSONRequestBody defines body for TakeoverBrowser for application/json ContentType.
 type TakeoverBrowserJSONRequestBody = A13nServiceRunsBrowsersSchemasTakeover
 
+// RegisterClientEnvironmentJSONRequestBody defines body for RegisterClientEnvironment for application/json ContentType.
+type RegisterClientEnvironmentJSONRequestBody = Registration
+
+// ConnectClientEnvironmentJSONRequestBody defines body for ConnectClientEnvironment for application/json ContentType.
+type ConnectClientEnvironmentJSONRequestBody = ConnectionRequest
+
+// ChangeClientEnvironmentStatusJSONRequestBody defines body for ChangeClientEnvironmentStatus for application/json ContentType.
+type ChangeClientEnvironmentStatusJSONRequestBody = StatusChange
+
 // CreateConnectionJSONRequestBody defines body for CreateConnection for application/json ContentType.
 type CreateConnectionJSONRequestBody = ConnectionCreate
 
@@ -12991,6 +13992,9 @@ type CreateEnvironmentJSONRequestBody CreateEnvironmentJSONBody
 
 // UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
 type UpdateEnvironmentJSONRequestBody = EnvironmentUpdate
+
+// SetEnvironmentDebugHoldJSONRequestBody defines body for SetEnvironmentDebugHold for application/json ContentType.
+type SetEnvironmentDebugHoldJSONRequestBody = DebugHold
 
 // RenewDesktopControlJSONRequestBody defines body for RenewDesktopControl for application/json ContentType.
 type RenewDesktopControlJSONRequestBody = Renew
@@ -13192,6 +14196,9 @@ type AddMemoryMountJSONRequestBody = MemoryMount
 
 // UpdateMemoryMountJSONRequestBody defines body for UpdateMemoryMount for application/json ContentType.
 type UpdateMemoryMountJSONRequestBody = MemoryMountUpdate
+
+// UpdateSessionBindingJSONRequestBody defines body for UpdateSessionBinding for application/json ContentType.
+type UpdateSessionBindingJSONRequestBody = SessionBindingUpdate
 
 // CreateUploadMultipartRequestBody defines body for CreateUpload for multipart/form-data ContentType.
 type CreateUploadMultipartRequestBody = UploadCreate
@@ -13746,6 +14753,231 @@ func (t CpuLimit) MarshalJSON() ([]byte, error) {
 }
 
 func (t *CpuLimit) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDynamicSubagentsInputDefaultThinking0 returns the union data inside the DynamicSubagentsInput_DefaultThinking as a DynamicSubagentsInputDefaultThinking0
+func (t DynamicSubagentsInput_DefaultThinking) AsDynamicSubagentsInputDefaultThinking0() (DynamicSubagentsInputDefaultThinking0, error) {
+	var body DynamicSubagentsInputDefaultThinking0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsInputDefaultThinking0 overwrites any union data inside the DynamicSubagentsInput_DefaultThinking as the provided DynamicSubagentsInputDefaultThinking0
+func (t *DynamicSubagentsInput_DefaultThinking) FromDynamicSubagentsInputDefaultThinking0(v DynamicSubagentsInputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsInputDefaultThinking0 performs a merge with any union data inside the DynamicSubagentsInput_DefaultThinking, using the provided DynamicSubagentsInputDefaultThinking0
+func (t *DynamicSubagentsInput_DefaultThinking) MergeDynamicSubagentsInputDefaultThinking0(v DynamicSubagentsInputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDynamicSubagentsInputDefaultThinking1 returns the union data inside the DynamicSubagentsInput_DefaultThinking as a DynamicSubagentsInputDefaultThinking1
+func (t DynamicSubagentsInput_DefaultThinking) AsDynamicSubagentsInputDefaultThinking1() (DynamicSubagentsInputDefaultThinking1, error) {
+	var body DynamicSubagentsInputDefaultThinking1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsInputDefaultThinking1 overwrites any union data inside the DynamicSubagentsInput_DefaultThinking as the provided DynamicSubagentsInputDefaultThinking1
+func (t *DynamicSubagentsInput_DefaultThinking) FromDynamicSubagentsInputDefaultThinking1(v DynamicSubagentsInputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsInputDefaultThinking1 performs a merge with any union data inside the DynamicSubagentsInput_DefaultThinking, using the provided DynamicSubagentsInputDefaultThinking1
+func (t *DynamicSubagentsInput_DefaultThinking) MergeDynamicSubagentsInputDefaultThinking1(v DynamicSubagentsInputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DynamicSubagentsInput_DefaultThinking) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DynamicSubagentsInput_DefaultThinking) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDynamicSubagentsOutputDefaultThinking0 returns the union data inside the DynamicSubagentsOutput_DefaultThinking as a DynamicSubagentsOutputDefaultThinking0
+func (t DynamicSubagentsOutput_DefaultThinking) AsDynamicSubagentsOutputDefaultThinking0() (DynamicSubagentsOutputDefaultThinking0, error) {
+	var body DynamicSubagentsOutputDefaultThinking0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsOutputDefaultThinking0 overwrites any union data inside the DynamicSubagentsOutput_DefaultThinking as the provided DynamicSubagentsOutputDefaultThinking0
+func (t *DynamicSubagentsOutput_DefaultThinking) FromDynamicSubagentsOutputDefaultThinking0(v DynamicSubagentsOutputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsOutputDefaultThinking0 performs a merge with any union data inside the DynamicSubagentsOutput_DefaultThinking, using the provided DynamicSubagentsOutputDefaultThinking0
+func (t *DynamicSubagentsOutput_DefaultThinking) MergeDynamicSubagentsOutputDefaultThinking0(v DynamicSubagentsOutputDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDynamicSubagentsOutputDefaultThinking1 returns the union data inside the DynamicSubagentsOutput_DefaultThinking as a DynamicSubagentsOutputDefaultThinking1
+func (t DynamicSubagentsOutput_DefaultThinking) AsDynamicSubagentsOutputDefaultThinking1() (DynamicSubagentsOutputDefaultThinking1, error) {
+	var body DynamicSubagentsOutputDefaultThinking1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsOutputDefaultThinking1 overwrites any union data inside the DynamicSubagentsOutput_DefaultThinking as the provided DynamicSubagentsOutputDefaultThinking1
+func (t *DynamicSubagentsOutput_DefaultThinking) FromDynamicSubagentsOutputDefaultThinking1(v DynamicSubagentsOutputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsOutputDefaultThinking1 performs a merge with any union data inside the DynamicSubagentsOutput_DefaultThinking, using the provided DynamicSubagentsOutputDefaultThinking1
+func (t *DynamicSubagentsOutput_DefaultThinking) MergeDynamicSubagentsOutputDefaultThinking1(v DynamicSubagentsOutputDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DynamicSubagentsOutput_DefaultThinking) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DynamicSubagentsOutput_DefaultThinking) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPublicDestinations returns the union data inside the EgressDestinations as a PublicDestinations
+func (t EgressDestinations) AsPublicDestinations() (PublicDestinations, error) {
+	var body PublicDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPublicDestinations overwrites any union data inside the EgressDestinations as the provided PublicDestinations
+func (t *EgressDestinations) FromPublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	t.union = b
+	return err
+}
+
+// MergePublicDestinations performs a merge with any union data inside the EgressDestinations, using the provided PublicDestinations
+func (t *EgressDestinations) MergePublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAllowlistDestinations returns the union data inside the EgressDestinations as a AllowlistDestinations
+func (t EgressDestinations) AsAllowlistDestinations() (AllowlistDestinations, error) {
+	var body AllowlistDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAllowlistDestinations overwrites any union data inside the EgressDestinations as the provided AllowlistDestinations
+func (t *EgressDestinations) FromAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	t.union = b
+	return err
+}
+
+// MergeAllowlistDestinations performs a merge with any union data inside the EgressDestinations, using the provided AllowlistDestinations
+func (t *EgressDestinations) MergeAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t EgressDestinations) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t EgressDestinations) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "allowlist":
+		return t.AsAllowlistDestinations()
+	case "public":
+		return t.AsPublicDestinations()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t EgressDestinations) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *EgressDestinations) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -14598,6 +15830,208 @@ func (t *PriceTierInput_Price) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsFreshRunEnvironmentInput returns the union data inside the RunEnvironmentInput as a FreshRunEnvironmentInput
+func (t RunEnvironmentInput) AsFreshRunEnvironmentInput() (FreshRunEnvironmentInput, error) {
+	var body FreshRunEnvironmentInput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFreshRunEnvironmentInput overwrites any union data inside the RunEnvironmentInput as the provided FreshRunEnvironmentInput
+func (t *RunEnvironmentInput) FromFreshRunEnvironmentInput(v FreshRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	t.union = b
+	return err
+}
+
+// MergeFreshRunEnvironmentInput performs a merge with any union data inside the RunEnvironmentInput, using the provided FreshRunEnvironmentInput
+func (t *RunEnvironmentInput) MergeFreshRunEnvironmentInput(v FreshRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsExistingRunEnvironmentInput returns the union data inside the RunEnvironmentInput as a ExistingRunEnvironmentInput
+func (t RunEnvironmentInput) AsExistingRunEnvironmentInput() (ExistingRunEnvironmentInput, error) {
+	var body ExistingRunEnvironmentInput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromExistingRunEnvironmentInput overwrites any union data inside the RunEnvironmentInput as the provided ExistingRunEnvironmentInput
+func (t *RunEnvironmentInput) FromExistingRunEnvironmentInput(v ExistingRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	t.union = b
+	return err
+}
+
+// MergeExistingRunEnvironmentInput performs a merge with any union data inside the RunEnvironmentInput, using the provided ExistingRunEnvironmentInput
+func (t *RunEnvironmentInput) MergeExistingRunEnvironmentInput(v ExistingRunEnvironmentInput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunEnvironmentInput) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t RunEnvironmentInput) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "existing":
+		return t.AsExistingRunEnvironmentInput()
+	case "fresh":
+		return t.AsFreshRunEnvironmentInput()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t RunEnvironmentInput) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunEnvironmentInput) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsFreshRunEnvironmentOutput returns the union data inside the RunEnvironmentOutput as a FreshRunEnvironmentOutput
+func (t RunEnvironmentOutput) AsFreshRunEnvironmentOutput() (FreshRunEnvironmentOutput, error) {
+	var body FreshRunEnvironmentOutput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFreshRunEnvironmentOutput overwrites any union data inside the RunEnvironmentOutput as the provided FreshRunEnvironmentOutput
+func (t *RunEnvironmentOutput) FromFreshRunEnvironmentOutput(v FreshRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	t.union = b
+	return err
+}
+
+// MergeFreshRunEnvironmentOutput performs a merge with any union data inside the RunEnvironmentOutput, using the provided FreshRunEnvironmentOutput
+func (t *RunEnvironmentOutput) MergeFreshRunEnvironmentOutput(v FreshRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsExistingRunEnvironmentOutput returns the union data inside the RunEnvironmentOutput as a ExistingRunEnvironmentOutput
+func (t RunEnvironmentOutput) AsExistingRunEnvironmentOutput() (ExistingRunEnvironmentOutput, error) {
+	var body ExistingRunEnvironmentOutput
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromExistingRunEnvironmentOutput overwrites any union data inside the RunEnvironmentOutput as the provided ExistingRunEnvironmentOutput
+func (t *RunEnvironmentOutput) FromExistingRunEnvironmentOutput(v ExistingRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	t.union = b
+	return err
+}
+
+// MergeExistingRunEnvironmentOutput performs a merge with any union data inside the RunEnvironmentOutput, using the provided ExistingRunEnvironmentOutput
+func (t *RunEnvironmentOutput) MergeExistingRunEnvironmentOutput(v ExistingRunEnvironmentOutput) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunEnvironmentOutput) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t RunEnvironmentOutput) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "existing":
+		return t.AsExistingRunEnvironmentOutput()
+	case "fresh":
+		return t.AsFreshRunEnvironmentOutput()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t RunEnvironmentOutput) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunEnvironmentOutput) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a MemoryMount
 func (t RunView_MemoryMounts_Item) AsMemoryMount() (MemoryMount, error) {
 	var body MemoryMount
@@ -14624,22 +16058,22 @@ func (t *RunView_MemoryMounts_Item) MergeMemoryMount(v MemoryMount) error {
 	return err
 }
 
-// AsFrozenMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a FrozenMemoryMount
-func (t RunView_MemoryMounts_Item) AsFrozenMemoryMount() (FrozenMemoryMount, error) {
-	var body FrozenMemoryMount
+// AsRunMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a RunMemoryMount
+func (t RunView_MemoryMounts_Item) AsRunMemoryMount() (RunMemoryMount, error) {
+	var body RunMemoryMount
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrozenMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) FromFrozenMemoryMount(v FrozenMemoryMount) error {
+// FromRunMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) FromRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrozenMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) MergeFrozenMemoryMount(v FrozenMemoryMount) error {
+// MergeRunMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) MergeRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -14722,6 +16156,107 @@ func (t *RunView_Pending) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsDisabledSandbox returns the union data inside the SandboxPolicy as a DisabledSandbox
+func (t SandboxPolicy) AsDisabledSandbox() (DisabledSandbox, error) {
+	var body DisabledSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDisabledSandbox overwrites any union data inside the SandboxPolicy as the provided DisabledSandbox
+func (t *SandboxPolicy) FromDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	t.union = b
+	return err
+}
+
+// MergeDisabledSandbox performs a merge with any union data inside the SandboxPolicy, using the provided DisabledSandbox
+func (t *SandboxPolicy) MergeDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRestrictedSandbox returns the union data inside the SandboxPolicy as a RestrictedSandbox
+func (t SandboxPolicy) AsRestrictedSandbox() (RestrictedSandbox, error) {
+	var body RestrictedSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRestrictedSandbox overwrites any union data inside the SandboxPolicy as the provided RestrictedSandbox
+func (t *SandboxPolicy) FromRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	t.union = b
+	return err
+}
+
+// MergeRestrictedSandbox performs a merge with any union data inside the SandboxPolicy, using the provided RestrictedSandbox
+func (t *SandboxPolicy) MergeRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SandboxPolicy) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SandboxPolicy) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "disabled":
+		return t.AsDisabledSandbox()
+	case "restricted":
+		return t.AsRestrictedSandbox()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SandboxPolicy) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SandboxPolicy) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsCronSchedule returns the union data inside the ScheduleRule as a CronSchedule
 func (t ScheduleRule) AsCronSchedule() (CronSchedule, error) {
 	var body CronSchedule
@@ -14780,6 +16315,107 @@ func (t ScheduleRule) MarshalJSON() ([]byte, error) {
 }
 
 func (t *ScheduleRule) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsNativeIsolation returns the union data inside the SessionIsolation as a NativeIsolation
+func (t SessionIsolation) AsNativeIsolation() (NativeIsolation, error) {
+	var body NativeIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeIsolation overwrites any union data inside the SessionIsolation as the provided NativeIsolation
+func (t *SessionIsolation) FromNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	t.union = b
+	return err
+}
+
+// MergeNativeIsolation performs a merge with any union data inside the SessionIsolation, using the provided NativeIsolation
+func (t *SessionIsolation) MergeNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsVmIsolation returns the union data inside the SessionIsolation as a VmIsolation
+func (t SessionIsolation) AsVmIsolation() (VmIsolation, error) {
+	var body VmIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromVmIsolation overwrites any union data inside the SessionIsolation as the provided VmIsolation
+func (t *SessionIsolation) FromVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	t.union = b
+	return err
+}
+
+// MergeVmIsolation performs a merge with any union data inside the SessionIsolation, using the provided VmIsolation
+func (t *SessionIsolation) MergeVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SessionIsolation) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SessionIsolation) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "native":
+		return t.AsNativeIsolation()
+	case "vm":
+		return t.AsVmIsolation()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SessionIsolation) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SessionIsolation) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -17702,6 +19338,63 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/builtin-skills/{name}/content (the `ReadBuiltinSkillArchive` operationId).
 	ReadBuiltinSkillArchive(ctx context.Context, name string, params *ReadBuiltinSkillArchiveParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RegisterClientEnvironmentWithBody Register Client Environment
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+	RegisterClientEnvironmentWithBody(ctx context.Context, params *RegisterClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RegisterClientEnvironment Register Client Environment
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+	RegisterClientEnvironment(ctx context.Context, params *RegisterClientEnvironmentParams, body RegisterClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ConnectClientEnvironmentWithBody Connect Client Environment
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+	ConnectClientEnvironmentWithBody(ctx context.Context, params *ConnectClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ConnectClientEnvironment Connect Client Environment
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+	ConnectClientEnvironment(ctx context.Context, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetClientEnvironment Get Client Environment
+	//
+	// Corresponds with GET /api/v1/client-environments/{environment_id} (the `GetClientEnvironment` operationId).
+	GetClientEnvironment(ctx context.Context, environmentId string, params *GetClientEnvironmentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RevokeClientEnvironmentCredential Revoke Client Environment Credential
+	//
+	// Corresponds with POST /api/v1/client-environments/{environment_id}/revoke-credential (the `RevokeClientEnvironmentCredential` operationId).
+	RevokeClientEnvironmentCredential(ctx context.Context, environmentId string, params *RevokeClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RotateClientEnvironmentCredential Rotate Client Environment Credential
+	//
+	// Corresponds with POST /api/v1/client-environments/{environment_id}/rotate-credential (the `RotateClientEnvironmentCredential` operationId).
+	RotateClientEnvironmentCredential(ctx context.Context, environmentId string, params *RotateClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeClientEnvironmentStatusWithBody Change Client Environment Status
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+	ChangeClientEnvironmentStatusWithBody(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeClientEnvironmentStatus Change Client Environment Status
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+	ChangeClientEnvironmentStatus(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListConnections List Connections
 	//
 	// Corresponds with GET /api/v1/connections (the `ListConnections` operationId).
@@ -18121,6 +19814,20 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreation(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// SetEnvironmentDebugHoldWithBody Set Environment Debug Hold
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHoldWithBody(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetEnvironmentDebugHold Set Environment Debug Hold
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHold(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetDesktopControl Get Desktop Control
 	//
 	// Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
@@ -18177,6 +19884,16 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
 	OpenDesktopViewer(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKubernetesEnvironmentDiagnostics Get Kubernetes Environment Diagnostics
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+	GetKubernetesEnvironmentDiagnostics(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKubernetesEnvironmentLogs Get Kubernetes Environment Logs
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+	GetKubernetesEnvironmentLogs(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// SelectMetricsSourceWithBody Select Metrics Source
 	//
@@ -18355,6 +20072,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/memories (the `CreateMemory` operationId).
 	CreateMemory(ctx context.Context, params *CreateMemoryParams, body CreateMemoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListMemoryGuidancePresets List Memory Guidance Presets
+	//
+	// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+	ListMemoryGuidancePresets(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteMemory Delete Memory
 	//
@@ -19815,6 +21537,25 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 	ListThreadRuns(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSessionBinding Get Session Binding
+	//
+	// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+	GetSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSessionBindingWithBody Update Session Binding
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBindingWithBody(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSessionBinding Update Session Binding
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ThreadStream Thread Stream
 	//
@@ -21461,6 +23202,153 @@ func (c *Client) ReadBuiltinSkillArchive(ctx context.Context, name string, param
 	return c.Client.Do(req)
 }
 
+// RegisterClientEnvironmentWithBody Register Client Environment
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+func (c *Client) RegisterClientEnvironmentWithBody(ctx context.Context, params *RegisterClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRegisterClientEnvironmentRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RegisterClientEnvironment Register Client Environment
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+func (c *Client) RegisterClientEnvironment(ctx context.Context, params *RegisterClientEnvironmentParams, body RegisterClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRegisterClientEnvironmentRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ConnectClientEnvironmentWithBody Connect Client Environment
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+func (c *Client) ConnectClientEnvironmentWithBody(ctx context.Context, params *ConnectClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewConnectClientEnvironmentRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ConnectClientEnvironment Connect Client Environment
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+func (c *Client) ConnectClientEnvironment(ctx context.Context, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewConnectClientEnvironmentRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetClientEnvironment Get Client Environment
+//
+// Corresponds with GET /api/v1/client-environments/{environment_id} (the `GetClientEnvironment` operationId).
+func (c *Client) GetClientEnvironment(ctx context.Context, environmentId string, params *GetClientEnvironmentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClientEnvironmentRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RevokeClientEnvironmentCredential Revoke Client Environment Credential
+//
+// Corresponds with POST /api/v1/client-environments/{environment_id}/revoke-credential (the `RevokeClientEnvironmentCredential` operationId).
+func (c *Client) RevokeClientEnvironmentCredential(ctx context.Context, environmentId string, params *RevokeClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRevokeClientEnvironmentCredentialRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RotateClientEnvironmentCredential Rotate Client Environment Credential
+//
+// Corresponds with POST /api/v1/client-environments/{environment_id}/rotate-credential (the `RotateClientEnvironmentCredential` operationId).
+func (c *Client) RotateClientEnvironmentCredential(ctx context.Context, environmentId string, params *RotateClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRotateClientEnvironmentCredentialRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ChangeClientEnvironmentStatusWithBody Change Client Environment Status
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+func (c *Client) ChangeClientEnvironmentStatusWithBody(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeClientEnvironmentStatusRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ChangeClientEnvironmentStatus Change Client Environment Status
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+func (c *Client) ChangeClientEnvironmentStatus(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeClientEnvironmentStatusRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListConnections List Connections
 //
 // Corresponds with GET /api/v1/connections (the `ListConnections` operationId).
@@ -22520,6 +24408,40 @@ func (c *Client) GetEnvironmentCreation(ctx context.Context, environmentId strin
 	return c.Client.Do(req)
 }
 
+// SetEnvironmentDebugHoldWithBody Set Environment Debug Hold
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *Client) SetEnvironmentDebugHoldWithBody(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetEnvironmentDebugHoldRequestWithBody(c.Server, environmentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SetEnvironmentDebugHold Set Environment Debug Hold
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *Client) SetEnvironmentDebugHold(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetEnvironmentDebugHoldRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetDesktopControl Get Desktop Control
 //
 // Corresponds with GET /api/v1/environments/{environment_id}/desktop-control (the `GetDesktopControl` operationId).
@@ -22657,6 +24579,36 @@ func (c *Client) OpenDesktopViewerWithBody(ctx context.Context, environmentId st
 // Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
 func (c *Client) OpenDesktopViewer(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOpenDesktopViewerRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetKubernetesEnvironmentDiagnostics Get Kubernetes Environment Diagnostics
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+func (c *Client) GetKubernetesEnvironmentDiagnostics(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKubernetesEnvironmentDiagnosticsRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetKubernetesEnvironmentLogs Get Kubernetes Environment Logs
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+func (c *Client) GetKubernetesEnvironmentLogs(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKubernetesEnvironmentLogsRequest(c.Server, environmentId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -23095,6 +25047,21 @@ func (c *Client) CreateMemoryWithBody(ctx context.Context, params *CreateMemoryP
 // Corresponds with POST /api/v1/memories (the `CreateMemory` operationId).
 func (c *Client) CreateMemory(ctx context.Context, params *CreateMemoryParams, body CreateMemoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateMemoryRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListMemoryGuidancePresets List Memory Guidance Presets
+//
+// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+func (c *Client) ListMemoryGuidancePresets(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListMemoryGuidancePresetsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -26735,6 +28702,55 @@ func (c *Client) UpdateMemoryMount(ctx context.Context, threadId string, name st
 // Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 func (c *Client) ListThreadRuns(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListThreadRunsRequest(c.Server, threadId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetSessionBinding Get Session Binding
+//
+// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+func (c *Client) GetSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSessionBindingRequest(c.Server, threadId, environmentId, name, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSessionBindingWithBody Update Session Binding
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *Client) UpdateSessionBindingWithBody(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSessionBindingRequestWithBody(c.Server, threadId, environmentId, name, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateSessionBinding Update Session Binding
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *Client) UpdateSessionBinding(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSessionBindingRequest(c.Server, threadId, environmentId, name, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -31194,6 +33210,358 @@ func NewReadBuiltinSkillArchiveRequest(server string, name string, params *ReadB
 	return req, nil
 }
 
+// NewRegisterClientEnvironmentRequest calls the generic RegisterClientEnvironment builder with application/json body
+func NewRegisterClientEnvironmentRequest(server string, params *RegisterClientEnvironmentParams, body RegisterClientEnvironmentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRegisterClientEnvironmentRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewRegisterClientEnvironmentRequestWithBody constructs an http.Request for the RegisterClientEnvironment method, with any body, and a specified content type
+func NewRegisterClientEnvironmentRequestWithBody(server string, params *RegisterClientEnvironmentParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewConnectClientEnvironmentRequest calls the generic ConnectClientEnvironment builder with application/json body
+func NewConnectClientEnvironmentRequest(server string, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewConnectClientEnvironmentRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewConnectClientEnvironmentRequestWithBody constructs an http.Request for the ConnectClientEnvironment method, with any body, and a specified content type
+func NewConnectClientEnvironmentRequestWithBody(server string, params *ConnectClientEnvironmentParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/connect")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetClientEnvironmentRequest constructs an http.Request for the GetClientEnvironment method
+func NewGetClientEnvironmentRequest(server string, environmentId string, params *GetClientEnvironmentParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRevokeClientEnvironmentCredentialRequest constructs an http.Request for the RevokeClientEnvironmentCredential method
+func NewRevokeClientEnvironmentCredentialRequest(server string, environmentId string, params *RevokeClientEnvironmentCredentialParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/%s/revoke-credential", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRotateClientEnvironmentCredentialRequest constructs an http.Request for the RotateClientEnvironmentCredential method
+func NewRotateClientEnvironmentCredentialRequest(server string, environmentId string, params *RotateClientEnvironmentCredentialParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/%s/rotate-credential", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewChangeClientEnvironmentStatusRequest calls the generic ChangeClientEnvironmentStatus builder with application/json body
+func NewChangeClientEnvironmentStatusRequest(server string, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewChangeClientEnvironmentStatusRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewChangeClientEnvironmentStatusRequestWithBody constructs an http.Request for the ChangeClientEnvironmentStatus method, with any body, and a specified content type
+func NewChangeClientEnvironmentStatusRequestWithBody(server string, environmentId string, params *ChangeClientEnvironmentStatusParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/%s/status", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListConnectionsRequest constructs an http.Request for the ListConnections method
 func NewListConnectionsRequest(server string, params *ListConnectionsParams) (*http.Request, error) {
 	var err error
@@ -34470,6 +36838,79 @@ func NewGetEnvironmentCreationRequest(server string, environmentId string, param
 	return req, nil
 }
 
+// NewSetEnvironmentDebugHoldRequest calls the generic SetEnvironmentDebugHold builder with application/json body
+func NewSetEnvironmentDebugHoldRequest(server string, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetEnvironmentDebugHoldRequestWithBody(server, environmentId, params, "application/json", bodyReader)
+}
+
+// NewSetEnvironmentDebugHoldRequestWithBody constructs an http.Request for the SetEnvironmentDebugHold method, with any body, and a specified content type
+func NewSetEnvironmentDebugHoldRequestWithBody(server string, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/debug-hold", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetDesktopControlRequest constructs an http.Request for the GetDesktopControl method
 func NewGetDesktopControlRequest(server string, environmentId string, params *GetDesktopControlParams) (*http.Request, error) {
 	var err error
@@ -34806,6 +37247,155 @@ func NewOpenDesktopViewerRequestWithBody(server string, environmentId string, pa
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetKubernetesEnvironmentDiagnosticsRequest constructs an http.Request for the GetKubernetesEnvironmentDiagnostics method
+func NewGetKubernetesEnvironmentDiagnosticsRequest(server string, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/kubernetes/diagnostics", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetKubernetesEnvironmentLogsRequest constructs an http.Request for the GetKubernetesEnvironmentLogs method
+func NewGetKubernetesEnvironmentLogsRequest(server string, environmentId string, params *GetKubernetesEnvironmentLogsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/kubernetes/logs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Container != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "container", *params.Container, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Previous != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "previous", *params.Previous, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TailLines != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tail_lines", *params.TailLines, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	if params != nil {
 
@@ -36020,6 +38610,48 @@ func NewCreateMemoryRequestWithBody(server string, params *CreateMemoryParams, c
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListMemoryGuidancePresetsRequest constructs an http.Request for the ListMemoryGuidancePresets method
+func NewListMemoryGuidancePresetsRequest(server string, params *ListMemoryGuidancePresetsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memories/guidance-presets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	if params != nil {
 
@@ -47682,6 +50314,156 @@ func NewListThreadRunsRequest(server string, threadId string, params *ListThread
 	return req, nil
 }
 
+// NewGetSessionBindingRequest constructs an http.Request for the GetSessionBinding method
+func NewGetSessionBindingRequest(server string, threadId string, environmentId string, name string, params *GetSessionBindingParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/threads/%s/session-bindings/%s/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateSessionBindingRequest calls the generic UpdateSessionBinding builder with application/json body
+func NewUpdateSessionBindingRequest(server string, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSessionBindingRequestWithBody(server, threadId, environmentId, name, params, "application/json", bodyReader)
+}
+
+// NewUpdateSessionBindingRequestWithBody constructs an http.Request for the UpdateSessionBinding method, with any body, and a specified content type
+func NewUpdateSessionBindingRequestWithBody(server string, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "thread_id", threadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "name", name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/threads/%s/session-bindings/%s/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewThreadStreamRequest constructs an http.Request for the ThreadStream method
 func NewThreadStreamRequest(server string, threadId string, params *ThreadStreamParams) (*http.Request, error) {
 	var err error
@@ -53278,6 +56060,69 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/builtin-skills/{name}/content (the `ReadBuiltinSkillArchive` operationId).
 	ReadBuiltinSkillArchiveWithResponse(ctx context.Context, name string, params *ReadBuiltinSkillArchiveParams, reqEditors ...RequestEditorFn) (*ReadBuiltinSkillArchiveResponse, error)
 
+	// RegisterClientEnvironmentWithBodyWithResponse Register Client Environment
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+	RegisterClientEnvironmentWithBodyWithResponse(ctx context.Context, params *RegisterClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterClientEnvironmentResponse, error)
+
+	// RegisterClientEnvironmentWithResponse Register Client Environment
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+	RegisterClientEnvironmentWithResponse(ctx context.Context, params *RegisterClientEnvironmentParams, body RegisterClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterClientEnvironmentResponse, error)
+
+	// ConnectClientEnvironmentWithBodyWithResponse Connect Client Environment
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+	ConnectClientEnvironmentWithBodyWithResponse(ctx context.Context, params *ConnectClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ConnectClientEnvironmentResponse, error)
+
+	// ConnectClientEnvironmentWithResponse Connect Client Environment
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+	ConnectClientEnvironmentWithResponse(ctx context.Context, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*ConnectClientEnvironmentResponse, error)
+
+	// GetClientEnvironmentWithResponse Get Client Environment
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/client-environments/{environment_id} (the `GetClientEnvironment` operationId).
+	GetClientEnvironmentWithResponse(ctx context.Context, environmentId string, params *GetClientEnvironmentParams, reqEditors ...RequestEditorFn) (*GetClientEnvironmentResponse, error)
+
+	// RevokeClientEnvironmentCredentialWithResponse Revoke Client Environment Credential
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/{environment_id}/revoke-credential (the `RevokeClientEnvironmentCredential` operationId).
+	RevokeClientEnvironmentCredentialWithResponse(ctx context.Context, environmentId string, params *RevokeClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*RevokeClientEnvironmentCredentialResponse, error)
+
+	// RotateClientEnvironmentCredentialWithResponse Rotate Client Environment Credential
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/{environment_id}/rotate-credential (the `RotateClientEnvironmentCredential` operationId).
+	RotateClientEnvironmentCredentialWithResponse(ctx context.Context, environmentId string, params *RotateClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*RotateClientEnvironmentCredentialResponse, error)
+
+	// ChangeClientEnvironmentStatusWithBodyWithResponse Change Client Environment Status
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+	ChangeClientEnvironmentStatusWithBodyWithResponse(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeClientEnvironmentStatusResponse, error)
+
+	// ChangeClientEnvironmentStatusWithResponse Change Client Environment Status
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+	ChangeClientEnvironmentStatusWithResponse(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeClientEnvironmentStatusResponse, error)
+
 	// ListConnectionsWithResponse List Connections
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -53765,6 +56610,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreationWithResponse(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*GetEnvironmentCreationResponse, error)
 
+	// SetEnvironmentDebugHoldWithBodyWithResponse Set Environment Debug Hold
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHoldWithBodyWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error)
+
+	// SetEnvironmentDebugHoldWithResponse Set Environment Debug Hold
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+	SetEnvironmentDebugHoldWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error)
+
 	// GetDesktopControlWithResponse Get Desktop Control
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -53827,6 +56686,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/environments/{environment_id}/desktop-viewer (the `OpenDesktopViewer` operationId).
 	OpenDesktopViewerWithResponse(ctx context.Context, environmentId string, params *OpenDesktopViewerParams, body OpenDesktopViewerJSONRequestBody, reqEditors ...RequestEditorFn) (*OpenDesktopViewerResponse, error)
+
+	// GetKubernetesEnvironmentDiagnosticsWithResponse Get Kubernetes Environment Diagnostics
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+	GetKubernetesEnvironmentDiagnosticsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentDiagnosticsResponse, error)
+
+	// GetKubernetesEnvironmentLogsWithResponse Get Kubernetes Environment Logs
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+	GetKubernetesEnvironmentLogsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentLogsResponse, error)
 
 	// SelectMetricsSourceWithBodyWithResponse Select Metrics Source
 	//
@@ -54025,6 +56898,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/memories (the `CreateMemory` operationId).
 	CreateMemoryWithResponse(ctx context.Context, params *CreateMemoryParams, body CreateMemoryJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMemoryResponse, error)
+
+	// ListMemoryGuidancePresetsWithResponse List Memory Guidance Presets
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+	ListMemoryGuidancePresetsWithResponse(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*ListMemoryGuidancePresetsResponse, error)
 
 	// DeleteMemoryWithResponse Delete Memory
 	//
@@ -55695,6 +58575,27 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/threads/{thread_id}/runs (the `ListThreadRuns` operationId).
 	ListThreadRunsWithResponse(ctx context.Context, threadId string, params *ListThreadRunsParams, reqEditors ...RequestEditorFn) (*ListThreadRunsResponse, error)
+
+	// GetSessionBindingWithResponse Get Session Binding
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+	GetSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*GetSessionBindingResponse, error)
+
+	// UpdateSessionBindingWithBodyWithResponse Update Session Binding
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBindingWithBodyWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error)
+
+	// UpdateSessionBindingWithResponse Update Session Binding
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+	UpdateSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error)
 
 	// ThreadStreamWithResponse Thread Stream
 	//
@@ -59692,6 +62593,434 @@ func (r ReadBuiltinSkillArchiveResponse) ContentType() string {
 	return ""
 }
 
+// RegisterClientEnvironmentResponse400Headers the declared response headers of an HTTP 400 response for RegisterClientEnvironment
+type RegisterClientEnvironmentResponse400Headers struct {
+	XRequestId *string
+}
+
+// RegisterClientEnvironmentResponseDefaultHeaders the declared response headers of an HTTP default response for RegisterClientEnvironment
+type RegisterClientEnvironmentResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RegisterClientEnvironmentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Registered
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Registered
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RegisterClientEnvironmentResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RegisterClientEnvironmentResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RegisterClientEnvironmentResponse) GetJSON200() *Registered {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r RegisterClientEnvironmentResponse) GetJSON201() *Registered {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RegisterClientEnvironmentResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RegisterClientEnvironmentResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RegisterClientEnvironmentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RegisterClientEnvironmentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RegisterClientEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RegisterClientEnvironmentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ConnectClientEnvironmentResponse400Headers the declared response headers of an HTTP 400 response for ConnectClientEnvironment
+type ConnectClientEnvironmentResponse400Headers struct {
+	XRequestId *string
+}
+
+// ConnectClientEnvironmentResponseDefaultHeaders the declared response headers of an HTTP default response for ConnectClientEnvironment
+type ConnectClientEnvironmentResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ConnectClientEnvironmentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Registered
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Registered
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ConnectClientEnvironmentResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ConnectClientEnvironmentResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ConnectClientEnvironmentResponse) GetJSON200() *Registered {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r ConnectClientEnvironmentResponse) GetJSON201() *Registered {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ConnectClientEnvironmentResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ConnectClientEnvironmentResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ConnectClientEnvironmentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ConnectClientEnvironmentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ConnectClientEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ConnectClientEnvironmentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetClientEnvironmentResponse400Headers the declared response headers of an HTTP 400 response for GetClientEnvironment
+type GetClientEnvironmentResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetClientEnvironmentResponseDefaultHeaders the declared response headers of an HTTP default response for GetClientEnvironment
+type GetClientEnvironmentResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetClientEnvironmentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ClientEnvironment
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetClientEnvironmentResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetClientEnvironmentResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetClientEnvironmentResponse) GetJSON200() *ClientEnvironment {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetClientEnvironmentResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetClientEnvironmentResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetClientEnvironmentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetClientEnvironmentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetClientEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetClientEnvironmentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RevokeClientEnvironmentCredentialResponse400Headers the declared response headers of an HTTP 400 response for RevokeClientEnvironmentCredential
+type RevokeClientEnvironmentCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// RevokeClientEnvironmentCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for RevokeClientEnvironmentCredential
+type RevokeClientEnvironmentCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RevokeClientEnvironmentCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Registered
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RevokeClientEnvironmentCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RevokeClientEnvironmentCredentialResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RevokeClientEnvironmentCredentialResponse) GetJSON200() *Registered {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RevokeClientEnvironmentCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RevokeClientEnvironmentCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RevokeClientEnvironmentCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RevokeClientEnvironmentCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RevokeClientEnvironmentCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RevokeClientEnvironmentCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RotateClientEnvironmentCredentialResponse400Headers the declared response headers of an HTTP 400 response for RotateClientEnvironmentCredential
+type RotateClientEnvironmentCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// RotateClientEnvironmentCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for RotateClientEnvironmentCredential
+type RotateClientEnvironmentCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RotateClientEnvironmentCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Registered
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RotateClientEnvironmentCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RotateClientEnvironmentCredentialResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RotateClientEnvironmentCredentialResponse) GetJSON200() *Registered {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RotateClientEnvironmentCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RotateClientEnvironmentCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RotateClientEnvironmentCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RotateClientEnvironmentCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RotateClientEnvironmentCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RotateClientEnvironmentCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ChangeClientEnvironmentStatusResponse400Headers the declared response headers of an HTTP 400 response for ChangeClientEnvironmentStatus
+type ChangeClientEnvironmentStatusResponse400Headers struct {
+	XRequestId *string
+}
+
+// ChangeClientEnvironmentStatusResponseDefaultHeaders the declared response headers of an HTTP default response for ChangeClientEnvironmentStatus
+type ChangeClientEnvironmentStatusResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ChangeClientEnvironmentStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ClientEnvironment
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ChangeClientEnvironmentStatusResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ChangeClientEnvironmentStatusResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ChangeClientEnvironmentStatusResponse) GetJSON200() *ClientEnvironment {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ChangeClientEnvironmentStatusResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ChangeClientEnvironmentStatusResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ChangeClientEnvironmentStatusResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ChangeClientEnvironmentStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ChangeClientEnvironmentStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ChangeClientEnvironmentStatusResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListConnectionsResponse400Headers the declared response headers of an HTTP 400 response for ListConnections
 type ListConnectionsResponse400Headers struct {
 	XRequestId *string
@@ -63038,6 +66367,75 @@ func (r GetEnvironmentCreationResponse) ContentType() string {
 	return ""
 }
 
+// SetEnvironmentDebugHoldResponse400Headers the declared response headers of an HTTP 400 response for SetEnvironmentDebugHold
+type SetEnvironmentDebugHoldResponse400Headers struct {
+	XRequestId *string
+}
+
+// SetEnvironmentDebugHoldResponseDefaultHeaders the declared response headers of an HTTP default response for SetEnvironmentDebugHold
+type SetEnvironmentDebugHoldResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type SetEnvironmentDebugHoldResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EnvironmentView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *SetEnvironmentDebugHoldResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *SetEnvironmentDebugHoldResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r SetEnvironmentDebugHoldResponse) GetJSON200() *EnvironmentView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r SetEnvironmentDebugHoldResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r SetEnvironmentDebugHoldResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r SetEnvironmentDebugHoldResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SetEnvironmentDebugHoldResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetEnvironmentDebugHoldResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SetEnvironmentDebugHoldResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetDesktopControlResponse400Headers the declared response headers of an HTTP 400 response for GetDesktopControl
 type GetDesktopControlResponse400Headers struct {
 	XRequestId *string
@@ -63439,6 +66837,144 @@ func (r OpenDesktopViewerResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r OpenDesktopViewerResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetKubernetesEnvironmentDiagnosticsResponse400Headers the declared response headers of an HTTP 400 response for GetKubernetesEnvironmentDiagnostics
+type GetKubernetesEnvironmentDiagnosticsResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders the declared response headers of an HTTP default response for GetKubernetesEnvironmentDiagnostics
+type GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetKubernetesEnvironmentDiagnosticsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *InstanceDiagnostics
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetKubernetesEnvironmentDiagnosticsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetJSON200() *InstanceDiagnostics {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetKubernetesEnvironmentDiagnosticsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKubernetesEnvironmentDiagnosticsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKubernetesEnvironmentDiagnosticsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetKubernetesEnvironmentDiagnosticsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetKubernetesEnvironmentLogsResponse400Headers the declared response headers of an HTTP 400 response for GetKubernetesEnvironmentLogs
+type GetKubernetesEnvironmentLogsResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetKubernetesEnvironmentLogsResponseDefaultHeaders the declared response headers of an HTTP default response for GetKubernetesEnvironmentLogs
+type GetKubernetesEnvironmentLogsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetKubernetesEnvironmentLogsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Logs
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetKubernetesEnvironmentLogsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetKubernetesEnvironmentLogsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetKubernetesEnvironmentLogsResponse) GetJSON200() *Logs {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetKubernetesEnvironmentLogsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetKubernetesEnvironmentLogsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetKubernetesEnvironmentLogsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKubernetesEnvironmentLogsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKubernetesEnvironmentLogsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetKubernetesEnvironmentLogsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -64681,6 +68217,75 @@ func (r CreateMemoryResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CreateMemoryResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListMemoryGuidancePresetsResponse400Headers the declared response headers of an HTTP 400 response for ListMemoryGuidancePresets
+type ListMemoryGuidancePresetsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListMemoryGuidancePresetsResponseDefaultHeaders the declared response headers of an HTTP default response for ListMemoryGuidancePresets
+type ListMemoryGuidancePresetsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListMemoryGuidancePresetsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemoryGuidancePresets
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListMemoryGuidancePresetsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListMemoryGuidancePresetsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListMemoryGuidancePresetsResponse) GetJSON200() *MemoryGuidancePresets {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListMemoryGuidancePresetsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListMemoryGuidancePresetsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListMemoryGuidancePresetsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListMemoryGuidancePresetsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListMemoryGuidancePresetsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListMemoryGuidancePresetsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -75767,6 +79372,144 @@ func (r ListThreadRunsResponse) ContentType() string {
 	return ""
 }
 
+// GetSessionBindingResponse400Headers the declared response headers of an HTTP 400 response for GetSessionBinding
+type GetSessionBindingResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetSessionBindingResponseDefaultHeaders the declared response headers of an HTTP default response for GetSessionBinding
+type GetSessionBindingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetSessionBindingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionBindingView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetSessionBindingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetSessionBindingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetSessionBindingResponse) GetJSON200() *SessionBindingView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetSessionBindingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetSessionBindingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetSessionBindingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSessionBindingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSessionBindingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetSessionBindingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateSessionBindingResponse400Headers the declared response headers of an HTTP 400 response for UpdateSessionBinding
+type UpdateSessionBindingResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateSessionBindingResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateSessionBinding
+type UpdateSessionBindingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateSessionBindingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionBindingView
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateSessionBindingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateSessionBindingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateSessionBindingResponse) GetJSON200() *SessionBindingView {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateSessionBindingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateSessionBindingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateSessionBindingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSessionBindingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSessionBindingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateSessionBindingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ThreadStreamResponse400Headers the declared response headers of an HTTP 400 response for ThreadStream
 type ThreadStreamResponse400Headers struct {
 	XRequestId *string
@@ -81447,6 +85190,123 @@ func (c *ClientWithResponses) ReadBuiltinSkillArchiveWithResponse(ctx context.Co
 	return ParseReadBuiltinSkillArchiveResponse(rsp)
 }
 
+// RegisterClientEnvironmentWithBodyWithResponse Register Client Environment
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+func (c *ClientWithResponses) RegisterClientEnvironmentWithBodyWithResponse(ctx context.Context, params *RegisterClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterClientEnvironmentResponse, error) {
+	rsp, err := c.RegisterClientEnvironmentWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRegisterClientEnvironmentResponse(rsp)
+}
+
+// RegisterClientEnvironmentWithResponse Register Client Environment
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments (the `RegisterClientEnvironment` operationId).
+func (c *ClientWithResponses) RegisterClientEnvironmentWithResponse(ctx context.Context, params *RegisterClientEnvironmentParams, body RegisterClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterClientEnvironmentResponse, error) {
+	rsp, err := c.RegisterClientEnvironment(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRegisterClientEnvironmentResponse(rsp)
+}
+
+// ConnectClientEnvironmentWithBodyWithResponse Connect Client Environment
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+func (c *ClientWithResponses) ConnectClientEnvironmentWithBodyWithResponse(ctx context.Context, params *ConnectClientEnvironmentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ConnectClientEnvironmentResponse, error) {
+	rsp, err := c.ConnectClientEnvironmentWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseConnectClientEnvironmentResponse(rsp)
+}
+
+// ConnectClientEnvironmentWithResponse Connect Client Environment
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
+func (c *ClientWithResponses) ConnectClientEnvironmentWithResponse(ctx context.Context, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*ConnectClientEnvironmentResponse, error) {
+	rsp, err := c.ConnectClientEnvironment(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseConnectClientEnvironmentResponse(rsp)
+}
+
+// GetClientEnvironmentWithResponse Get Client Environment
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/client-environments/{environment_id} (the `GetClientEnvironment` operationId).
+func (c *ClientWithResponses) GetClientEnvironmentWithResponse(ctx context.Context, environmentId string, params *GetClientEnvironmentParams, reqEditors ...RequestEditorFn) (*GetClientEnvironmentResponse, error) {
+	rsp, err := c.GetClientEnvironment(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetClientEnvironmentResponse(rsp)
+}
+
+// RevokeClientEnvironmentCredentialWithResponse Revoke Client Environment Credential
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/{environment_id}/revoke-credential (the `RevokeClientEnvironmentCredential` operationId).
+func (c *ClientWithResponses) RevokeClientEnvironmentCredentialWithResponse(ctx context.Context, environmentId string, params *RevokeClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*RevokeClientEnvironmentCredentialResponse, error) {
+	rsp, err := c.RevokeClientEnvironmentCredential(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRevokeClientEnvironmentCredentialResponse(rsp)
+}
+
+// RotateClientEnvironmentCredentialWithResponse Rotate Client Environment Credential
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/{environment_id}/rotate-credential (the `RotateClientEnvironmentCredential` operationId).
+func (c *ClientWithResponses) RotateClientEnvironmentCredentialWithResponse(ctx context.Context, environmentId string, params *RotateClientEnvironmentCredentialParams, reqEditors ...RequestEditorFn) (*RotateClientEnvironmentCredentialResponse, error) {
+	rsp, err := c.RotateClientEnvironmentCredential(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRotateClientEnvironmentCredentialResponse(rsp)
+}
+
+// ChangeClientEnvironmentStatusWithBodyWithResponse Change Client Environment Status
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+func (c *ClientWithResponses) ChangeClientEnvironmentStatusWithBodyWithResponse(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeClientEnvironmentStatusResponse, error) {
+	rsp, err := c.ChangeClientEnvironmentStatusWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeClientEnvironmentStatusResponse(rsp)
+}
+
+// ChangeClientEnvironmentStatusWithResponse Change Client Environment Status
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
+func (c *ClientWithResponses) ChangeClientEnvironmentStatusWithResponse(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeClientEnvironmentStatusResponse, error) {
+	rsp, err := c.ChangeClientEnvironmentStatus(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeClientEnvironmentStatusResponse(rsp)
+}
+
 // ListConnectionsWithResponse List Connections
 //
 // Returns a wrapper object for the known response body format(s).
@@ -82318,6 +86178,32 @@ func (c *ClientWithResponses) GetEnvironmentCreationWithResponse(ctx context.Con
 	return ParseGetEnvironmentCreationResponse(rsp)
 }
 
+// SetEnvironmentDebugHoldWithBodyWithResponse Set Environment Debug Hold
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *ClientWithResponses) SetEnvironmentDebugHoldWithBodyWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error) {
+	rsp, err := c.SetEnvironmentDebugHoldWithBody(ctx, environmentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetEnvironmentDebugHoldResponse(rsp)
+}
+
+// SetEnvironmentDebugHoldWithResponse Set Environment Debug Hold
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/environments/{environment_id}/debug-hold (the `SetEnvironmentDebugHold` operationId).
+func (c *ClientWithResponses) SetEnvironmentDebugHoldWithResponse(ctx context.Context, environmentId string, params *SetEnvironmentDebugHoldParams, body SetEnvironmentDebugHoldJSONRequestBody, reqEditors ...RequestEditorFn) (*SetEnvironmentDebugHoldResponse, error) {
+	rsp, err := c.SetEnvironmentDebugHold(ctx, environmentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetEnvironmentDebugHoldResponse(rsp)
+}
+
 // GetDesktopControlWithResponse Get Desktop Control
 //
 // Returns a wrapper object for the known response body format(s).
@@ -82433,6 +86319,32 @@ func (c *ClientWithResponses) OpenDesktopViewerWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseOpenDesktopViewerResponse(rsp)
+}
+
+// GetKubernetesEnvironmentDiagnosticsWithResponse Get Kubernetes Environment Diagnostics
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/diagnostics (the `GetKubernetesEnvironmentDiagnostics` operationId).
+func (c *ClientWithResponses) GetKubernetesEnvironmentDiagnosticsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentDiagnosticsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentDiagnosticsResponse, error) {
+	rsp, err := c.GetKubernetesEnvironmentDiagnostics(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKubernetesEnvironmentDiagnosticsResponse(rsp)
+}
+
+// GetKubernetesEnvironmentLogsWithResponse Get Kubernetes Environment Logs
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/kubernetes/logs (the `GetKubernetesEnvironmentLogs` operationId).
+func (c *ClientWithResponses) GetKubernetesEnvironmentLogsWithResponse(ctx context.Context, environmentId string, params *GetKubernetesEnvironmentLogsParams, reqEditors ...RequestEditorFn) (*GetKubernetesEnvironmentLogsResponse, error) {
+	rsp, err := c.GetKubernetesEnvironmentLogs(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKubernetesEnvironmentLogsResponse(rsp)
 }
 
 // SelectMetricsSourceWithBodyWithResponse Select Metrics Source
@@ -82787,6 +86699,19 @@ func (c *ClientWithResponses) CreateMemoryWithResponse(ctx context.Context, para
 		return nil, err
 	}
 	return ParseCreateMemoryResponse(rsp)
+}
+
+// ListMemoryGuidancePresetsWithResponse List Memory Guidance Presets
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memories/guidance-presets (the `ListMemoryGuidancePresets` operationId).
+func (c *ClientWithResponses) ListMemoryGuidancePresetsWithResponse(ctx context.Context, params *ListMemoryGuidancePresetsParams, reqEditors ...RequestEditorFn) (*ListMemoryGuidancePresetsResponse, error) {
+	rsp, err := c.ListMemoryGuidancePresets(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListMemoryGuidancePresetsResponse(rsp)
 }
 
 // DeleteMemoryWithResponse Delete Memory
@@ -85765,6 +89690,45 @@ func (c *ClientWithResponses) ListThreadRunsWithResponse(ctx context.Context, th
 		return nil, err
 	}
 	return ParseListThreadRunsResponse(rsp)
+}
+
+// GetSessionBindingWithResponse Get Session Binding
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `GetSessionBinding` operationId).
+func (c *ClientWithResponses) GetSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *GetSessionBindingParams, reqEditors ...RequestEditorFn) (*GetSessionBindingResponse, error) {
+	rsp, err := c.GetSessionBinding(ctx, threadId, environmentId, name, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSessionBindingResponse(rsp)
+}
+
+// UpdateSessionBindingWithBodyWithResponse Update Session Binding
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *ClientWithResponses) UpdateSessionBindingWithBodyWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error) {
+	rsp, err := c.UpdateSessionBindingWithBody(ctx, threadId, environmentId, name, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSessionBindingResponse(rsp)
+}
+
+// UpdateSessionBindingWithResponse Update Session Binding
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/threads/{thread_id}/session-bindings/{environment_id}/{name} (the `UpdateSessionBinding` operationId).
+func (c *ClientWithResponses) UpdateSessionBindingWithResponse(ctx context.Context, threadId string, environmentId string, name string, params *UpdateSessionBindingParams, body UpdateSessionBindingJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSessionBindingResponse, error) {
+	rsp, err := c.UpdateSessionBinding(ctx, threadId, environmentId, name, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSessionBindingResponse(rsp)
 }
 
 // ThreadStreamWithResponse Thread Stream
@@ -89975,6 +93939,398 @@ func ParseReadBuiltinSkillArchiveResponse(rsp *http.Response) (*ReadBuiltinSkill
 	return response, nil
 }
 
+// ParseRegisterClientEnvironmentResponse parses an HTTP response from a RegisterClientEnvironmentWithResponse call
+func ParseRegisterClientEnvironmentResponse(rsp *http.Response) (*RegisterClientEnvironmentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RegisterClientEnvironmentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Registered
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Registered
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RegisterClientEnvironmentResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RegisterClientEnvironmentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseConnectClientEnvironmentResponse parses an HTTP response from a ConnectClientEnvironmentWithResponse call
+func ParseConnectClientEnvironmentResponse(rsp *http.Response) (*ConnectClientEnvironmentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ConnectClientEnvironmentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Registered
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Registered
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ConnectClientEnvironmentResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ConnectClientEnvironmentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetClientEnvironmentResponse parses an HTTP response from a GetClientEnvironmentWithResponse call
+func ParseGetClientEnvironmentResponse(rsp *http.Response) (*GetClientEnvironmentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetClientEnvironmentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ClientEnvironment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetClientEnvironmentResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetClientEnvironmentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRevokeClientEnvironmentCredentialResponse parses an HTTP response from a RevokeClientEnvironmentCredentialWithResponse call
+func ParseRevokeClientEnvironmentCredentialResponse(rsp *http.Response) (*RevokeClientEnvironmentCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RevokeClientEnvironmentCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Registered
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RevokeClientEnvironmentCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RevokeClientEnvironmentCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRotateClientEnvironmentCredentialResponse parses an HTTP response from a RotateClientEnvironmentCredentialWithResponse call
+func ParseRotateClientEnvironmentCredentialResponse(rsp *http.Response) (*RotateClientEnvironmentCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RotateClientEnvironmentCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Registered
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RotateClientEnvironmentCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RotateClientEnvironmentCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseChangeClientEnvironmentStatusResponse parses an HTTP response from a ChangeClientEnvironmentStatusWithResponse call
+func ParseChangeClientEnvironmentStatusResponse(rsp *http.Response) (*ChangeClientEnvironmentStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ChangeClientEnvironmentStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ClientEnvironment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ChangeClientEnvironmentStatusResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ChangeClientEnvironmentStatusResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListConnectionsResponse parses an HTTP response from a ListConnectionsWithResponse call
 func ParseListConnectionsResponse(rsp *http.Response) (*ListConnectionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -93036,6 +97392,69 @@ func ParseGetEnvironmentCreationResponse(rsp *http.Response) (*GetEnvironmentCre
 	return response, nil
 }
 
+// ParseSetEnvironmentDebugHoldResponse parses an HTTP response from a SetEnvironmentDebugHoldWithResponse call
+func ParseSetEnvironmentDebugHoldResponse(rsp *http.Response) (*SetEnvironmentDebugHoldResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetEnvironmentDebugHoldResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EnvironmentView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers SetEnvironmentDebugHoldResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers SetEnvironmentDebugHoldResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseGetDesktopControlResponse parses an HTTP response from a GetDesktopControlWithResponse call
 func ParseGetDesktopControlResponse(rsp *http.Response) (*GetDesktopControlResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -93394,6 +97813,132 @@ func ParseOpenDesktopViewerResponse(rsp *http.Response) (*OpenDesktopViewerRespo
 		response.Headers400 = &headers
 	case true:
 		var headers OpenDesktopViewerResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetKubernetesEnvironmentDiagnosticsResponse parses an HTTP response from a GetKubernetesEnvironmentDiagnosticsWithResponse call
+func ParseGetKubernetesEnvironmentDiagnosticsResponse(rsp *http.Response) (*GetKubernetesEnvironmentDiagnosticsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKubernetesEnvironmentDiagnosticsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest InstanceDiagnostics
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetKubernetesEnvironmentDiagnosticsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetKubernetesEnvironmentDiagnosticsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetKubernetesEnvironmentLogsResponse parses an HTTP response from a GetKubernetesEnvironmentLogsWithResponse call
+func ParseGetKubernetesEnvironmentLogsResponse(rsp *http.Response) (*GetKubernetesEnvironmentLogsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKubernetesEnvironmentLogsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Logs
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetKubernetesEnvironmentLogsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetKubernetesEnvironmentLogsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -94528,6 +99073,69 @@ func ParseCreateMemoryResponse(rsp *http.Response) (*CreateMemoryResponse, error
 		response.Headers400 = &headers
 	case true:
 		var headers CreateMemoryResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListMemoryGuidancePresetsResponse parses an HTTP response from a ListMemoryGuidancePresetsWithResponse call
+func ParseListMemoryGuidancePresetsResponse(rsp *http.Response) (*ListMemoryGuidancePresetsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListMemoryGuidancePresetsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemoryGuidancePresets
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListMemoryGuidancePresetsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListMemoryGuidancePresetsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -104675,6 +109283,132 @@ func ParseListThreadRunsResponse(rsp *http.Response) (*ListThreadRunsResponse, e
 		response.Headers400 = &headers
 	case true:
 		var headers ListThreadRunsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetSessionBindingResponse parses an HTTP response from a GetSessionBindingWithResponse call
+func ParseGetSessionBindingResponse(rsp *http.Response) (*GetSessionBindingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSessionBindingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionBindingView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetSessionBindingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetSessionBindingResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSessionBindingResponse parses an HTTP response from a UpdateSessionBindingWithResponse call
+func ParseUpdateSessionBindingResponse(rsp *http.Response) (*UpdateSessionBindingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSessionBindingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionBindingView
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateSessionBindingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateSessionBindingResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
