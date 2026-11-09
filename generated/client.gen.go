@@ -488,6 +488,24 @@ func (e ChildEnvironmentPolicyMode) Valid() bool {
 	}
 }
 
+// Defines values for ClaimResultState.
+const (
+	ClaimResultStateApproved ClaimResultState = "approved"
+	ClaimResultStatePending  ClaimResultState = "pending"
+)
+
+// Valid indicates whether the value is a known member of the ClaimResultState enum.
+func (e ClaimResultState) Valid() bool {
+	switch e {
+	case ClaimResultStateApproved:
+		return true
+	case ClaimResultStatePending:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ClientAuthentication.
 const (
 	ClientAuthenticationClientSecretBasic ClientAuthentication = "client_secret_basic"
@@ -2624,6 +2642,60 @@ func (e OperationKind) Valid() bool {
 	case Revoke:
 		return true
 	case Setup:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PairingState.
+const (
+	PairingStateApproved  PairingState = "approved"
+	PairingStateApproving PairingState = "approving"
+	PairingStateCancelled PairingState = "cancelled"
+	PairingStateClaimed   PairingState = "claimed"
+	PairingStateWaiting   PairingState = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the PairingState enum.
+func (e PairingState) Valid() bool {
+	switch e {
+	case PairingStateApproved:
+		return true
+	case PairingStateApproving:
+		return true
+	case PairingStateCancelled:
+		return true
+	case PairingStateClaimed:
+		return true
+	case PairingStateWaiting:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PairingCreatedState.
+const (
+	PairingCreatedStateApproved  PairingCreatedState = "approved"
+	PairingCreatedStateApproving PairingCreatedState = "approving"
+	PairingCreatedStateCancelled PairingCreatedState = "cancelled"
+	PairingCreatedStateClaimed   PairingCreatedState = "claimed"
+	PairingCreatedStateWaiting   PairingCreatedState = "waiting"
+)
+
+// Valid indicates whether the value is a known member of the PairingCreatedState enum.
+func (e PairingCreatedState) Valid() bool {
+	switch e {
+	case PairingCreatedStateApproved:
+		return true
+	case PairingCreatedStateApproving:
+		return true
+	case PairingCreatedStateCancelled:
+		return true
+	case PairingCreatedStateClaimed:
+		return true
+	case PairingCreatedStateWaiting:
 		return true
 	default:
 		return false
@@ -5958,6 +6030,17 @@ type ChildEnvironmentPolicy struct {
 // ChildEnvironmentPolicyMode defines model for ChildEnvironmentPolicy.Mode.
 type ChildEnvironmentPolicyMode string
 
+// ClaimResult defines model for ClaimResult.
+type ClaimResult struct {
+	ConnectionPath   nullable.Nullable[string] `json:"connection_path,omitempty"`
+	EnvironmentId    nullable.Nullable[string] `json:"environment_id,omitempty"`
+	State            ClaimResultState          `json:"state"`
+	VerificationCode string                    `json:"verification_code"`
+}
+
+// ClaimResultState defines model for ClaimResult.State.
+type ClaimResultState string
+
 // ClientAuthentication defines model for ClientAuthentication.
 type ClientAuthentication string
 
@@ -6519,6 +6602,16 @@ type Device struct {
 	UpdatedAt           time.Time                 `json:"updated_at"`
 	Version             int                       `json:"version"`
 	WorkspaceId         string                    `json:"workspace_id"`
+}
+
+// DeviceClaim defines model for DeviceClaim.
+type DeviceClaim struct {
+	ComputerUse             *bool                     `json:"computer_use,omitempty"`
+	DefaultWorkingDirectory string                    `json:"default_working_directory"`
+	DeviceId                string                    `json:"device_id"`
+	EnvironmentId           nullable.Nullable[string] `json:"environment_id,omitempty"`
+	FullControl             *bool                     `json:"full_control,omitempty"`
+	Name                    string                    `json:"name"`
 }
 
 // DeviceCreate defines model for DeviceCreate.
@@ -8522,6 +8615,48 @@ type OutputVariant struct {
 	Schema      map[string]JsonValue      `json:"schema"`
 }
 
+// Pairing defines model for Pairing.
+type Pairing struct {
+	Device           nullable.Nullable[DeviceClaim] `json:"device,omitempty"`
+	EnvironmentId    nullable.Nullable[string]      `json:"environment_id,omitempty"`
+	ExpiresAt        time.Time                      `json:"expires_at"`
+	HostName         string                         `json:"host_name"`
+	Id               string                         `json:"id"`
+	OwnerId          string                         `json:"owner_id"`
+	Reused           *bool                          `json:"reused,omitempty"`
+	ServiceUrl       string                         `json:"service_url"`
+	State            *PairingState                  `json:"state,omitempty"`
+	VerificationCode nullable.Nullable[string]      `json:"verification_code,omitempty"`
+	WorkspaceId      string                         `json:"workspace_id"`
+}
+
+// PairingState defines model for Pairing.State.
+type PairingState string
+
+// PairingApproval defines model for PairingApproval.
+type PairingApproval struct {
+	VerificationCode string `json:"verification_code"`
+}
+
+// PairingCreated defines model for PairingCreated.
+type PairingCreated struct {
+	Device           nullable.Nullable[DeviceClaim] `json:"device,omitempty"`
+	EnvironmentId    nullable.Nullable[string]      `json:"environment_id,omitempty"`
+	ExpiresAt        time.Time                      `json:"expires_at"`
+	HostName         string                         `json:"host_name"`
+	Id               string                         `json:"id"`
+	LauncherUrl      string                         `json:"launcher_url"`
+	OwnerId          string                         `json:"owner_id"`
+	Reused           *bool                          `json:"reused,omitempty"`
+	ServiceUrl       string                         `json:"service_url"`
+	State            *PairingCreatedState           `json:"state,omitempty"`
+	VerificationCode nullable.Nullable[string]      `json:"verification_code,omitempty"`
+	WorkspaceId      string                         `json:"workspace_id"`
+}
+
+// PairingCreatedState defines model for PairingCreated.State.
+type PairingCreatedState string
+
 // Panel defines model for Panel.
 type Panel struct {
 	Description   *string             `json:"description,omitempty"`
@@ -8914,6 +9049,12 @@ type Reclamation struct {
 	FailedRetentionSeconds *int                   `json:"failed_retention_seconds,omitempty"`
 	IdleDeleteSeconds      nullable.Nullable[int] `json:"idle_delete_seconds,omitempty"`
 	PreparationSeconds     *int                   `json:"preparation_seconds,omitempty"`
+}
+
+// Recognition defines model for Recognition.
+type Recognition struct {
+	DeviceId      string `json:"device_id"`
+	EnvironmentId string `json:"environment_id"`
 }
 
 // Registered defines model for Registered.
@@ -11200,6 +11341,30 @@ type RegisterClientEnvironmentParams struct {
 
 // ConnectClientEnvironmentParams defines parameters for ConnectClientEnvironment.
 type ConnectClientEnvironmentParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateClientPairingParams defines parameters for CreateClientPairing.
+type CreateClientPairingParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetClientPairingParams defines parameters for GetClientPairing.
+type GetClientPairingParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ApproveClientPairingParams defines parameters for ApproveClientPairing.
+type ApproveClientPairingParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CancelClientPairingParams defines parameters for CancelClientPairing.
+type CancelClientPairingParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -13944,6 +14109,15 @@ type RegisterClientEnvironmentJSONRequestBody = Registration
 
 // ConnectClientEnvironmentJSONRequestBody defines body for ConnectClientEnvironment for application/json ContentType.
 type ConnectClientEnvironmentJSONRequestBody = ConnectionRequest
+
+// ApproveClientPairingJSONRequestBody defines body for ApproveClientPairing for application/json ContentType.
+type ApproveClientPairingJSONRequestBody = PairingApproval
+
+// ClaimClientPairingJSONRequestBody defines body for ClaimClientPairing for application/json ContentType.
+type ClaimClientPairingJSONRequestBody = DeviceClaim
+
+// RecognizeClientPairingJSONRequestBody defines body for RecognizeClientPairing for application/json ContentType.
+type RecognizeClientPairingJSONRequestBody = Recognition
 
 // ChangeClientEnvironmentStatusJSONRequestBody defines body for ChangeClientEnvironmentStatus for application/json ContentType.
 type ChangeClientEnvironmentStatusJSONRequestBody = StatusChange
@@ -19366,6 +19540,63 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
 	ConnectClientEnvironment(ctx context.Context, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateClientPairing Create Client Pairing
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings (the `CreateClientPairing` operationId).
+	CreateClientPairing(ctx context.Context, params *CreateClientPairingParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetClientPairing Get Client Pairing
+	//
+	// Corresponds with GET /api/v1/client-environments/pairings/{pairing_id} (the `GetClientPairing` operationId).
+	GetClientPairing(ctx context.Context, pairingId string, params *GetClientPairingParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ApproveClientPairingWithBody Approve Client Pairing
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+	ApproveClientPairingWithBody(ctx context.Context, pairingId string, params *ApproveClientPairingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ApproveClientPairing Approve Client Pairing
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+	ApproveClientPairing(ctx context.Context, pairingId string, params *ApproveClientPairingParams, body ApproveClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CancelClientPairing Cancel Client Pairing
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/cancel (the `CancelClientPairing` operationId).
+	CancelClientPairing(ctx context.Context, pairingId string, params *CancelClientPairingParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ClaimClientPairingWithBody Claim Client Pairing
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+	ClaimClientPairingWithBody(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ClaimClientPairing Claim Client Pairing
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+	ClaimClientPairing(ctx context.Context, pairingId string, body ClaimClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RecognizeClientPairingWithBody Recognize Client Pairing
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+	RecognizeClientPairingWithBody(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RecognizeClientPairing Recognize Client Pairing
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+	RecognizeClientPairing(ctx context.Context, pairingId string, body RecognizeClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetClientEnvironment Get Client Environment
 	//
 	// Corresponds with GET /api/v1/client-environments/{environment_id} (the `GetClientEnvironment` operationId).
@@ -23260,6 +23491,153 @@ func (c *Client) ConnectClientEnvironmentWithBody(ctx context.Context, params *C
 // Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
 func (c *Client) ConnectClientEnvironment(ctx context.Context, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewConnectClientEnvironmentRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateClientPairing Create Client Pairing
+//
+// Corresponds with POST /api/v1/client-environments/pairings (the `CreateClientPairing` operationId).
+func (c *Client) CreateClientPairing(ctx context.Context, params *CreateClientPairingParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateClientPairingRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetClientPairing Get Client Pairing
+//
+// Corresponds with GET /api/v1/client-environments/pairings/{pairing_id} (the `GetClientPairing` operationId).
+func (c *Client) GetClientPairing(ctx context.Context, pairingId string, params *GetClientPairingParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClientPairingRequest(c.Server, pairingId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ApproveClientPairingWithBody Approve Client Pairing
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+func (c *Client) ApproveClientPairingWithBody(ctx context.Context, pairingId string, params *ApproveClientPairingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApproveClientPairingRequestWithBody(c.Server, pairingId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ApproveClientPairing Approve Client Pairing
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+func (c *Client) ApproveClientPairing(ctx context.Context, pairingId string, params *ApproveClientPairingParams, body ApproveClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApproveClientPairingRequest(c.Server, pairingId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CancelClientPairing Cancel Client Pairing
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/cancel (the `CancelClientPairing` operationId).
+func (c *Client) CancelClientPairing(ctx context.Context, pairingId string, params *CancelClientPairingParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCancelClientPairingRequest(c.Server, pairingId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ClaimClientPairingWithBody Claim Client Pairing
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+func (c *Client) ClaimClientPairingWithBody(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewClaimClientPairingRequestWithBody(c.Server, pairingId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ClaimClientPairing Claim Client Pairing
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+func (c *Client) ClaimClientPairing(ctx context.Context, pairingId string, body ClaimClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewClaimClientPairingRequest(c.Server, pairingId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RecognizeClientPairingWithBody Recognize Client Pairing
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+func (c *Client) RecognizeClientPairingWithBody(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRecognizeClientPairingRequestWithBody(c.Server, pairingId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RecognizeClientPairing Recognize Client Pairing
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+func (c *Client) RecognizeClientPairing(ctx context.Context, pairingId string, body RecognizeClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRecognizeClientPairingRequest(c.Server, pairingId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -33316,6 +33694,302 @@ func NewConnectClientEnvironmentRequestWithBody(server string, params *ConnectCl
 		}
 
 	}
+
+	return req, nil
+}
+
+// NewCreateClientPairingRequest constructs an http.Request for the CreateClientPairing method
+func NewCreateClientPairingRequest(server string, params *CreateClientPairingParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/pairings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetClientPairingRequest constructs an http.Request for the GetClientPairing method
+func NewGetClientPairingRequest(server string, pairingId string, params *GetClientPairingParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "pairing_id", pairingId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/pairings/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewApproveClientPairingRequest calls the generic ApproveClientPairing builder with application/json body
+func NewApproveClientPairingRequest(server string, pairingId string, params *ApproveClientPairingParams, body ApproveClientPairingJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewApproveClientPairingRequestWithBody(server, pairingId, params, "application/json", bodyReader)
+}
+
+// NewApproveClientPairingRequestWithBody constructs an http.Request for the ApproveClientPairing method, with any body, and a specified content type
+func NewApproveClientPairingRequestWithBody(server string, pairingId string, params *ApproveClientPairingParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "pairing_id", pairingId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/pairings/%s/approve", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCancelClientPairingRequest constructs an http.Request for the CancelClientPairing method
+func NewCancelClientPairingRequest(server string, pairingId string, params *CancelClientPairingParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "pairing_id", pairingId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/pairings/%s/cancel", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewClaimClientPairingRequest calls the generic ClaimClientPairing builder with application/json body
+func NewClaimClientPairingRequest(server string, pairingId string, body ClaimClientPairingJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewClaimClientPairingRequestWithBody(server, pairingId, "application/json", bodyReader)
+}
+
+// NewClaimClientPairingRequestWithBody constructs an http.Request for the ClaimClientPairing method, with any body, and a specified content type
+func NewClaimClientPairingRequestWithBody(server string, pairingId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "pairing_id", pairingId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/pairings/%s/claim", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRecognizeClientPairingRequest calls the generic RecognizeClientPairing builder with application/json body
+func NewRecognizeClientPairingRequest(server string, pairingId string, body RecognizeClientPairingJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRecognizeClientPairingRequestWithBody(server, pairingId, "application/json", bodyReader)
+}
+
+// NewRecognizeClientPairingRequestWithBody constructs an http.Request for the RecognizeClientPairing method, with any body, and a specified content type
+func NewRecognizeClientPairingRequestWithBody(server string, pairingId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "pairing_id", pairingId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/client-environments/pairings/%s/recognize", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -56088,6 +56762,69 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/client-environments/connect (the `ConnectClientEnvironment` operationId).
 	ConnectClientEnvironmentWithResponse(ctx context.Context, params *ConnectClientEnvironmentParams, body ConnectClientEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*ConnectClientEnvironmentResponse, error)
 
+	// CreateClientPairingWithResponse Create Client Pairing
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings (the `CreateClientPairing` operationId).
+	CreateClientPairingWithResponse(ctx context.Context, params *CreateClientPairingParams, reqEditors ...RequestEditorFn) (*CreateClientPairingResponse, error)
+
+	// GetClientPairingWithResponse Get Client Pairing
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/client-environments/pairings/{pairing_id} (the `GetClientPairing` operationId).
+	GetClientPairingWithResponse(ctx context.Context, pairingId string, params *GetClientPairingParams, reqEditors ...RequestEditorFn) (*GetClientPairingResponse, error)
+
+	// ApproveClientPairingWithBodyWithResponse Approve Client Pairing
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+	ApproveClientPairingWithBodyWithResponse(ctx context.Context, pairingId string, params *ApproveClientPairingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApproveClientPairingResponse, error)
+
+	// ApproveClientPairingWithResponse Approve Client Pairing
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+	ApproveClientPairingWithResponse(ctx context.Context, pairingId string, params *ApproveClientPairingParams, body ApproveClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*ApproveClientPairingResponse, error)
+
+	// CancelClientPairingWithResponse Cancel Client Pairing
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/cancel (the `CancelClientPairing` operationId).
+	CancelClientPairingWithResponse(ctx context.Context, pairingId string, params *CancelClientPairingParams, reqEditors ...RequestEditorFn) (*CancelClientPairingResponse, error)
+
+	// ClaimClientPairingWithBodyWithResponse Claim Client Pairing
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+	ClaimClientPairingWithBodyWithResponse(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ClaimClientPairingResponse, error)
+
+	// ClaimClientPairingWithResponse Claim Client Pairing
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+	ClaimClientPairingWithResponse(ctx context.Context, pairingId string, body ClaimClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*ClaimClientPairingResponse, error)
+
+	// RecognizeClientPairingWithBodyWithResponse Recognize Client Pairing
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+	RecognizeClientPairingWithBodyWithResponse(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RecognizeClientPairingResponse, error)
+
+	// RecognizeClientPairingWithResponse Recognize Client Pairing
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+	RecognizeClientPairingWithResponse(ctx context.Context, pairingId string, body RecognizeClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*RecognizeClientPairingResponse, error)
+
 	// GetClientEnvironmentWithResponse Get Client Environment
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -62739,6 +63476,420 @@ func (r ConnectClientEnvironmentResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ConnectClientEnvironmentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateClientPairingResponse400Headers the declared response headers of an HTTP 400 response for CreateClientPairing
+type CreateClientPairingResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateClientPairingResponseDefaultHeaders the declared response headers of an HTTP default response for CreateClientPairing
+type CreateClientPairingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateClientPairingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PairingCreated
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateClientPairingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateClientPairingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CreateClientPairingResponse) GetJSON200() *PairingCreated {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateClientPairingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateClientPairingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateClientPairingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateClientPairingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateClientPairingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateClientPairingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetClientPairingResponse400Headers the declared response headers of an HTTP 400 response for GetClientPairing
+type GetClientPairingResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetClientPairingResponseDefaultHeaders the declared response headers of an HTTP default response for GetClientPairing
+type GetClientPairingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetClientPairingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Pairing
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetClientPairingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetClientPairingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetClientPairingResponse) GetJSON200() *Pairing {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetClientPairingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetClientPairingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetClientPairingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetClientPairingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetClientPairingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetClientPairingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ApproveClientPairingResponse400Headers the declared response headers of an HTTP 400 response for ApproveClientPairing
+type ApproveClientPairingResponse400Headers struct {
+	XRequestId *string
+}
+
+// ApproveClientPairingResponseDefaultHeaders the declared response headers of an HTTP default response for ApproveClientPairing
+type ApproveClientPairingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ApproveClientPairingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Pairing
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ApproveClientPairingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ApproveClientPairingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ApproveClientPairingResponse) GetJSON200() *Pairing {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ApproveClientPairingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ApproveClientPairingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ApproveClientPairingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ApproveClientPairingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ApproveClientPairingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ApproveClientPairingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CancelClientPairingResponse400Headers the declared response headers of an HTTP 400 response for CancelClientPairing
+type CancelClientPairingResponse400Headers struct {
+	XRequestId *string
+}
+
+// CancelClientPairingResponseDefaultHeaders the declared response headers of an HTTP default response for CancelClientPairing
+type CancelClientPairingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CancelClientPairingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Pairing
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CancelClientPairingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CancelClientPairingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CancelClientPairingResponse) GetJSON200() *Pairing {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CancelClientPairingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CancelClientPairingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CancelClientPairingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CancelClientPairingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CancelClientPairingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CancelClientPairingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ClaimClientPairingResponse400Headers the declared response headers of an HTTP 400 response for ClaimClientPairing
+type ClaimClientPairingResponse400Headers struct {
+	XRequestId *string
+}
+
+// ClaimClientPairingResponseDefaultHeaders the declared response headers of an HTTP default response for ClaimClientPairing
+type ClaimClientPairingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ClaimClientPairingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ClaimResult
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ClaimClientPairingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ClaimClientPairingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ClaimClientPairingResponse) GetJSON200() *ClaimResult {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ClaimClientPairingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ClaimClientPairingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ClaimClientPairingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ClaimClientPairingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ClaimClientPairingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ClaimClientPairingResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RecognizeClientPairingResponse400Headers the declared response headers of an HTTP 400 response for RecognizeClientPairing
+type RecognizeClientPairingResponse400Headers struct {
+	XRequestId *string
+}
+
+// RecognizeClientPairingResponseDefaultHeaders the declared response headers of an HTTP default response for RecognizeClientPairing
+type RecognizeClientPairingResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RecognizeClientPairingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Pairing
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RecognizeClientPairingResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RecognizeClientPairingResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RecognizeClientPairingResponse) GetJSON200() *Pairing {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RecognizeClientPairingResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RecognizeClientPairingResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RecognizeClientPairingResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RecognizeClientPairingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RecognizeClientPairingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RecognizeClientPairingResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -85242,6 +86393,123 @@ func (c *ClientWithResponses) ConnectClientEnvironmentWithResponse(ctx context.C
 	return ParseConnectClientEnvironmentResponse(rsp)
 }
 
+// CreateClientPairingWithResponse Create Client Pairing
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings (the `CreateClientPairing` operationId).
+func (c *ClientWithResponses) CreateClientPairingWithResponse(ctx context.Context, params *CreateClientPairingParams, reqEditors ...RequestEditorFn) (*CreateClientPairingResponse, error) {
+	rsp, err := c.CreateClientPairing(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateClientPairingResponse(rsp)
+}
+
+// GetClientPairingWithResponse Get Client Pairing
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/client-environments/pairings/{pairing_id} (the `GetClientPairing` operationId).
+func (c *ClientWithResponses) GetClientPairingWithResponse(ctx context.Context, pairingId string, params *GetClientPairingParams, reqEditors ...RequestEditorFn) (*GetClientPairingResponse, error) {
+	rsp, err := c.GetClientPairing(ctx, pairingId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetClientPairingResponse(rsp)
+}
+
+// ApproveClientPairingWithBodyWithResponse Approve Client Pairing
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+func (c *ClientWithResponses) ApproveClientPairingWithBodyWithResponse(ctx context.Context, pairingId string, params *ApproveClientPairingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApproveClientPairingResponse, error) {
+	rsp, err := c.ApproveClientPairingWithBody(ctx, pairingId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApproveClientPairingResponse(rsp)
+}
+
+// ApproveClientPairingWithResponse Approve Client Pairing
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/approve (the `ApproveClientPairing` operationId).
+func (c *ClientWithResponses) ApproveClientPairingWithResponse(ctx context.Context, pairingId string, params *ApproveClientPairingParams, body ApproveClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*ApproveClientPairingResponse, error) {
+	rsp, err := c.ApproveClientPairing(ctx, pairingId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApproveClientPairingResponse(rsp)
+}
+
+// CancelClientPairingWithResponse Cancel Client Pairing
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/cancel (the `CancelClientPairing` operationId).
+func (c *ClientWithResponses) CancelClientPairingWithResponse(ctx context.Context, pairingId string, params *CancelClientPairingParams, reqEditors ...RequestEditorFn) (*CancelClientPairingResponse, error) {
+	rsp, err := c.CancelClientPairing(ctx, pairingId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCancelClientPairingResponse(rsp)
+}
+
+// ClaimClientPairingWithBodyWithResponse Claim Client Pairing
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+func (c *ClientWithResponses) ClaimClientPairingWithBodyWithResponse(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ClaimClientPairingResponse, error) {
+	rsp, err := c.ClaimClientPairingWithBody(ctx, pairingId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseClaimClientPairingResponse(rsp)
+}
+
+// ClaimClientPairingWithResponse Claim Client Pairing
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/claim (the `ClaimClientPairing` operationId).
+func (c *ClientWithResponses) ClaimClientPairingWithResponse(ctx context.Context, pairingId string, body ClaimClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*ClaimClientPairingResponse, error) {
+	rsp, err := c.ClaimClientPairing(ctx, pairingId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseClaimClientPairingResponse(rsp)
+}
+
+// RecognizeClientPairingWithBodyWithResponse Recognize Client Pairing
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+func (c *ClientWithResponses) RecognizeClientPairingWithBodyWithResponse(ctx context.Context, pairingId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RecognizeClientPairingResponse, error) {
+	rsp, err := c.RecognizeClientPairingWithBody(ctx, pairingId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRecognizeClientPairingResponse(rsp)
+}
+
+// RecognizeClientPairingWithResponse Recognize Client Pairing
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/client-environments/pairings/{pairing_id}/recognize (the `RecognizeClientPairing` operationId).
+func (c *ClientWithResponses) RecognizeClientPairingWithResponse(ctx context.Context, pairingId string, body RecognizeClientPairingJSONRequestBody, reqEditors ...RequestEditorFn) (*RecognizeClientPairingResponse, error) {
+	rsp, err := c.RecognizeClientPairing(ctx, pairingId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRecognizeClientPairingResponse(rsp)
+}
+
 // GetClientEnvironmentWithResponse Get Client Environment
 //
 // Returns a wrapper object for the known response body format(s).
@@ -94066,6 +95334,384 @@ func ParseConnectClientEnvironmentResponse(rsp *http.Response) (*ConnectClientEn
 		response.Headers400 = &headers
 	case true:
 		var headers ConnectClientEnvironmentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateClientPairingResponse parses an HTTP response from a CreateClientPairingWithResponse call
+func ParseCreateClientPairingResponse(rsp *http.Response) (*CreateClientPairingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateClientPairingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PairingCreated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateClientPairingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateClientPairingResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetClientPairingResponse parses an HTTP response from a GetClientPairingWithResponse call
+func ParseGetClientPairingResponse(rsp *http.Response) (*GetClientPairingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetClientPairingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Pairing
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetClientPairingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetClientPairingResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseApproveClientPairingResponse parses an HTTP response from a ApproveClientPairingWithResponse call
+func ParseApproveClientPairingResponse(rsp *http.Response) (*ApproveClientPairingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ApproveClientPairingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Pairing
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ApproveClientPairingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ApproveClientPairingResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCancelClientPairingResponse parses an HTTP response from a CancelClientPairingWithResponse call
+func ParseCancelClientPairingResponse(rsp *http.Response) (*CancelClientPairingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CancelClientPairingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Pairing
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CancelClientPairingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CancelClientPairingResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseClaimClientPairingResponse parses an HTTP response from a ClaimClientPairingWithResponse call
+func ParseClaimClientPairingResponse(rsp *http.Response) (*ClaimClientPairingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ClaimClientPairingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ClaimResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ClaimClientPairingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ClaimClientPairingResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRecognizeClientPairingResponse parses an HTTP response from a RecognizeClientPairingWithResponse call
+func ParseRecognizeClientPairingResponse(rsp *http.Response) (*RecognizeClientPairingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RecognizeClientPairingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Pairing
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RecognizeClientPairingResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RecognizeClientPairingResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
