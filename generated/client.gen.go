@@ -392,6 +392,45 @@ func (e BuiltinToolsetKey) Valid() bool {
 	}
 }
 
+// Defines values for CandidateApplyMode.
+const (
+	CandidateApplyModeChecked    CandidateApplyMode = "checked"
+	CandidateApplyModeReplaceAll CandidateApplyMode = "replace_all"
+)
+
+// Valid indicates whether the value is a known member of the CandidateApplyMode enum.
+func (e CandidateApplyMode) Valid() bool {
+	switch e {
+	case CandidateApplyModeChecked:
+		return true
+	case CandidateApplyModeReplaceAll:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CandidateChangeOperation.
+const (
+	CandidateChangeOperationCreate CandidateChangeOperation = "create"
+	CandidateChangeOperationDelete CandidateChangeOperation = "delete"
+	CandidateChangeOperationUpdate CandidateChangeOperation = "update"
+)
+
+// Valid indicates whether the value is a known member of the CandidateChangeOperation enum.
+func (e CandidateChangeOperation) Valid() bool {
+	switch e {
+	case CandidateChangeOperationCreate:
+		return true
+	case CandidateChangeOperationDelete:
+		return true
+	case CandidateChangeOperationUpdate:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Category.
 const (
 	AnswerQuality     Category = "answer_quality"
@@ -1820,6 +1859,21 @@ func (e FailedStatus) Valid() bool {
 	}
 }
 
+// Defines values for FileMemoryTargetKind.
+const (
+	FileMemoryTargetKindMemory FileMemoryTargetKind = "memory"
+)
+
+// Valid indicates whether the value is a known member of the FileMemoryTargetKind enum.
+func (e FileMemoryTargetKind) Valid() bool {
+	switch e {
+	case FileMemoryTargetKindMemory:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ForkKind.
 const (
 	ForkKindMessage ForkKind = "message"
@@ -1892,6 +1946,27 @@ func (e GrantAccess) Valid() bool {
 	case ReadOnly:
 		return true
 	case ReadWrite:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GuideModule.
+const (
+	GuideModuleJournal      GuideModule = "journal"
+	GuideModuleSessionNotes GuideModule = "session_notes"
+	GuideModuleTopics       GuideModule = "topics"
+)
+
+// Valid indicates whether the value is a known member of the GuideModule enum.
+func (e GuideModule) Valid() bool {
+	switch e {
+	case GuideModuleJournal:
+		return true
+	case GuideModuleSessionNotes:
+		return true
+	case GuideModuleTopics:
 		return true
 	default:
 		return false
@@ -2642,6 +2717,54 @@ func (e OperationKind) Valid() bool {
 	case Revoke:
 		return true
 	case Setup:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OrganizationCandidateStatus.
+const (
+	OrganizationCandidateStatusApplied     OrganizationCandidateStatus = "applied"
+	OrganizationCandidateStatusDiscarded   OrganizationCandidateStatus = "discarded"
+	OrganizationCandidateStatusFailed      OrganizationCandidateStatus = "failed"
+	OrganizationCandidateStatusGenerating  OrganizationCandidateStatus = "generating"
+	OrganizationCandidateStatusReady       OrganizationCandidateStatus = "ready"
+	OrganizationCandidateStatusUnavailable OrganizationCandidateStatus = "unavailable"
+)
+
+// Valid indicates whether the value is a known member of the OrganizationCandidateStatus enum.
+func (e OrganizationCandidateStatus) Valid() bool {
+	switch e {
+	case OrganizationCandidateStatusApplied:
+		return true
+	case OrganizationCandidateStatusDiscarded:
+		return true
+	case OrganizationCandidateStatusFailed:
+		return true
+	case OrganizationCandidateStatusGenerating:
+		return true
+	case OrganizationCandidateStatusReady:
+		return true
+	case OrganizationCandidateStatusUnavailable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OrganizationRequestOutput.
+const (
+	Candidate OrganizationRequestOutput = "candidate"
+	Direct    OrganizationRequestOutput = "direct"
+)
+
+// Valid indicates whether the value is a known member of the OrganizationRequestOutput enum.
+func (e OrganizationRequestOutput) Valid() bool {
+	switch e {
+	case Candidate:
+		return true
+	case Direct:
 		return true
 	default:
 		return false
@@ -3467,6 +3590,21 @@ func (e SharedSkillSyncMode) Valid() bool {
 	}
 }
 
+// Defines values for SpaceTargetKind.
+const (
+	Space SpaceTargetKind = "space"
+)
+
+// Valid indicates whether the value is a known member of the SpaceTargetKind enum.
+func (e SpaceTargetKind) Valid() bool {
+	switch e {
+	case Space:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SpanStatus.
 const (
 	SpanStatusError SpanStatus = "error"
@@ -3691,16 +3829,16 @@ func (e SubagentsOutputMode) Valid() bool {
 
 // Defines values for SystemPreset.
 const (
-	General SystemPreset = "general"
-	Journal SystemPreset = "journal"
+	SystemPresetGeneral SystemPreset = "general"
+	SystemPresetJournal SystemPreset = "journal"
 )
 
 // Valid indicates whether the value is a known member of the SystemPreset enum.
 func (e SystemPreset) Valid() bool {
 	switch e {
-	case General:
+	case SystemPresetGeneral:
 		return true
-	case Journal:
+	case SystemPresetJournal:
 		return true
 	default:
 		return false
@@ -5798,6 +5936,14 @@ type AuthorizationStatus struct {
 // AuthorizationStatusState defines model for AuthorizationStatus.State.
 type AuthorizationStatusState string
 
+// AutomaticOrganizationHistory Automatic history starts only at an explicitly chosen seal time.
+type AutomaticOrganizationHistory struct {
+	After      nullable.Nullable[time.Time] `json:"after,omitempty"`
+	Before     nullable.Nullable[time.Time] `json:"before,omitempty"`
+	MaxRuns    *int                         `json:"max_runs,omitempty"`
+	SessionIds []string                     `json:"session_ids"`
+}
+
 // AutomaticToolSearch Group Service-owned sources individually, following the agent's selections.
 type AutomaticToolSearch struct {
 	Capabilities       *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
@@ -5941,6 +6087,57 @@ type CallbackOutcome struct {
 	ConnectionId string                    `json:"connection_id"`
 	Error        nullable.Nullable[string] `json:"error"`
 	Status       ConnectionStatus          `json:"status"`
+}
+
+// CandidateApplication defines model for CandidateApplication.
+type CandidateApplication struct {
+	AppliedAt   time.Time      `json:"applied_at"`
+	AppliedById string         `json:"applied_by_id"`
+	Request     CandidateApply `json:"request"`
+	ResultSeq   int            `json:"result_seq"`
+}
+
+// CandidateApply defines model for CandidateApply.
+type CandidateApply struct {
+	CandidateSeq int                 `json:"candidate_seq"`
+	Mode         *CandidateApplyMode `json:"mode,omitempty"`
+	TargetSeq    int                 `json:"target_seq"`
+}
+
+// CandidateApplyMode defines model for CandidateApply.Mode.
+type CandidateApplyMode string
+
+// CandidateChange defines model for CandidateChange.
+type CandidateChange struct {
+	Operation CandidateChangeOperation `json:"operation"`
+	Path      string                   `json:"path"`
+}
+
+// CandidateChangeOperation defines model for CandidateChange.Operation.
+type CandidateChangeOperation string
+
+// CandidateDiff defines model for CandidateDiff.
+type CandidateDiff struct {
+	Diff      string `json:"diff"`
+	Path      string `json:"path"`
+	Truncated bool   `json:"truncated"`
+}
+
+// CandidateFile defines model for CandidateFile.
+type CandidateFile struct {
+	Baseline     nullable.Nullable[string] `json:"baseline"`
+	Candidate    nullable.Nullable[string] `json:"candidate"`
+	CandidateSeq int                       `json:"candidate_seq"`
+	Path         string                    `json:"path"`
+}
+
+// CandidateReplacement defines model for CandidateReplacement.
+type CandidateReplacement struct {
+	CandidateSeq int      `json:"candidate_seq"`
+	Deletions    []string `json:"deletions"`
+	Overwrites   []string `json:"overwrites"`
+	Restorations []string `json:"restorations"`
+	TargetSeq    int      `json:"target_seq"`
 }
 
 // Capabilities defines model for Capabilities.
@@ -7158,11 +7355,21 @@ type FailureSummary struct {
 
 // FileMemoryGuidance defines model for FileMemoryGuidance.
 type FileMemoryGuidance struct {
-	Custom         *string                   `json:"custom,omitempty"`
-	SystemOverride nullable.Nullable[string] `json:"system_override,omitempty"`
-	SystemPreset   *SystemPreset             `json:"system_preset,omitempty"`
-	Timezone       *string                   `json:"timezone,omitempty"`
+	Custom         *string                          `json:"custom,omitempty"`
+	Modules        nullable.Nullable[[]GuideModule] `json:"modules,omitempty"`
+	SystemOverride nullable.Nullable[string]        `json:"system_override,omitempty"`
+	SystemPreset   *SystemPreset                    `json:"system_preset,omitempty"`
+	Timezone       *string                          `json:"timezone,omitempty"`
 }
+
+// FileMemoryTarget defines model for FileMemoryTarget.
+type FileMemoryTarget struct {
+	Id   string                `json:"id"`
+	Kind *FileMemoryTargetKind `json:"kind,omitempty"`
+}
+
+// FileMemoryTargetKind defines model for FileMemoryTarget.Kind.
+type FileMemoryTargetKind string
 
 // FilesystemInventory defines model for FilesystemInventory.
 type FilesystemInventory struct {
@@ -7330,6 +7537,9 @@ type GrantView struct {
 	Role           string                    `json:"role"`
 	WorkspaceId    nullable.Nullable[string] `json:"workspace_id"`
 }
+
+// GuideModule defines model for GuideModule.
+type GuideModule string
 
 // HarnessModelCharacteristicsInput Resolved Harness characteristics of the active Agent model.
 type HarnessModelCharacteristicsInput struct {
@@ -7774,6 +7984,15 @@ type Memory struct {
 // MemoryAccess defines model for MemoryAccess.
 type MemoryAccess string
 
+// MemoryAutomation defines model for MemoryAutomation.
+type MemoryAutomation struct {
+	Id                   string                  `json:"id"`
+	Policy               OrganizationPolicy      `json:"policy"`
+	ProcessedHistoryRuns int                     `json:"processed_history_runs"`
+	Status               SpaceOrganizationStatus `json:"status"`
+	Version              int                     `json:"version"`
+}
+
 // MemoryCreate `postgres` makes a file memory the Service stores; a Memory Provider's type makes a record memory in that
 // provider's backend, under a new namespace or the existing one `namespace` adopts.
 type MemoryCreate struct {
@@ -7854,6 +8073,14 @@ type MemoryFileState struct {
 	Path string                        `json:"path"`
 }
 
+// MemoryGuidanceModule defines model for MemoryGuidanceModule.
+type MemoryGuidanceModule struct {
+	Description string      `json:"description"`
+	Guide       string      `json:"guide"`
+	Id          GuideModule `json:"id"`
+	Name        string      `json:"name"`
+}
+
 // MemoryGuidancePreset defines model for MemoryGuidancePreset.
 type MemoryGuidancePreset struct {
 	Description string       `json:"description"`
@@ -7864,7 +8091,8 @@ type MemoryGuidancePreset struct {
 
 // MemoryGuidancePresets defines model for MemoryGuidancePresets.
 type MemoryGuidancePresets struct {
-	Items []MemoryGuidancePreset `json:"items"`
+	Items   []MemoryGuidancePreset `json:"items"`
+	Modules []MemoryGuidanceModule `json:"modules"`
 }
 
 // MemoryKind defines model for MemoryKind.
@@ -7894,6 +8122,26 @@ type MemoryMountPage struct {
 type MemoryMountUpdate struct {
 	Access nullable.Nullable[MemoryAccess] `json:"access,omitempty"`
 	Recall nullable.Nullable[bool]         `json:"recall,omitempty"`
+}
+
+// MemoryOrganization defines model for MemoryOrganization.
+type MemoryOrganization struct {
+	CandidateMemoryId nullable.Nullable[string] `json:"candidate_memory_id,omitempty"`
+	CreatedAt         time.Time                 `json:"created_at"`
+	CreatedById       string                    `json:"created_by_id"`
+	Id                string                    `json:"id"`
+	Request           OrganizationRequest       `json:"request"`
+	RunId             string                    `json:"run_id"`
+	SessionId         string                    `json:"session_id"`
+	Sources           []OrganizationSource      `json:"sources"`
+	ThreadId          string                    `json:"thread_id"`
+	WorkspaceId       string                    `json:"workspace_id"`
+}
+
+// MemoryOrganizationPage defines model for MemoryOrganizationPage.
+type MemoryOrganizationPage struct {
+	Items      []MemoryOrganization      `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor,omitempty"`
 }
 
 // MemoryPage defines model for MemoryPage.
@@ -8563,6 +8811,31 @@ type Organization struct {
 	Version     int                       `json:"version"`
 }
 
+// OrganizationCandidate defines model for OrganizationCandidate.
+type OrganizationCandidate struct {
+	Application    nullable.Nullable[CandidateApplication] `json:"application,omitempty"`
+	BaselineSeq    int                                     `json:"baseline_seq"`
+	CandidateSeq   nullable.Nullable[int]                  `json:"candidate_seq"`
+	Changes        []CandidateChange                       `json:"changes"`
+	Files          []string                                `json:"files"`
+	MemoryId       string                                  `json:"memory_id"`
+	OrganizationId string                                  `json:"organization_id"`
+	Status         OrganizationCandidateStatus             `json:"status"`
+	TargetMemoryId string                                  `json:"target_memory_id"`
+	TargetSeq      nullable.Nullable[int]                  `json:"target_seq"`
+}
+
+// OrganizationCandidateStatus defines model for OrganizationCandidate.Status.
+type OrganizationCandidateStatus string
+
+// OrganizationHistory Explicit Sessions and a bounded, inclusive seal-time window.
+type OrganizationHistory struct {
+	After      nullable.Nullable[time.Time] `json:"after,omitempty"`
+	Before     nullable.Nullable[time.Time] `json:"before,omitempty"`
+	MaxRuns    *int                         `json:"max_runs,omitempty"`
+	SessionIds []string                     `json:"session_ids"`
+}
+
 // OrganizationPage defines model for OrganizationPage.
 type OrganizationPage struct {
 	Items      []Organization            `json:"items"`
@@ -8571,15 +8844,42 @@ type OrganizationPage struct {
 
 // OrganizationPolicy defines model for OrganizationPolicy.
 type OrganizationPolicy struct {
-	CheckIntervalSeconds *int                        `json:"check_interval_seconds,omitempty"`
-	CooldownSeconds      *int                        `json:"cooldown_seconds,omitempty"`
-	Enabled              *bool                       `json:"enabled,omitempty"`
-	Model                nullable.Nullable[string]   `json:"model,omitempty"`
-	Trigger              *OrganizationPolicy_Trigger `json:"trigger,omitempty"`
+	CheckIntervalSeconds *int                                            `json:"check_interval_seconds,omitempty"`
+	CooldownSeconds      *int                                            `json:"cooldown_seconds,omitempty"`
+	Enabled              *bool                                           `json:"enabled,omitempty"`
+	History              nullable.Nullable[AutomaticOrganizationHistory] `json:"history,omitempty"`
+	Instructions         nullable.Nullable[string]                       `json:"instructions,omitempty"`
+	Model                nullable.Nullable[string]                       `json:"model,omitempty"`
+	Trigger              *OrganizationPolicy_Trigger                     `json:"trigger,omitempty"`
 }
 
 // OrganizationPolicy_Trigger defines model for OrganizationPolicy.Trigger.
 type OrganizationPolicy_Trigger struct {
+	union json.RawMessage
+}
+
+// OrganizationRequest defines model for OrganizationRequest.
+type OrganizationRequest struct {
+	History      nullable.Nullable[OrganizationHistory] `json:"history,omitempty"`
+	Instructions *string                                `json:"instructions,omitempty"`
+	Model        string                                 `json:"model"`
+	Output       *OrganizationRequestOutput             `json:"output,omitempty"`
+	Target       OrganizationTarget                     `json:"target"`
+}
+
+// OrganizationRequestOutput defines model for OrganizationRequest.Output.
+type OrganizationRequestOutput string
+
+// OrganizationSource defines model for OrganizationSource.
+type OrganizationSource struct {
+	RunId     string    `json:"run_id"`
+	SealedAt  time.Time `json:"sealed_at"`
+	SessionId string    `json:"session_id"`
+	ThreadId  string    `json:"thread_id"`
+}
+
+// OrganizationTarget defines model for OrganizationTarget.
+type OrganizationTarget struct {
 	union json.RawMessage
 }
 
@@ -9999,6 +10299,15 @@ type SpaceOrganizationStatus struct {
 	ProcessedSeq *int                         `json:"processed_seq,omitempty"`
 	SessionId    nullable.Nullable[string]    `json:"session_id,omitempty"`
 }
+
+// SpaceTarget defines model for SpaceTarget.
+type SpaceTarget struct {
+	Id   string           `json:"id"`
+	Kind *SpaceTargetKind `json:"kind,omitempty"`
+}
+
+// SpaceTargetKind defines model for SpaceTarget.Kind.
+type SpaceTargetKind string
 
 // Span One span as the backend stored it; `attributes` are its OpenTelemetry attributes.
 //
@@ -12102,6 +12411,21 @@ type ReplaceFileParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// GetMemoryAutomationParams defines parameters for GetMemoryAutomation.
+type GetMemoryAutomationParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateMemoryAutomationParams defines parameters for UpdateMemoryAutomation.
+type UpdateMemoryAutomationParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListRecordsParams defines parameters for ListRecords.
 type ListRecordsParams struct {
 	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
@@ -12166,6 +12490,71 @@ type GetMemoryRevisionParams struct {
 type RestoreMemoryRevisionParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListMemoryOrganizationsParams defines parameters for ListMemoryOrganizations.
+type ListMemoryOrganizationsParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateMemoryOrganizationParams defines parameters for CreateMemoryOrganization.
+type CreateMemoryOrganizationParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetMemoryOrganizationParams defines parameters for GetMemoryOrganization.
+type GetMemoryOrganizationParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetOrganizationCandidateParams defines parameters for GetOrganizationCandidate.
+type GetOrganizationCandidateParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ApplyOrganizationCandidateParams defines parameters for ApplyOrganizationCandidate.
+type ApplyOrganizationCandidateParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetOrganizationCandidateDiffParams defines parameters for GetOrganizationCandidateDiff.
+type GetOrganizationCandidateDiffParams struct {
+	Path string `form:"path" json:"path"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DiscardOrganizationCandidateParams defines parameters for DiscardOrganizationCandidate.
+type DiscardOrganizationCandidateParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetOrganizationCandidateFileParams defines parameters for GetOrganizationCandidateFile.
+type GetOrganizationCandidateFileParams struct {
+	Path         string `form:"path" json:"path"`
+	CandidateSeq int    `form:"candidate_seq" json:"candidate_seq"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetOrganizationCandidateReplacementParams defines parameters for GetOrganizationCandidateReplacement.
+type GetOrganizationCandidateReplacementParams struct {
+	CandidateSeq int `form:"candidate_seq" json:"candidate_seq"`
+	TargetSeq    int `form:"target_seq" json:"target_seq"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -14215,6 +14604,9 @@ type MoveFileJSONRequestBody = MemoryFileMove
 // ReplaceFileJSONRequestBody defines body for ReplaceFile for application/json ContentType.
 type ReplaceFileJSONRequestBody = MemoryFileReplace
 
+// UpdateMemoryAutomationJSONRequestBody defines body for UpdateMemoryAutomation for application/json ContentType.
+type UpdateMemoryAutomationJSONRequestBody = OrganizationPolicy
+
 // AddRecordJSONRequestBody defines body for AddRecord for application/json ContentType.
 type AddRecordJSONRequestBody = MemoryRecordText
 
@@ -14223,6 +14615,12 @@ type SearchRecordsJSONRequestBody = MemoryRecordSearch
 
 // UpdateRecordJSONRequestBody defines body for UpdateRecord for application/json ContentType.
 type UpdateRecordJSONRequestBody = MemoryRecordText
+
+// CreateMemoryOrganizationJSONRequestBody defines body for CreateMemoryOrganization for application/json ContentType.
+type CreateMemoryOrganizationJSONRequestBody = OrganizationRequest
+
+// ApplyOrganizationCandidateJSONRequestBody defines body for ApplyOrganizationCandidate for application/json ContentType.
+type ApplyOrganizationCandidateJSONRequestBody = CandidateApply
 
 // CreateMemoryProviderJSONRequestBody defines body for CreateMemoryProvider for application/json ContentType.
 type CreateMemoryProviderJSONRequestBody = ProviderCreate
@@ -15602,6 +16000,107 @@ func (t OrganizationPolicy_Trigger) MarshalJSON() ([]byte, error) {
 }
 
 func (t *OrganizationPolicy_Trigger) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsFileMemoryTarget returns the union data inside the OrganizationTarget as a FileMemoryTarget
+func (t OrganizationTarget) AsFileMemoryTarget() (FileMemoryTarget, error) {
+	var body FileMemoryTarget
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFileMemoryTarget overwrites any union data inside the OrganizationTarget as the provided FileMemoryTarget
+func (t *OrganizationTarget) FromFileMemoryTarget(v FileMemoryTarget) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"memory"}`))
+	t.union = b
+	return err
+}
+
+// MergeFileMemoryTarget performs a merge with any union data inside the OrganizationTarget, using the provided FileMemoryTarget
+func (t *OrganizationTarget) MergeFileMemoryTarget(v FileMemoryTarget) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"memory"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSpaceTarget returns the union data inside the OrganizationTarget as a SpaceTarget
+func (t OrganizationTarget) AsSpaceTarget() (SpaceTarget, error) {
+	var body SpaceTarget
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSpaceTarget overwrites any union data inside the OrganizationTarget as the provided SpaceTarget
+func (t *OrganizationTarget) FromSpaceTarget(v SpaceTarget) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"space"}`))
+	t.union = b
+	return err
+}
+
+// MergeSpaceTarget performs a merge with any union data inside the OrganizationTarget, using the provided SpaceTarget
+func (t *OrganizationTarget) MergeSpaceTarget(v SpaceTarget) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"space"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t OrganizationTarget) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t OrganizationTarget) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "memory":
+		return t.AsFileMemoryTarget()
+	case "space":
+		return t.AsSpaceTarget()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t OrganizationTarget) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *OrganizationTarget) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -20394,6 +20893,25 @@ type ClientInterface interface {
 	// Corresponds with PUT /api/v1/memories/{memory_id}/files/{path} (the `ReplaceFile` operationId).
 	ReplaceFile(ctx context.Context, memoryId string, path string, params *ReplaceFileParams, body ReplaceFileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetMemoryAutomation Get Memory Automation
+	//
+	// Corresponds with GET /api/v1/memories/{memory_id}/organization (the `GetMemoryAutomation` operationId).
+	GetMemoryAutomation(ctx context.Context, memoryId string, params *GetMemoryAutomationParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMemoryAutomationWithBody Update Memory Automation
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+	UpdateMemoryAutomationWithBody(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMemoryAutomation Update Memory Automation
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+	UpdateMemoryAutomation(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, body UpdateMemoryAutomationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListRecords List Records
 	//
 	// Corresponds with GET /api/v1/memories/{memory_id}/records (the `ListRecords` operationId).
@@ -20477,6 +20995,69 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/memories/{memory_id}/revisions/{seq}/restore (the `RestoreMemoryRevision` operationId).
 	RestoreMemoryRevision(ctx context.Context, memoryId string, seq int, params *RestoreMemoryRevisionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListMemoryOrganizations List Memory Organizations
+	//
+	// Corresponds with GET /api/v1/memory-organizations (the `ListMemoryOrganizations` operationId).
+	ListMemoryOrganizations(ctx context.Context, params *ListMemoryOrganizationsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateMemoryOrganizationWithBody Create Memory Organization
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+	CreateMemoryOrganizationWithBody(ctx context.Context, params *CreateMemoryOrganizationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateMemoryOrganization Create Memory Organization
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+	CreateMemoryOrganization(ctx context.Context, params *CreateMemoryOrganizationParams, body CreateMemoryOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMemoryOrganization Get Memory Organization
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id} (the `GetMemoryOrganization` operationId).
+	GetMemoryOrganization(ctx context.Context, organizationId string, params *GetMemoryOrganizationParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOrganizationCandidate Get Organization Candidate
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate (the `GetOrganizationCandidate` operationId).
+	GetOrganizationCandidate(ctx context.Context, organizationId string, params *GetOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ApplyOrganizationCandidateWithBody Apply Organization Candidate
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+	ApplyOrganizationCandidateWithBody(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ApplyOrganizationCandidate Apply Organization Candidate
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+	ApplyOrganizationCandidate(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, body ApplyOrganizationCandidateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOrganizationCandidateDiff Get Organization Candidate Diff
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/diff (the `GetOrganizationCandidateDiff` operationId).
+	GetOrganizationCandidateDiff(ctx context.Context, organizationId string, params *GetOrganizationCandidateDiffParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DiscardOrganizationCandidate Discard Organization Candidate
+	//
+	// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/discard (the `DiscardOrganizationCandidate` operationId).
+	DiscardOrganizationCandidate(ctx context.Context, organizationId string, params *DiscardOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOrganizationCandidateFile Get Organization Candidate File
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/file (the `GetOrganizationCandidateFile` operationId).
+	GetOrganizationCandidateFile(ctx context.Context, organizationId string, params *GetOrganizationCandidateFileParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOrganizationCandidateReplacement Get Organization Candidate Replacement
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/replacement (the `GetOrganizationCandidateReplacement` operationId).
+	GetOrganizationCandidateReplacement(ctx context.Context, organizationId string, params *GetOrganizationCandidateReplacementParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListMemoryProviders List memory providers
 	//
@@ -25665,6 +26246,55 @@ func (c *Client) ReplaceFile(ctx context.Context, memoryId string, path string, 
 	return c.Client.Do(req)
 }
 
+// GetMemoryAutomation Get Memory Automation
+//
+// Corresponds with GET /api/v1/memories/{memory_id}/organization (the `GetMemoryAutomation` operationId).
+func (c *Client) GetMemoryAutomation(ctx context.Context, memoryId string, params *GetMemoryAutomationParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMemoryAutomationRequest(c.Server, memoryId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateMemoryAutomationWithBody Update Memory Automation
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+func (c *Client) UpdateMemoryAutomationWithBody(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMemoryAutomationRequestWithBody(c.Server, memoryId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateMemoryAutomation Update Memory Automation
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+func (c *Client) UpdateMemoryAutomation(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, body UpdateMemoryAutomationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMemoryAutomationRequest(c.Server, memoryId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListRecords List Records
 //
 // Corresponds with GET /api/v1/memories/{memory_id}/records (the `ListRecords` operationId).
@@ -25859,6 +26489,179 @@ func (c *Client) GetMemoryRevision(ctx context.Context, memoryId string, seq int
 // Corresponds with POST /api/v1/memories/{memory_id}/revisions/{seq}/restore (the `RestoreMemoryRevision` operationId).
 func (c *Client) RestoreMemoryRevision(ctx context.Context, memoryId string, seq int, params *RestoreMemoryRevisionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRestoreMemoryRevisionRequest(c.Server, memoryId, seq, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListMemoryOrganizations List Memory Organizations
+//
+// Corresponds with GET /api/v1/memory-organizations (the `ListMemoryOrganizations` operationId).
+func (c *Client) ListMemoryOrganizations(ctx context.Context, params *ListMemoryOrganizationsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListMemoryOrganizationsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateMemoryOrganizationWithBody Create Memory Organization
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+func (c *Client) CreateMemoryOrganizationWithBody(ctx context.Context, params *CreateMemoryOrganizationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMemoryOrganizationRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateMemoryOrganization Create Memory Organization
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+func (c *Client) CreateMemoryOrganization(ctx context.Context, params *CreateMemoryOrganizationParams, body CreateMemoryOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMemoryOrganizationRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetMemoryOrganization Get Memory Organization
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id} (the `GetMemoryOrganization` operationId).
+func (c *Client) GetMemoryOrganization(ctx context.Context, organizationId string, params *GetMemoryOrganizationParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMemoryOrganizationRequest(c.Server, organizationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetOrganizationCandidate Get Organization Candidate
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate (the `GetOrganizationCandidate` operationId).
+func (c *Client) GetOrganizationCandidate(ctx context.Context, organizationId string, params *GetOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOrganizationCandidateRequest(c.Server, organizationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ApplyOrganizationCandidateWithBody Apply Organization Candidate
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+func (c *Client) ApplyOrganizationCandidateWithBody(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApplyOrganizationCandidateRequestWithBody(c.Server, organizationId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ApplyOrganizationCandidate Apply Organization Candidate
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+func (c *Client) ApplyOrganizationCandidate(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, body ApplyOrganizationCandidateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApplyOrganizationCandidateRequest(c.Server, organizationId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetOrganizationCandidateDiff Get Organization Candidate Diff
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/diff (the `GetOrganizationCandidateDiff` operationId).
+func (c *Client) GetOrganizationCandidateDiff(ctx context.Context, organizationId string, params *GetOrganizationCandidateDiffParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOrganizationCandidateDiffRequest(c.Server, organizationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DiscardOrganizationCandidate Discard Organization Candidate
+//
+// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/discard (the `DiscardOrganizationCandidate` operationId).
+func (c *Client) DiscardOrganizationCandidate(ctx context.Context, organizationId string, params *DiscardOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDiscardOrganizationCandidateRequest(c.Server, organizationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetOrganizationCandidateFile Get Organization Candidate File
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/file (the `GetOrganizationCandidateFile` operationId).
+func (c *Client) GetOrganizationCandidateFile(ctx context.Context, organizationId string, params *GetOrganizationCandidateFileParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOrganizationCandidateFileRequest(c.Server, organizationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetOrganizationCandidateReplacement Get Organization Candidate Replacement
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/replacement (the `GetOrganizationCandidateReplacement` operationId).
+func (c *Client) GetOrganizationCandidateReplacement(ctx context.Context, organizationId string, params *GetOrganizationCandidateReplacementParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOrganizationCandidateReplacementRequest(c.Server, organizationId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -39965,6 +40768,128 @@ func NewReplaceFileRequestWithBody(server string, memoryId string, path string, 
 	return req, nil
 }
 
+// NewGetMemoryAutomationRequest constructs an http.Request for the GetMemoryAutomation method
+func NewGetMemoryAutomationRequest(server string, memoryId string, params *GetMemoryAutomationParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "memory_id", memoryId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memories/%s/organization", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateMemoryAutomationRequest calls the generic UpdateMemoryAutomation builder with application/json body
+func NewUpdateMemoryAutomationRequest(server string, memoryId string, params *UpdateMemoryAutomationParams, body UpdateMemoryAutomationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMemoryAutomationRequestWithBody(server, memoryId, params, "application/json", bodyReader)
+}
+
+// NewUpdateMemoryAutomationRequestWithBody constructs an http.Request for the UpdateMemoryAutomation method, with any body, and a specified content type
+func NewUpdateMemoryAutomationRequestWithBody(server string, memoryId string, params *UpdateMemoryAutomationParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "memory_id", memoryId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memories/%s/organization", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListRecordsRequest constructs an http.Request for the ListRecords method
 func NewListRecordsRequest(server string, memoryId string, params *ListRecordsParams) (*http.Request, error) {
 	var err error
@@ -40602,6 +41527,583 @@ func NewRestoreMemoryRevisionRequest(server string, memoryId string, seq int, pa
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListMemoryOrganizationsRequest constructs an http.Request for the ListMemoryOrganizations method
+func NewListMemoryOrganizationsRequest(server string, params *ListMemoryOrganizationsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateMemoryOrganizationRequest calls the generic CreateMemoryOrganization builder with application/json body
+func NewCreateMemoryOrganizationRequest(server string, params *CreateMemoryOrganizationParams, body CreateMemoryOrganizationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateMemoryOrganizationRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateMemoryOrganizationRequestWithBody constructs an http.Request for the CreateMemoryOrganization method, with any body, and a specified content type
+func NewCreateMemoryOrganizationRequestWithBody(server string, params *CreateMemoryOrganizationParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetMemoryOrganizationRequest constructs an http.Request for the GetMemoryOrganization method
+func NewGetMemoryOrganizationRequest(server string, organizationId string, params *GetMemoryOrganizationParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetOrganizationCandidateRequest constructs an http.Request for the GetOrganizationCandidate method
+func NewGetOrganizationCandidateRequest(server string, organizationId string, params *GetOrganizationCandidateParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations/%s/candidate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewApplyOrganizationCandidateRequest calls the generic ApplyOrganizationCandidate builder with application/json body
+func NewApplyOrganizationCandidateRequest(server string, organizationId string, params *ApplyOrganizationCandidateParams, body ApplyOrganizationCandidateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewApplyOrganizationCandidateRequestWithBody(server, organizationId, params, "application/json", bodyReader)
+}
+
+// NewApplyOrganizationCandidateRequestWithBody constructs an http.Request for the ApplyOrganizationCandidate method, with any body, and a specified content type
+func NewApplyOrganizationCandidateRequestWithBody(server string, organizationId string, params *ApplyOrganizationCandidateParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations/%s/candidate/apply", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetOrganizationCandidateDiffRequest constructs an http.Request for the GetOrganizationCandidateDiff method
+func NewGetOrganizationCandidateDiffRequest(server string, organizationId string, params *GetOrganizationCandidateDiffParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations/%s/candidate/diff", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "path", params.Path, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDiscardOrganizationCandidateRequest constructs an http.Request for the DiscardOrganizationCandidate method
+func NewDiscardOrganizationCandidateRequest(server string, organizationId string, params *DiscardOrganizationCandidateParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations/%s/candidate/discard", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetOrganizationCandidateFileRequest constructs an http.Request for the GetOrganizationCandidateFile method
+func NewGetOrganizationCandidateFileRequest(server string, organizationId string, params *GetOrganizationCandidateFileParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations/%s/candidate/file", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "path", params.Path, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "candidate_seq", params.CandidateSeq, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetOrganizationCandidateReplacementRequest constructs an http.Request for the GetOrganizationCandidateReplacement method
+func NewGetOrganizationCandidateReplacementRequest(server string, organizationId string, params *GetOrganizationCandidateReplacementParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/memory-organizations/%s/candidate/replacement", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "candidate_seq", params.CandidateSeq, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "target_seq", params.TargetSeq, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -57738,6 +59240,27 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /api/v1/memories/{memory_id}/files/{path} (the `ReplaceFile` operationId).
 	ReplaceFileWithResponse(ctx context.Context, memoryId string, path string, params *ReplaceFileParams, body ReplaceFileJSONRequestBody, reqEditors ...RequestEditorFn) (*ReplaceFileResponse, error)
 
+	// GetMemoryAutomationWithResponse Get Memory Automation
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memories/{memory_id}/organization (the `GetMemoryAutomation` operationId).
+	GetMemoryAutomationWithResponse(ctx context.Context, memoryId string, params *GetMemoryAutomationParams, reqEditors ...RequestEditorFn) (*GetMemoryAutomationResponse, error)
+
+	// UpdateMemoryAutomationWithBodyWithResponse Update Memory Automation
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+	UpdateMemoryAutomationWithBodyWithResponse(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMemoryAutomationResponse, error)
+
+	// UpdateMemoryAutomationWithResponse Update Memory Automation
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+	UpdateMemoryAutomationWithResponse(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, body UpdateMemoryAutomationJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMemoryAutomationResponse, error)
+
 	// ListRecordsWithResponse List Records
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -57833,6 +59356,83 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/memories/{memory_id}/revisions/{seq}/restore (the `RestoreMemoryRevision` operationId).
 	RestoreMemoryRevisionWithResponse(ctx context.Context, memoryId string, seq int, params *RestoreMemoryRevisionParams, reqEditors ...RequestEditorFn) (*RestoreMemoryRevisionResponse, error)
+
+	// ListMemoryOrganizationsWithResponse List Memory Organizations
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-organizations (the `ListMemoryOrganizations` operationId).
+	ListMemoryOrganizationsWithResponse(ctx context.Context, params *ListMemoryOrganizationsParams, reqEditors ...RequestEditorFn) (*ListMemoryOrganizationsResponse, error)
+
+	// CreateMemoryOrganizationWithBodyWithResponse Create Memory Organization
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+	CreateMemoryOrganizationWithBodyWithResponse(ctx context.Context, params *CreateMemoryOrganizationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMemoryOrganizationResponse, error)
+
+	// CreateMemoryOrganizationWithResponse Create Memory Organization
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+	CreateMemoryOrganizationWithResponse(ctx context.Context, params *CreateMemoryOrganizationParams, body CreateMemoryOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMemoryOrganizationResponse, error)
+
+	// GetMemoryOrganizationWithResponse Get Memory Organization
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id} (the `GetMemoryOrganization` operationId).
+	GetMemoryOrganizationWithResponse(ctx context.Context, organizationId string, params *GetMemoryOrganizationParams, reqEditors ...RequestEditorFn) (*GetMemoryOrganizationResponse, error)
+
+	// GetOrganizationCandidateWithResponse Get Organization Candidate
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate (the `GetOrganizationCandidate` operationId).
+	GetOrganizationCandidateWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateResponse, error)
+
+	// ApplyOrganizationCandidateWithBodyWithResponse Apply Organization Candidate
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+	ApplyOrganizationCandidateWithBodyWithResponse(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApplyOrganizationCandidateResponse, error)
+
+	// ApplyOrganizationCandidateWithResponse Apply Organization Candidate
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+	ApplyOrganizationCandidateWithResponse(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, body ApplyOrganizationCandidateJSONRequestBody, reqEditors ...RequestEditorFn) (*ApplyOrganizationCandidateResponse, error)
+
+	// GetOrganizationCandidateDiffWithResponse Get Organization Candidate Diff
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/diff (the `GetOrganizationCandidateDiff` operationId).
+	GetOrganizationCandidateDiffWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateDiffParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateDiffResponse, error)
+
+	// DiscardOrganizationCandidateWithResponse Discard Organization Candidate
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/discard (the `DiscardOrganizationCandidate` operationId).
+	DiscardOrganizationCandidateWithResponse(ctx context.Context, organizationId string, params *DiscardOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*DiscardOrganizationCandidateResponse, error)
+
+	// GetOrganizationCandidateFileWithResponse Get Organization Candidate File
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/file (the `GetOrganizationCandidateFile` operationId).
+	GetOrganizationCandidateFileWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateFileParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateFileResponse, error)
+
+	// GetOrganizationCandidateReplacementWithResponse Get Organization Candidate Replacement
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/replacement (the `GetOrganizationCandidateReplacement` operationId).
+	GetOrganizationCandidateReplacementWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateReplacementParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateReplacementResponse, error)
 
 	// ListMemoryProvidersWithResponse List memory providers
 	//
@@ -70050,6 +71650,144 @@ func (r ReplaceFileResponse) ContentType() string {
 	return ""
 }
 
+// GetMemoryAutomationResponse400Headers the declared response headers of an HTTP 400 response for GetMemoryAutomation
+type GetMemoryAutomationResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetMemoryAutomationResponseDefaultHeaders the declared response headers of an HTTP default response for GetMemoryAutomation
+type GetMemoryAutomationResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetMemoryAutomationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemoryAutomation
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetMemoryAutomationResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetMemoryAutomationResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetMemoryAutomationResponse) GetJSON200() *MemoryAutomation {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetMemoryAutomationResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetMemoryAutomationResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetMemoryAutomationResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMemoryAutomationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMemoryAutomationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMemoryAutomationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateMemoryAutomationResponse400Headers the declared response headers of an HTTP 400 response for UpdateMemoryAutomation
+type UpdateMemoryAutomationResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateMemoryAutomationResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateMemoryAutomation
+type UpdateMemoryAutomationResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateMemoryAutomationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemoryAutomation
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateMemoryAutomationResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateMemoryAutomationResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateMemoryAutomationResponse) GetJSON200() *MemoryAutomation {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateMemoryAutomationResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateMemoryAutomationResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateMemoryAutomationResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMemoryAutomationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMemoryAutomationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateMemoryAutomationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListRecordsResponse400Headers the declared response headers of an HTTP 400 response for ListRecords
 type ListRecordsResponse400Headers struct {
 	XRequestId *string
@@ -70658,6 +72396,627 @@ func (r RestoreMemoryRevisionResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r RestoreMemoryRevisionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListMemoryOrganizationsResponse400Headers the declared response headers of an HTTP 400 response for ListMemoryOrganizations
+type ListMemoryOrganizationsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListMemoryOrganizationsResponseDefaultHeaders the declared response headers of an HTTP default response for ListMemoryOrganizations
+type ListMemoryOrganizationsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListMemoryOrganizationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemoryOrganizationPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListMemoryOrganizationsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListMemoryOrganizationsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListMemoryOrganizationsResponse) GetJSON200() *MemoryOrganizationPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListMemoryOrganizationsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListMemoryOrganizationsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListMemoryOrganizationsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListMemoryOrganizationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListMemoryOrganizationsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListMemoryOrganizationsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateMemoryOrganizationResponse400Headers the declared response headers of an HTTP 400 response for CreateMemoryOrganization
+type CreateMemoryOrganizationResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateMemoryOrganizationResponseDefaultHeaders the declared response headers of an HTTP default response for CreateMemoryOrganization
+type CreateMemoryOrganizationResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateMemoryOrganizationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *MemoryOrganization
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateMemoryOrganizationResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateMemoryOrganizationResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r CreateMemoryOrganizationResponse) GetJSON202() *MemoryOrganization {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateMemoryOrganizationResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateMemoryOrganizationResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateMemoryOrganizationResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateMemoryOrganizationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateMemoryOrganizationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateMemoryOrganizationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetMemoryOrganizationResponse400Headers the declared response headers of an HTTP 400 response for GetMemoryOrganization
+type GetMemoryOrganizationResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetMemoryOrganizationResponseDefaultHeaders the declared response headers of an HTTP default response for GetMemoryOrganization
+type GetMemoryOrganizationResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetMemoryOrganizationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MemoryOrganization
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetMemoryOrganizationResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetMemoryOrganizationResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetMemoryOrganizationResponse) GetJSON200() *MemoryOrganization {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetMemoryOrganizationResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetMemoryOrganizationResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetMemoryOrganizationResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMemoryOrganizationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMemoryOrganizationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetMemoryOrganizationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetOrganizationCandidateResponse400Headers the declared response headers of an HTTP 400 response for GetOrganizationCandidate
+type GetOrganizationCandidateResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetOrganizationCandidateResponseDefaultHeaders the declared response headers of an HTTP default response for GetOrganizationCandidate
+type GetOrganizationCandidateResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetOrganizationCandidateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *OrganizationCandidate
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetOrganizationCandidateResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetOrganizationCandidateResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetOrganizationCandidateResponse) GetJSON200() *OrganizationCandidate {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetOrganizationCandidateResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetOrganizationCandidateResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetOrganizationCandidateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOrganizationCandidateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOrganizationCandidateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOrganizationCandidateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ApplyOrganizationCandidateResponse400Headers the declared response headers of an HTTP 400 response for ApplyOrganizationCandidate
+type ApplyOrganizationCandidateResponse400Headers struct {
+	XRequestId *string
+}
+
+// ApplyOrganizationCandidateResponseDefaultHeaders the declared response headers of an HTTP default response for ApplyOrganizationCandidate
+type ApplyOrganizationCandidateResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ApplyOrganizationCandidateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *OrganizationCandidate
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ApplyOrganizationCandidateResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ApplyOrganizationCandidateResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ApplyOrganizationCandidateResponse) GetJSON200() *OrganizationCandidate {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ApplyOrganizationCandidateResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ApplyOrganizationCandidateResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ApplyOrganizationCandidateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ApplyOrganizationCandidateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ApplyOrganizationCandidateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ApplyOrganizationCandidateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetOrganizationCandidateDiffResponse400Headers the declared response headers of an HTTP 400 response for GetOrganizationCandidateDiff
+type GetOrganizationCandidateDiffResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetOrganizationCandidateDiffResponseDefaultHeaders the declared response headers of an HTTP default response for GetOrganizationCandidateDiff
+type GetOrganizationCandidateDiffResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetOrganizationCandidateDiffResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CandidateDiff
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetOrganizationCandidateDiffResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetOrganizationCandidateDiffResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetOrganizationCandidateDiffResponse) GetJSON200() *CandidateDiff {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetOrganizationCandidateDiffResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetOrganizationCandidateDiffResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetOrganizationCandidateDiffResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOrganizationCandidateDiffResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOrganizationCandidateDiffResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOrganizationCandidateDiffResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DiscardOrganizationCandidateResponse400Headers the declared response headers of an HTTP 400 response for DiscardOrganizationCandidate
+type DiscardOrganizationCandidateResponse400Headers struct {
+	XRequestId *string
+}
+
+// DiscardOrganizationCandidateResponseDefaultHeaders the declared response headers of an HTTP default response for DiscardOrganizationCandidate
+type DiscardOrganizationCandidateResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DiscardOrganizationCandidateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *OrganizationCandidate
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DiscardOrganizationCandidateResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DiscardOrganizationCandidateResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DiscardOrganizationCandidateResponse) GetJSON200() *OrganizationCandidate {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DiscardOrganizationCandidateResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DiscardOrganizationCandidateResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DiscardOrganizationCandidateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DiscardOrganizationCandidateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DiscardOrganizationCandidateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DiscardOrganizationCandidateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetOrganizationCandidateFileResponse400Headers the declared response headers of an HTTP 400 response for GetOrganizationCandidateFile
+type GetOrganizationCandidateFileResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetOrganizationCandidateFileResponseDefaultHeaders the declared response headers of an HTTP default response for GetOrganizationCandidateFile
+type GetOrganizationCandidateFileResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetOrganizationCandidateFileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CandidateFile
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetOrganizationCandidateFileResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetOrganizationCandidateFileResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetOrganizationCandidateFileResponse) GetJSON200() *CandidateFile {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetOrganizationCandidateFileResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetOrganizationCandidateFileResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetOrganizationCandidateFileResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOrganizationCandidateFileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOrganizationCandidateFileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOrganizationCandidateFileResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetOrganizationCandidateReplacementResponse400Headers the declared response headers of an HTTP 400 response for GetOrganizationCandidateReplacement
+type GetOrganizationCandidateReplacementResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetOrganizationCandidateReplacementResponseDefaultHeaders the declared response headers of an HTTP default response for GetOrganizationCandidateReplacement
+type GetOrganizationCandidateReplacementResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetOrganizationCandidateReplacementResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CandidateReplacement
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetOrganizationCandidateReplacementResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetOrganizationCandidateReplacementResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetOrganizationCandidateReplacementResponse) GetJSON200() *CandidateReplacement {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetOrganizationCandidateReplacementResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetOrganizationCandidateReplacementResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetOrganizationCandidateReplacementResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOrganizationCandidateReplacementResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOrganizationCandidateReplacementResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetOrganizationCandidateReplacementResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -88155,6 +90514,45 @@ func (c *ClientWithResponses) ReplaceFileWithResponse(ctx context.Context, memor
 	return ParseReplaceFileResponse(rsp)
 }
 
+// GetMemoryAutomationWithResponse Get Memory Automation
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memories/{memory_id}/organization (the `GetMemoryAutomation` operationId).
+func (c *ClientWithResponses) GetMemoryAutomationWithResponse(ctx context.Context, memoryId string, params *GetMemoryAutomationParams, reqEditors ...RequestEditorFn) (*GetMemoryAutomationResponse, error) {
+	rsp, err := c.GetMemoryAutomation(ctx, memoryId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMemoryAutomationResponse(rsp)
+}
+
+// UpdateMemoryAutomationWithBodyWithResponse Update Memory Automation
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+func (c *ClientWithResponses) UpdateMemoryAutomationWithBodyWithResponse(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMemoryAutomationResponse, error) {
+	rsp, err := c.UpdateMemoryAutomationWithBody(ctx, memoryId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMemoryAutomationResponse(rsp)
+}
+
+// UpdateMemoryAutomationWithResponse Update Memory Automation
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/memories/{memory_id}/organization (the `UpdateMemoryAutomation` operationId).
+func (c *ClientWithResponses) UpdateMemoryAutomationWithResponse(ctx context.Context, memoryId string, params *UpdateMemoryAutomationParams, body UpdateMemoryAutomationJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMemoryAutomationResponse, error) {
+	rsp, err := c.UpdateMemoryAutomation(ctx, memoryId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMemoryAutomationResponse(rsp)
+}
+
 // ListRecordsWithResponse List Records
 //
 // Returns a wrapper object for the known response body format(s).
@@ -88321,6 +90719,149 @@ func (c *ClientWithResponses) RestoreMemoryRevisionWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseRestoreMemoryRevisionResponse(rsp)
+}
+
+// ListMemoryOrganizationsWithResponse List Memory Organizations
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-organizations (the `ListMemoryOrganizations` operationId).
+func (c *ClientWithResponses) ListMemoryOrganizationsWithResponse(ctx context.Context, params *ListMemoryOrganizationsParams, reqEditors ...RequestEditorFn) (*ListMemoryOrganizationsResponse, error) {
+	rsp, err := c.ListMemoryOrganizations(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListMemoryOrganizationsResponse(rsp)
+}
+
+// CreateMemoryOrganizationWithBodyWithResponse Create Memory Organization
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+func (c *ClientWithResponses) CreateMemoryOrganizationWithBodyWithResponse(ctx context.Context, params *CreateMemoryOrganizationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMemoryOrganizationResponse, error) {
+	rsp, err := c.CreateMemoryOrganizationWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMemoryOrganizationResponse(rsp)
+}
+
+// CreateMemoryOrganizationWithResponse Create Memory Organization
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-organizations (the `CreateMemoryOrganization` operationId).
+func (c *ClientWithResponses) CreateMemoryOrganizationWithResponse(ctx context.Context, params *CreateMemoryOrganizationParams, body CreateMemoryOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMemoryOrganizationResponse, error) {
+	rsp, err := c.CreateMemoryOrganization(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMemoryOrganizationResponse(rsp)
+}
+
+// GetMemoryOrganizationWithResponse Get Memory Organization
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id} (the `GetMemoryOrganization` operationId).
+func (c *ClientWithResponses) GetMemoryOrganizationWithResponse(ctx context.Context, organizationId string, params *GetMemoryOrganizationParams, reqEditors ...RequestEditorFn) (*GetMemoryOrganizationResponse, error) {
+	rsp, err := c.GetMemoryOrganization(ctx, organizationId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMemoryOrganizationResponse(rsp)
+}
+
+// GetOrganizationCandidateWithResponse Get Organization Candidate
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate (the `GetOrganizationCandidate` operationId).
+func (c *ClientWithResponses) GetOrganizationCandidateWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateResponse, error) {
+	rsp, err := c.GetOrganizationCandidate(ctx, organizationId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOrganizationCandidateResponse(rsp)
+}
+
+// ApplyOrganizationCandidateWithBodyWithResponse Apply Organization Candidate
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+func (c *ClientWithResponses) ApplyOrganizationCandidateWithBodyWithResponse(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApplyOrganizationCandidateResponse, error) {
+	rsp, err := c.ApplyOrganizationCandidateWithBody(ctx, organizationId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApplyOrganizationCandidateResponse(rsp)
+}
+
+// ApplyOrganizationCandidateWithResponse Apply Organization Candidate
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/apply (the `ApplyOrganizationCandidate` operationId).
+func (c *ClientWithResponses) ApplyOrganizationCandidateWithResponse(ctx context.Context, organizationId string, params *ApplyOrganizationCandidateParams, body ApplyOrganizationCandidateJSONRequestBody, reqEditors ...RequestEditorFn) (*ApplyOrganizationCandidateResponse, error) {
+	rsp, err := c.ApplyOrganizationCandidate(ctx, organizationId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApplyOrganizationCandidateResponse(rsp)
+}
+
+// GetOrganizationCandidateDiffWithResponse Get Organization Candidate Diff
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/diff (the `GetOrganizationCandidateDiff` operationId).
+func (c *ClientWithResponses) GetOrganizationCandidateDiffWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateDiffParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateDiffResponse, error) {
+	rsp, err := c.GetOrganizationCandidateDiff(ctx, organizationId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOrganizationCandidateDiffResponse(rsp)
+}
+
+// DiscardOrganizationCandidateWithResponse Discard Organization Candidate
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/memory-organizations/{organization_id}/candidate/discard (the `DiscardOrganizationCandidate` operationId).
+func (c *ClientWithResponses) DiscardOrganizationCandidateWithResponse(ctx context.Context, organizationId string, params *DiscardOrganizationCandidateParams, reqEditors ...RequestEditorFn) (*DiscardOrganizationCandidateResponse, error) {
+	rsp, err := c.DiscardOrganizationCandidate(ctx, organizationId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDiscardOrganizationCandidateResponse(rsp)
+}
+
+// GetOrganizationCandidateFileWithResponse Get Organization Candidate File
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/file (the `GetOrganizationCandidateFile` operationId).
+func (c *ClientWithResponses) GetOrganizationCandidateFileWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateFileParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateFileResponse, error) {
+	rsp, err := c.GetOrganizationCandidateFile(ctx, organizationId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOrganizationCandidateFileResponse(rsp)
+}
+
+// GetOrganizationCandidateReplacementWithResponse Get Organization Candidate Replacement
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/memory-organizations/{organization_id}/candidate/replacement (the `GetOrganizationCandidateReplacement` operationId).
+func (c *ClientWithResponses) GetOrganizationCandidateReplacementWithResponse(ctx context.Context, organizationId string, params *GetOrganizationCandidateReplacementParams, reqEditors ...RequestEditorFn) (*GetOrganizationCandidateReplacementResponse, error) {
+	rsp, err := c.GetOrganizationCandidateReplacement(ctx, organizationId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOrganizationCandidateReplacementResponse(rsp)
 }
 
 // ListMemoryProvidersWithResponse List memory providers
@@ -101354,6 +103895,132 @@ func ParseReplaceFileResponse(rsp *http.Response) (*ReplaceFileResponse, error) 
 	return response, nil
 }
 
+// ParseGetMemoryAutomationResponse parses an HTTP response from a GetMemoryAutomationWithResponse call
+func ParseGetMemoryAutomationResponse(rsp *http.Response) (*GetMemoryAutomationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMemoryAutomationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemoryAutomation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetMemoryAutomationResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetMemoryAutomationResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateMemoryAutomationResponse parses an HTTP response from a UpdateMemoryAutomationWithResponse call
+func ParseUpdateMemoryAutomationResponse(rsp *http.Response) (*UpdateMemoryAutomationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateMemoryAutomationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemoryAutomation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateMemoryAutomationResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateMemoryAutomationResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListRecordsResponse parses an HTTP response from a ListRecordsWithResponse call
 func ParseListRecordsResponse(rsp *http.Response) (*ListRecordsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -101904,6 +104571,573 @@ func ParseRestoreMemoryRevisionResponse(rsp *http.Response) (*RestoreMemoryRevis
 		response.Headers400 = &headers
 	case true:
 		var headers RestoreMemoryRevisionResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListMemoryOrganizationsResponse parses an HTTP response from a ListMemoryOrganizationsWithResponse call
+func ParseListMemoryOrganizationsResponse(rsp *http.Response) (*ListMemoryOrganizationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListMemoryOrganizationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemoryOrganizationPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListMemoryOrganizationsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListMemoryOrganizationsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateMemoryOrganizationResponse parses an HTTP response from a CreateMemoryOrganizationWithResponse call
+func ParseCreateMemoryOrganizationResponse(rsp *http.Response) (*CreateMemoryOrganizationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateMemoryOrganizationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest MemoryOrganization
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateMemoryOrganizationResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateMemoryOrganizationResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetMemoryOrganizationResponse parses an HTTP response from a GetMemoryOrganizationWithResponse call
+func ParseGetMemoryOrganizationResponse(rsp *http.Response) (*GetMemoryOrganizationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMemoryOrganizationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MemoryOrganization
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetMemoryOrganizationResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetMemoryOrganizationResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetOrganizationCandidateResponse parses an HTTP response from a GetOrganizationCandidateWithResponse call
+func ParseGetOrganizationCandidateResponse(rsp *http.Response) (*GetOrganizationCandidateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOrganizationCandidateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OrganizationCandidate
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetOrganizationCandidateResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetOrganizationCandidateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseApplyOrganizationCandidateResponse parses an HTTP response from a ApplyOrganizationCandidateWithResponse call
+func ParseApplyOrganizationCandidateResponse(rsp *http.Response) (*ApplyOrganizationCandidateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ApplyOrganizationCandidateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OrganizationCandidate
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ApplyOrganizationCandidateResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ApplyOrganizationCandidateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetOrganizationCandidateDiffResponse parses an HTTP response from a GetOrganizationCandidateDiffWithResponse call
+func ParseGetOrganizationCandidateDiffResponse(rsp *http.Response) (*GetOrganizationCandidateDiffResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOrganizationCandidateDiffResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CandidateDiff
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetOrganizationCandidateDiffResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetOrganizationCandidateDiffResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDiscardOrganizationCandidateResponse parses an HTTP response from a DiscardOrganizationCandidateWithResponse call
+func ParseDiscardOrganizationCandidateResponse(rsp *http.Response) (*DiscardOrganizationCandidateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DiscardOrganizationCandidateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OrganizationCandidate
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DiscardOrganizationCandidateResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DiscardOrganizationCandidateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetOrganizationCandidateFileResponse parses an HTTP response from a GetOrganizationCandidateFileWithResponse call
+func ParseGetOrganizationCandidateFileResponse(rsp *http.Response) (*GetOrganizationCandidateFileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOrganizationCandidateFileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CandidateFile
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetOrganizationCandidateFileResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetOrganizationCandidateFileResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetOrganizationCandidateReplacementResponse parses an HTTP response from a GetOrganizationCandidateReplacementWithResponse call
+func ParseGetOrganizationCandidateReplacementResponse(rsp *http.Response) (*GetOrganizationCandidateReplacementResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOrganizationCandidateReplacementResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CandidateReplacement
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetOrganizationCandidateReplacementResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetOrganizationCandidateReplacementResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
