@@ -992,6 +992,24 @@ func (e ControlStatus) Valid() bool {
 	}
 }
 
+// Defines values for CreationProgressProfile.
+const (
+	Desktop  CreationProgressProfile = "desktop"
+	Headless CreationProgressProfile = "headless"
+)
+
+// Valid indicates whether the value is a known member of the CreationProgressProfile enum.
+func (e CreationProgressProfile) Valid() bool {
+	switch e {
+	case Desktop:
+		return true
+	case Headless:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreationProgressStage.
 const (
 	CreationProgressStageBuilding  CreationProgressStage = "building"
@@ -6854,10 +6872,14 @@ type CreatedSubscription struct {
 type CreationProgress struct {
 	EndedAt    nullable.Nullable[time.Time] `json:"ended_at,omitempty"`
 	ObservedAt time.Time                    `json:"observed_at"`
+	Profile    CreationProgressProfile      `json:"profile"`
 	Retryable  *bool                        `json:"retryable,omitempty"`
 	Stage      CreationProgressStage        `json:"stage"`
 	StartedAt  time.Time                    `json:"started_at"`
 }
+
+// CreationProgressProfile defines model for CreationProgress.Profile.
+type CreationProgressProfile string
 
 // CreationProgressStage defines model for CreationProgress.Stage.
 type CreationProgressStage string
