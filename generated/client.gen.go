@@ -1354,53 +1354,253 @@ func (e EntryViewKind) Valid() bool {
 
 // Defines values for EnvironmentAction.
 const (
-	EnvironmentComputerClick          EnvironmentAction = "environment.computer.click"
-	EnvironmentComputerDescribe       EnvironmentAction = "environment.computer.describe"
-	EnvironmentComputerDrag           EnvironmentAction = "environment.computer.drag"
-	EnvironmentComputerMove           EnvironmentAction = "environment.computer.move"
-	EnvironmentComputerObserve        EnvironmentAction = "environment.computer.observe"
-	EnvironmentComputerPressKeys      EnvironmentAction = "environment.computer.press_keys"
-	EnvironmentComputerReadClipboard  EnvironmentAction = "environment.computer.read_clipboard"
-	EnvironmentComputerScroll         EnvironmentAction = "environment.computer.scroll"
-	EnvironmentComputerTypeText       EnvironmentAction = "environment.computer.type_text"
-	EnvironmentComputerWriteClipboard EnvironmentAction = "environment.computer.write_clipboard"
-	EnvironmentComputerZoom           EnvironmentAction = "environment.computer.zoom"
-	EnvironmentFileCopyDestination    EnvironmentAction = "environment.file.copy_destination"
-	EnvironmentFileCopySource         EnvironmentAction = "environment.file.copy_source"
-	EnvironmentFileList               EnvironmentAction = "environment.file.list"
-	EnvironmentFileMkdir              EnvironmentAction = "environment.file.mkdir"
-	EnvironmentFileMove               EnvironmentAction = "environment.file.move"
-	EnvironmentFilePatchText          EnvironmentAction = "environment.file.patch_text"
-	EnvironmentFileQuery              EnvironmentAction = "environment.file.query"
-	EnvironmentFileReadBytes          EnvironmentAction = "environment.file.read_bytes"
-	EnvironmentFileReadText           EnvironmentAction = "environment.file.read_text"
-	EnvironmentFileRemove             EnvironmentAction = "environment.file.remove"
-	EnvironmentFileSearchText         EnvironmentAction = "environment.file.search_text"
-	EnvironmentFileStat               EnvironmentAction = "environment.file.stat"
-	EnvironmentFileWriteBytes         EnvironmentAction = "environment.file.write_bytes"
-	EnvironmentFileWriteText          EnvironmentAction = "environment.file.write_text"
-	EnvironmentOutputRead             EnvironmentAction = "environment.output.read"
-	EnvironmentOutputRelease          EnvironmentAction = "environment.output.release"
-	EnvironmentPortInspect            EnvironmentAction = "environment.port.inspect"
-	EnvironmentPortWait               EnvironmentAction = "environment.port.wait"
-	EnvironmentProcessCloseStdin      EnvironmentAction = "environment.process.close_stdin"
-	EnvironmentProcessInspect         EnvironmentAction = "environment.process.inspect"
-	EnvironmentProcessKill            EnvironmentAction = "environment.process.kill"
-	EnvironmentProcessList            EnvironmentAction = "environment.process.list"
-	EnvironmentProcessReadOutput      EnvironmentAction = "environment.process.read_output"
-	EnvironmentProcessRelease         EnvironmentAction = "environment.process.release"
-	EnvironmentProcessSignal          EnvironmentAction = "environment.process.signal"
-	EnvironmentProcessStart           EnvironmentAction = "environment.process.start"
-	EnvironmentProcessWait            EnvironmentAction = "environment.process.wait"
-	EnvironmentProcessWriteStdin      EnvironmentAction = "environment.process.write_stdin"
-	EnvironmentShellExec              EnvironmentAction = "environment.shell.exec"
-	EnvironmentStateExport            EnvironmentAction = "environment.state.export"
-	EnvironmentStateRestore           EnvironmentAction = "environment.state.restore"
+	EnvironmentComputerA11yDescribe                 EnvironmentAction = "environment.computer.a11y_describe"
+	EnvironmentComputerA11yFind                     EnvironmentAction = "environment.computer.a11y_find"
+	EnvironmentComputerA11yInspect                  EnvironmentAction = "environment.computer.a11y_inspect"
+	EnvironmentComputerA11yRange                    EnvironmentAction = "environment.computer.a11y_range"
+	EnvironmentComputerA11yRangeRead                EnvironmentAction = "environment.computer.a11y_range_read"
+	EnvironmentComputerA11yRead                     EnvironmentAction = "environment.computer.a11y_read"
+	EnvironmentComputerA11yRoots                    EnvironmentAction = "environment.computer.a11y_roots"
+	EnvironmentComputerAtspiCaretSet                EnvironmentAction = "environment.computer.atspi_caret_set"
+	EnvironmentComputerAtspiComponentExtentsSet     EnvironmentAction = "environment.computer.atspi_component_extents_set"
+	EnvironmentComputerAtspiComponentPositionSet    EnvironmentAction = "environment.computer.atspi_component_position_set"
+	EnvironmentComputerAtspiComponentSizeSet        EnvironmentAction = "environment.computer.atspi_component_size_set"
+	EnvironmentComputerAtspiDoAction                EnvironmentAction = "environment.computer.atspi_do_action"
+	EnvironmentComputerAtspiDocumentSelectionsSet   EnvironmentAction = "environment.computer.atspi_document_selections_set"
+	EnvironmentComputerAtspiFocus                   EnvironmentAction = "environment.computer.atspi_focus"
+	EnvironmentComputerAtspiRangeScrollTo           EnvironmentAction = "environment.computer.atspi_range_scroll_to"
+	EnvironmentComputerAtspiRangeScrollToPoint      EnvironmentAction = "environment.computer.atspi_range_scroll_to_point"
+	EnvironmentComputerAtspiScrollTo                EnvironmentAction = "environment.computer.atspi_scroll_to"
+	EnvironmentComputerAtspiScrollToPoint           EnvironmentAction = "environment.computer.atspi_scroll_to_point"
+	EnvironmentComputerAtspiSelectionAddChild       EnvironmentAction = "environment.computer.atspi_selection_add_child"
+	EnvironmentComputerAtspiSelectionAll            EnvironmentAction = "environment.computer.atspi_selection_all"
+	EnvironmentComputerAtspiSelectionClear          EnvironmentAction = "environment.computer.atspi_selection_clear"
+	EnvironmentComputerAtspiSelectionRemoveChild    EnvironmentAction = "environment.computer.atspi_selection_remove_child"
+	EnvironmentComputerAtspiSelectionRemoveSelected EnvironmentAction = "environment.computer.atspi_selection_remove_selected"
+	EnvironmentComputerAtspiTableColumnSelect       EnvironmentAction = "environment.computer.atspi_table_column_select"
+	EnvironmentComputerAtspiTableColumnUnselect     EnvironmentAction = "environment.computer.atspi_table_column_unselect"
+	EnvironmentComputerAtspiTableRowSelect          EnvironmentAction = "environment.computer.atspi_table_row_select"
+	EnvironmentComputerAtspiTableRowUnselect        EnvironmentAction = "environment.computer.atspi_table_row_unselect"
+	EnvironmentComputerAtspiTextContentsSet         EnvironmentAction = "environment.computer.atspi_text_contents_set"
+	EnvironmentComputerAtspiTextCopy                EnvironmentAction = "environment.computer.atspi_text_copy"
+	EnvironmentComputerAtspiTextCut                 EnvironmentAction = "environment.computer.atspi_text_cut"
+	EnvironmentComputerAtspiTextDelete              EnvironmentAction = "environment.computer.atspi_text_delete"
+	EnvironmentComputerAtspiTextInsert              EnvironmentAction = "environment.computer.atspi_text_insert"
+	EnvironmentComputerAtspiTextPaste               EnvironmentAction = "environment.computer.atspi_text_paste"
+	EnvironmentComputerAtspiTextSelectionAdd        EnvironmentAction = "environment.computer.atspi_text_selection_add"
+	EnvironmentComputerAtspiTextSelectionRemove     EnvironmentAction = "environment.computer.atspi_text_selection_remove"
+	EnvironmentComputerAtspiTextSelectionSet        EnvironmentAction = "environment.computer.atspi_text_selection_set"
+	EnvironmentComputerAtspiValueSet                EnvironmentAction = "environment.computer.atspi_value_set"
+	EnvironmentComputerAxDisclosingSet              EnvironmentAction = "environment.computer.ax_disclosing_set"
+	EnvironmentComputerAxExpandedSet                EnvironmentAction = "environment.computer.ax_expanded_set"
+	EnvironmentComputerAxFocus                      EnvironmentAction = "environment.computer.ax_focus"
+	EnvironmentComputerAxFocusedWindowSet           EnvironmentAction = "environment.computer.ax_focused_window_set"
+	EnvironmentComputerAxMainSet                    EnvironmentAction = "environment.computer.ax_main_set"
+	EnvironmentComputerAxMinimizedSet               EnvironmentAction = "environment.computer.ax_minimized_set"
+	EnvironmentComputerAxPerformAction              EnvironmentAction = "environment.computer.ax_perform_action"
+	EnvironmentComputerAxPositionSet                EnvironmentAction = "environment.computer.ax_position_set"
+	EnvironmentComputerAxSelectedChildrenSet        EnvironmentAction = "environment.computer.ax_selected_children_set"
+	EnvironmentComputerAxSelectedColumnsSet         EnvironmentAction = "environment.computer.ax_selected_columns_set"
+	EnvironmentComputerAxSelectedRowsSet            EnvironmentAction = "environment.computer.ax_selected_rows_set"
+	EnvironmentComputerAxSelectedSet                EnvironmentAction = "environment.computer.ax_selected_set"
+	EnvironmentComputerAxSelectedTextSet            EnvironmentAction = "environment.computer.ax_selected_text_set"
+	EnvironmentComputerAxSizeSet                    EnvironmentAction = "environment.computer.ax_size_set"
+	EnvironmentComputerAxTextRangeSelect            EnvironmentAction = "environment.computer.ax_text_range_select"
+	EnvironmentComputerAxTextRangesSelect           EnvironmentAction = "environment.computer.ax_text_ranges_select"
+	EnvironmentComputerAxValueNumberSet             EnvironmentAction = "environment.computer.ax_value_number_set"
+	EnvironmentComputerAxValueStringSet             EnvironmentAction = "environment.computer.ax_value_string_set"
+	EnvironmentComputerAxVisibleTextRangeSet        EnvironmentAction = "environment.computer.ax_visible_text_range_set"
+	EnvironmentComputerClick                        EnvironmentAction = "environment.computer.click"
+	EnvironmentComputerDescribe                     EnvironmentAction = "environment.computer.describe"
+	EnvironmentComputerDrag                         EnvironmentAction = "environment.computer.drag"
+	EnvironmentComputerMove                         EnvironmentAction = "environment.computer.move"
+	EnvironmentComputerObserve                      EnvironmentAction = "environment.computer.observe"
+	EnvironmentComputerPressKeys                    EnvironmentAction = "environment.computer.press_keys"
+	EnvironmentComputerReadClipboard                EnvironmentAction = "environment.computer.read_clipboard"
+	EnvironmentComputerScroll                       EnvironmentAction = "environment.computer.scroll"
+	EnvironmentComputerTypeText                     EnvironmentAction = "environment.computer.type_text"
+	EnvironmentComputerUiaCollapse                  EnvironmentAction = "environment.computer.uia_collapse"
+	EnvironmentComputerUiaDockSet                   EnvironmentAction = "environment.computer.uia_dock_set"
+	EnvironmentComputerUiaExpand                    EnvironmentAction = "environment.computer.uia_expand"
+	EnvironmentComputerUiaFocus                     EnvironmentAction = "environment.computer.uia_focus"
+	EnvironmentComputerUiaInvoke                    EnvironmentAction = "environment.computer.uia_invoke"
+	EnvironmentComputerUiaLegacyDefaultAction       EnvironmentAction = "environment.computer.uia_legacy_default_action"
+	EnvironmentComputerUiaLegacySelect              EnvironmentAction = "environment.computer.uia_legacy_select"
+	EnvironmentComputerUiaLegacyValueSet            EnvironmentAction = "environment.computer.uia_legacy_value_set"
+	EnvironmentComputerUiaRangeAddSelection         EnvironmentAction = "environment.computer.uia_range_add_selection"
+	EnvironmentComputerUiaRangeRemoveSelection      EnvironmentAction = "environment.computer.uia_range_remove_selection"
+	EnvironmentComputerUiaRangeScrollIntoView       EnvironmentAction = "environment.computer.uia_range_scroll_into_view"
+	EnvironmentComputerUiaRangeSelect               EnvironmentAction = "environment.computer.uia_range_select"
+	EnvironmentComputerUiaRangeShowContextMenu      EnvironmentAction = "environment.computer.uia_range_show_context_menu"
+	EnvironmentComputerUiaRangeValueSet             EnvironmentAction = "environment.computer.uia_range_value_set"
+	EnvironmentComputerUiaRealize                   EnvironmentAction = "environment.computer.uia_realize"
+	EnvironmentComputerUiaScrollAmount              EnvironmentAction = "environment.computer.uia_scroll_amount"
+	EnvironmentComputerUiaScrollIntoView            EnvironmentAction = "environment.computer.uia_scroll_into_view"
+	EnvironmentComputerUiaScrollPercent             EnvironmentAction = "environment.computer.uia_scroll_percent"
+	EnvironmentComputerUiaSelectionAdd              EnvironmentAction = "environment.computer.uia_selection_add"
+	EnvironmentComputerUiaSelectionRemove           EnvironmentAction = "environment.computer.uia_selection_remove"
+	EnvironmentComputerUiaSelectionSelect           EnvironmentAction = "environment.computer.uia_selection_select"
+	EnvironmentComputerUiaShowContextMenu           EnvironmentAction = "environment.computer.uia_show_context_menu"
+	EnvironmentComputerUiaToggle                    EnvironmentAction = "environment.computer.uia_toggle"
+	EnvironmentComputerUiaTransformMove             EnvironmentAction = "environment.computer.uia_transform_move"
+	EnvironmentComputerUiaTransformResize           EnvironmentAction = "environment.computer.uia_transform_resize"
+	EnvironmentComputerUiaTransformRotate           EnvironmentAction = "environment.computer.uia_transform_rotate"
+	EnvironmentComputerUiaTransformZoom             EnvironmentAction = "environment.computer.uia_transform_zoom"
+	EnvironmentComputerUiaTransformZoomUnit         EnvironmentAction = "environment.computer.uia_transform_zoom_unit"
+	EnvironmentComputerUiaValueSet                  EnvironmentAction = "environment.computer.uia_value_set"
+	EnvironmentComputerUiaViewSet                   EnvironmentAction = "environment.computer.uia_view_set"
+	EnvironmentComputerUiaWindowClose               EnvironmentAction = "environment.computer.uia_window_close"
+	EnvironmentComputerUiaWindowStateSet            EnvironmentAction = "environment.computer.uia_window_state_set"
+	EnvironmentComputerWriteClipboard               EnvironmentAction = "environment.computer.write_clipboard"
+	EnvironmentComputerZoom                         EnvironmentAction = "environment.computer.zoom"
+	EnvironmentFileCopyDestination                  EnvironmentAction = "environment.file.copy_destination"
+	EnvironmentFileCopySource                       EnvironmentAction = "environment.file.copy_source"
+	EnvironmentFileList                             EnvironmentAction = "environment.file.list"
+	EnvironmentFileMkdir                            EnvironmentAction = "environment.file.mkdir"
+	EnvironmentFileMove                             EnvironmentAction = "environment.file.move"
+	EnvironmentFilePatchText                        EnvironmentAction = "environment.file.patch_text"
+	EnvironmentFileQuery                            EnvironmentAction = "environment.file.query"
+	EnvironmentFileReadBytes                        EnvironmentAction = "environment.file.read_bytes"
+	EnvironmentFileReadText                         EnvironmentAction = "environment.file.read_text"
+	EnvironmentFileRemove                           EnvironmentAction = "environment.file.remove"
+	EnvironmentFileSearchText                       EnvironmentAction = "environment.file.search_text"
+	EnvironmentFileStat                             EnvironmentAction = "environment.file.stat"
+	EnvironmentFileWriteBytes                       EnvironmentAction = "environment.file.write_bytes"
+	EnvironmentFileWriteText                        EnvironmentAction = "environment.file.write_text"
+	EnvironmentOutputRead                           EnvironmentAction = "environment.output.read"
+	EnvironmentOutputRelease                        EnvironmentAction = "environment.output.release"
+	EnvironmentPortInspect                          EnvironmentAction = "environment.port.inspect"
+	EnvironmentPortWait                             EnvironmentAction = "environment.port.wait"
+	EnvironmentProcessCloseStdin                    EnvironmentAction = "environment.process.close_stdin"
+	EnvironmentProcessInspect                       EnvironmentAction = "environment.process.inspect"
+	EnvironmentProcessKill                          EnvironmentAction = "environment.process.kill"
+	EnvironmentProcessList                          EnvironmentAction = "environment.process.list"
+	EnvironmentProcessReadOutput                    EnvironmentAction = "environment.process.read_output"
+	EnvironmentProcessRelease                       EnvironmentAction = "environment.process.release"
+	EnvironmentProcessSignal                        EnvironmentAction = "environment.process.signal"
+	EnvironmentProcessStart                         EnvironmentAction = "environment.process.start"
+	EnvironmentProcessWait                          EnvironmentAction = "environment.process.wait"
+	EnvironmentProcessWriteStdin                    EnvironmentAction = "environment.process.write_stdin"
+	EnvironmentShellExec                            EnvironmentAction = "environment.shell.exec"
+	EnvironmentStateExport                          EnvironmentAction = "environment.state.export"
+	EnvironmentStateRestore                         EnvironmentAction = "environment.state.restore"
 )
 
 // Valid indicates whether the value is a known member of the EnvironmentAction enum.
 func (e EnvironmentAction) Valid() bool {
 	switch e {
+	case EnvironmentComputerA11yDescribe:
+		return true
+	case EnvironmentComputerA11yFind:
+		return true
+	case EnvironmentComputerA11yInspect:
+		return true
+	case EnvironmentComputerA11yRange:
+		return true
+	case EnvironmentComputerA11yRangeRead:
+		return true
+	case EnvironmentComputerA11yRead:
+		return true
+	case EnvironmentComputerA11yRoots:
+		return true
+	case EnvironmentComputerAtspiCaretSet:
+		return true
+	case EnvironmentComputerAtspiComponentExtentsSet:
+		return true
+	case EnvironmentComputerAtspiComponentPositionSet:
+		return true
+	case EnvironmentComputerAtspiComponentSizeSet:
+		return true
+	case EnvironmentComputerAtspiDoAction:
+		return true
+	case EnvironmentComputerAtspiDocumentSelectionsSet:
+		return true
+	case EnvironmentComputerAtspiFocus:
+		return true
+	case EnvironmentComputerAtspiRangeScrollTo:
+		return true
+	case EnvironmentComputerAtspiRangeScrollToPoint:
+		return true
+	case EnvironmentComputerAtspiScrollTo:
+		return true
+	case EnvironmentComputerAtspiScrollToPoint:
+		return true
+	case EnvironmentComputerAtspiSelectionAddChild:
+		return true
+	case EnvironmentComputerAtspiSelectionAll:
+		return true
+	case EnvironmentComputerAtspiSelectionClear:
+		return true
+	case EnvironmentComputerAtspiSelectionRemoveChild:
+		return true
+	case EnvironmentComputerAtspiSelectionRemoveSelected:
+		return true
+	case EnvironmentComputerAtspiTableColumnSelect:
+		return true
+	case EnvironmentComputerAtspiTableColumnUnselect:
+		return true
+	case EnvironmentComputerAtspiTableRowSelect:
+		return true
+	case EnvironmentComputerAtspiTableRowUnselect:
+		return true
+	case EnvironmentComputerAtspiTextContentsSet:
+		return true
+	case EnvironmentComputerAtspiTextCopy:
+		return true
+	case EnvironmentComputerAtspiTextCut:
+		return true
+	case EnvironmentComputerAtspiTextDelete:
+		return true
+	case EnvironmentComputerAtspiTextInsert:
+		return true
+	case EnvironmentComputerAtspiTextPaste:
+		return true
+	case EnvironmentComputerAtspiTextSelectionAdd:
+		return true
+	case EnvironmentComputerAtspiTextSelectionRemove:
+		return true
+	case EnvironmentComputerAtspiTextSelectionSet:
+		return true
+	case EnvironmentComputerAtspiValueSet:
+		return true
+	case EnvironmentComputerAxDisclosingSet:
+		return true
+	case EnvironmentComputerAxExpandedSet:
+		return true
+	case EnvironmentComputerAxFocus:
+		return true
+	case EnvironmentComputerAxFocusedWindowSet:
+		return true
+	case EnvironmentComputerAxMainSet:
+		return true
+	case EnvironmentComputerAxMinimizedSet:
+		return true
+	case EnvironmentComputerAxPerformAction:
+		return true
+	case EnvironmentComputerAxPositionSet:
+		return true
+	case EnvironmentComputerAxSelectedChildrenSet:
+		return true
+	case EnvironmentComputerAxSelectedColumnsSet:
+		return true
+	case EnvironmentComputerAxSelectedRowsSet:
+		return true
+	case EnvironmentComputerAxSelectedSet:
+		return true
+	case EnvironmentComputerAxSelectedTextSet:
+		return true
+	case EnvironmentComputerAxSizeSet:
+		return true
+	case EnvironmentComputerAxTextRangeSelect:
+		return true
+	case EnvironmentComputerAxTextRangesSelect:
+		return true
+	case EnvironmentComputerAxValueNumberSet:
+		return true
+	case EnvironmentComputerAxValueStringSet:
+		return true
+	case EnvironmentComputerAxVisibleTextRangeSet:
+		return true
 	case EnvironmentComputerClick:
 		return true
 	case EnvironmentComputerDescribe:
@@ -1418,6 +1618,70 @@ func (e EnvironmentAction) Valid() bool {
 	case EnvironmentComputerScroll:
 		return true
 	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentComputerUiaCollapse:
+		return true
+	case EnvironmentComputerUiaDockSet:
+		return true
+	case EnvironmentComputerUiaExpand:
+		return true
+	case EnvironmentComputerUiaFocus:
+		return true
+	case EnvironmentComputerUiaInvoke:
+		return true
+	case EnvironmentComputerUiaLegacyDefaultAction:
+		return true
+	case EnvironmentComputerUiaLegacySelect:
+		return true
+	case EnvironmentComputerUiaLegacyValueSet:
+		return true
+	case EnvironmentComputerUiaRangeAddSelection:
+		return true
+	case EnvironmentComputerUiaRangeRemoveSelection:
+		return true
+	case EnvironmentComputerUiaRangeScrollIntoView:
+		return true
+	case EnvironmentComputerUiaRangeSelect:
+		return true
+	case EnvironmentComputerUiaRangeShowContextMenu:
+		return true
+	case EnvironmentComputerUiaRangeValueSet:
+		return true
+	case EnvironmentComputerUiaRealize:
+		return true
+	case EnvironmentComputerUiaScrollAmount:
+		return true
+	case EnvironmentComputerUiaScrollIntoView:
+		return true
+	case EnvironmentComputerUiaScrollPercent:
+		return true
+	case EnvironmentComputerUiaSelectionAdd:
+		return true
+	case EnvironmentComputerUiaSelectionRemove:
+		return true
+	case EnvironmentComputerUiaSelectionSelect:
+		return true
+	case EnvironmentComputerUiaShowContextMenu:
+		return true
+	case EnvironmentComputerUiaToggle:
+		return true
+	case EnvironmentComputerUiaTransformMove:
+		return true
+	case EnvironmentComputerUiaTransformResize:
+		return true
+	case EnvironmentComputerUiaTransformRotate:
+		return true
+	case EnvironmentComputerUiaTransformZoom:
+		return true
+	case EnvironmentComputerUiaTransformZoomUnit:
+		return true
+	case EnvironmentComputerUiaValueSet:
+		return true
+	case EnvironmentComputerUiaViewSet:
+		return true
+	case EnvironmentComputerUiaWindowClose:
+		return true
+	case EnvironmentComputerUiaWindowStateSet:
 		return true
 	case EnvironmentComputerWriteClipboard:
 		return true
