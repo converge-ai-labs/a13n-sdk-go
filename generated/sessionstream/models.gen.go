@@ -819,21 +819,6 @@ func (e EnvironmentAction) Valid() bool {
 	}
 }
 
-// Defines values for EnvironmentCredentialSourceKind.
-const (
-	Environment EnvironmentCredentialSourceKind = "environment"
-)
-
-// Valid indicates whether the value is a known member of the EnvironmentCredentialSourceKind enum.
-func (e EnvironmentCredentialSourceKind) Valid() bool {
-	switch e {
-	case Environment:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for ExistingRunEnvironmentMode.
 const (
 	Existing ExistingRunEnvironmentMode = "existing"
@@ -1966,6 +1951,12 @@ type DynamicSubagents_DefaultThinking struct {
 	union json.RawMessage
 }
 
+// EgressConfiguration defines model for EgressConfiguration.
+type EgressConfiguration struct {
+	Destinations EgressDestinations `json:"destinations"`
+	Secrets      *[]SecretReference `json:"secrets,omitempty"`
+}
+
 // EgressDestinations defines model for EgressDestinations.
 type EgressDestinations struct {
 	union json.RawMessage
@@ -2004,30 +1995,8 @@ type EntryView struct {
 // EntryViewKind defines model for EntryView.Kind.
 type EntryViewKind string
 
-// EnvdEgressConfiguration defines model for EnvdEgressConfiguration.
-type EnvdEgressConfiguration struct {
-	Destinations EgressDestinations     `json:"destinations"`
-	Secrets      *[]EnvdSecretReference `json:"secrets,omitempty"`
-}
-
-// EnvdSecretReference defines model for EnvdSecretReference.
-type EnvdSecretReference struct {
-	Env         string                      `json:"env"`
-	InjectHosts []string                    `json:"inject_hosts"`
-	Source      EnvironmentCredentialSource `json:"source"`
-}
-
 // EnvironmentAction Exact authorization values in the locked first-party catalog.
 type EnvironmentAction string
-
-// EnvironmentCredentialSource defines model for EnvironmentCredentialSource.
-type EnvironmentCredentialSource struct {
-	Kind EnvironmentCredentialSourceKind `json:"kind"`
-	Name string                          `json:"name"`
-}
-
-// EnvironmentCredentialSourceKind defines model for EnvironmentCredentialSource.Kind.
-type EnvironmentCredentialSourceKind string
 
 // EnvironmentMount defines model for EnvironmentMount.
 type EnvironmentMount struct {
@@ -2129,6 +2098,9 @@ type HistoricalDesktopPending struct {
 	Calls            []PendingCall `json:"calls"`
 	DesktopControlId string        `json:"desktop_control_id"`
 }
+
+// Hosts defines model for Hosts.
+type Hosts = []string
 
 // InitialRun defines model for InitialRun.
 type InitialRun struct {
@@ -2552,15 +2524,22 @@ type ScheduleState string
 // ScheduleTrigger defines model for ScheduleTrigger.
 type ScheduleTrigger string
 
+// SecretReference defines model for SecretReference.
+type SecretReference struct {
+	CredentialId string `json:"credential_id"`
+	Env          string `json:"env"`
+	InjectHosts  Hosts  `json:"inject_hosts"`
+}
+
 // SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
 type SessionConfiguration struct {
-	Commands         nullable.Nullable[bool]                    `json:"commands,omitempty"`
-	Egress           nullable.Nullable[EnvdEgressConfiguration] `json:"egress,omitempty"`
-	EgressMode       nullable.Nullable[EgressMode]              `json:"egress_mode,omitempty"`
-	Isolation        nullable.Nullable[SessionIsolation]        `json:"isolation,omitempty"`
-	Lifecycle        nullable.Nullable[SessionLifecyclePolicy]  `json:"lifecycle,omitempty"`
-	Sandbox          nullable.Nullable[SandboxPolicy]           `json:"sandbox,omitempty"`
-	WorkingDirectory nullable.Nullable[string]                  `json:"working_directory,omitempty"`
+	Commands         nullable.Nullable[bool]                   `json:"commands,omitempty"`
+	Egress           nullable.Nullable[EgressConfiguration]    `json:"egress,omitempty"`
+	EgressMode       nullable.Nullable[EgressMode]             `json:"egress_mode,omitempty"`
+	Isolation        nullable.Nullable[SessionIsolation]       `json:"isolation,omitempty"`
+	Lifecycle        nullable.Nullable[SessionLifecyclePolicy] `json:"lifecycle,omitempty"`
+	Sandbox          nullable.Nullable[SandboxPolicy]          `json:"sandbox,omitempty"`
+	WorkingDirectory nullable.Nullable[string]                 `json:"working_directory,omitempty"`
 }
 
 // SessionIsolation defines model for SessionIsolation.

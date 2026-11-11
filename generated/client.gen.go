@@ -107,6 +107,36 @@ func (e AnyChangeTriggerType) Valid() bool {
 	}
 }
 
+// Defines values for ApplicationStatus.
+const (
+	ApplicationStatusApplied   ApplicationStatus = "applied"
+	ApplicationStatusOnCreate  ApplicationStatus = "on_create"
+	ApplicationStatusOnNextUse ApplicationStatus = "on_next_use"
+	ApplicationStatusPending   ApplicationStatus = "pending"
+	ApplicationStatusRetry     ApplicationStatus = "retry"
+	ApplicationStatusUnknown   ApplicationStatus = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the ApplicationStatus enum.
+func (e ApplicationStatus) Valid() bool {
+	switch e {
+	case ApplicationStatusApplied:
+		return true
+	case ApplicationStatusOnCreate:
+		return true
+	case ApplicationStatusOnNextUse:
+		return true
+	case ApplicationStatusPending:
+		return true
+	case ApplicationStatusRetry:
+		return true
+	case ApplicationStatusUnknown:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ApproveAction.
 const (
 	ApproveActionApprove ApproveAction = "approve"
@@ -1040,6 +1070,24 @@ func (e CreationProgressStage) Valid() bool {
 	}
 }
 
+// Defines values for CredentialState.
+const (
+	CredentialStateActive  CredentialState = "active"
+	CredentialStateRevoked CredentialState = "revoked"
+)
+
+// Valid indicates whether the value is a known member of the CredentialState enum.
+func (e CredentialState) Valid() bool {
+	switch e {
+	case CredentialStateActive:
+		return true
+	case CredentialStateRevoked:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CredentialMode.
 const (
 	CredentialModeForbidden CredentialMode = "forbidden"
@@ -1766,21 +1814,6 @@ func (e EnvironmentAction) Valid() bool {
 	case EnvironmentStateExport:
 		return true
 	case EnvironmentStateRestore:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for EnvironmentCredentialSourceKind.
-const (
-	EnvironmentCredentialSourceKindEnvironment EnvironmentCredentialSourceKind = "environment"
-)
-
-// Valid indicates whether the value is a known member of the EnvironmentCredentialSourceKind enum.
-func (e EnvironmentCredentialSourceKind) Valid() bool {
-	switch e {
-	case EnvironmentCredentialSourceKindEnvironment:
 		return true
 	default:
 		return false
@@ -3818,6 +3851,24 @@ func (e ServiceAccountUpdateStatus) Valid() bool {
 	}
 }
 
+// Defines values for SessionCredentialCredentialState.
+const (
+	SessionCredentialCredentialStateActive  SessionCredentialCredentialState = "active"
+	SessionCredentialCredentialStateRevoked SessionCredentialCredentialState = "revoked"
+)
+
+// Valid indicates whether the value is a known member of the SessionCredentialCredentialState enum.
+func (e SessionCredentialCredentialState) Valid() bool {
+	switch e {
+	case SessionCredentialCredentialStateActive:
+		return true
+	case SessionCredentialCredentialStateRevoked:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SessionViewPurpose.
 const (
 	SessionViewPurposeConversation       SessionViewPurpose = "conversation"
@@ -5694,15 +5745,16 @@ type Agent struct {
 // AgentConfigInput defines model for AgentConfig-Input.
 type AgentConfigInput struct {
 	// BackgroundCompaction Host-selected overlap policy, separate from the common compaction trigger.
-	BackgroundCompaction         *BackgroundCompactionPolicy          `json:"background_compaction,omitempty"`
-	BuiltinSkills                *[]BuiltinSkillName                  `json:"builtin_skills,omitempty"`
-	ClientTools                  *[]ClientToolDefinition              `json:"client_tools,omitempty"`
-	ConnectionTools              *[]ConnectionSelection               `json:"connection_tools,omitempty"`
-	DefaultEnvironmentId         nullable.Nullable[string]            `json:"default_environment_id,omitempty"`
-	DefaultEnvironmentTemplateId nullable.Nullable[string]            `json:"default_environment_template_id,omitempty"`
-	Execution                    nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
-	Instructions                 *string                              `json:"instructions,omitempty"`
-	LazyEnvironment              *bool                                `json:"lazy_environment,omitempty"`
+	BackgroundCompaction         *BackgroundCompactionPolicy             `json:"background_compaction,omitempty"`
+	BuiltinSkills                *[]BuiltinSkillName                     `json:"builtin_skills,omitempty"`
+	ClientTools                  *[]ClientToolDefinition                 `json:"client_tools,omitempty"`
+	ConnectionTools              *[]ConnectionSelection                  `json:"connection_tools,omitempty"`
+	DefaultEnvironmentId         nullable.Nullable[string]               `json:"default_environment_id,omitempty"`
+	DefaultEnvironmentTemplateId nullable.Nullable[string]               `json:"default_environment_template_id,omitempty"`
+	DefaultSessionConfiguration  nullable.Nullable[SessionConfiguration] `json:"default_session_configuration,omitempty"`
+	Execution                    nullable.Nullable[ExecutionOverride]    `json:"execution,omitempty"`
+	Instructions                 *string                                 `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                                   `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
@@ -5731,15 +5783,16 @@ type AgentConfigInput struct {
 // AgentConfigOutput defines model for AgentConfig-Output.
 type AgentConfigOutput struct {
 	// BackgroundCompaction Host-selected overlap policy, separate from the common compaction trigger.
-	BackgroundCompaction         *BackgroundCompactionPolicy          `json:"background_compaction,omitempty"`
-	BuiltinSkills                *[]BuiltinSkillName                  `json:"builtin_skills,omitempty"`
-	ClientTools                  *[]ClientToolDefinition              `json:"client_tools,omitempty"`
-	ConnectionTools              *[]ConnectionSelection               `json:"connection_tools,omitempty"`
-	DefaultEnvironmentId         nullable.Nullable[string]            `json:"default_environment_id,omitempty"`
-	DefaultEnvironmentTemplateId nullable.Nullable[string]            `json:"default_environment_template_id,omitempty"`
-	Execution                    nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
-	Instructions                 *string                              `json:"instructions,omitempty"`
-	LazyEnvironment              *bool                                `json:"lazy_environment,omitempty"`
+	BackgroundCompaction         *BackgroundCompactionPolicy             `json:"background_compaction,omitempty"`
+	BuiltinSkills                *[]BuiltinSkillName                     `json:"builtin_skills,omitempty"`
+	ClientTools                  *[]ClientToolDefinition                 `json:"client_tools,omitempty"`
+	ConnectionTools              *[]ConnectionSelection                  `json:"connection_tools,omitempty"`
+	DefaultEnvironmentId         nullable.Nullable[string]               `json:"default_environment_id,omitempty"`
+	DefaultEnvironmentTemplateId nullable.Nullable[string]               `json:"default_environment_template_id,omitempty"`
+	DefaultSessionConfiguration  nullable.Nullable[SessionConfiguration] `json:"default_session_configuration,omitempty"`
+	Execution                    nullable.Nullable[ExecutionOverride]    `json:"execution,omitempty"`
+	Instructions                 *string                                 `json:"instructions,omitempty"`
+	LazyEnvironment              *bool                                   `json:"lazy_environment,omitempty"`
 
 	// MediaUnderstanding The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 	MediaUnderstanding *MediaUnderstandingSelection `json:"media_understanding,omitempty"`
@@ -6033,6 +6086,9 @@ type AppToolCall struct {
 type AppToolResult struct {
 	Result map[string]JsonValue `json:"result"`
 }
+
+// ApplicationStatus defines model for ApplicationStatus.
+type ApplicationStatus string
 
 // ApprovalDecision defines model for ApprovalDecision.
 type ApprovalDecision struct {
@@ -6884,8 +6940,57 @@ type CreationProgressProfile string
 // CreationProgressStage defines model for CreationProgress.Stage.
 type CreationProgressStage string
 
+// Credential defines model for Credential.
+type Credential struct {
+	AllowedHosts      []string                     `json:"allowed_hosts"`
+	CreatedAt         time.Time                    `json:"created_at"`
+	CreatedById       string                       `json:"created_by_id"`
+	CredentialVersion int                          `json:"credential_version"`
+	Description       string                       `json:"description"`
+	Id                string                       `json:"id"`
+	Name              string                       `json:"name"`
+	OrganizationId    string                       `json:"organization_id"`
+	RevokedAt         nullable.Nullable[time.Time] `json:"revoked_at"`
+	State             CredentialState              `json:"state"`
+	UpdatedAt         time.Time                    `json:"updated_at"`
+	UpdatedById       string                       `json:"updated_by_id"`
+	Version           int                          `json:"version"`
+	WorkspaceId       string                       `json:"workspace_id"`
+}
+
+// CredentialState defines model for Credential.State.
+type CredentialState string
+
+// CredentialCreate defines model for CredentialCreate.
+type CredentialCreate struct {
+	AllowedHosts Hosts            `json:"allowed_hosts"`
+	Description  *Description     `json:"description,omitempty"`
+	Name         Name             `json:"name"`
+	Value        *CredentialValue `json:"value,omitempty"`
+}
+
 // CredentialMode defines model for CredentialMode.
 type CredentialMode string
+
+// CredentialPage defines model for CredentialPage.
+type CredentialPage struct {
+	Items      []Credential              `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// CredentialRotation defines model for CredentialRotation.
+type CredentialRotation struct {
+	Value *CredentialValue `json:"value,omitempty"`
+}
+
+// CredentialUpdate defines model for CredentialUpdate.
+type CredentialUpdate struct {
+	Description nullable.Nullable[Description] `json:"description,omitempty"`
+	Name        nullable.Nullable[Name]        `json:"name,omitempty"`
+}
+
+// CredentialValue defines model for CredentialValue.
+type CredentialValue = string
 
 // Credentials defines model for Credentials.
 type Credentials struct {
@@ -7073,6 +7178,9 @@ type DeploymentPreset struct {
 	Revision            string        `json:"revision"`
 }
 
+// Description defines model for Description.
+type Description = string
+
 // Device defines model for Device.
 type Device struct {
 	CreatedAt           time.Time                 `json:"created_at"`
@@ -7223,6 +7331,12 @@ type DynamicSubagentsOutput_DefaultThinking struct {
 	union json.RawMessage
 }
 
+// EgressConfiguration defines model for EgressConfiguration.
+type EgressConfiguration struct {
+	Destinations EgressDestinations `json:"destinations"`
+	Secrets      *[]SecretReference `json:"secrets,omitempty"`
+}
+
 // EgressDestinations defines model for EgressDestinations.
 type EgressDestinations struct {
 	union json.RawMessage
@@ -7324,30 +7438,8 @@ type EntryView struct {
 // EntryViewKind defines model for EntryView.Kind.
 type EntryViewKind string
 
-// EnvdEgressConfiguration defines model for EnvdEgressConfiguration.
-type EnvdEgressConfiguration struct {
-	Destinations EgressDestinations     `json:"destinations"`
-	Secrets      *[]EnvdSecretReference `json:"secrets,omitempty"`
-}
-
-// EnvdSecretReference defines model for EnvdSecretReference.
-type EnvdSecretReference struct {
-	Env         string                      `json:"env"`
-	InjectHosts []string                    `json:"inject_hosts"`
-	Source      EnvironmentCredentialSource `json:"source"`
-}
-
 // EnvironmentAction Exact authorization values in the locked first-party catalog.
 type EnvironmentAction string
-
-// EnvironmentCredentialSource defines model for EnvironmentCredentialSource.
-type EnvironmentCredentialSource struct {
-	Kind EnvironmentCredentialSourceKind `json:"kind"`
-	Name string                          `json:"name"`
-}
-
-// EnvironmentCredentialSourceKind defines model for EnvironmentCredentialSource.Kind.
-type EnvironmentCredentialSourceKind string
 
 // EnvironmentFailure The last error of the outstanding operation or, on a ready instance, of its last renewal.
 //
@@ -7893,6 +7985,9 @@ type HistorySource string
 type HistoryPurge struct {
 	Purged int `json:"purged"`
 }
+
+// Hosts defines model for Hosts.
+type Hosts = []string
 
 // ImageInputPolicy Preparation limits for one model's image input, not native ModelSettings.
 type ImageInputPolicy struct {
@@ -8880,6 +8975,9 @@ type MountView struct {
 	SessionBinding    string                          `json:"session_binding"`
 	WorkingDirectory  nullable.Nullable[string]       `json:"working_directory"`
 }
+
+// Name defines model for Name.
+type Name = string
 
 // NativeIsolation defines model for NativeIsolation.
 type NativeIsolation struct {
@@ -10231,6 +10329,13 @@ type ScheduleUpdate struct {
 	Target             nullable.Nullable[ScheduleTarget]          `json:"target,omitempty"`
 }
 
+// SecretReference defines model for SecretReference.
+type SecretReference struct {
+	CredentialId string `json:"credential_id"`
+	Env          string `json:"env"`
+	InjectHosts  Hosts  `json:"inject_hosts"`
+}
+
 // SelectedTrace defines model for SelectedTrace.
 type SelectedTrace struct {
 	RunId     string                    `json:"run_id"`
@@ -10292,6 +10397,16 @@ type ServiceAccountUpdate struct {
 // ServiceAccountUpdateStatus defines model for ServiceAccountUpdate.Status.
 type ServiceAccountUpdateStatus string
 
+// SessionApplicationSummary All matching binding versions, counted once each independently of page size and cursor.
+type SessionApplicationSummary struct {
+	Applied   int `json:"applied"`
+	OnCreate  int `json:"on_create"`
+	OnNextUse int `json:"on_next_use"`
+	Pending   int `json:"pending"`
+	Retry     int `json:"retry"`
+	Unknown   int `json:"unknown"`
+}
+
 // SessionBindingUpdate defines model for SessionBindingUpdate.
 type SessionBindingUpdate struct {
 	// Configuration Tenant-authored Session policy; Service credentials are not process-environment references.
@@ -10309,13 +10424,13 @@ type SessionBindingView struct {
 
 // SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
 type SessionConfiguration struct {
-	Commands         nullable.Nullable[bool]                    `json:"commands,omitempty"`
-	Egress           nullable.Nullable[EnvdEgressConfiguration] `json:"egress,omitempty"`
-	EgressMode       nullable.Nullable[EgressMode]              `json:"egress_mode,omitempty"`
-	Isolation        nullable.Nullable[SessionIsolation]        `json:"isolation,omitempty"`
-	Lifecycle        nullable.Nullable[SessionLifecyclePolicy]  `json:"lifecycle,omitempty"`
-	Sandbox          nullable.Nullable[SandboxPolicy]           `json:"sandbox,omitempty"`
-	WorkingDirectory nullable.Nullable[string]                  `json:"working_directory,omitempty"`
+	Commands         nullable.Nullable[bool]                   `json:"commands,omitempty"`
+	Egress           nullable.Nullable[EgressConfiguration]    `json:"egress,omitempty"`
+	EgressMode       nullable.Nullable[EgressMode]             `json:"egress_mode,omitempty"`
+	Isolation        nullable.Nullable[SessionIsolation]       `json:"isolation,omitempty"`
+	Lifecycle        nullable.Nullable[SessionLifecyclePolicy] `json:"lifecycle,omitempty"`
+	Sandbox          nullable.Nullable[SandboxPolicy]          `json:"sandbox,omitempty"`
+	WorkingDirectory nullable.Nullable[string]                 `json:"working_directory,omitempty"`
 }
 
 // SessionCreate defines model for SessionCreate.
@@ -10325,6 +10440,42 @@ type SessionCreate struct {
 	Memory                      nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
 	Origin                      nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
 	Title                       nullable.Nullable[string]                `json:"title,omitempty"`
+}
+
+// SessionCredential defines model for SessionCredential.
+type SessionCredential struct {
+	AppliedAt                nullable.Nullable[time.Time]     `json:"applied_at"`
+	AppliedCredentialVersion nullable.Nullable[int]           `json:"applied_credential_version"`
+	AppliedDeviceGeneration  nullable.Nullable[string]        `json:"applied_device_generation"`
+	AppliedSessionId         nullable.Nullable[string]        `json:"applied_session_id"`
+	BindingName              string                           `json:"binding_name"`
+	CredentialId             string                           `json:"credential_id"`
+	CredentialName           string                           `json:"credential_name"`
+	CredentialState          SessionCredentialCredentialState `json:"credential_state"`
+	CredentialVersion        int                              `json:"credential_version"`
+	Env                      string                           `json:"env"`
+	EnvironmentId            string                           `json:"environment_id"`
+	EnvironmentName          string                           `json:"environment_name"`
+	ErrorCode                nullable.Nullable[string]        `json:"error_code,omitempty"`
+	ExecutionActive          bool                             `json:"execution_active"`
+	InjectHosts              []string                         `json:"inject_hosts"`
+	NativeSessionId          nullable.Nullable[string]        `json:"native_session_id"`
+	RetryAt                  nullable.Nullable[time.Time]     `json:"retry_at,omitempty"`
+	SessionVersion           int                              `json:"session_version"`
+	Status                   ApplicationStatus                `json:"status"`
+	ThreadId                 string                           `json:"thread_id"`
+}
+
+// SessionCredentialCredentialState defines model for SessionCredential.CredentialState.
+type SessionCredentialCredentialState string
+
+// SessionCredentialPage defines model for SessionCredentialPage.
+type SessionCredentialPage struct {
+	Items      []SessionCredential       `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+
+	// Summary All matching binding versions, counted once each independently of page size and cursor.
+	Summary SessionApplicationSummary `json:"summary"`
 }
 
 // SessionIsolation defines model for SessionIsolation.
@@ -12263,6 +12414,69 @@ type RotateDeviceCredentialParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListEgressCredentialsParams defines parameters for ListEgressCredentials.
+type ListEgressCredentialsParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateEgressCredentialParams defines parameters for CreateEgressCredential.
+type CreateEgressCredentialParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetEgressCredentialParams defines parameters for GetEgressCredential.
+type GetEgressCredentialParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateEgressCredentialParams defines parameters for UpdateEgressCredential.
+type UpdateEgressCredentialParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RevokeEgressCredentialParams defines parameters for RevokeEgressCredential.
+type RevokeEgressCredentialParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListCredentialSessionsParams defines parameters for ListCredentialSessions.
+type ListCredentialSessionsParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// SyncEgressCredentialParams defines parameters for SyncEgressCredential.
+type SyncEgressCredentialParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RotateEgressCredentialParams defines parameters for RotateEgressCredential.
+type RotateEgressCredentialParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // VercelProviderOptionsParams defines parameters for VercelProviderOptions.
 type VercelProviderOptionsParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
@@ -12404,6 +12618,15 @@ type CheckComputerParams struct {
 
 // GetEnvironmentCreationParams defines parameters for GetEnvironmentCreation.
 type GetEnvironmentCreationParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListEnvironmentCredentialSessionsParams defines parameters for ListEnvironmentCredentialSessions.
+type ListEnvironmentCredentialSessionsParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -14820,6 +15043,15 @@ type UpdateDeviceJSONRequestBody = DeviceUpdate
 
 // QueryDeviceMetricsJSONRequestBody defines body for QueryDeviceMetrics for application/json ContentType.
 type QueryDeviceMetricsJSONRequestBody = EnvironmentQuery
+
+// CreateEgressCredentialJSONRequestBody defines body for CreateEgressCredential for application/json ContentType.
+type CreateEgressCredentialJSONRequestBody = CredentialCreate
+
+// UpdateEgressCredentialJSONRequestBody defines body for UpdateEgressCredential for application/json ContentType.
+type UpdateEgressCredentialJSONRequestBody = CredentialUpdate
+
+// RotateEgressCredentialJSONRequestBody defines body for RotateEgressCredential for application/json ContentType.
+type RotateEgressCredentialJSONRequestBody = CredentialRotation
 
 // VercelProviderOptionsJSONRequestBody defines body for VercelProviderOptions for application/json ContentType.
 type VercelProviderOptionsJSONRequestBody = VercelOptionsRequest
@@ -20658,6 +20890,73 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
 	RotateDeviceCredential(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListEgressCredentials List Egress Credentials
+	//
+	// Corresponds with GET /api/v1/egress-credentials (the `ListEgressCredentials` operationId).
+	ListEgressCredentials(ctx context.Context, params *ListEgressCredentialsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateEgressCredentialWithBody Create Egress Credential
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+	CreateEgressCredentialWithBody(ctx context.Context, params *CreateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateEgressCredential Create Egress Credential
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+	CreateEgressCredential(ctx context.Context, params *CreateEgressCredentialParams, body CreateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetEgressCredential Get Egress Credential
+	//
+	// Corresponds with GET /api/v1/egress-credentials/{credential_id} (the `GetEgressCredential` operationId).
+	GetEgressCredential(ctx context.Context, credentialId string, params *GetEgressCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateEgressCredentialWithBody Update Egress Credential
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+	UpdateEgressCredentialWithBody(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateEgressCredential Update Egress Credential
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+	UpdateEgressCredential(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, body UpdateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RevokeEgressCredential Revoke Egress Credential
+	//
+	// Corresponds with POST /api/v1/egress-credentials/{credential_id}/revoke (the `RevokeEgressCredential` operationId).
+	RevokeEgressCredential(ctx context.Context, credentialId string, params *RevokeEgressCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListCredentialSessions List Credential Sessions
+	//
+	// Corresponds with GET /api/v1/egress-credentials/{credential_id}/sessions (the `ListCredentialSessions` operationId).
+	ListCredentialSessions(ctx context.Context, credentialId string, params *ListCredentialSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SyncEgressCredential Sync Egress Credential
+	//
+	// Corresponds with POST /api/v1/egress-credentials/{credential_id}/sync (the `SyncEgressCredential` operationId).
+	SyncEgressCredential(ctx context.Context, credentialId string, params *SyncEgressCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RotateEgressCredentialWithBody Rotate Egress Credential
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+	RotateEgressCredentialWithBody(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RotateEgressCredential Rotate Egress Credential
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+	RotateEgressCredential(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, body RotateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// VercelProviderOptionsWithBody Vercel Provider Options
 	//
 	// List accessible teams, or projects in a selected team, using an unsaved credential.
@@ -20829,6 +21128,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreation(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListEnvironmentCredentialSessions List Environment Credential Sessions
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/credential-sessions (the `ListEnvironmentCredentialSessions` operationId).
+	ListEnvironmentCredentialSessions(ctx context.Context, environmentId string, params *ListEnvironmentCredentialSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// SetEnvironmentDebugHoldWithBody Set Environment Debug Hold
 	//
@@ -25221,6 +25525,183 @@ func (c *Client) RotateDeviceCredential(ctx context.Context, deviceId string, pa
 	return c.Client.Do(req)
 }
 
+// ListEgressCredentials List Egress Credentials
+//
+// Corresponds with GET /api/v1/egress-credentials (the `ListEgressCredentials` operationId).
+func (c *Client) ListEgressCredentials(ctx context.Context, params *ListEgressCredentialsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListEgressCredentialsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateEgressCredentialWithBody Create Egress Credential
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+func (c *Client) CreateEgressCredentialWithBody(ctx context.Context, params *CreateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateEgressCredentialRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateEgressCredential Create Egress Credential
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+func (c *Client) CreateEgressCredential(ctx context.Context, params *CreateEgressCredentialParams, body CreateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateEgressCredentialRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetEgressCredential Get Egress Credential
+//
+// Corresponds with GET /api/v1/egress-credentials/{credential_id} (the `GetEgressCredential` operationId).
+func (c *Client) GetEgressCredential(ctx context.Context, credentialId string, params *GetEgressCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEgressCredentialRequest(c.Server, credentialId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateEgressCredentialWithBody Update Egress Credential
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+func (c *Client) UpdateEgressCredentialWithBody(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEgressCredentialRequestWithBody(c.Server, credentialId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateEgressCredential Update Egress Credential
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+func (c *Client) UpdateEgressCredential(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, body UpdateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEgressCredentialRequest(c.Server, credentialId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RevokeEgressCredential Revoke Egress Credential
+//
+// Corresponds with POST /api/v1/egress-credentials/{credential_id}/revoke (the `RevokeEgressCredential` operationId).
+func (c *Client) RevokeEgressCredential(ctx context.Context, credentialId string, params *RevokeEgressCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRevokeEgressCredentialRequest(c.Server, credentialId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListCredentialSessions List Credential Sessions
+//
+// Corresponds with GET /api/v1/egress-credentials/{credential_id}/sessions (the `ListCredentialSessions` operationId).
+func (c *Client) ListCredentialSessions(ctx context.Context, credentialId string, params *ListCredentialSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCredentialSessionsRequest(c.Server, credentialId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SyncEgressCredential Sync Egress Credential
+//
+// Corresponds with POST /api/v1/egress-credentials/{credential_id}/sync (the `SyncEgressCredential` operationId).
+func (c *Client) SyncEgressCredential(ctx context.Context, credentialId string, params *SyncEgressCredentialParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSyncEgressCredentialRequest(c.Server, credentialId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RotateEgressCredentialWithBody Rotate Egress Credential
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+func (c *Client) RotateEgressCredentialWithBody(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRotateEgressCredentialRequestWithBody(c.Server, credentialId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RotateEgressCredential Rotate Egress Credential
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+func (c *Client) RotateEgressCredential(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, body RotateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRotateEgressCredentialRequest(c.Server, credentialId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // VercelProviderOptionsWithBody Vercel Provider Options
 //
 // List accessible teams, or projects in a selected team, using an unsaved credential.
@@ -25643,6 +26124,21 @@ func (c *Client) CheckComputer(ctx context.Context, environmentId string, params
 // Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 func (c *Client) GetEnvironmentCreation(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetEnvironmentCreationRequest(c.Server, environmentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListEnvironmentCredentialSessions List Environment Credential Sessions
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/credential-sessions (the `ListEnvironmentCredentialSessions` operationId).
+func (c *Client) ListEnvironmentCredentialSessions(ctx context.Context, environmentId string, params *ListEnvironmentCredentialSessionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListEnvironmentCredentialSessionsRequest(c.Server, environmentId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -37432,6 +37928,534 @@ func NewRotateDeviceCredentialRequest(server string, deviceId string, params *Ro
 	return req, nil
 }
 
+// NewListEgressCredentialsRequest constructs an http.Request for the ListEgressCredentials method
+func NewListEgressCredentialsRequest(server string, params *ListEgressCredentialsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateEgressCredentialRequest calls the generic CreateEgressCredential builder with application/json body
+func NewCreateEgressCredentialRequest(server string, params *CreateEgressCredentialParams, body CreateEgressCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateEgressCredentialRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateEgressCredentialRequestWithBody constructs an http.Request for the CreateEgressCredential method, with any body, and a specified content type
+func NewCreateEgressCredentialRequestWithBody(server string, params *CreateEgressCredentialParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetEgressCredentialRequest constructs an http.Request for the GetEgressCredential method
+func NewGetEgressCredentialRequest(server string, credentialId string, params *GetEgressCredentialParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "credential_id", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateEgressCredentialRequest calls the generic UpdateEgressCredential builder with application/json body
+func NewUpdateEgressCredentialRequest(server string, credentialId string, params *UpdateEgressCredentialParams, body UpdateEgressCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateEgressCredentialRequestWithBody(server, credentialId, params, "application/json", bodyReader)
+}
+
+// NewUpdateEgressCredentialRequestWithBody constructs an http.Request for the UpdateEgressCredential method, with any body, and a specified content type
+func NewUpdateEgressCredentialRequestWithBody(server string, credentialId string, params *UpdateEgressCredentialParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "credential_id", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRevokeEgressCredentialRequest constructs an http.Request for the RevokeEgressCredential method
+func NewRevokeEgressCredentialRequest(server string, credentialId string, params *RevokeEgressCredentialParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "credential_id", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials/%s/revoke", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListCredentialSessionsRequest constructs an http.Request for the ListCredentialSessions method
+func NewListCredentialSessionsRequest(server string, credentialId string, params *ListCredentialSessionsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "credential_id", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials/%s/sessions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewSyncEgressCredentialRequest constructs an http.Request for the SyncEgressCredential method
+func NewSyncEgressCredentialRequest(server string, credentialId string, params *SyncEgressCredentialParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "credential_id", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials/%s/sync", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRotateEgressCredentialRequest calls the generic RotateEgressCredential builder with application/json body
+func NewRotateEgressCredentialRequest(server string, credentialId string, params *RotateEgressCredentialParams, body RotateEgressCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRotateEgressCredentialRequestWithBody(server, credentialId, params, "application/json", bodyReader)
+}
+
+// NewRotateEgressCredentialRequestWithBody constructs an http.Request for the RotateEgressCredential method, with any body, and a specified content type
+func NewRotateEgressCredentialRequestWithBody(server string, credentialId string, params *RotateEgressCredentialParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "credential_id", credentialId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/egress-credentials/%s/value", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewVercelProviderOptionsRequest calls the generic VercelProviderOptions builder with application/json body
 func NewVercelProviderOptionsRequest(server string, params *VercelProviderOptionsParams, body VercelProviderOptionsJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -38576,6 +39600,94 @@ func NewGetEnvironmentCreationRequest(server string, environmentId string, param
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListEnvironmentCredentialSessionsRequest constructs an http.Request for the ListEnvironmentCredentialSessions method
+func NewListEnvironmentCredentialSessionsRequest(server string, environmentId string, params *ListEnvironmentCredentialSessionsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "environment_id", environmentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environments/%s/credential-sessions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -58939,6 +60051,83 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/devices/{device_id}/rotate-credential (the `RotateDeviceCredential` operationId).
 	RotateDeviceCredentialWithResponse(ctx context.Context, deviceId string, params *RotateDeviceCredentialParams, reqEditors ...RequestEditorFn) (*RotateDeviceCredentialResponse, error)
 
+	// ListEgressCredentialsWithResponse List Egress Credentials
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/egress-credentials (the `ListEgressCredentials` operationId).
+	ListEgressCredentialsWithResponse(ctx context.Context, params *ListEgressCredentialsParams, reqEditors ...RequestEditorFn) (*ListEgressCredentialsResponse, error)
+
+	// CreateEgressCredentialWithBodyWithResponse Create Egress Credential
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+	CreateEgressCredentialWithBodyWithResponse(ctx context.Context, params *CreateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateEgressCredentialResponse, error)
+
+	// CreateEgressCredentialWithResponse Create Egress Credential
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+	CreateEgressCredentialWithResponse(ctx context.Context, params *CreateEgressCredentialParams, body CreateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEgressCredentialResponse, error)
+
+	// GetEgressCredentialWithResponse Get Egress Credential
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/egress-credentials/{credential_id} (the `GetEgressCredential` operationId).
+	GetEgressCredentialWithResponse(ctx context.Context, credentialId string, params *GetEgressCredentialParams, reqEditors ...RequestEditorFn) (*GetEgressCredentialResponse, error)
+
+	// UpdateEgressCredentialWithBodyWithResponse Update Egress Credential
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+	UpdateEgressCredentialWithBodyWithResponse(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEgressCredentialResponse, error)
+
+	// UpdateEgressCredentialWithResponse Update Egress Credential
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+	UpdateEgressCredentialWithResponse(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, body UpdateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEgressCredentialResponse, error)
+
+	// RevokeEgressCredentialWithResponse Revoke Egress Credential
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/egress-credentials/{credential_id}/revoke (the `RevokeEgressCredential` operationId).
+	RevokeEgressCredentialWithResponse(ctx context.Context, credentialId string, params *RevokeEgressCredentialParams, reqEditors ...RequestEditorFn) (*RevokeEgressCredentialResponse, error)
+
+	// ListCredentialSessionsWithResponse List Credential Sessions
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/egress-credentials/{credential_id}/sessions (the `ListCredentialSessions` operationId).
+	ListCredentialSessionsWithResponse(ctx context.Context, credentialId string, params *ListCredentialSessionsParams, reqEditors ...RequestEditorFn) (*ListCredentialSessionsResponse, error)
+
+	// SyncEgressCredentialWithResponse Sync Egress Credential
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/egress-credentials/{credential_id}/sync (the `SyncEgressCredential` operationId).
+	SyncEgressCredentialWithResponse(ctx context.Context, credentialId string, params *SyncEgressCredentialParams, reqEditors ...RequestEditorFn) (*SyncEgressCredentialResponse, error)
+
+	// RotateEgressCredentialWithBodyWithResponse Rotate Egress Credential
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+	RotateEgressCredentialWithBodyWithResponse(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RotateEgressCredentialResponse, error)
+
+	// RotateEgressCredentialWithResponse Rotate Egress Credential
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+	RotateEgressCredentialWithResponse(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, body RotateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*RotateEgressCredentialResponse, error)
+
 	// VercelProviderOptionsWithBodyWithResponse Vercel Provider Options
 	//
 	// List accessible teams, or projects in a selected team, using an unsaved credential.
@@ -59134,6 +60323,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/environments/{environment_id}/creation (the `GetEnvironmentCreation` operationId).
 	GetEnvironmentCreationWithResponse(ctx context.Context, environmentId string, params *GetEnvironmentCreationParams, reqEditors ...RequestEditorFn) (*GetEnvironmentCreationResponse, error)
+
+	// ListEnvironmentCredentialSessionsWithResponse List Environment Credential Sessions
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/environments/{environment_id}/credential-sessions (the `ListEnvironmentCredentialSessions` operationId).
+	ListEnvironmentCredentialSessionsWithResponse(ctx context.Context, environmentId string, params *ListEnvironmentCredentialSessionsParams, reqEditors ...RequestEditorFn) (*ListEnvironmentCredentialSessionsResponse, error)
 
 	// SetEnvironmentDebugHoldWithBodyWithResponse Set Environment Debug Hold
 	//
@@ -68100,6 +69296,558 @@ func (r RotateDeviceCredentialResponse) ContentType() string {
 	return ""
 }
 
+// ListEgressCredentialsResponse400Headers the declared response headers of an HTTP 400 response for ListEgressCredentials
+type ListEgressCredentialsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListEgressCredentialsResponseDefaultHeaders the declared response headers of an HTTP default response for ListEgressCredentials
+type ListEgressCredentialsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListEgressCredentialsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CredentialPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListEgressCredentialsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListEgressCredentialsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListEgressCredentialsResponse) GetJSON200() *CredentialPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListEgressCredentialsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListEgressCredentialsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListEgressCredentialsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListEgressCredentialsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListEgressCredentialsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListEgressCredentialsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateEgressCredentialResponse400Headers the declared response headers of an HTTP 400 response for CreateEgressCredential
+type CreateEgressCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateEgressCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for CreateEgressCredential
+type CreateEgressCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateEgressCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Credential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateEgressCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateEgressCredentialResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateEgressCredentialResponse) GetJSON201() *Credential {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateEgressCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateEgressCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateEgressCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateEgressCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateEgressCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateEgressCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetEgressCredentialResponse400Headers the declared response headers of an HTTP 400 response for GetEgressCredential
+type GetEgressCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetEgressCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for GetEgressCredential
+type GetEgressCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetEgressCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Credential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetEgressCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetEgressCredentialResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetEgressCredentialResponse) GetJSON200() *Credential {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetEgressCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetEgressCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetEgressCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetEgressCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetEgressCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetEgressCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateEgressCredentialResponse400Headers the declared response headers of an HTTP 400 response for UpdateEgressCredential
+type UpdateEgressCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateEgressCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateEgressCredential
+type UpdateEgressCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateEgressCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Credential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateEgressCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateEgressCredentialResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateEgressCredentialResponse) GetJSON200() *Credential {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateEgressCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateEgressCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateEgressCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateEgressCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateEgressCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateEgressCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RevokeEgressCredentialResponse400Headers the declared response headers of an HTTP 400 response for RevokeEgressCredential
+type RevokeEgressCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// RevokeEgressCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for RevokeEgressCredential
+type RevokeEgressCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RevokeEgressCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Credential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RevokeEgressCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RevokeEgressCredentialResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r RevokeEgressCredentialResponse) GetJSON202() *Credential {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RevokeEgressCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RevokeEgressCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RevokeEgressCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RevokeEgressCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RevokeEgressCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RevokeEgressCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListCredentialSessionsResponse400Headers the declared response headers of an HTTP 400 response for ListCredentialSessions
+type ListCredentialSessionsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListCredentialSessionsResponseDefaultHeaders the declared response headers of an HTTP default response for ListCredentialSessions
+type ListCredentialSessionsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListCredentialSessionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionCredentialPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListCredentialSessionsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListCredentialSessionsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListCredentialSessionsResponse) GetJSON200() *SessionCredentialPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListCredentialSessionsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListCredentialSessionsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListCredentialSessionsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListCredentialSessionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListCredentialSessionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListCredentialSessionsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// SyncEgressCredentialResponse400Headers the declared response headers of an HTTP 400 response for SyncEgressCredential
+type SyncEgressCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// SyncEgressCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for SyncEgressCredential
+type SyncEgressCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type SyncEgressCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Credential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *SyncEgressCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *SyncEgressCredentialResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r SyncEgressCredentialResponse) GetJSON202() *Credential {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r SyncEgressCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r SyncEgressCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r SyncEgressCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SyncEgressCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SyncEgressCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SyncEgressCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RotateEgressCredentialResponse400Headers the declared response headers of an HTTP 400 response for RotateEgressCredential
+type RotateEgressCredentialResponse400Headers struct {
+	XRequestId *string
+}
+
+// RotateEgressCredentialResponseDefaultHeaders the declared response headers of an HTTP default response for RotateEgressCredential
+type RotateEgressCredentialResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RotateEgressCredentialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Credential
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RotateEgressCredentialResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RotateEgressCredentialResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r RotateEgressCredentialResponse) GetJSON202() *Credential {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RotateEgressCredentialResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RotateEgressCredentialResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RotateEgressCredentialResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RotateEgressCredentialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RotateEgressCredentialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RotateEgressCredentialResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // VercelProviderOptionsResponse400Headers the declared response headers of an HTTP 400 response for VercelProviderOptions
 type VercelProviderOptionsResponse400Headers struct {
 	XRequestId *string
@@ -69398,6 +71146,75 @@ func (r GetEnvironmentCreationResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetEnvironmentCreationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListEnvironmentCredentialSessionsResponse400Headers the declared response headers of an HTTP 400 response for ListEnvironmentCredentialSessions
+type ListEnvironmentCredentialSessionsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListEnvironmentCredentialSessionsResponseDefaultHeaders the declared response headers of an HTTP default response for ListEnvironmentCredentialSessions
+type ListEnvironmentCredentialSessionsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListEnvironmentCredentialSessionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionCredentialPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListEnvironmentCredentialSessionsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListEnvironmentCredentialSessionsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListEnvironmentCredentialSessionsResponse) GetJSON200() *SessionCredentialPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListEnvironmentCredentialSessionsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListEnvironmentCredentialSessionsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListEnvironmentCredentialSessionsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListEnvironmentCredentialSessionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListEnvironmentCredentialSessionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListEnvironmentCredentialSessionsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -89739,6 +91556,149 @@ func (c *ClientWithResponses) RotateDeviceCredentialWithResponse(ctx context.Con
 	return ParseRotateDeviceCredentialResponse(rsp)
 }
 
+// ListEgressCredentialsWithResponse List Egress Credentials
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/egress-credentials (the `ListEgressCredentials` operationId).
+func (c *ClientWithResponses) ListEgressCredentialsWithResponse(ctx context.Context, params *ListEgressCredentialsParams, reqEditors ...RequestEditorFn) (*ListEgressCredentialsResponse, error) {
+	rsp, err := c.ListEgressCredentials(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListEgressCredentialsResponse(rsp)
+}
+
+// CreateEgressCredentialWithBodyWithResponse Create Egress Credential
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+func (c *ClientWithResponses) CreateEgressCredentialWithBodyWithResponse(ctx context.Context, params *CreateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateEgressCredentialResponse, error) {
+	rsp, err := c.CreateEgressCredentialWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateEgressCredentialResponse(rsp)
+}
+
+// CreateEgressCredentialWithResponse Create Egress Credential
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/egress-credentials (the `CreateEgressCredential` operationId).
+func (c *ClientWithResponses) CreateEgressCredentialWithResponse(ctx context.Context, params *CreateEgressCredentialParams, body CreateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEgressCredentialResponse, error) {
+	rsp, err := c.CreateEgressCredential(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateEgressCredentialResponse(rsp)
+}
+
+// GetEgressCredentialWithResponse Get Egress Credential
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/egress-credentials/{credential_id} (the `GetEgressCredential` operationId).
+func (c *ClientWithResponses) GetEgressCredentialWithResponse(ctx context.Context, credentialId string, params *GetEgressCredentialParams, reqEditors ...RequestEditorFn) (*GetEgressCredentialResponse, error) {
+	rsp, err := c.GetEgressCredential(ctx, credentialId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetEgressCredentialResponse(rsp)
+}
+
+// UpdateEgressCredentialWithBodyWithResponse Update Egress Credential
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+func (c *ClientWithResponses) UpdateEgressCredentialWithBodyWithResponse(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEgressCredentialResponse, error) {
+	rsp, err := c.UpdateEgressCredentialWithBody(ctx, credentialId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEgressCredentialResponse(rsp)
+}
+
+// UpdateEgressCredentialWithResponse Update Egress Credential
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/egress-credentials/{credential_id} (the `UpdateEgressCredential` operationId).
+func (c *ClientWithResponses) UpdateEgressCredentialWithResponse(ctx context.Context, credentialId string, params *UpdateEgressCredentialParams, body UpdateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEgressCredentialResponse, error) {
+	rsp, err := c.UpdateEgressCredential(ctx, credentialId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEgressCredentialResponse(rsp)
+}
+
+// RevokeEgressCredentialWithResponse Revoke Egress Credential
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/egress-credentials/{credential_id}/revoke (the `RevokeEgressCredential` operationId).
+func (c *ClientWithResponses) RevokeEgressCredentialWithResponse(ctx context.Context, credentialId string, params *RevokeEgressCredentialParams, reqEditors ...RequestEditorFn) (*RevokeEgressCredentialResponse, error) {
+	rsp, err := c.RevokeEgressCredential(ctx, credentialId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRevokeEgressCredentialResponse(rsp)
+}
+
+// ListCredentialSessionsWithResponse List Credential Sessions
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/egress-credentials/{credential_id}/sessions (the `ListCredentialSessions` operationId).
+func (c *ClientWithResponses) ListCredentialSessionsWithResponse(ctx context.Context, credentialId string, params *ListCredentialSessionsParams, reqEditors ...RequestEditorFn) (*ListCredentialSessionsResponse, error) {
+	rsp, err := c.ListCredentialSessions(ctx, credentialId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListCredentialSessionsResponse(rsp)
+}
+
+// SyncEgressCredentialWithResponse Sync Egress Credential
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/egress-credentials/{credential_id}/sync (the `SyncEgressCredential` operationId).
+func (c *ClientWithResponses) SyncEgressCredentialWithResponse(ctx context.Context, credentialId string, params *SyncEgressCredentialParams, reqEditors ...RequestEditorFn) (*SyncEgressCredentialResponse, error) {
+	rsp, err := c.SyncEgressCredential(ctx, credentialId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSyncEgressCredentialResponse(rsp)
+}
+
+// RotateEgressCredentialWithBodyWithResponse Rotate Egress Credential
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+func (c *ClientWithResponses) RotateEgressCredentialWithBodyWithResponse(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RotateEgressCredentialResponse, error) {
+	rsp, err := c.RotateEgressCredentialWithBody(ctx, credentialId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRotateEgressCredentialResponse(rsp)
+}
+
+// RotateEgressCredentialWithResponse Rotate Egress Credential
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/egress-credentials/{credential_id}/value (the `RotateEgressCredential` operationId).
+func (c *ClientWithResponses) RotateEgressCredentialWithResponse(ctx context.Context, credentialId string, params *RotateEgressCredentialParams, body RotateEgressCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*RotateEgressCredentialResponse, error) {
+	rsp, err := c.RotateEgressCredential(ctx, credentialId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRotateEgressCredentialResponse(rsp)
+}
+
 // VercelProviderOptionsWithBodyWithResponse Vercel Provider Options
 //
 // List accessible teams, or projects in a selected team, using an unsaved credential.
@@ -90089,6 +92049,19 @@ func (c *ClientWithResponses) GetEnvironmentCreationWithResponse(ctx context.Con
 		return nil, err
 	}
 	return ParseGetEnvironmentCreationResponse(rsp)
+}
+
+// ListEnvironmentCredentialSessionsWithResponse List Environment Credential Sessions
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/environments/{environment_id}/credential-sessions (the `ListEnvironmentCredentialSessions` operationId).
+func (c *ClientWithResponses) ListEnvironmentCredentialSessionsWithResponse(ctx context.Context, environmentId string, params *ListEnvironmentCredentialSessionsParams, reqEditors ...RequestEditorFn) (*ListEnvironmentCredentialSessionsResponse, error) {
+	rsp, err := c.ListEnvironmentCredentialSessions(ctx, environmentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListEnvironmentCredentialSessionsResponse(rsp)
 }
 
 // SetEnvironmentDebugHoldWithBodyWithResponse Set Environment Debug Hold
@@ -100672,6 +102645,510 @@ func ParseRotateDeviceCredentialResponse(rsp *http.Response) (*RotateDeviceCrede
 	return response, nil
 }
 
+// ParseListEgressCredentialsResponse parses an HTTP response from a ListEgressCredentialsWithResponse call
+func ParseListEgressCredentialsResponse(rsp *http.Response) (*ListEgressCredentialsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListEgressCredentialsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CredentialPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListEgressCredentialsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListEgressCredentialsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateEgressCredentialResponse parses an HTTP response from a CreateEgressCredentialWithResponse call
+func ParseCreateEgressCredentialResponse(rsp *http.Response) (*CreateEgressCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateEgressCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Credential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateEgressCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateEgressCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetEgressCredentialResponse parses an HTTP response from a GetEgressCredentialWithResponse call
+func ParseGetEgressCredentialResponse(rsp *http.Response) (*GetEgressCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetEgressCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Credential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetEgressCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetEgressCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateEgressCredentialResponse parses an HTTP response from a UpdateEgressCredentialWithResponse call
+func ParseUpdateEgressCredentialResponse(rsp *http.Response) (*UpdateEgressCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateEgressCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Credential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateEgressCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateEgressCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRevokeEgressCredentialResponse parses an HTTP response from a RevokeEgressCredentialWithResponse call
+func ParseRevokeEgressCredentialResponse(rsp *http.Response) (*RevokeEgressCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RevokeEgressCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Credential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RevokeEgressCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RevokeEgressCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListCredentialSessionsResponse parses an HTTP response from a ListCredentialSessionsWithResponse call
+func ParseListCredentialSessionsResponse(rsp *http.Response) (*ListCredentialSessionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListCredentialSessionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionCredentialPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListCredentialSessionsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListCredentialSessionsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseSyncEgressCredentialResponse parses an HTTP response from a SyncEgressCredentialWithResponse call
+func ParseSyncEgressCredentialResponse(rsp *http.Response) (*SyncEgressCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SyncEgressCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Credential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers SyncEgressCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers SyncEgressCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRotateEgressCredentialResponse parses an HTTP response from a RotateEgressCredentialWithResponse call
+func ParseRotateEgressCredentialResponse(rsp *http.Response) (*RotateEgressCredentialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RotateEgressCredentialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Credential
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RotateEgressCredentialResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RotateEgressCredentialResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseVercelProviderOptionsResponse parses an HTTP response from a VercelProviderOptionsWithResponse call
 func ParseVercelProviderOptionsResponse(rsp *http.Response) (*VercelProviderOptionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -101852,6 +104329,69 @@ func ParseGetEnvironmentCreationResponse(rsp *http.Response) (*GetEnvironmentCre
 		response.Headers400 = &headers
 	case true:
 		var headers GetEnvironmentCreationResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListEnvironmentCredentialSessionsResponse parses an HTTP response from a ListEnvironmentCredentialSessionsWithResponse call
+func ParseListEnvironmentCredentialSessionsResponse(rsp *http.Response) (*ListEnvironmentCredentialSessionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListEnvironmentCredentialSessionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionCredentialPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListEnvironmentCredentialSessionsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListEnvironmentCredentialSessionsResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
