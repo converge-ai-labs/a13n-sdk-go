@@ -2855,6 +2855,21 @@ func (e NativeIsolationMode) Valid() bool {
 	}
 }
 
+// Defines values for NativeToolSearchMode.
+const (
+	NativeToolSearchModeNative NativeToolSearchMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeToolSearchMode enum.
+func (e NativeToolSearchMode) Valid() bool {
+	switch e {
+	case NativeToolSearchModeNative:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for NewThreadKind.
 const (
 	NewThreadKindMessage NewThreadKind = "message"
@@ -5765,19 +5780,24 @@ type AgentConfigInput struct {
 	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics       `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue            `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]    `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	Subagents            *SubagentsInput                  `json:"subagents,omitempty"`
-	Summarize            *bool                            `json:"summarize,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
-	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
-	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+	ModelCharacteristics *AgentModelCharacteristics                     `json:"model_characteristics,omitempty"`
+	ModelSettings        *map[string]JsonValue                          `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
+	Plugins              *[]PluginSelection                             `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryConfig]                 `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
+	SkillSync            *SkillSync                                     `json:"skill_sync,omitempty"`
+	Skills               *[]SkillSelection                              `json:"skills,omitempty"`
+	Subagents            *SubagentsInput                                `json:"subagents,omitempty"`
+	Summarize            *bool                                          `json:"summarize,omitempty"`
+	ToolSearch           nullable.Nullable[AgentConfigInput_ToolSearch] `json:"tool_search,omitempty"`
+	Toolsets             *map[string]ToolsetSelection                   `json:"toolsets,omitempty"`
+	UserQuestions        *bool                                          `json:"user_questions,omitempty"`
+}
+
+// AgentConfigInput_ToolSearch defines model for AgentConfigInput.ToolSearch.
+type AgentConfigInput_ToolSearch struct {
+	union json.RawMessage
 }
 
 // AgentConfigOutput defines model for AgentConfig-Output.
@@ -5803,19 +5823,24 @@ type AgentConfigOutput struct {
 	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics       `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue            `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]    `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection               `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]   `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer] `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                       `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                `json:"skills,omitempty"`
-	Subagents            *SubagentsOutput                 `json:"subagents,omitempty"`
-	Summarize            *bool                            `json:"summarize,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]    `json:"tool_search,omitempty"`
-	Toolsets             *map[string]ToolsetSelection     `json:"toolsets,omitempty"`
-	UserQuestions        *bool                            `json:"user_questions,omitempty"`
+	ModelCharacteristics *AgentModelCharacteristics                      `json:"model_characteristics,omitempty"`
+	ModelSettings        *map[string]JsonValue                           `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                   `json:"output_spec,omitempty"`
+	Plugins              *[]PluginSelection                              `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryConfig]                  `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                `json:"reviewer,omitempty"`
+	SkillSync            *SkillSync                                      `json:"skill_sync,omitempty"`
+	Skills               *[]SkillSelection                               `json:"skills,omitempty"`
+	Subagents            *SubagentsOutput                                `json:"subagents,omitempty"`
+	Summarize            *bool                                           `json:"summarize,omitempty"`
+	ToolSearch           nullable.Nullable[AgentConfigOutput_ToolSearch] `json:"tool_search,omitempty"`
+	Toolsets             *map[string]ToolsetSelection                    `json:"toolsets,omitempty"`
+	UserQuestions        *bool                                           `json:"user_questions,omitempty"`
+}
+
+// AgentConfigOutput_ToolSearch defines model for AgentConfigOutput.ToolSearch.
+type AgentConfigOutput_ToolSearch struct {
+	union json.RawMessage
 }
 
 // AgentCreate defines model for AgentCreate.
@@ -5846,24 +5871,29 @@ type AgentModelCharacteristics struct {
 // `toolsets` replaces whole toolsets; `retries` replaces supplied members.
 // Every other field, including `subagents`, replaces the whole value.
 type AgentOverrideInput struct {
-	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[SubagentsInput]              `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]            `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]        `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]         `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                        `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                          `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]   `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                        `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]     `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]          `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                    `json:"output_spec,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]             `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]                 `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                 `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                     `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]              `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[SubagentsInput]                `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[AgentOverrideInput_ToolSearch] `json:"tool_search,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection]   `json:"toolsets,omitempty"`
+}
+
+// AgentOverrideInput_ToolSearch defines model for AgentOverrideInput.ToolSearch.
+type AgentOverrideInput_ToolSearch struct {
+	union json.RawMessage
 }
 
 // AgentOverrideOutput What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
@@ -5871,24 +5901,29 @@ type AgentOverrideInput struct {
 // `toolsets` replaces whole toolsets; `retries` replaces supplied members.
 // Every other field, including `subagents`, replaces the whole value.
 type AgentOverrideOutput struct {
-	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[SubagentsOutput]             `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]             `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]         `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]          `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                         `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[bool]                           `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]    `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                         `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]      `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]           `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                     `json:"output_spec,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]              `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]                  `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                  `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                      `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]               `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[SubagentsOutput]                `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[AgentOverrideOutput_ToolSearch] `json:"tool_search,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection]    `json:"toolsets,omitempty"`
+}
+
+// AgentOverrideOutput_ToolSearch defines model for AgentOverrideOutput.ToolSearch.
+type AgentOverrideOutput_ToolSearch struct {
+	union json.RawMessage
 }
 
 // AgentPage defines model for AgentPage.
@@ -6282,7 +6317,7 @@ type AutomaticOrganizationHistory struct {
 	SessionIds []string                     `json:"session_ids"`
 }
 
-// AutomaticToolSearch Group Service-owned sources individually, following the agent's selections.
+// AutomaticToolSearch Select Service-owned sources for on-demand discovery.
 type AutomaticToolSearch struct {
 	Capabilities       *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
 	Connections        *bool                `json:"connections,omitempty"`
@@ -8987,6 +9022,17 @@ type NativeIsolation struct {
 // NativeIsolationMode defines model for NativeIsolation.Mode.
 type NativeIsolationMode string
 
+// NativeToolSearch Ungrouped native discovery of selected Service tools; plugins keep their own settings.
+type NativeToolSearch struct {
+	Mode NativeToolSearchMode `json:"mode"`
+
+	// Sources Select Service-owned sources for on-demand discovery.
+	Sources *AutomaticToolSearch `json:"sources,omitempty"`
+}
+
+// NativeToolSearchMode defines model for NativeToolSearch.Mode.
+type NativeToolSearchMode string
+
 // NetworkInterfaceMetrics defines model for NetworkInterfaceMetrics.
 type NetworkInterfaceMetrics struct {
 	Identity           string                 `json:"identity"`
@@ -11336,7 +11382,7 @@ type ToolSelection struct {
 
 // ToolsetCatalog defines model for ToolsetCatalog.
 type ToolsetCatalog struct {
-	// DiscoveryDefaults Group Service-owned sources individually, following the agent's selections.
+	// DiscoveryDefaults Select Service-owned sources for on-demand discovery.
 	DiscoveryDefaults AutomaticToolSearch `json:"discovery_defaults"`
 	DiscoverySources  []DiscoverySource   `json:"discovery_sources"`
 	Items             []ToolsetDefinition `json:"items"`
@@ -15331,6 +15377,254 @@ type UpdateServiceAccountJSONRequestBody = ServiceAccountUpdate
 
 // CreateServiceAccountKeyJSONRequestBody defines body for CreateServiceAccountKey for application/json ContentType.
 type CreateServiceAccountKeyJSONRequestBody = KeyCreate
+
+// AsToolSearch returns the union data inside the AgentConfigInput_ToolSearch as a ToolSearch
+func (t AgentConfigInput_ToolSearch) AsToolSearch() (ToolSearch, error) {
+	var body ToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromToolSearch overwrites any union data inside the AgentConfigInput_ToolSearch as the provided ToolSearch
+func (t *AgentConfigInput_ToolSearch) FromToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeToolSearch performs a merge with any union data inside the AgentConfigInput_ToolSearch, using the provided ToolSearch
+func (t *AgentConfigInput_ToolSearch) MergeToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsNativeToolSearch returns the union data inside the AgentConfigInput_ToolSearch as a NativeToolSearch
+func (t AgentConfigInput_ToolSearch) AsNativeToolSearch() (NativeToolSearch, error) {
+	var body NativeToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeToolSearch overwrites any union data inside the AgentConfigInput_ToolSearch as the provided NativeToolSearch
+func (t *AgentConfigInput_ToolSearch) FromNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeNativeToolSearch performs a merge with any union data inside the AgentConfigInput_ToolSearch, using the provided NativeToolSearch
+func (t *AgentConfigInput_ToolSearch) MergeNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentConfigInput_ToolSearch) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentConfigInput_ToolSearch) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsToolSearch returns the union data inside the AgentConfigOutput_ToolSearch as a ToolSearch
+func (t AgentConfigOutput_ToolSearch) AsToolSearch() (ToolSearch, error) {
+	var body ToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromToolSearch overwrites any union data inside the AgentConfigOutput_ToolSearch as the provided ToolSearch
+func (t *AgentConfigOutput_ToolSearch) FromToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeToolSearch performs a merge with any union data inside the AgentConfigOutput_ToolSearch, using the provided ToolSearch
+func (t *AgentConfigOutput_ToolSearch) MergeToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsNativeToolSearch returns the union data inside the AgentConfigOutput_ToolSearch as a NativeToolSearch
+func (t AgentConfigOutput_ToolSearch) AsNativeToolSearch() (NativeToolSearch, error) {
+	var body NativeToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeToolSearch overwrites any union data inside the AgentConfigOutput_ToolSearch as the provided NativeToolSearch
+func (t *AgentConfigOutput_ToolSearch) FromNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeNativeToolSearch performs a merge with any union data inside the AgentConfigOutput_ToolSearch, using the provided NativeToolSearch
+func (t *AgentConfigOutput_ToolSearch) MergeNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentConfigOutput_ToolSearch) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentConfigOutput_ToolSearch) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsToolSearch returns the union data inside the AgentOverrideInput_ToolSearch as a ToolSearch
+func (t AgentOverrideInput_ToolSearch) AsToolSearch() (ToolSearch, error) {
+	var body ToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromToolSearch overwrites any union data inside the AgentOverrideInput_ToolSearch as the provided ToolSearch
+func (t *AgentOverrideInput_ToolSearch) FromToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeToolSearch performs a merge with any union data inside the AgentOverrideInput_ToolSearch, using the provided ToolSearch
+func (t *AgentOverrideInput_ToolSearch) MergeToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsNativeToolSearch returns the union data inside the AgentOverrideInput_ToolSearch as a NativeToolSearch
+func (t AgentOverrideInput_ToolSearch) AsNativeToolSearch() (NativeToolSearch, error) {
+	var body NativeToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeToolSearch overwrites any union data inside the AgentOverrideInput_ToolSearch as the provided NativeToolSearch
+func (t *AgentOverrideInput_ToolSearch) FromNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeNativeToolSearch performs a merge with any union data inside the AgentOverrideInput_ToolSearch, using the provided NativeToolSearch
+func (t *AgentOverrideInput_ToolSearch) MergeNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentOverrideInput_ToolSearch) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentOverrideInput_ToolSearch) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsToolSearch returns the union data inside the AgentOverrideOutput_ToolSearch as a ToolSearch
+func (t AgentOverrideOutput_ToolSearch) AsToolSearch() (ToolSearch, error) {
+	var body ToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromToolSearch overwrites any union data inside the AgentOverrideOutput_ToolSearch as the provided ToolSearch
+func (t *AgentOverrideOutput_ToolSearch) FromToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeToolSearch performs a merge with any union data inside the AgentOverrideOutput_ToolSearch, using the provided ToolSearch
+func (t *AgentOverrideOutput_ToolSearch) MergeToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsNativeToolSearch returns the union data inside the AgentOverrideOutput_ToolSearch as a NativeToolSearch
+func (t AgentOverrideOutput_ToolSearch) AsNativeToolSearch() (NativeToolSearch, error) {
+	var body NativeToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeToolSearch overwrites any union data inside the AgentOverrideOutput_ToolSearch as the provided NativeToolSearch
+func (t *AgentOverrideOutput_ToolSearch) FromNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeNativeToolSearch performs a merge with any union data inside the AgentOverrideOutput_ToolSearch, using the provided NativeToolSearch
+func (t *AgentOverrideOutput_ToolSearch) MergeNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentOverrideOutput_ToolSearch) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentOverrideOutput_ToolSearch) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // AsApprove returns the union data inside the ApprovalDecision as a Approve
 func (t ApprovalDecision) AsApprove() (Approve, error) {

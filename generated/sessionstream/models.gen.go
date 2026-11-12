@@ -1055,13 +1055,28 @@ func (e MemorySourceStatus) Valid() bool {
 
 // Defines values for NativeIsolationMode.
 const (
-	Native NativeIsolationMode = "native"
+	NativeIsolationModeNative NativeIsolationMode = "native"
 )
 
 // Valid indicates whether the value is a known member of the NativeIsolationMode enum.
 func (e NativeIsolationMode) Valid() bool {
 	switch e {
-	case Native:
+	case NativeIsolationModeNative:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NativeToolSearchMode.
+const (
+	NativeToolSearchModeNative NativeToolSearchMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeToolSearchMode enum.
+func (e NativeToolSearchMode) Valid() bool {
+	switch e {
+	case NativeToolSearchModeNative:
 		return true
 	default:
 		return false
@@ -1702,8 +1717,13 @@ type AgentOverride struct {
 	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
 	Subagents            nullable.Nullable[Subagents]                   `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
+	ToolSearch           nullable.Nullable[AgentOverride_ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+}
+
+// AgentOverride_ToolSearch defines model for AgentOverride.ToolSearch.
+type AgentOverride_ToolSearch struct {
+	union json.RawMessage
 }
 
 // AgentReviewer The model reviewing calls whose permission is `review`, selected by model key.
@@ -1775,7 +1795,7 @@ type AssetPart struct {
 // AssetPartType defines model for AssetPart.Type.
 type AssetPartType string
 
-// AutomaticToolSearch Group Service-owned sources individually, following the agent's selections.
+// AutomaticToolSearch Select Service-owned sources for on-demand discovery.
 type AutomaticToolSearch struct {
 	Capabilities       *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
 	Connections        *bool                `json:"connections,omitempty"`
@@ -2212,6 +2232,17 @@ type NativeIsolation struct {
 
 // NativeIsolationMode defines model for NativeIsolation.Mode.
 type NativeIsolationMode string
+
+// NativeToolSearch Ungrouped native discovery of selected Service tools; plugins keep their own settings.
+type NativeToolSearch struct {
+	Mode NativeToolSearchMode `json:"mode"`
+
+	// Sources Select Service-owned sources for on-demand discovery.
+	Sources *AutomaticToolSearch `json:"sources,omitempty"`
+}
+
+// NativeToolSearchMode defines model for NativeToolSearch.Mode.
+type NativeToolSearchMode string
 
 // ObserverContinuation Native conversion cursors required to resume mid-part, without raw history.
 type ObserverContinuation struct {
@@ -2846,6 +2877,68 @@ type UnderscorePartCursor struct {
 
 // PartCursorKind defines model for PartCursor.Kind.
 type PartCursorKind string
+
+// AsToolSearch returns the union data inside the AgentOverride_ToolSearch as a ToolSearch
+func (t AgentOverride_ToolSearch) AsToolSearch() (ToolSearch, error) {
+	var body ToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromToolSearch overwrites any union data inside the AgentOverride_ToolSearch as the provided ToolSearch
+func (t *AgentOverride_ToolSearch) FromToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeToolSearch performs a merge with any union data inside the AgentOverride_ToolSearch, using the provided ToolSearch
+func (t *AgentOverride_ToolSearch) MergeToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsNativeToolSearch returns the union data inside the AgentOverride_ToolSearch as a NativeToolSearch
+func (t AgentOverride_ToolSearch) AsNativeToolSearch() (NativeToolSearch, error) {
+	var body NativeToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeToolSearch overwrites any union data inside the AgentOverride_ToolSearch as the provided NativeToolSearch
+func (t *AgentOverride_ToolSearch) FromNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeNativeToolSearch performs a merge with any union data inside the AgentOverride_ToolSearch, using the provided NativeToolSearch
+func (t *AgentOverride_ToolSearch) MergeNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentOverride_ToolSearch) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentOverride_ToolSearch) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // AsApprove returns the union data inside the ApprovalDecision as a Approve
 func (t ApprovalDecision) AsApprove() (Approve, error) {
