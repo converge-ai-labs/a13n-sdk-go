@@ -51,6 +51,21 @@ func (e AgentReviewerOnFlagged) Valid() bool {
 	}
 }
 
+// Defines values for AllowlistDestinationsMode.
+const (
+	Allowlist AllowlistDestinationsMode = "allowlist"
+)
+
+// Valid indicates whether the value is a known member of the AllowlistDestinationsMode enum.
+func (e AllowlistDestinationsMode) Valid() bool {
+	switch e {
+	case Allowlist:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ApproveAction.
 const (
 	ApproveActionApprove ApproveAction = "approve"
@@ -134,13 +149,14 @@ func (e BuiltinSkillName) Valid() bool {
 
 // Defines values for BuiltinToolsetKey.
 const (
-	Assets   BuiltinToolsetKey = "assets"
-	Browser  BuiltinToolsetKey = "browser"
-	Computer BuiltinToolsetKey = "computer"
-	Files    BuiltinToolsetKey = "files"
-	Memory   BuiltinToolsetKey = "memory"
-	Shell    BuiltinToolsetKey = "shell"
-	Web      BuiltinToolsetKey = "web"
+	Assets      BuiltinToolsetKey = "assets"
+	Browser     BuiltinToolsetKey = "browser"
+	Computer    BuiltinToolsetKey = "computer"
+	Files       BuiltinToolsetKey = "files"
+	Memory      BuiltinToolsetKey = "memory"
+	ObjectStore BuiltinToolsetKey = "object_store"
+	Shell       BuiltinToolsetKey = "shell"
+	Web         BuiltinToolsetKey = "web"
 )
 
 // Valid indicates whether the value is a known member of the BuiltinToolsetKey enum.
@@ -155,6 +171,8 @@ func (e BuiltinToolsetKey) Valid() bool {
 	case Files:
 		return true
 	case Memory:
+		return true
+	case ObjectStore:
 		return true
 	case Shell:
 		return true
@@ -312,6 +330,42 @@ func (e DenyAction) Valid() bool {
 	}
 }
 
+// Defines values for DisabledSandboxMode.
+const (
+	Disabled DisabledSandboxMode = "disabled"
+)
+
+// Valid indicates whether the value is a known member of the DisabledSandboxMode enum.
+func (e DisabledSandboxMode) Valid() bool {
+	switch e {
+	case Disabled:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EgressMode.
+const (
+	EgressModeControlled EgressMode = "controlled"
+	EgressModeDeny       EgressMode = "deny"
+	EgressModeInherit    EgressMode = "inherit"
+)
+
+// Valid indicates whether the value is a known member of the EgressMode enum.
+func (e EgressMode) Valid() bool {
+	switch e {
+	case EgressModeControlled:
+		return true
+	case EgressModeDeny:
+		return true
+	case EgressModeInherit:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for EntryStatus.
 const (
 	EntryStatusAssigned  EntryStatus = "assigned"
@@ -368,53 +422,253 @@ func (e EntryViewKind) Valid() bool {
 
 // Defines values for EnvironmentAction.
 const (
-	EnvironmentComputerClick          EnvironmentAction = "environment.computer.click"
-	EnvironmentComputerDescribe       EnvironmentAction = "environment.computer.describe"
-	EnvironmentComputerDrag           EnvironmentAction = "environment.computer.drag"
-	EnvironmentComputerMove           EnvironmentAction = "environment.computer.move"
-	EnvironmentComputerObserve        EnvironmentAction = "environment.computer.observe"
-	EnvironmentComputerPressKeys      EnvironmentAction = "environment.computer.press_keys"
-	EnvironmentComputerReadClipboard  EnvironmentAction = "environment.computer.read_clipboard"
-	EnvironmentComputerScroll         EnvironmentAction = "environment.computer.scroll"
-	EnvironmentComputerTypeText       EnvironmentAction = "environment.computer.type_text"
-	EnvironmentComputerWriteClipboard EnvironmentAction = "environment.computer.write_clipboard"
-	EnvironmentComputerZoom           EnvironmentAction = "environment.computer.zoom"
-	EnvironmentFileCopyDestination    EnvironmentAction = "environment.file.copy_destination"
-	EnvironmentFileCopySource         EnvironmentAction = "environment.file.copy_source"
-	EnvironmentFileList               EnvironmentAction = "environment.file.list"
-	EnvironmentFileMkdir              EnvironmentAction = "environment.file.mkdir"
-	EnvironmentFileMove               EnvironmentAction = "environment.file.move"
-	EnvironmentFilePatchText          EnvironmentAction = "environment.file.patch_text"
-	EnvironmentFileQuery              EnvironmentAction = "environment.file.query"
-	EnvironmentFileReadBytes          EnvironmentAction = "environment.file.read_bytes"
-	EnvironmentFileReadText           EnvironmentAction = "environment.file.read_text"
-	EnvironmentFileRemove             EnvironmentAction = "environment.file.remove"
-	EnvironmentFileSearchText         EnvironmentAction = "environment.file.search_text"
-	EnvironmentFileStat               EnvironmentAction = "environment.file.stat"
-	EnvironmentFileWriteBytes         EnvironmentAction = "environment.file.write_bytes"
-	EnvironmentFileWriteText          EnvironmentAction = "environment.file.write_text"
-	EnvironmentOutputRead             EnvironmentAction = "environment.output.read"
-	EnvironmentOutputRelease          EnvironmentAction = "environment.output.release"
-	EnvironmentPortInspect            EnvironmentAction = "environment.port.inspect"
-	EnvironmentPortWait               EnvironmentAction = "environment.port.wait"
-	EnvironmentProcessCloseStdin      EnvironmentAction = "environment.process.close_stdin"
-	EnvironmentProcessInspect         EnvironmentAction = "environment.process.inspect"
-	EnvironmentProcessKill            EnvironmentAction = "environment.process.kill"
-	EnvironmentProcessList            EnvironmentAction = "environment.process.list"
-	EnvironmentProcessReadOutput      EnvironmentAction = "environment.process.read_output"
-	EnvironmentProcessRelease         EnvironmentAction = "environment.process.release"
-	EnvironmentProcessSignal          EnvironmentAction = "environment.process.signal"
-	EnvironmentProcessStart           EnvironmentAction = "environment.process.start"
-	EnvironmentProcessWait            EnvironmentAction = "environment.process.wait"
-	EnvironmentProcessWriteStdin      EnvironmentAction = "environment.process.write_stdin"
-	EnvironmentShellExec              EnvironmentAction = "environment.shell.exec"
-	EnvironmentStateExport            EnvironmentAction = "environment.state.export"
-	EnvironmentStateRestore           EnvironmentAction = "environment.state.restore"
+	EnvironmentComputerA11yDescribe                 EnvironmentAction = "environment.computer.a11y_describe"
+	EnvironmentComputerA11yFind                     EnvironmentAction = "environment.computer.a11y_find"
+	EnvironmentComputerA11yInspect                  EnvironmentAction = "environment.computer.a11y_inspect"
+	EnvironmentComputerA11yRange                    EnvironmentAction = "environment.computer.a11y_range"
+	EnvironmentComputerA11yRangeRead                EnvironmentAction = "environment.computer.a11y_range_read"
+	EnvironmentComputerA11yRead                     EnvironmentAction = "environment.computer.a11y_read"
+	EnvironmentComputerA11yRoots                    EnvironmentAction = "environment.computer.a11y_roots"
+	EnvironmentComputerAtspiCaretSet                EnvironmentAction = "environment.computer.atspi_caret_set"
+	EnvironmentComputerAtspiComponentExtentsSet     EnvironmentAction = "environment.computer.atspi_component_extents_set"
+	EnvironmentComputerAtspiComponentPositionSet    EnvironmentAction = "environment.computer.atspi_component_position_set"
+	EnvironmentComputerAtspiComponentSizeSet        EnvironmentAction = "environment.computer.atspi_component_size_set"
+	EnvironmentComputerAtspiDoAction                EnvironmentAction = "environment.computer.atspi_do_action"
+	EnvironmentComputerAtspiDocumentSelectionsSet   EnvironmentAction = "environment.computer.atspi_document_selections_set"
+	EnvironmentComputerAtspiFocus                   EnvironmentAction = "environment.computer.atspi_focus"
+	EnvironmentComputerAtspiRangeScrollTo           EnvironmentAction = "environment.computer.atspi_range_scroll_to"
+	EnvironmentComputerAtspiRangeScrollToPoint      EnvironmentAction = "environment.computer.atspi_range_scroll_to_point"
+	EnvironmentComputerAtspiScrollTo                EnvironmentAction = "environment.computer.atspi_scroll_to"
+	EnvironmentComputerAtspiScrollToPoint           EnvironmentAction = "environment.computer.atspi_scroll_to_point"
+	EnvironmentComputerAtspiSelectionAddChild       EnvironmentAction = "environment.computer.atspi_selection_add_child"
+	EnvironmentComputerAtspiSelectionAll            EnvironmentAction = "environment.computer.atspi_selection_all"
+	EnvironmentComputerAtspiSelectionClear          EnvironmentAction = "environment.computer.atspi_selection_clear"
+	EnvironmentComputerAtspiSelectionRemoveChild    EnvironmentAction = "environment.computer.atspi_selection_remove_child"
+	EnvironmentComputerAtspiSelectionRemoveSelected EnvironmentAction = "environment.computer.atspi_selection_remove_selected"
+	EnvironmentComputerAtspiTableColumnSelect       EnvironmentAction = "environment.computer.atspi_table_column_select"
+	EnvironmentComputerAtspiTableColumnUnselect     EnvironmentAction = "environment.computer.atspi_table_column_unselect"
+	EnvironmentComputerAtspiTableRowSelect          EnvironmentAction = "environment.computer.atspi_table_row_select"
+	EnvironmentComputerAtspiTableRowUnselect        EnvironmentAction = "environment.computer.atspi_table_row_unselect"
+	EnvironmentComputerAtspiTextContentsSet         EnvironmentAction = "environment.computer.atspi_text_contents_set"
+	EnvironmentComputerAtspiTextCopy                EnvironmentAction = "environment.computer.atspi_text_copy"
+	EnvironmentComputerAtspiTextCut                 EnvironmentAction = "environment.computer.atspi_text_cut"
+	EnvironmentComputerAtspiTextDelete              EnvironmentAction = "environment.computer.atspi_text_delete"
+	EnvironmentComputerAtspiTextInsert              EnvironmentAction = "environment.computer.atspi_text_insert"
+	EnvironmentComputerAtspiTextPaste               EnvironmentAction = "environment.computer.atspi_text_paste"
+	EnvironmentComputerAtspiTextSelectionAdd        EnvironmentAction = "environment.computer.atspi_text_selection_add"
+	EnvironmentComputerAtspiTextSelectionRemove     EnvironmentAction = "environment.computer.atspi_text_selection_remove"
+	EnvironmentComputerAtspiTextSelectionSet        EnvironmentAction = "environment.computer.atspi_text_selection_set"
+	EnvironmentComputerAtspiValueSet                EnvironmentAction = "environment.computer.atspi_value_set"
+	EnvironmentComputerAxDisclosingSet              EnvironmentAction = "environment.computer.ax_disclosing_set"
+	EnvironmentComputerAxExpandedSet                EnvironmentAction = "environment.computer.ax_expanded_set"
+	EnvironmentComputerAxFocus                      EnvironmentAction = "environment.computer.ax_focus"
+	EnvironmentComputerAxFocusedWindowSet           EnvironmentAction = "environment.computer.ax_focused_window_set"
+	EnvironmentComputerAxMainSet                    EnvironmentAction = "environment.computer.ax_main_set"
+	EnvironmentComputerAxMinimizedSet               EnvironmentAction = "environment.computer.ax_minimized_set"
+	EnvironmentComputerAxPerformAction              EnvironmentAction = "environment.computer.ax_perform_action"
+	EnvironmentComputerAxPositionSet                EnvironmentAction = "environment.computer.ax_position_set"
+	EnvironmentComputerAxSelectedChildrenSet        EnvironmentAction = "environment.computer.ax_selected_children_set"
+	EnvironmentComputerAxSelectedColumnsSet         EnvironmentAction = "environment.computer.ax_selected_columns_set"
+	EnvironmentComputerAxSelectedRowsSet            EnvironmentAction = "environment.computer.ax_selected_rows_set"
+	EnvironmentComputerAxSelectedSet                EnvironmentAction = "environment.computer.ax_selected_set"
+	EnvironmentComputerAxSelectedTextSet            EnvironmentAction = "environment.computer.ax_selected_text_set"
+	EnvironmentComputerAxSizeSet                    EnvironmentAction = "environment.computer.ax_size_set"
+	EnvironmentComputerAxTextRangeSelect            EnvironmentAction = "environment.computer.ax_text_range_select"
+	EnvironmentComputerAxTextRangesSelect           EnvironmentAction = "environment.computer.ax_text_ranges_select"
+	EnvironmentComputerAxValueNumberSet             EnvironmentAction = "environment.computer.ax_value_number_set"
+	EnvironmentComputerAxValueStringSet             EnvironmentAction = "environment.computer.ax_value_string_set"
+	EnvironmentComputerAxVisibleTextRangeSet        EnvironmentAction = "environment.computer.ax_visible_text_range_set"
+	EnvironmentComputerClick                        EnvironmentAction = "environment.computer.click"
+	EnvironmentComputerDescribe                     EnvironmentAction = "environment.computer.describe"
+	EnvironmentComputerDrag                         EnvironmentAction = "environment.computer.drag"
+	EnvironmentComputerMove                         EnvironmentAction = "environment.computer.move"
+	EnvironmentComputerObserve                      EnvironmentAction = "environment.computer.observe"
+	EnvironmentComputerPressKeys                    EnvironmentAction = "environment.computer.press_keys"
+	EnvironmentComputerReadClipboard                EnvironmentAction = "environment.computer.read_clipboard"
+	EnvironmentComputerScroll                       EnvironmentAction = "environment.computer.scroll"
+	EnvironmentComputerTypeText                     EnvironmentAction = "environment.computer.type_text"
+	EnvironmentComputerUiaCollapse                  EnvironmentAction = "environment.computer.uia_collapse"
+	EnvironmentComputerUiaDockSet                   EnvironmentAction = "environment.computer.uia_dock_set"
+	EnvironmentComputerUiaExpand                    EnvironmentAction = "environment.computer.uia_expand"
+	EnvironmentComputerUiaFocus                     EnvironmentAction = "environment.computer.uia_focus"
+	EnvironmentComputerUiaInvoke                    EnvironmentAction = "environment.computer.uia_invoke"
+	EnvironmentComputerUiaLegacyDefaultAction       EnvironmentAction = "environment.computer.uia_legacy_default_action"
+	EnvironmentComputerUiaLegacySelect              EnvironmentAction = "environment.computer.uia_legacy_select"
+	EnvironmentComputerUiaLegacyValueSet            EnvironmentAction = "environment.computer.uia_legacy_value_set"
+	EnvironmentComputerUiaRangeAddSelection         EnvironmentAction = "environment.computer.uia_range_add_selection"
+	EnvironmentComputerUiaRangeRemoveSelection      EnvironmentAction = "environment.computer.uia_range_remove_selection"
+	EnvironmentComputerUiaRangeScrollIntoView       EnvironmentAction = "environment.computer.uia_range_scroll_into_view"
+	EnvironmentComputerUiaRangeSelect               EnvironmentAction = "environment.computer.uia_range_select"
+	EnvironmentComputerUiaRangeShowContextMenu      EnvironmentAction = "environment.computer.uia_range_show_context_menu"
+	EnvironmentComputerUiaRangeValueSet             EnvironmentAction = "environment.computer.uia_range_value_set"
+	EnvironmentComputerUiaRealize                   EnvironmentAction = "environment.computer.uia_realize"
+	EnvironmentComputerUiaScrollAmount              EnvironmentAction = "environment.computer.uia_scroll_amount"
+	EnvironmentComputerUiaScrollIntoView            EnvironmentAction = "environment.computer.uia_scroll_into_view"
+	EnvironmentComputerUiaScrollPercent             EnvironmentAction = "environment.computer.uia_scroll_percent"
+	EnvironmentComputerUiaSelectionAdd              EnvironmentAction = "environment.computer.uia_selection_add"
+	EnvironmentComputerUiaSelectionRemove           EnvironmentAction = "environment.computer.uia_selection_remove"
+	EnvironmentComputerUiaSelectionSelect           EnvironmentAction = "environment.computer.uia_selection_select"
+	EnvironmentComputerUiaShowContextMenu           EnvironmentAction = "environment.computer.uia_show_context_menu"
+	EnvironmentComputerUiaToggle                    EnvironmentAction = "environment.computer.uia_toggle"
+	EnvironmentComputerUiaTransformMove             EnvironmentAction = "environment.computer.uia_transform_move"
+	EnvironmentComputerUiaTransformResize           EnvironmentAction = "environment.computer.uia_transform_resize"
+	EnvironmentComputerUiaTransformRotate           EnvironmentAction = "environment.computer.uia_transform_rotate"
+	EnvironmentComputerUiaTransformZoom             EnvironmentAction = "environment.computer.uia_transform_zoom"
+	EnvironmentComputerUiaTransformZoomUnit         EnvironmentAction = "environment.computer.uia_transform_zoom_unit"
+	EnvironmentComputerUiaValueSet                  EnvironmentAction = "environment.computer.uia_value_set"
+	EnvironmentComputerUiaViewSet                   EnvironmentAction = "environment.computer.uia_view_set"
+	EnvironmentComputerUiaWindowClose               EnvironmentAction = "environment.computer.uia_window_close"
+	EnvironmentComputerUiaWindowStateSet            EnvironmentAction = "environment.computer.uia_window_state_set"
+	EnvironmentComputerWriteClipboard               EnvironmentAction = "environment.computer.write_clipboard"
+	EnvironmentComputerZoom                         EnvironmentAction = "environment.computer.zoom"
+	EnvironmentFileCopyDestination                  EnvironmentAction = "environment.file.copy_destination"
+	EnvironmentFileCopySource                       EnvironmentAction = "environment.file.copy_source"
+	EnvironmentFileList                             EnvironmentAction = "environment.file.list"
+	EnvironmentFileMkdir                            EnvironmentAction = "environment.file.mkdir"
+	EnvironmentFileMove                             EnvironmentAction = "environment.file.move"
+	EnvironmentFilePatchText                        EnvironmentAction = "environment.file.patch_text"
+	EnvironmentFileQuery                            EnvironmentAction = "environment.file.query"
+	EnvironmentFileReadBytes                        EnvironmentAction = "environment.file.read_bytes"
+	EnvironmentFileReadText                         EnvironmentAction = "environment.file.read_text"
+	EnvironmentFileRemove                           EnvironmentAction = "environment.file.remove"
+	EnvironmentFileSearchText                       EnvironmentAction = "environment.file.search_text"
+	EnvironmentFileStat                             EnvironmentAction = "environment.file.stat"
+	EnvironmentFileWriteBytes                       EnvironmentAction = "environment.file.write_bytes"
+	EnvironmentFileWriteText                        EnvironmentAction = "environment.file.write_text"
+	EnvironmentOutputRead                           EnvironmentAction = "environment.output.read"
+	EnvironmentOutputRelease                        EnvironmentAction = "environment.output.release"
+	EnvironmentPortInspect                          EnvironmentAction = "environment.port.inspect"
+	EnvironmentPortWait                             EnvironmentAction = "environment.port.wait"
+	EnvironmentProcessCloseStdin                    EnvironmentAction = "environment.process.close_stdin"
+	EnvironmentProcessInspect                       EnvironmentAction = "environment.process.inspect"
+	EnvironmentProcessKill                          EnvironmentAction = "environment.process.kill"
+	EnvironmentProcessList                          EnvironmentAction = "environment.process.list"
+	EnvironmentProcessReadOutput                    EnvironmentAction = "environment.process.read_output"
+	EnvironmentProcessRelease                       EnvironmentAction = "environment.process.release"
+	EnvironmentProcessSignal                        EnvironmentAction = "environment.process.signal"
+	EnvironmentProcessStart                         EnvironmentAction = "environment.process.start"
+	EnvironmentProcessWait                          EnvironmentAction = "environment.process.wait"
+	EnvironmentProcessWriteStdin                    EnvironmentAction = "environment.process.write_stdin"
+	EnvironmentShellExec                            EnvironmentAction = "environment.shell.exec"
+	EnvironmentStateExport                          EnvironmentAction = "environment.state.export"
+	EnvironmentStateRestore                         EnvironmentAction = "environment.state.restore"
 )
 
 // Valid indicates whether the value is a known member of the EnvironmentAction enum.
 func (e EnvironmentAction) Valid() bool {
 	switch e {
+	case EnvironmentComputerA11yDescribe:
+		return true
+	case EnvironmentComputerA11yFind:
+		return true
+	case EnvironmentComputerA11yInspect:
+		return true
+	case EnvironmentComputerA11yRange:
+		return true
+	case EnvironmentComputerA11yRangeRead:
+		return true
+	case EnvironmentComputerA11yRead:
+		return true
+	case EnvironmentComputerA11yRoots:
+		return true
+	case EnvironmentComputerAtspiCaretSet:
+		return true
+	case EnvironmentComputerAtspiComponentExtentsSet:
+		return true
+	case EnvironmentComputerAtspiComponentPositionSet:
+		return true
+	case EnvironmentComputerAtspiComponentSizeSet:
+		return true
+	case EnvironmentComputerAtspiDoAction:
+		return true
+	case EnvironmentComputerAtspiDocumentSelectionsSet:
+		return true
+	case EnvironmentComputerAtspiFocus:
+		return true
+	case EnvironmentComputerAtspiRangeScrollTo:
+		return true
+	case EnvironmentComputerAtspiRangeScrollToPoint:
+		return true
+	case EnvironmentComputerAtspiScrollTo:
+		return true
+	case EnvironmentComputerAtspiScrollToPoint:
+		return true
+	case EnvironmentComputerAtspiSelectionAddChild:
+		return true
+	case EnvironmentComputerAtspiSelectionAll:
+		return true
+	case EnvironmentComputerAtspiSelectionClear:
+		return true
+	case EnvironmentComputerAtspiSelectionRemoveChild:
+		return true
+	case EnvironmentComputerAtspiSelectionRemoveSelected:
+		return true
+	case EnvironmentComputerAtspiTableColumnSelect:
+		return true
+	case EnvironmentComputerAtspiTableColumnUnselect:
+		return true
+	case EnvironmentComputerAtspiTableRowSelect:
+		return true
+	case EnvironmentComputerAtspiTableRowUnselect:
+		return true
+	case EnvironmentComputerAtspiTextContentsSet:
+		return true
+	case EnvironmentComputerAtspiTextCopy:
+		return true
+	case EnvironmentComputerAtspiTextCut:
+		return true
+	case EnvironmentComputerAtspiTextDelete:
+		return true
+	case EnvironmentComputerAtspiTextInsert:
+		return true
+	case EnvironmentComputerAtspiTextPaste:
+		return true
+	case EnvironmentComputerAtspiTextSelectionAdd:
+		return true
+	case EnvironmentComputerAtspiTextSelectionRemove:
+		return true
+	case EnvironmentComputerAtspiTextSelectionSet:
+		return true
+	case EnvironmentComputerAtspiValueSet:
+		return true
+	case EnvironmentComputerAxDisclosingSet:
+		return true
+	case EnvironmentComputerAxExpandedSet:
+		return true
+	case EnvironmentComputerAxFocus:
+		return true
+	case EnvironmentComputerAxFocusedWindowSet:
+		return true
+	case EnvironmentComputerAxMainSet:
+		return true
+	case EnvironmentComputerAxMinimizedSet:
+		return true
+	case EnvironmentComputerAxPerformAction:
+		return true
+	case EnvironmentComputerAxPositionSet:
+		return true
+	case EnvironmentComputerAxSelectedChildrenSet:
+		return true
+	case EnvironmentComputerAxSelectedColumnsSet:
+		return true
+	case EnvironmentComputerAxSelectedRowsSet:
+		return true
+	case EnvironmentComputerAxSelectedSet:
+		return true
+	case EnvironmentComputerAxSelectedTextSet:
+		return true
+	case EnvironmentComputerAxSizeSet:
+		return true
+	case EnvironmentComputerAxTextRangeSelect:
+		return true
+	case EnvironmentComputerAxTextRangesSelect:
+		return true
+	case EnvironmentComputerAxValueNumberSet:
+		return true
+	case EnvironmentComputerAxValueStringSet:
+		return true
+	case EnvironmentComputerAxVisibleTextRangeSet:
+		return true
 	case EnvironmentComputerClick:
 		return true
 	case EnvironmentComputerDescribe:
@@ -432,6 +686,70 @@ func (e EnvironmentAction) Valid() bool {
 	case EnvironmentComputerScroll:
 		return true
 	case EnvironmentComputerTypeText:
+		return true
+	case EnvironmentComputerUiaCollapse:
+		return true
+	case EnvironmentComputerUiaDockSet:
+		return true
+	case EnvironmentComputerUiaExpand:
+		return true
+	case EnvironmentComputerUiaFocus:
+		return true
+	case EnvironmentComputerUiaInvoke:
+		return true
+	case EnvironmentComputerUiaLegacyDefaultAction:
+		return true
+	case EnvironmentComputerUiaLegacySelect:
+		return true
+	case EnvironmentComputerUiaLegacyValueSet:
+		return true
+	case EnvironmentComputerUiaRangeAddSelection:
+		return true
+	case EnvironmentComputerUiaRangeRemoveSelection:
+		return true
+	case EnvironmentComputerUiaRangeScrollIntoView:
+		return true
+	case EnvironmentComputerUiaRangeSelect:
+		return true
+	case EnvironmentComputerUiaRangeShowContextMenu:
+		return true
+	case EnvironmentComputerUiaRangeValueSet:
+		return true
+	case EnvironmentComputerUiaRealize:
+		return true
+	case EnvironmentComputerUiaScrollAmount:
+		return true
+	case EnvironmentComputerUiaScrollIntoView:
+		return true
+	case EnvironmentComputerUiaScrollPercent:
+		return true
+	case EnvironmentComputerUiaSelectionAdd:
+		return true
+	case EnvironmentComputerUiaSelectionRemove:
+		return true
+	case EnvironmentComputerUiaSelectionSelect:
+		return true
+	case EnvironmentComputerUiaShowContextMenu:
+		return true
+	case EnvironmentComputerUiaToggle:
+		return true
+	case EnvironmentComputerUiaTransformMove:
+		return true
+	case EnvironmentComputerUiaTransformResize:
+		return true
+	case EnvironmentComputerUiaTransformRotate:
+		return true
+	case EnvironmentComputerUiaTransformZoom:
+		return true
+	case EnvironmentComputerUiaTransformZoomUnit:
+		return true
+	case EnvironmentComputerUiaValueSet:
+		return true
+	case EnvironmentComputerUiaViewSet:
+		return true
+	case EnvironmentComputerUiaWindowClose:
+		return true
+	case EnvironmentComputerUiaWindowStateSet:
 		return true
 	case EnvironmentComputerWriteClipboard:
 		return true
@@ -504,6 +822,21 @@ func (e EnvironmentAction) Valid() bool {
 	}
 }
 
+// Defines values for ExistingRunEnvironmentMode.
+const (
+	Existing ExistingRunEnvironmentMode = "existing"
+)
+
+// Valid indicates whether the value is a known member of the ExistingRunEnvironmentMode enum.
+func (e ExistingRunEnvironmentMode) Valid() bool {
+	switch e {
+	case Existing:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for FailedStatus.
 const (
 	FailedStatusFailed FailedStatus = "failed"
@@ -513,6 +846,39 @@ const (
 func (e FailedStatus) Valid() bool {
 	switch e {
 	case FailedStatusFailed:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FreshRunEnvironmentMode.
+const (
+	Fresh FreshRunEnvironmentMode = "fresh"
+)
+
+// Valid indicates whether the value is a known member of the FreshRunEnvironmentMode enum.
+func (e FreshRunEnvironmentMode) Valid() bool {
+	switch e {
+	case Fresh:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GrantAccess.
+const (
+	ReadOnly  GrantAccess = "read_only"
+	ReadWrite GrantAccess = "read_write"
+)
+
+// Valid indicates whether the value is a known member of the GrantAccess enum.
+func (e GrantAccess) Valid() bool {
+	switch e {
+	case ReadOnly:
+		return true
+	case ReadWrite:
 		return true
 	default:
 		return false
@@ -690,6 +1056,36 @@ func (e MemorySourceStatus) Valid() bool {
 	}
 }
 
+// Defines values for NativeIsolationMode.
+const (
+	NativeIsolationModeNative NativeIsolationMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeIsolationMode enum.
+func (e NativeIsolationMode) Valid() bool {
+	switch e {
+	case NativeIsolationModeNative:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for NativeToolSearchMode.
+const (
+	NativeToolSearchModeNative NativeToolSearchMode = "native"
+)
+
+// Valid indicates whether the value is a known member of the NativeToolSearchMode enum.
+func (e NativeToolSearchMode) Valid() bool {
+	switch e {
+	case NativeToolSearchModeNative:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OccurrenceStatus.
 const (
 	OccurrenceStatusCancelled OccurrenceStatus = "cancelled"
@@ -792,6 +1188,36 @@ func (e PlatformGroup) Valid() bool {
 	}
 }
 
+// Defines values for PublicDestinationsMode.
+const (
+	Public PublicDestinationsMode = "public"
+)
+
+// Valid indicates whether the value is a known member of the PublicDestinationsMode enum.
+func (e PublicDestinationsMode) Valid() bool {
+	switch e {
+	case Public:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RestrictedSandboxMode.
+const (
+	Restricted RestrictedSandboxMode = "restricted"
+)
+
+// Valid indicates whether the value is a known member of the RestrictedSandboxMode enum.
+func (e RestrictedSandboxMode) Valid() bool {
+	switch e {
+	case Restricted:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ReturnedStatus.
 const (
 	ReturnedStatusReturned ReturnedStatus = "returned"
@@ -842,6 +1268,7 @@ const (
 	Default   RunViewRevisionSelection = "default"
 	Inherited RunViewRevisionSelection = "inherited"
 	Pinned    RunViewRevisionSelection = "pinned"
+	Snapshot  RunViewRevisionSelection = "snapshot"
 )
 
 // Valid indicates whether the value is a known member of the RunViewRevisionSelection enum.
@@ -852,6 +1279,8 @@ func (e RunViewRevisionSelection) Valid() bool {
 	case Inherited:
 		return true
 	case Pinned:
+		return true
+	case Snapshot:
 		return true
 	default:
 		return false
@@ -933,6 +1362,24 @@ func (e Steering) Valid() bool {
 	}
 }
 
+// Defines values for SubagentsMode.
+const (
+	SubagentsModeAsync  SubagentsMode = "async"
+	SubagentsModeInline SubagentsMode = "inline"
+)
+
+// Valid indicates whether the value is a known member of the SubagentsMode enum.
+func (e SubagentsMode) Valid() bool {
+	switch e {
+	case SubagentsModeAsync:
+		return true
+	case SubagentsModeInline:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TextPartType.
 const (
 	TextPartTypeText TextPartType = "text"
@@ -989,16 +1436,16 @@ func (e ThreadViewPurpose) Valid() bool {
 
 // Defines values for ToolExecutionOverrideMode.
 const (
-	Auto   ToolExecutionOverrideMode = "auto"
-	Inline ToolExecutionOverrideMode = "inline"
+	ToolExecutionOverrideModeAuto   ToolExecutionOverrideMode = "auto"
+	ToolExecutionOverrideModeInline ToolExecutionOverrideMode = "inline"
 )
 
 // Valid indicates whether the value is a known member of the ToolExecutionOverrideMode enum.
 func (e ToolExecutionOverrideMode) Valid() bool {
 	switch e {
-	case Auto:
+	case ToolExecutionOverrideModeAuto:
 		return true
-	case Inline:
+	case ToolExecutionOverrideModeInline:
 		return true
 	default:
 		return false
@@ -1167,6 +1614,39 @@ func (e UrlPartType) Valid() bool {
 	}
 }
 
+// Defines values for VmBackend.
+const (
+	Boxlite      VmBackend = "boxlite"
+	Microsandbox VmBackend = "microsandbox"
+)
+
+// Valid indicates whether the value is a known member of the VmBackend enum.
+func (e VmBackend) Valid() bool {
+	switch e {
+	case Boxlite:
+		return true
+	case Microsandbox:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VmIsolationMode.
+const (
+	Vm VmIsolationMode = "vm"
+)
+
+// Valid indicates whether the value is a known member of the VmIsolationMode enum.
+func (e VmIsolationMode) Valid() bool {
+	switch e {
+	case Vm:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WaitReason.
 const (
 	Approval       WaitReason = "approval"
@@ -1221,8 +1701,8 @@ type AgentModelCharacteristics struct {
 
 // AgentOverride What one run changes of its revision's configuration; an omitted or null field keeps the revision's.
 //
-// `toolsets` replaces whole toolsets; `retries` and each subagent edge replace the fields they set, and a null
-// edge removes it; every other field replaces the revision's value.
+// `toolsets` replaces whole toolsets; `retries` replaces supplied members.
+// Every other field, including `subagents`, replaces the whole value.
 type AgentOverride struct {
 	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
 	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
@@ -1239,9 +1719,14 @@ type AgentOverride struct {
 	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
 	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
 	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[map[string]interface{}]      `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[ToolSearch]                  `json:"tool_search,omitempty"`
+	Subagents            nullable.Nullable[Subagents]                   `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[AgentOverride_ToolSearch]    `json:"tool_search,omitempty"`
 	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+}
+
+// AgentOverride_ToolSearch defines model for AgentOverride.ToolSearch.
+type AgentOverride_ToolSearch struct {
+	union json.RawMessage
 }
 
 // AgentReviewer The model reviewing calls whose permission is `review`, selected by model key.
@@ -1263,6 +1748,15 @@ type AgentReviewerOnError string
 // AgentReviewerOnFlagged defines model for AgentReviewer.OnFlagged.
 type AgentReviewerOnFlagged string
 
+// AllowlistDestinations defines model for AllowlistDestinations.
+type AllowlistDestinations struct {
+	Hosts *[]string                 `json:"hosts,omitempty"`
+	Mode  AllowlistDestinationsMode `json:"mode"`
+}
+
+// AllowlistDestinationsMode defines model for AllowlistDestinations.Mode.
+type AllowlistDestinationsMode string
+
 // AppReady App originals and references are committed; opening still checks access and fetches current HTML.
 type AppReady struct {
 	Apps     []AppReference `json:"apps"`
@@ -1272,14 +1766,14 @@ type AppReady struct {
 
 // AppReference defines model for AppReference.
 type AppReference struct {
-	AgentRevisionId string `json:"agent_revision_id"`
-	AppId           string `json:"app_id"`
-	ConnectionId    string `json:"connection_id"`
-	ResourceUri     string `json:"resource_uri"`
-	SourceRunId     string `json:"source_run_id"`
-	ToolCallId      string `json:"tool_call_id"`
-	ToolName        string `json:"tool_name"`
-	Unavailable     *bool  `json:"unavailable,omitempty"`
+	AgentDefinitionId string `json:"agent_definition_id"`
+	AppId             string `json:"app_id"`
+	ConnectionId      string `json:"connection_id"`
+	ResourceUri       string `json:"resource_uri"`
+	SourceRunId       string `json:"source_run_id"`
+	ToolCallId        string `json:"tool_call_id"`
+	ToolName          string `json:"tool_name"`
+	Unavailable       *bool  `json:"unavailable,omitempty"`
 }
 
 // ApprovalDecision defines model for ApprovalDecision.
@@ -1304,7 +1798,7 @@ type AssetPart struct {
 // AssetPartType defines model for AssetPart.Type.
 type AssetPartType string
 
-// AutomaticToolSearch Group Service-owned sources individually, following the agent's selections.
+// AutomaticToolSearch Select Service-owned sources for on-demand discovery.
 type AutomaticToolSearch struct {
 	Capabilities       *[]BuiltinToolsetKey `json:"capabilities,omitempty"`
 	Connections        *bool                `json:"connections,omitempty"`
@@ -1436,6 +1930,14 @@ type Deny struct {
 // DenyAction defines model for Deny.Action.
 type DenyAction string
 
+// DisabledSandbox defines model for DisabledSandbox.
+type DisabledSandbox struct {
+	Mode DisabledSandboxMode `json:"mode"`
+}
+
+// DisabledSandboxMode defines model for DisabledSandbox.Mode.
+type DisabledSandboxMode string
+
 // DisplayContinuation Parsing state at a semantic cut; Host paging may retire only immutable items.
 type DisplayContinuation struct {
 	Arguments nullable.Nullable[UnderscoreArguments] `json:"arguments,omitempty"`
@@ -1452,6 +1954,39 @@ type DisplayContinuation struct {
 	ResponseGroups *map[string]string    `json:"response_groups,omitempty"`
 	RunId          string                `json:"run_id"`
 }
+
+// DynamicSubagents Root-only task-specific delegation within the parent's capability boundary.
+type DynamicSubagents struct {
+	AllowedModels   *[]string                                           `json:"allowed_models,omitempty"`
+	DefaultModel    nullable.Nullable[string]                           `json:"default_model,omitempty"`
+	DefaultThinking nullable.Nullable[DynamicSubagents_DefaultThinking] `json:"default_thinking,omitempty"`
+	Enabled         *bool                                               `json:"enabled,omitempty"`
+}
+
+// DynamicSubagentsDefaultThinking0 defines model for DynamicSubagents.DefaultThinking.0.
+type DynamicSubagentsDefaultThinking0 = string
+
+// DynamicSubagentsDefaultThinking1 defines model for DynamicSubagents.DefaultThinking.1.
+type DynamicSubagentsDefaultThinking1 = bool
+
+// DynamicSubagents_DefaultThinking defines model for DynamicSubagents.DefaultThinking.
+type DynamicSubagents_DefaultThinking struct {
+	union json.RawMessage
+}
+
+// EgressConfiguration defines model for EgressConfiguration.
+type EgressConfiguration struct {
+	Destinations EgressDestinations `json:"destinations"`
+	Secrets      *[]SecretReference `json:"secrets,omitempty"`
+}
+
+// EgressDestinations defines model for EgressDestinations.
+type EgressDestinations struct {
+	union json.RawMessage
+}
+
+// EgressMode defines model for EgressMode.
+type EgressMode string
 
 // EntryStatus defines model for EntryStatus.
 type EntryStatus string
@@ -1491,7 +2026,12 @@ type EnvironmentMount struct {
 	EnvironmentId     string                    `json:"environment_id"`
 	Name              string                    `json:"name"`
 	PermissionCeiling *EnvironmentPermissionSet `json:"permission_ceiling,omitempty"`
-	WorkingDirectory  nullable.Nullable[string] `json:"working_directory,omitempty"`
+	SessionBinding    *string                   `json:"session_binding,omitempty"`
+
+	// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+	SessionConfiguration *SessionConfiguration     `json:"session_configuration,omitempty"`
+	SessionVersion       *int                      `json:"session_version,omitempty"`
+	WorkingDirectory     nullable.Nullable[string] `json:"working_directory,omitempty"`
 }
 
 // EnvironmentPermissionSet defines model for EnvironmentPermissionSet.
@@ -1508,6 +2048,19 @@ type ExecutionOverride struct {
 	Steering    nullable.Nullable[Steering]              `json:"steering,omitempty"`
 	Tools       nullable.Nullable[ToolExecutionOverride] `json:"tools,omitempty"`
 }
+
+// ExistingRunEnvironment Use this exact primary instance for the Run; absence never triggers allocation.
+type ExistingRunEnvironment struct {
+	EnvironmentId        string                                  `json:"environment_id"`
+	Mode                 ExistingRunEnvironmentMode              `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSet               `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
+}
+
+// ExistingRunEnvironmentMode defines model for ExistingRunEnvironment.Mode.
+type ExistingRunEnvironmentMode string
 
 // Failed An explicit external tool failure, including an intentional unanswered question.
 type Failed struct {
@@ -1540,15 +2093,18 @@ type FragmentState struct {
 	Pending    *map[string]UnderscoreAssembly `json:"pending,omitempty"`
 }
 
-// FrozenMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
-type FrozenMemoryMount struct {
-	Access   MemoryAccess              `json:"access"`
-	MemoryId string                    `json:"memory_id"`
-	Name     string                    `json:"name"`
-	Recall   *bool                     `json:"recall,omitempty"`
-	Roots    *[]string                 `json:"roots,omitempty"`
-	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
+// FreshRunEnvironment Reserve a primary instance for this accepted Run without changing Thread mounts.
+type FreshRunEnvironment struct {
+	Mode                 FreshRunEnvironmentMode                 `json:"mode"`
+	PermissionCeiling    *EnvironmentPermissionSet               `json:"permission_ceiling,omitempty"`
+	SessionBinding       *string                                 `json:"session_binding,omitempty"`
+	SessionConfiguration nullable.Nullable[SessionConfiguration] `json:"session_configuration,omitempty"`
+	TemplateId           string                                  `json:"template_id"`
+	WorkingDirectory     nullable.Nullable[string]               `json:"working_directory,omitempty"`
 }
+
+// FreshRunEnvironmentMode defines model for FreshRunEnvironment.Mode.
+type FreshRunEnvironmentMode string
 
 // Gap Output of a followed run was lost: its deltas are held until an `items` frame repairs it.
 type Gap struct {
@@ -1556,12 +2112,18 @@ type Gap struct {
 	ThreadId string `json:"thread_id"`
 }
 
+// GrantAccess defines model for GrantAccess.
+type GrantAccess string
+
 // HistoricalDesktopPending Read-only projection of sealed desktop suspensions predating Computer-scoped control.
 type HistoricalDesktopPending struct {
 	Approvals        []PendingCall `json:"approvals"`
 	Calls            []PendingCall `json:"calls"`
 	DesktopControlId string        `json:"desktop_control_id"`
 }
+
+// Hosts defines model for Hosts.
+type Hosts = []string
 
 // InitialRun defines model for InitialRun.
 type InitialRun struct {
@@ -1665,6 +2227,25 @@ type MemorySourceStatus string
 type MessagePayload struct {
 	Content []Part `json:"content"`
 }
+
+// NativeIsolation defines model for NativeIsolation.
+type NativeIsolation struct {
+	Mode NativeIsolationMode `json:"mode"`
+}
+
+// NativeIsolationMode defines model for NativeIsolation.Mode.
+type NativeIsolationMode string
+
+// NativeToolSearch Ungrouped native discovery of selected Service tools; plugins keep their own settings.
+type NativeToolSearch struct {
+	Mode NativeToolSearchMode `json:"mode"`
+
+	// Sources Select Service-owned sources for on-demand discovery.
+	Sources *AutomaticToolSearch `json:"sources,omitempty"`
+}
+
+// NativeToolSearchMode defines model for NativeToolSearch.Mode.
+type NativeToolSearchMode string
 
 // ObserverContinuation Native conversion cursors required to resume mid-part, without raw history.
 type ObserverContinuation struct {
@@ -1785,6 +2366,14 @@ type Progress struct {
 	PendingOccurrenceId nullable.Nullable[string]    `json:"pending_occurrence_id"`
 }
 
+// PublicDestinations defines model for PublicDestinations.
+type PublicDestinations struct {
+	Mode PublicDestinationsMode `json:"mode"`
+}
+
+// PublicDestinationsMode defines model for PublicDestinations.Mode.
+type PublicDestinationsMode string
+
 // RecordSource defines model for RecordSource.
 type RecordSource struct {
 	Id     string `json:"id"`
@@ -1795,6 +2384,16 @@ type RecordSource struct {
 type RequestContext struct {
 	Headers *map[string]string `json:"headers,omitempty"`
 }
+
+// RestrictedSandbox defines model for RestrictedSandbox.
+type RestrictedSandbox struct {
+	FullDiskRead *bool                 `json:"full_disk_read,omitempty"`
+	Grants       *[]SandboxGrant       `json:"grants,omitempty"`
+	Mode         RestrictedSandboxMode `json:"mode"`
+}
+
+// RestrictedSandboxMode defines model for RestrictedSandbox.Mode.
+type RestrictedSandboxMode string
 
 // Resume The complete result batch, submitted and stored on the successor without omission defaults.
 type Resume struct {
@@ -1828,10 +2427,26 @@ type RunConfiguration struct {
 	Extensions   *map[string]JsonValue       `json:"extensions,omitempty"`
 }
 
+// RunEnvironment defines model for RunEnvironment.
+type RunEnvironment struct {
+	union json.RawMessage
+}
+
+// RunMemoryMount Host-resolved Space identity and roots, never accepted from a mount request.
+type RunMemoryMount struct {
+	Access   MemoryAccess              `json:"access"`
+	MemoryId string                    `json:"memory_id"`
+	Name     string                    `json:"name"`
+	Recall   *bool                     `json:"recall,omitempty"`
+	Roots    *[]string                 `json:"roots,omitempty"`
+	SpaceId  nullable.Nullable[string] `json:"space_id,omitempty"`
+}
+
 // RunOptions What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 type RunOptions struct {
 	Configuration nullable.Nullable[RunConfiguration]  `json:"configuration,omitempty"`
 	Context       nullable.Nullable[RequestContext]    `json:"context,omitempty"`
+	Environment   nullable.Nullable[RunEnvironment]    `json:"environment,omitempty"`
 	Execution     nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
 	Labels        *map[string]string                   `json:"labels,omitempty"`
 	MaxUsage      nullable.Nullable[UsageLimit]        `json:"max_usage,omitempty"`
@@ -1855,7 +2470,7 @@ type RunStatus string
 // RunView defines model for RunView.
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
-	AgentRevisionId   string                                  `json:"agent_revision_id"`
+	AgentRevisionId   nullable.Nullable[string]               `json:"agent_revision_id"`
 	Attempts          int                                     `json:"attempts"`
 	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
@@ -1907,6 +2522,17 @@ type RunView_Pending struct {
 // RunViewRevisionSelection defines model for RunView.RevisionSelection.
 type RunViewRevisionSelection string
 
+// SandboxGrant defines model for SandboxGrant.
+type SandboxGrant struct {
+	Access GrantAccess `json:"access"`
+	Path   string      `json:"path"`
+}
+
+// SandboxPolicy defines model for SandboxPolicy.
+type SandboxPolicy struct {
+	union json.RawMessage
+}
+
 // ScheduleEvent defines model for ScheduleEvent.
 type ScheduleEvent struct {
 	Configuration Configuration `json:"configuration"`
@@ -1931,6 +2557,35 @@ type ScheduleState string
 
 // ScheduleTrigger defines model for ScheduleTrigger.
 type ScheduleTrigger string
+
+// SecretReference defines model for SecretReference.
+type SecretReference struct {
+	CredentialId string `json:"credential_id"`
+	Env          string `json:"env"`
+	InjectHosts  Hosts  `json:"inject_hosts"`
+}
+
+// SessionConfiguration Tenant-authored Session policy; Service credentials are not process-environment references.
+type SessionConfiguration struct {
+	Commands         nullable.Nullable[bool]                   `json:"commands,omitempty"`
+	Egress           nullable.Nullable[EgressConfiguration]    `json:"egress,omitempty"`
+	EgressMode       nullable.Nullable[EgressMode]             `json:"egress_mode,omitempty"`
+	Isolation        nullable.Nullable[SessionIsolation]       `json:"isolation,omitempty"`
+	Lifecycle        nullable.Nullable[SessionLifecyclePolicy] `json:"lifecycle,omitempty"`
+	Sandbox          nullable.Nullable[SandboxPolicy]          `json:"sandbox,omitempty"`
+	WorkingDirectory nullable.Nullable[string]                 `json:"working_directory,omitempty"`
+}
+
+// SessionIsolation defines model for SessionIsolation.
+type SessionIsolation struct {
+	union json.RawMessage
+}
+
+// SessionLifecyclePolicy defines model for SessionLifecyclePolicy.
+type SessionLifecyclePolicy struct {
+	IdleTimeoutMs int                    `json:"idle_timeout_ms"`
+	MaxLifetimeMs nullable.Nullable[int] `json:"max_lifetime_ms,omitempty"`
+}
 
 // SharedSkillSync Publish mutable conventional names; the last completed publication wins.
 type SharedSkillSync struct {
@@ -1962,15 +2617,28 @@ type StreamPosition struct {
 	Sequence int `json:"sequence"`
 }
 
-// SubagentOverride Replaces the fields it sets of an edge; an edge the revision lacks sets at least `agent_id`.
-type SubagentOverride struct {
-	AgentId     nullable.Nullable[string]                  `json:"agent_id,omitempty"`
-	Context     nullable.Nullable[DelegationContextPolicy] `json:"context,omitempty"`
-	Description nullable.Nullable[string]                  `json:"description,omitempty"`
-	Environment nullable.Nullable[ChildEnvironmentPolicy]  `json:"environment,omitempty"`
-	RevisionId  nullable.Nullable[string]                  `json:"revision_id,omitempty"`
-	UsageLimits nullable.Nullable[UsageLimits]             `json:"usage_limits,omitempty"`
+// SubagentSelection defines model for SubagentSelection.
+type SubagentSelection struct {
+	AgentId     string                    `json:"agent_id"`
+	Context     *DelegationContextPolicy  `json:"context,omitempty"`
+	Description nullable.Nullable[string] `json:"description,omitempty"`
+
+	// Environment What a child run mounts: no environment, the parent's, or a new one from `template_id`.
+	Environment *ChildEnvironmentPolicy        `json:"environment,omitempty"`
+	RevisionId  nullable.Nullable[string]      `json:"revision_id,omitempty"`
+	UsageLimits nullable.Nullable[UsageLimits] `json:"usage_limits,omitempty"`
 }
+
+// Subagents defines model for Subagents.
+type Subagents struct {
+	// Dynamic Root-only task-specific delegation within the parent's capability boundary.
+	Dynamic *DynamicSubagents       `json:"dynamic,omitempty"`
+	Mode    *SubagentsMode          `json:"mode,omitempty"`
+	Named   *map[string]interface{} `json:"named,omitempty"`
+}
+
+// SubagentsMode defines model for Subagents.Mode.
+type SubagentsMode string
 
 // TextPart defines model for TextPart.
 type TextPart struct {
@@ -2150,6 +2818,29 @@ type UsageLimits struct {
 	TotalTokensLimit           nullable.Nullable[int]    `json:"total_tokens_limit,omitempty"`
 }
 
+// VmBackend defines model for VmBackend.
+type VmBackend string
+
+// VmIsolation defines model for VmIsolation.
+type VmIsolation struct {
+	Backend   VmBackend       `json:"backend"`
+	Cpus      int             `json:"cpus"`
+	Image     string          `json:"image"`
+	MemoryMib int             `json:"memory_mib"`
+	Mode      VmIsolationMode `json:"mode"`
+	Mounts    *[]VmMount      `json:"mounts,omitempty"`
+}
+
+// VmIsolationMode defines model for VmIsolation.Mode.
+type VmIsolationMode string
+
+// VmMount defines model for VmMount.
+type VmMount struct {
+	Access GrantAccess `json:"access"`
+	Source string      `json:"source"`
+	Target string      `json:"target"`
+}
+
 // WaitReason defines model for WaitReason.
 type WaitReason string
 
@@ -2189,6 +2880,68 @@ type UnderscorePartCursor struct {
 
 // PartCursorKind defines model for PartCursor.Kind.
 type PartCursorKind string
+
+// AsToolSearch returns the union data inside the AgentOverride_ToolSearch as a ToolSearch
+func (t AgentOverride_ToolSearch) AsToolSearch() (ToolSearch, error) {
+	var body ToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromToolSearch overwrites any union data inside the AgentOverride_ToolSearch as the provided ToolSearch
+func (t *AgentOverride_ToolSearch) FromToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeToolSearch performs a merge with any union data inside the AgentOverride_ToolSearch, using the provided ToolSearch
+func (t *AgentOverride_ToolSearch) MergeToolSearch(v ToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsNativeToolSearch returns the union data inside the AgentOverride_ToolSearch as a NativeToolSearch
+func (t AgentOverride_ToolSearch) AsNativeToolSearch() (NativeToolSearch, error) {
+	var body NativeToolSearch
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeToolSearch overwrites any union data inside the AgentOverride_ToolSearch as the provided NativeToolSearch
+func (t *AgentOverride_ToolSearch) FromNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeNativeToolSearch performs a merge with any union data inside the AgentOverride_ToolSearch, using the provided NativeToolSearch
+func (t *AgentOverride_ToolSearch) MergeNativeToolSearch(v NativeToolSearch) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentOverride_ToolSearch) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentOverride_ToolSearch) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // AsApprove returns the union data inside the ApprovalDecision as a Approve
 func (t ApprovalDecision) AsApprove() (Approve, error) {
@@ -2392,6 +3145,169 @@ func (t *CallResult) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsDynamicSubagentsDefaultThinking0 returns the union data inside the DynamicSubagents_DefaultThinking as a DynamicSubagentsDefaultThinking0
+func (t DynamicSubagents_DefaultThinking) AsDynamicSubagentsDefaultThinking0() (DynamicSubagentsDefaultThinking0, error) {
+	var body DynamicSubagentsDefaultThinking0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsDefaultThinking0 overwrites any union data inside the DynamicSubagents_DefaultThinking as the provided DynamicSubagentsDefaultThinking0
+func (t *DynamicSubagents_DefaultThinking) FromDynamicSubagentsDefaultThinking0(v DynamicSubagentsDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsDefaultThinking0 performs a merge with any union data inside the DynamicSubagents_DefaultThinking, using the provided DynamicSubagentsDefaultThinking0
+func (t *DynamicSubagents_DefaultThinking) MergeDynamicSubagentsDefaultThinking0(v DynamicSubagentsDefaultThinking0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDynamicSubagentsDefaultThinking1 returns the union data inside the DynamicSubagents_DefaultThinking as a DynamicSubagentsDefaultThinking1
+func (t DynamicSubagents_DefaultThinking) AsDynamicSubagentsDefaultThinking1() (DynamicSubagentsDefaultThinking1, error) {
+	var body DynamicSubagentsDefaultThinking1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDynamicSubagentsDefaultThinking1 overwrites any union data inside the DynamicSubagents_DefaultThinking as the provided DynamicSubagentsDefaultThinking1
+func (t *DynamicSubagents_DefaultThinking) FromDynamicSubagentsDefaultThinking1(v DynamicSubagentsDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDynamicSubagentsDefaultThinking1 performs a merge with any union data inside the DynamicSubagents_DefaultThinking, using the provided DynamicSubagentsDefaultThinking1
+func (t *DynamicSubagents_DefaultThinking) MergeDynamicSubagentsDefaultThinking1(v DynamicSubagentsDefaultThinking1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DynamicSubagents_DefaultThinking) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DynamicSubagents_DefaultThinking) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPublicDestinations returns the union data inside the EgressDestinations as a PublicDestinations
+func (t EgressDestinations) AsPublicDestinations() (PublicDestinations, error) {
+	var body PublicDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPublicDestinations overwrites any union data inside the EgressDestinations as the provided PublicDestinations
+func (t *EgressDestinations) FromPublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	t.union = b
+	return err
+}
+
+// MergePublicDestinations performs a merge with any union data inside the EgressDestinations, using the provided PublicDestinations
+func (t *EgressDestinations) MergePublicDestinations(v PublicDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"public"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAllowlistDestinations returns the union data inside the EgressDestinations as a AllowlistDestinations
+func (t EgressDestinations) AsAllowlistDestinations() (AllowlistDestinations, error) {
+	var body AllowlistDestinations
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAllowlistDestinations overwrites any union data inside the EgressDestinations as the provided AllowlistDestinations
+func (t *EgressDestinations) FromAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	t.union = b
+	return err
+}
+
+// MergeAllowlistDestinations performs a merge with any union data inside the EgressDestinations, using the provided AllowlistDestinations
+func (t *EgressDestinations) MergeAllowlistDestinations(v AllowlistDestinations) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"allowlist"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t EgressDestinations) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t EgressDestinations) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "allowlist":
+		return t.AsAllowlistDestinations()
+	case "public":
+		return t.AsPublicDestinations()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t EgressDestinations) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *EgressDestinations) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsTextPart returns the union data inside the Part as a TextPart
 func (t Part) AsTextPart() (TextPart, error) {
 	var body TextPart
@@ -2565,6 +3481,107 @@ func (t *Part) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsFreshRunEnvironment returns the union data inside the RunEnvironment as a FreshRunEnvironment
+func (t RunEnvironment) AsFreshRunEnvironment() (FreshRunEnvironment, error) {
+	var body FreshRunEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFreshRunEnvironment overwrites any union data inside the RunEnvironment as the provided FreshRunEnvironment
+func (t *RunEnvironment) FromFreshRunEnvironment(v FreshRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	t.union = b
+	return err
+}
+
+// MergeFreshRunEnvironment performs a merge with any union data inside the RunEnvironment, using the provided FreshRunEnvironment
+func (t *RunEnvironment) MergeFreshRunEnvironment(v FreshRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"fresh"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsExistingRunEnvironment returns the union data inside the RunEnvironment as a ExistingRunEnvironment
+func (t RunEnvironment) AsExistingRunEnvironment() (ExistingRunEnvironment, error) {
+	var body ExistingRunEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromExistingRunEnvironment overwrites any union data inside the RunEnvironment as the provided ExistingRunEnvironment
+func (t *RunEnvironment) FromExistingRunEnvironment(v ExistingRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	t.union = b
+	return err
+}
+
+// MergeExistingRunEnvironment performs a merge with any union data inside the RunEnvironment, using the provided ExistingRunEnvironment
+func (t *RunEnvironment) MergeExistingRunEnvironment(v ExistingRunEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"existing"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RunEnvironment) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t RunEnvironment) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "existing":
+		return t.AsExistingRunEnvironment()
+	case "fresh":
+		return t.AsFreshRunEnvironment()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t RunEnvironment) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RunEnvironment) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a MemoryMount
 func (t RunView_MemoryMounts_Item) AsMemoryMount() (MemoryMount, error) {
 	var body MemoryMount
@@ -2591,22 +3608,22 @@ func (t *RunView_MemoryMounts_Item) MergeMemoryMount(v MemoryMount) error {
 	return err
 }
 
-// AsFrozenMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a FrozenMemoryMount
-func (t RunView_MemoryMounts_Item) AsFrozenMemoryMount() (FrozenMemoryMount, error) {
-	var body FrozenMemoryMount
+// AsRunMemoryMount returns the union data inside the RunView_MemoryMounts_Item as a RunMemoryMount
+func (t RunView_MemoryMounts_Item) AsRunMemoryMount() (RunMemoryMount, error) {
+	var body RunMemoryMount
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrozenMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) FromFrozenMemoryMount(v FrozenMemoryMount) error {
+// FromRunMemoryMount overwrites any union data inside the RunView_MemoryMounts_Item as the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) FromRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrozenMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided FrozenMemoryMount
-func (t *RunView_MemoryMounts_Item) MergeFrozenMemoryMount(v FrozenMemoryMount) error {
+// MergeRunMemoryMount performs a merge with any union data inside the RunView_MemoryMounts_Item, using the provided RunMemoryMount
+func (t *RunView_MemoryMounts_Item) MergeRunMemoryMount(v RunMemoryMount) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -2689,6 +3706,107 @@ func (t *RunView_Pending) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsDisabledSandbox returns the union data inside the SandboxPolicy as a DisabledSandbox
+func (t SandboxPolicy) AsDisabledSandbox() (DisabledSandbox, error) {
+	var body DisabledSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDisabledSandbox overwrites any union data inside the SandboxPolicy as the provided DisabledSandbox
+func (t *SandboxPolicy) FromDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	t.union = b
+	return err
+}
+
+// MergeDisabledSandbox performs a merge with any union data inside the SandboxPolicy, using the provided DisabledSandbox
+func (t *SandboxPolicy) MergeDisabledSandbox(v DisabledSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"disabled"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRestrictedSandbox returns the union data inside the SandboxPolicy as a RestrictedSandbox
+func (t SandboxPolicy) AsRestrictedSandbox() (RestrictedSandbox, error) {
+	var body RestrictedSandbox
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRestrictedSandbox overwrites any union data inside the SandboxPolicy as the provided RestrictedSandbox
+func (t *SandboxPolicy) FromRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	t.union = b
+	return err
+}
+
+// MergeRestrictedSandbox performs a merge with any union data inside the SandboxPolicy, using the provided RestrictedSandbox
+func (t *SandboxPolicy) MergeRestrictedSandbox(v RestrictedSandbox) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"restricted"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SandboxPolicy) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SandboxPolicy) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "disabled":
+		return t.AsDisabledSandbox()
+	case "restricted":
+		return t.AsRestrictedSandbox()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SandboxPolicy) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SandboxPolicy) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsCronSchedule returns the union data inside the ScheduleRule as a CronSchedule
 func (t ScheduleRule) AsCronSchedule() (CronSchedule, error) {
 	var body CronSchedule
@@ -2747,6 +3865,107 @@ func (t ScheduleRule) MarshalJSON() ([]byte, error) {
 }
 
 func (t *ScheduleRule) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsNativeIsolation returns the union data inside the SessionIsolation as a NativeIsolation
+func (t SessionIsolation) AsNativeIsolation() (NativeIsolation, error) {
+	var body NativeIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNativeIsolation overwrites any union data inside the SessionIsolation as the provided NativeIsolation
+func (t *SessionIsolation) FromNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	t.union = b
+	return err
+}
+
+// MergeNativeIsolation performs a merge with any union data inside the SessionIsolation, using the provided NativeIsolation
+func (t *SessionIsolation) MergeNativeIsolation(v NativeIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"native"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsVmIsolation returns the union data inside the SessionIsolation as a VmIsolation
+func (t SessionIsolation) AsVmIsolation() (VmIsolation, error) {
+	var body VmIsolation
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromVmIsolation overwrites any union data inside the SessionIsolation as the provided VmIsolation
+func (t *SessionIsolation) FromVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	t.union = b
+	return err
+}
+
+// MergeVmIsolation performs a merge with any union data inside the SessionIsolation, using the provided VmIsolation
+func (t *SessionIsolation) MergeVmIsolation(v VmIsolation) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"vm"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SessionIsolation) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t SessionIsolation) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "native":
+		return t.AsNativeIsolation()
+	case "vm":
+		return t.AsVmIsolation()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t SessionIsolation) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SessionIsolation) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }

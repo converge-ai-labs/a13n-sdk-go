@@ -385,25 +385,35 @@ Retained-execution list, detail and bounded-result queries are admitted to MCP u
 
 ### Environments
 
-| Path                                    | Methods            | Owner                                                                                                   |
-| --------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------- |
-| `/environment-templates`                | GET, POST          | [04](04-resources.md#environment-templates)                                                             |
-| `/environment-templates/{template}`     | GET, PATCH         | [04](04-resources.md#environment-templates)                                                             |
-| `/environments`                         | GET, POST          | [06](06-environments.md#mounts), [external targets](06-environments.md#external-targets)                |
-| `/environments/{environment}`           | GET, PATCH, DELETE | [06](06-environments.md#stop-start-and-delete), [external targets](06-environments.md#external-targets) |
-| `/environments/{environment}/stop`      | POST               | [06](06-environments.md#stop-start-and-delete)                                                          |
-| `/threads/{thread}/environments`        | GET, POST          | [06](06-environments.md#mounts)                                                                         |
-| `/threads/{thread}/environments/{name}` | PATCH, DELETE      | [06](06-environments.md#mounts)                                                                         |
+| Path                                                                                                           | Methods            | Owner                                                                                                   |
+| -------------------------------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------- |
+| `/environment-templates`                                                                                       | GET, POST          | [04](04-resources.md#environment-templates)                                                             |
+| `/environment-templates/{template}`                                                                            | GET, PATCH         | [04](04-resources.md#environment-templates)                                                             |
+| `/client-environments`                                                                                         | POST               | [Client registration](06-environments.md#identity-and-credentials)                                      |
+| `/client-environments/{environment}`                                                                           | GET                | [Client registration](06-environments.md#identity-and-credentials)                                      |
+| `/client-environments/{environment}/status`                                                                    | PATCH              | [Client status](06-environments.md#identity-and-credentials)                                            |
+| `/client-environments/{environment}/rotate-credential`, `/client-environments/{environment}/revoke-credential` | POST               | [Dedicated credentials](06-environments.md#identity-and-credentials)                                    |
+| `/environments`                                                                                                | GET, POST          | [06](06-environments.md#mounts), [external targets](06-environments.md#external-targets)                |
+| `/environments/{environment}`                                                                                  | GET, PATCH, DELETE | [06](06-environments.md#stop-start-and-delete), [external targets](06-environments.md#external-targets) |
+| `/environments/{environment}/stop`                                                                             | POST               | [06](06-environments.md#stop-start-and-delete)                                                          |
+| `/threads/{thread}/environments`                                                                               | GET, POST          | [06](06-environments.md#mounts)                                                                         |
+| `/threads/{thread}/environments/{name}`                                                                        | PATCH, DELETE      | [06](06-environments.md#mounts)                                                                         |
 
 ### Memories
 
-| Path                                   | Methods            | Owner                                     |
-| -------------------------------------- | ------------------ | ----------------------------------------- |
-| `/memory-spaces`                       | GET, POST          | [11](11-memory.md#memory-spaces)          |
-| `/memory-spaces/{space}`               | GET, PATCH, DELETE | [11](11-memory.md#memory-spaces)          |
-| `/memory-spaces/{space}/organization`  | GET                | [11](11-memory.md#organization-lifecycle) |
-| `/memory-spaces/{space}/organizations` | GET, POST          | [11](11-memory.md#organization-lifecycle) |
-| `/memory-spaces/{space}/sessions`      | GET                | [11](11-memory.md#organization-lifecycle) |
+| Path                                                             | Methods            | Owner                                               |
+| ---------------------------------------------------------------- | ------------------ | --------------------------------------------------- |
+| `/memories/{memory}/organization`                                | GET, PUT           | [11](11-memory.md#automatic-organization-policies)  |
+| `/memory-organizations`                                          | GET, POST          | [11](11-memory.md#organization-requests)            |
+| `/memory-organizations/{organization}`                           | GET                | [11](11-memory.md#organization-requests)            |
+| `/memory-organizations/{organization}/candidate`                 | GET                | [11](11-memory.md#candidate-output-and-publication) |
+| `/memory-organizations/{organization}/candidate/diff`            | GET                | [11](11-memory.md#candidate-output-and-publication) |
+| `/memory-organizations/{organization}/candidate/{apply,discard}` | POST               | [11](11-memory.md#candidate-output-and-publication) |
+| `/memory-spaces`                                                 | GET, POST          | [11](11-memory.md#memory-spaces)                    |
+| `/memory-spaces/{space}`                                         | GET, PATCH, DELETE | [11](11-memory.md#memory-spaces)                    |
+| `/memory-spaces/{space}/organization`                            | GET                | [11](11-memory.md#organization-lifecycle)           |
+| `/memory-spaces/{space}/organizations`                           | GET, POST          | [11](11-memory.md#organization-lifecycle)           |
+| `/memory-spaces/{space}/sessions`                                | GET                | [11](11-memory.md#organization-lifecycle)           |
 
 | Path                                         | Methods            | Owner                                                |
 | -------------------------------------------- | ------------------ | ---------------------------------------------------- |
