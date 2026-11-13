@@ -149,13 +149,14 @@ func (e BuiltinSkillName) Valid() bool {
 
 // Defines values for BuiltinToolsetKey.
 const (
-	Assets   BuiltinToolsetKey = "assets"
-	Browser  BuiltinToolsetKey = "browser"
-	Computer BuiltinToolsetKey = "computer"
-	Files    BuiltinToolsetKey = "files"
-	Memory   BuiltinToolsetKey = "memory"
-	Shell    BuiltinToolsetKey = "shell"
-	Web      BuiltinToolsetKey = "web"
+	Assets      BuiltinToolsetKey = "assets"
+	Browser     BuiltinToolsetKey = "browser"
+	Computer    BuiltinToolsetKey = "computer"
+	Files       BuiltinToolsetKey = "files"
+	Memory      BuiltinToolsetKey = "memory"
+	ObjectStore BuiltinToolsetKey = "object_store"
+	Shell       BuiltinToolsetKey = "shell"
+	Web         BuiltinToolsetKey = "web"
 )
 
 // Valid indicates whether the value is a known member of the BuiltinToolsetKey enum.
@@ -170,6 +171,8 @@ func (e BuiltinToolsetKey) Valid() bool {
 	case Files:
 		return true
 	case Memory:
+		return true
+	case ObjectStore:
 		return true
 	case Shell:
 		return true

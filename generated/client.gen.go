@@ -391,13 +391,14 @@ func (e BuiltinSkillName) Valid() bool {
 
 // Defines values for BuiltinToolsetKey.
 const (
-	BuiltinToolsetKeyAssets   BuiltinToolsetKey = "assets"
-	BuiltinToolsetKeyBrowser  BuiltinToolsetKey = "browser"
-	BuiltinToolsetKeyComputer BuiltinToolsetKey = "computer"
-	BuiltinToolsetKeyFiles    BuiltinToolsetKey = "files"
-	BuiltinToolsetKeyMemory   BuiltinToolsetKey = "memory"
-	BuiltinToolsetKeyShell    BuiltinToolsetKey = "shell"
-	BuiltinToolsetKeyWeb      BuiltinToolsetKey = "web"
+	BuiltinToolsetKeyAssets      BuiltinToolsetKey = "assets"
+	BuiltinToolsetKeyBrowser     BuiltinToolsetKey = "browser"
+	BuiltinToolsetKeyComputer    BuiltinToolsetKey = "computer"
+	BuiltinToolsetKeyFiles       BuiltinToolsetKey = "files"
+	BuiltinToolsetKeyMemory      BuiltinToolsetKey = "memory"
+	BuiltinToolsetKeyObjectStore BuiltinToolsetKey = "object_store"
+	BuiltinToolsetKeyShell       BuiltinToolsetKey = "shell"
+	BuiltinToolsetKeyWeb         BuiltinToolsetKey = "web"
 )
 
 // Valid indicates whether the value is a known member of the BuiltinToolsetKey enum.
@@ -412,6 +413,8 @@ func (e BuiltinToolsetKey) Valid() bool {
 	case BuiltinToolsetKeyFiles:
 		return true
 	case BuiltinToolsetKeyMemory:
+		return true
+	case BuiltinToolsetKeyObjectStore:
 		return true
 	case BuiltinToolsetKeyShell:
 		return true
@@ -8319,9 +8322,12 @@ type McpConfig struct {
 	ForwardContextHeaders *bool                            `json:"forward_context_headers,omitempty"`
 	Headers               *[]string                        `json:"headers,omitempty"`
 	Oauth                 nullable.Nullable[OAuthSettings] `json:"oauth,omitempty"`
-	OnError               *StartupErrorPolicy              `json:"on_error,omitempty"`
-	Tools                 nullable.Nullable[[]string]      `json:"tools,omitempty"`
-	Url                   string                           `json:"url"`
+
+	// ObjectRefTools Object Reference Transport rules by original tool name; '*' matches any characters. Exact names win, then more literal characters, with false winning equally specific patterns. Use {'*': true} to enable all tools; unmatched tools retain native metadata, defaulting to false.
+	ObjectRefTools *map[string]bool            `json:"object_ref_tools,omitempty"`
+	OnError        *StartupErrorPolicy         `json:"on_error,omitempty"`
+	Tools          nullable.Nullable[[]string] `json:"tools,omitempty"`
+	Url            string                      `json:"url"`
 }
 
 // McpHeaders defines model for McpHeaders.
