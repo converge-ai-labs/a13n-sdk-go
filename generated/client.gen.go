@@ -4037,6 +4037,24 @@ func (e SpanSummaryView) Valid() bool {
 	}
 }
 
+// Defines values for StartupErrorPolicy.
+const (
+	Raise StartupErrorPolicy = "raise"
+	Skip  StartupErrorPolicy = "skip"
+)
+
+// Valid indicates whether the value is a known member of the StartupErrorPolicy enum.
+func (e StartupErrorPolicy) Valid() bool {
+	switch e {
+	case Raise:
+		return true
+	case Skip:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for State.
 const (
 	StateChanged         State = "changed"
@@ -8301,6 +8319,7 @@ type McpConfig struct {
 	ForwardContextHeaders *bool                            `json:"forward_context_headers,omitempty"`
 	Headers               *[]string                        `json:"headers,omitempty"`
 	Oauth                 nullable.Nullable[OAuthSettings] `json:"oauth,omitempty"`
+	OnError               *StartupErrorPolicy              `json:"on_error,omitempty"`
 	Tools                 nullable.Nullable[[]string]      `json:"tools,omitempty"`
 	Url                   string                           `json:"url"`
 }
@@ -10905,6 +10924,9 @@ type SpanSummaryStatus string
 
 // SpanSummaryView defines model for SpanSummary.View.
 type SpanSummaryView string
+
+// StartupErrorPolicy defines model for StartupErrorPolicy.
+type StartupErrorPolicy string
 
 // State defines model for State.
 type State string
