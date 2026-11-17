@@ -6107,6 +6107,14 @@ type ApiKeyPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// AppPlugins defines model for AppPlugins.
+type AppPlugins struct {
+	Id          string    `json:"id"`
+	Items       []AppView `json:"items"`
+	Permissions []string  `json:"permissions"`
+	Version     int       `json:"version"`
+}
+
 // AppReference defines model for AppReference.
 type AppReference struct {
 	AgentDefinitionId string `json:"agent_definition_id"`
@@ -6141,6 +6149,22 @@ type AppToolCall struct {
 // AppToolResult defines model for AppToolResult.
 type AppToolResult struct {
 	Result map[string]JsonValue `json:"result"`
+}
+
+// AppUpdate defines model for AppUpdate.
+type AppUpdate struct {
+	Enabled bool `json:"enabled"`
+}
+
+// AppView defines model for AppView.
+type AppView struct {
+	AppId        string                          `json:"app_id"`
+	Distribution string                          `json:"distribution"`
+	Enabled      bool                            `json:"enabled"`
+	FactoryKeys  []string                        `json:"factory_keys"`
+	Frontend     nullable.Nullable[FrontendView] `json:"frontend"`
+	Name         string                          `json:"name"`
+	Version      string                          `json:"version"`
 }
 
 // ApplicationStatus defines model for ApplicationStatus.
@@ -7925,6 +7949,13 @@ type FreshRunEnvironmentOutput struct {
 
 // FreshRunEnvironmentOutputMode defines model for FreshRunEnvironmentOutput.Mode.
 type FreshRunEnvironmentOutputMode string
+
+// FrontendView defines model for FrontendView.
+type FrontendView struct {
+	Bridge int      `json:"bridge"`
+	Entry  string   `json:"entry"`
+	Styles []string `json:"styles"`
+}
 
 // GitHubSource A directory of a public GitHub repository.
 //
@@ -13519,6 +13550,12 @@ type UpdateOrganizationParams struct {
 	IfMatch *string `json:"If-Match,omitempty"`
 }
 
+// UpdateAppPluginParams defines parameters for UpdateAppPlugin.
+type UpdateAppPluginParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+}
+
 // ListOrganizationAuditEventsParams defines parameters for ListOrganizationAuditEvents.
 type ListOrganizationAuditEventsParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -15261,6 +15298,9 @@ type UpdateModelJSONRequestBody = ModelUpdate
 
 // UpdateOrganizationJSONRequestBody defines body for UpdateOrganization for application/json ContentType.
 type UpdateOrganizationJSONRequestBody = OrganizationUpdate
+
+// UpdateAppPluginJSONRequestBody defines body for UpdateAppPlugin for application/json ContentType.
+type UpdateAppPluginJSONRequestBody = AppUpdate
 
 // CreateOrganizationGrantJSONRequestBody defines body for CreateOrganizationGrant for application/json ContentType.
 type CreateOrganizationGrantJSONRequestBody = GrantCreate
@@ -22377,6 +22417,27 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/organizations/{organization_id} (the `UpdateOrganization` operationId).
 	UpdateOrganization(ctx context.Context, organizationId string, params *UpdateOrganizationParams, body UpdateOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListAppPlugins List App Plugins
+	//
+	// Organization administration is intentionally outside the MCP management surface.
+	//
+	// Corresponds with GET /api/v1/organizations/{organization_id}/app-plugins (the `ListAppPlugins` operationId).
+	ListAppPlugins(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAppPluginWithBody Update App Plugin
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+	UpdateAppPluginWithBody(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAppPlugin Update App Plugin
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+	UpdateAppPlugin(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, body UpdateAppPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListOrganizationAuditEvents List Organization Audit Events
 	//
 	// Corresponds with GET /api/v1/organizations/{organization_id}/audit-events (the `ListOrganizationAuditEvents` operationId).
@@ -28812,6 +28873,57 @@ func (c *Client) UpdateOrganizationWithBody(ctx context.Context, organizationId 
 // Corresponds with PATCH /api/v1/organizations/{organization_id} (the `UpdateOrganization` operationId).
 func (c *Client) UpdateOrganization(ctx context.Context, organizationId string, params *UpdateOrganizationParams, body UpdateOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateOrganizationRequest(c.Server, organizationId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListAppPlugins List App Plugins
+//
+// Organization administration is intentionally outside the MCP management surface.
+//
+// Corresponds with GET /api/v1/organizations/{organization_id}/app-plugins (the `ListAppPlugins` operationId).
+func (c *Client) ListAppPlugins(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAppPluginsRequest(c.Server, organizationId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateAppPluginWithBody Update App Plugin
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+func (c *Client) UpdateAppPluginWithBody(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAppPluginRequestWithBody(c.Server, organizationId, appId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateAppPlugin Update App Plugin
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+func (c *Client) UpdateAppPlugin(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, body UpdateAppPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAppPluginRequest(c.Server, organizationId, appId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -46870,6 +46982,109 @@ func NewUpdateOrganizationRequestWithBody(server string, organizationId string, 
 	return req, nil
 }
 
+// NewListAppPluginsRequest constructs an http.Request for the ListAppPlugins method
+func NewListAppPluginsRequest(server string, organizationId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/organizations/%s/app-plugins", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateAppPluginRequest calls the generic UpdateAppPlugin builder with application/json body
+func NewUpdateAppPluginRequest(server string, organizationId string, appId string, params *UpdateAppPluginParams, body UpdateAppPluginJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAppPluginRequestWithBody(server, organizationId, appId, params, "application/json", bodyReader)
+}
+
+// NewUpdateAppPluginRequestWithBody constructs an http.Request for the UpdateAppPlugin method, with any body, and a specified content type
+func NewUpdateAppPluginRequestWithBody(server string, organizationId string, appId string, params *UpdateAppPluginParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/organizations/%s/app-plugins/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListOrganizationAuditEventsRequest constructs an http.Request for the ListOrganizationAuditEvents method
 func NewListOrganizationAuditEventsRequest(server string, organizationId string, params *ListOrganizationAuditEventsParams) (*http.Request, error) {
 	var err error
@@ -61707,6 +61922,29 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/organizations/{organization_id} (the `UpdateOrganization` operationId).
 	UpdateOrganizationWithResponse(ctx context.Context, organizationId string, params *UpdateOrganizationParams, body UpdateOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOrganizationResponse, error)
+
+	// ListAppPluginsWithResponse List App Plugins
+	//
+	// Organization administration is intentionally outside the MCP management surface.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/organizations/{organization_id}/app-plugins (the `ListAppPlugins` operationId).
+	ListAppPluginsWithResponse(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*ListAppPluginsResponse, error)
+
+	// UpdateAppPluginWithBodyWithResponse Update App Plugin
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+	UpdateAppPluginWithBodyWithResponse(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAppPluginResponse, error)
+
+	// UpdateAppPluginWithResponse Update App Plugin
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+	UpdateAppPluginWithResponse(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, body UpdateAppPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAppPluginResponse, error)
 
 	// ListOrganizationAuditEventsWithResponse List Organization Audit Events
 	//
@@ -78725,6 +78963,144 @@ func (r UpdateOrganizationResponse) ContentType() string {
 	return ""
 }
 
+// ListAppPluginsResponse400Headers the declared response headers of an HTTP 400 response for ListAppPlugins
+type ListAppPluginsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListAppPluginsResponseDefaultHeaders the declared response headers of an HTTP default response for ListAppPlugins
+type ListAppPluginsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListAppPluginsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppPlugins
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListAppPluginsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListAppPluginsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListAppPluginsResponse) GetJSON200() *AppPlugins {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListAppPluginsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListAppPluginsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListAppPluginsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListAppPluginsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListAppPluginsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListAppPluginsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateAppPluginResponse400Headers the declared response headers of an HTTP 400 response for UpdateAppPlugin
+type UpdateAppPluginResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateAppPluginResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateAppPlugin
+type UpdateAppPluginResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateAppPluginResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppPlugins
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateAppPluginResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateAppPluginResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateAppPluginResponse) GetJSON200() *AppPlugins {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateAppPluginResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateAppPluginResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateAppPluginResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateAppPluginResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAppPluginResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateAppPluginResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListOrganizationAuditEventsResponse400Headers the declared response headers of an HTTP 400 response for ListOrganizationAuditEvents
 type ListOrganizationAuditEventsResponse400Headers struct {
 	XRequestId *string
@@ -94297,6 +94673,47 @@ func (c *ClientWithResponses) UpdateOrganizationWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParseUpdateOrganizationResponse(rsp)
+}
+
+// ListAppPluginsWithResponse List App Plugins
+//
+// Organization administration is intentionally outside the MCP management surface.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/organizations/{organization_id}/app-plugins (the `ListAppPlugins` operationId).
+func (c *ClientWithResponses) ListAppPluginsWithResponse(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*ListAppPluginsResponse, error) {
+	rsp, err := c.ListAppPlugins(ctx, organizationId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListAppPluginsResponse(rsp)
+}
+
+// UpdateAppPluginWithBodyWithResponse Update App Plugin
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+func (c *ClientWithResponses) UpdateAppPluginWithBodyWithResponse(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAppPluginResponse, error) {
+	rsp, err := c.UpdateAppPluginWithBody(ctx, organizationId, appId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAppPluginResponse(rsp)
+}
+
+// UpdateAppPluginWithResponse Update App Plugin
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /api/v1/organizations/{organization_id}/app-plugins/{app_id} (the `UpdateAppPlugin` operationId).
+func (c *ClientWithResponses) UpdateAppPluginWithResponse(ctx context.Context, organizationId string, appId string, params *UpdateAppPluginParams, body UpdateAppPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAppPluginResponse, error) {
+	rsp, err := c.UpdateAppPlugin(ctx, organizationId, appId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAppPluginResponse(rsp)
 }
 
 // ListOrganizationAuditEventsWithResponse List Organization Audit Events
@@ -111290,6 +111707,132 @@ func ParseUpdateOrganizationResponse(rsp *http.Response) (*UpdateOrganizationRes
 		response.Headers400 = &headers
 	case true:
 		var headers UpdateOrganizationResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListAppPluginsResponse parses an HTTP response from a ListAppPluginsWithResponse call
+func ParseListAppPluginsResponse(rsp *http.Response) (*ListAppPluginsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListAppPluginsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppPlugins
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListAppPluginsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListAppPluginsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAppPluginResponse parses an HTTP response from a UpdateAppPluginWithResponse call
+func ParseUpdateAppPluginResponse(rsp *http.Response) (*UpdateAppPluginResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAppPluginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppPlugins
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateAppPluginResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateAppPluginResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
