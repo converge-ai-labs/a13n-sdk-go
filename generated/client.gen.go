@@ -10230,6 +10230,7 @@ type RunView struct {
 	CurrentAttemptId  nullable.Nullable[string]               `json:"current_attempt_id"`
 	EnvironmentMounts []EnvironmentMount                      `json:"environment_mounts"`
 	Failure           nullable.Nullable[Failure]              `json:"failure"`
+	FindingAnalysisId nullable.Nullable[string]               `json:"finding_analysis_id,omitempty"`
 	Id                string                                  `json:"id"`
 	Input             nullable.Nullable[map[string]JsonValue] `json:"input,omitempty"`
 	Labels            map[string]string                       `json:"labels"`
@@ -21652,7 +21653,7 @@ type ClientInterface interface {
 	// CreateFindingWithBody Create Finding
 	//
 	// Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-	// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+	// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -21662,7 +21663,7 @@ type ClientInterface interface {
 	// CreateFinding Create Finding
 	//
 	// Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-	// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+	// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -26938,7 +26939,7 @@ func (c *Client) ListFindings(ctx context.Context, params *ListFindingsParams, r
 // CreateFindingWithBody Create Finding
 //
 // Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 //
 // Takes any type of body and a specified content type.
 //
@@ -26958,7 +26959,7 @@ func (c *Client) CreateFindingWithBody(ctx context.Context, params *CreateFindin
 // CreateFinding Create Finding
 //
 // Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -61046,7 +61047,7 @@ type ClientWithResponsesInterface interface {
 	// CreateFindingWithBodyWithResponse Create Finding
 	//
 	// Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-	// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+	// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -61056,7 +61057,7 @@ type ClientWithResponsesInterface interface {
 	// CreateFindingWithResponse Create Finding
 	//
 	// Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-	// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+	// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -93090,7 +93091,7 @@ func (c *ClientWithResponses) ListFindingsWithResponse(ctx context.Context, para
 // CreateFindingWithBodyWithResponse Create Finding
 //
 // Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -93106,7 +93107,7 @@ func (c *ClientWithResponses) CreateFindingWithBodyWithResponse(ctx context.Cont
 // CreateFindingWithResponse Create Finding
 //
 // Record an unconfirmed finding with evidence and a suggestion; a stable source_key makes a retry safe.
-// A Run's own submission names that Run as its source; an analysis cites only selected traces it has read.
+// A Run's own submission names that Run as its source; an analysis cites traces it has read.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //

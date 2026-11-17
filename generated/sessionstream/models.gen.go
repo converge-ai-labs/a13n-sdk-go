@@ -2478,6 +2478,7 @@ type RunView struct {
 	CurrentAttemptId  nullable.Nullable[string]               `json:"current_attempt_id"`
 	EnvironmentMounts []EnvironmentMount                      `json:"environment_mounts"`
 	Failure           nullable.Nullable[Failure]              `json:"failure"`
+	FindingAnalysisId nullable.Nullable[string]               `json:"finding_analysis_id,omitempty"`
 	Id                string                                  `json:"id"`
 	Input             nullable.Nullable[map[string]JsonValue] `json:"input,omitempty"`
 	Labels            map[string]string                       `json:"labels"`
