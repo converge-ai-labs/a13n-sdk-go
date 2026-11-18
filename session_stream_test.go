@@ -458,7 +458,7 @@ func TestSessionTruncationClosesWithoutReconnect(t *testing.T) {
 }
 
 func TestSessionAppReadyIsTypedRepeatableAndHasNoCursor(t *testing.T) {
-	payload := `{"thread_id":"thr","run_id":"run","apps":[{"app_id":"app","connection_id":"con","agent_revision_id":"rev","source_run_id":"run","tool_call_id":"call","tool_name":"chart","resource_uri":"ui://chart"}]}`
+	payload := `{"thread_id":"thr","run_id":"run","apps":[{"app_id":"app","connection_id":"con","agent_definition_id":"agent","source_run_id":"run","tool_call_id":"call","tool_name":"chart","resource_uri":"ui://chart"}]}`
 	client := coverageClient(t, func(r *http.Request) *http.Response {
 		response := coverageResponse(200, strings.Repeat(sessionEvent("app_ready", payload), 2))
 		response.Header.Set("Content-Type", "text/event-stream")
