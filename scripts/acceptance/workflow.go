@@ -38,6 +38,7 @@ func workflowDXOffline() {
 				check(json.Unmarshal(body["options"], &options) == nil, "installed RunOptions grouping")
 				var overrides map[string]json.RawMessage
 				check(json.Unmarshal(options["overrides"], &overrides) == nil && len(overrides) == 14, "installed ALL override fields without generated imports")
+				check(string(overrides["subagents"]) == `{"dynamic":{"enabled":true},"named":{"child":{"agent_id":"agt_01234567890123456789"}}}`, "installed named and dynamic subagents")
 				for _, name := range []string{"environments", "memories", "message_history"} {
 					check(string(body[name]) == "[]", "installed explicit empty "+name)
 				}
@@ -152,7 +153,7 @@ func workflowDXOffline() {
 		OutputSpec:           a13n.Value(a13n.OutputSpec{Schema: a13n.Value(map[string]any{"type": "object"}), Variants: a13n.Value([]a13n.OutputVariant{})}),
 		Plugins:              a13n.Value([]a13n.PluginSelection{}), Retries: a13n.Value(a13n.RetryOverride{Output: a13n.Value(0), Tools: a13n.Null[int]()}),
 		Reviewer: a13n.Value(a13n.AgentReviewer{Model: "reviewer", Rules: a13n.Ptr(map[string]a13n.ToolReviewRule{}), TimeoutSeconds: a13n.Ptr(float32(0))}),
-		Skills:   a13n.Value([]a13n.SkillSelection{}), Subagents: a13n.Value(map[string]any{"child": nil}),
+		Skills:   a13n.Value([]a13n.SkillSelection{}), Subagents: a13n.Value(a13n.Subagents{Named: a13n.Ptr(map[string]any{"child": a13n.SubagentSelection{AgentId: "agt_01234567890123456789"}}), Dynamic: &a13n.DynamicSubagents{Enabled: a13n.Ptr(true)}}),
 		Toolsets: a13n.Value(map[string]a13n.ToolsetSelection{"local": {Enabled: a13n.Ptr(false), Config: a13n.Ptr(map[string]any{})}}),
 	}
 	structured := must(client.Agent("agent").StartInput(ctx, input, a13n.StartOptions{IdempotencyKey: "structured-key",

@@ -20,9 +20,9 @@ func TestMemorySpaceAndComputerNativeValues(t *testing.T) {
 		value any
 	}{
 		{"space omitted", `{}`, &generated.MemorySpaceUpdate{}},
-		{"space null", `{"always_load":null,"description":null,"enabled":null,"guide":null,"labels":null,"name":null,"organization":null}`, &generated.MemorySpaceUpdate{}},
-		{"space empty", `{"always_load":[],"description":"","enabled":false,"guide":"","labels":{},"name":"space","organization":{}}`, &generated.MemorySpaceUpdate{}},
-		{"space create", `{"name":"shared","enabled":false,"always_load":[],"labels":{},"guide":null}`, &generated.MemorySpaceCreate{}},
+		{"space null", `{"always_load":null,"description":null,"enabled":null,"guidance":null,"labels":null,"name":null,"organization":null}`, &generated.MemorySpaceUpdate{}},
+		{"space empty", `{"always_load":[],"description":"","enabled":false,"guidance":{"custom":""},"labels":{},"name":"space","organization":{}}`, &generated.MemorySpaceUpdate{}},
+		{"space create", `{"name":"shared","enabled":false,"always_load":[],"labels":{},"guidance":{"custom":""}}`, &generated.MemorySpaceCreate{}},
 		{"any change", `{"check_interval_seconds":10,"cooldown_seconds":0,"enabled":false,"model":null,"trigger":{"type":"any_change"}}`, &generated.OrganizationPolicy{}},
 		{"change count", `{"trigger":{"type":"change_count","count":1}}`, &generated.OrganizationPolicy{}},
 		{"session omitted", `{}`, &generated.SessionUpdate{}},
@@ -76,11 +76,11 @@ func TestRunFrozenMemoryMountNativeReadback(t *testing.T) {
 	if err != nil || legacy.Access != generated.MemoryAccessRead || legacy.Recall == nil || *legacy.Recall {
 		t.Fatalf("legacy mount: %#v, %v", legacy, err)
 	}
-	frozen, err := result.Value.MemoryMounts[1].AsFrozenMemoryMount()
+	frozen, err := result.Value.MemoryMounts[1].AsRunMemoryMount()
 	if err != nil || frozen.SpaceId.GetOrEmpty() != "spc_0123456789abcdef0123" || frozen.Roots == nil || len(*frozen.Roots) != 2 || frozen.Recall == nil || *frozen.Recall {
 		t.Fatalf("frozen mount: %#v, %v", frozen, err)
 	}
-	nullSpace, err := result.Value.MemoryMounts[2].AsFrozenMemoryMount()
+	nullSpace, err := result.Value.MemoryMounts[2].AsRunMemoryMount()
 	if err != nil || !nullSpace.SpaceId.IsNull() || nullSpace.Roots == nil || len(*nullSpace.Roots) != 0 {
 		t.Fatalf("null/empty frozen mount: %#v, %v", nullSpace, err)
 	}

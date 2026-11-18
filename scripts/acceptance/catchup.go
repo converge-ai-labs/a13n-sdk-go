@@ -66,7 +66,7 @@ func catchupOffline() {
 	check(len(authors.Value.Items) == 1 && authors.Value.Items[0].EntryId == "two" && authors.Value.Items[0].Principal.IsNull(), "installed authors correlate by ID, not array index")
 	raw, err = api.ListFindings(ctx, &generated.ListFindingsParams{Closed: ptr(false)})
 	check(must(a13n.ParseJSON[generated.FindingPage](client, raw, err, 200)).Value.NextCursor.IsNull(), "installed finding paging")
-	raw, err = api.CreateFinding(ctx, &generated.CreateFindingParams{}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: "revision", SourceKey: "source", Category: generated.InstructionIssue, Title: "Finding", Evidence: []generated.Evidence{}})
+	raw, err = api.CreateFinding(ctx, &generated.CreateFindingParams{}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: a13n.Value("revision"), SourceKey: "source", Category: generated.InstructionIssue, Title: "Finding", Evidence: []generated.Evidence{}})
 	check(must(a13n.ParseJSON[generated.Finding](client, raw, err, 201)).Value.Id == "finding", "installed finding creation")
 	raw, err = api.GetFinding(ctx, "finding", &generated.GetFindingParams{})
 	check(must(a13n.ParseJSON[generated.Finding](client, raw, err, 200)).Value.Id == "finding", "installed finding read")

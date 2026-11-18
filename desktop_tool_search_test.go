@@ -176,7 +176,11 @@ func TestSessionDesktopWaitAndToolSearchNativeProjection(t *testing.T) {
 		t.Fatal(last)
 	}
 	overrides, _ := last.Options.Overrides.Get()
-	search, _ := overrides.ToolSearch.Get()
+	selection, _ := overrides.ToolSearch.Get()
+	search, err := selection.AsToolSearch()
+	if err != nil {
+		t.Fatal(err)
+	}
 	if search.Config == nil || search.Config.MaxResults == nil || *search.Config.MaxResults != 7 {
 		t.Fatal(search.Config)
 	}
