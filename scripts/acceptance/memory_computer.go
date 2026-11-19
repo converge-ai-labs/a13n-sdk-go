@@ -84,7 +84,7 @@ func memoryComputerOffline() {
 				check(q.Get("created_after") == "2026-10-14T00:00:00+08:00" && q.Get("created_before") == "2026-10-15T00:00:00Z", "aware Run time filters")
 				_, _ = io.WriteString(w, `{"items":[],"next_cursor":null}`)
 			case "GET /api/v1/runs/run/agent":
-				_, _ = io.WriteString(w, `{"revision":{"id":"revision"},"config":{"builtin_skills":[],"platform_tools":{"groups":[],"read_permission":"deny","write_permission":"ask"},"memory":{"enabled":false,"spaces":[]}}}`)
+				_, _ = io.WriteString(w, `{"definition_id":"agent","source":"revision","revision":{"id":"revision"},"config":{"model":"model","builtin_skills":[],"toolsets":{},"memory":{"enabled":false,"spaces":[]}}}`)
 			case "GET /api/v1/runs/run/attempts/attempt":
 				_, _ = io.WriteString(w, `{"id":"attempt","run_id":"run","sequence":1}`)
 			case "GET /api/v1/runs/run/images/image":
@@ -188,7 +188,7 @@ func memoryComputerOffline() {
 		_ = nativeJSON[generated.SessionPage](client, 200, calls[7])
 		_ = nativeJSON[generated.RunPage](client, 200, calls[8])
 		agent := nativeJSON[generated.RunAgent](client, 200, calls[9]).Value
-		check(agent.Revision.Id == "revision" && agent.Config.Memory != nil && agent.Config.Memory.Enabled != nil && !*agent.Config.Memory.Enabled, "executed Agent native configuration")
+		check(must(agent.Revision.Get()).Id == "revision" && agent.Config.Memory != nil && agent.Config.Memory.Enabled != nil && !*agent.Config.Memory.Enabled, "executed Agent native configuration")
 		check(nativeJSON[generated.AttemptView](client, 200, calls[10]).Value.Id == "attempt", "attempt detail")
 		response, err := calls[11]()
 		check(err == nil && response.StatusCode == 200 && response.Header.Get("Content-Type") == "image/png" && response.Header.Get("Cache-Control") == "no-store" && response.Header.Get("X-Content-Type-Options") == "nosniff", "retained image raw metadata")
@@ -220,7 +220,7 @@ func memoryComputerReadback(ctx context.Context, client *a13n.Client, outcome a1
 	api := must(client.API())
 	raw, err := api.GetRunAgent(ctx, outcome.RunID, &generated.GetRunAgentParams{})
 	agent := must(a13n.ParseJSON[generated.RunAgent](client, raw, err, 200))
-	check(agent.Value.Revision.Id != "", "matching Service executed Agent revision")
+	check(must(agent.Value.Revision.Get()).Id != "", "matching Service executed Agent revision")
 	raw, err = api.ListRuns(ctx, &generated.ListRunsParams{ThreadId: &outcome.ThreadID, Limit: ptr(100)})
 	runs := must(a13n.ParseJSON[generated.RunPage](client, raw, err, 200))
 	found := false

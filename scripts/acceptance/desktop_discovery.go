@@ -82,10 +82,13 @@ func desktopDiscoveryLive(ctx context.Context, client *a13n.Client, agent string
 	} {
 		var search a13n.ToolSearch
 		check(json.Unmarshal([]byte(raw), &search) == nil, "typed tool search fixture")
-		response, err := api.CreateAgent(ctx, nil, generated.AgentCreate{Name: "Go SDK typed discovery", Config: generated.AgentConfigInput{Model: revision.Config.Model, ToolSearch: a13n.Value(search)}})
+		var selection generated.AgentConfigInput_ToolSearch
+		check(selection.FromToolSearch(search) == nil, "typed tool search union")
+		response, err := api.CreateAgent(ctx, nil, generated.AgentCreate{Name: "Go SDK typed discovery", Config: generated.AgentConfigInput{Model: revision.Config.Model, ToolSearch: a13n.Value(selection)}})
 		created := must(a13n.ParseJSON[generated.Agent](client, response, err, 201)).Value
 		response, err = api.GetAgentRevision(ctx, created.Id, must(created.DefaultRevisionId.Get()), nil)
-		stored := must(a13n.ParseJSON[generated.AgentRevision](client, response, err, 200)).Value.Config.ToolSearch.GetOrEmpty()
+		storedSelection := must(a13n.ParseJSON[generated.AgentRevision](client, response, err, 200)).Value.Config.ToolSearch.GetOrEmpty()
+		stored := must(storedSelection.AsToolSearch())
 		check(stored.Groups != nil && len(*stored.Groups) == 0, "stored groups:{} retained")
 		value := stored.Config
 		check(value != nil && value.MaxResults != nil && *value.MaxResults == 7 && *value.SearchName == "find_grouped_tools", "stored proxy discovery configuration")

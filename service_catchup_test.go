@@ -217,7 +217,7 @@ func TestCatchupNineOperationsShareAuthScopeMetadataAndLifetime(t *testing.T) {
 					return api.ListFindings(ctx, &generated.ListFindingsParams{XWorkspaceID: scope, Closed: Ptr(false), Cursor: Ptr("next")})
 				},
 				func() (*http.Response, error) {
-					return api.CreateFinding(ctx, &generated.CreateFindingParams{XWorkspaceID: scope}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: "revision", Category: generated.InstructionIssue, SourceKey: "source", Title: "Finding", Evidence: []generated.Evidence{}})
+					return api.CreateFinding(ctx, &generated.CreateFindingParams{XWorkspaceID: scope}, generated.FindingCreate{AgentId: "agent", AgentRevisionId: Value("revision"), Category: generated.InstructionIssue, SourceKey: "source", Title: "Finding", Evidence: []generated.Evidence{}})
 				},
 				func() (*http.Response, error) {
 					return api.GetFinding(ctx, "finding", &generated.GetFindingParams{XWorkspaceID: scope})
