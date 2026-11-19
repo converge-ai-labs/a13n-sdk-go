@@ -396,6 +396,7 @@ func (e EntryStatus) Valid() bool {
 // Defines values for EntryViewKind.
 const (
 	EntryViewKindBrowserHandback EntryViewKind = "browser_handback"
+	EntryViewKindChildMessage    EntryViewKind = "child_message"
 	EntryViewKindChildResult     EntryViewKind = "child_result"
 	EntryViewKindDesktopHandback EntryViewKind = "desktop_handback"
 	EntryViewKindMessage         EntryViewKind = "message"
@@ -406,6 +407,8 @@ const (
 func (e EntryViewKind) Valid() bool {
 	switch e {
 	case EntryViewKindBrowserHandback:
+		return true
+	case EntryViewKindChildMessage:
 		return true
 	case EntryViewKindChildResult:
 		return true
@@ -1551,6 +1554,7 @@ func (e ToolSearchConfigMode) Valid() bool {
 // Defines values for Trigger.
 const (
 	TriggerBrowserHandback Trigger = "browser_handback"
+	TriggerChildMessage    Trigger = "child_message"
 	TriggerChildResult     Trigger = "child_result"
 	TriggerDesktopHandback Trigger = "desktop_handback"
 	TriggerInput           Trigger = "input"
@@ -1564,6 +1568,8 @@ const (
 func (e Trigger) Valid() bool {
 	switch e {
 	case TriggerBrowserHandback:
+		return true
+	case TriggerChildMessage:
 		return true
 	case TriggerChildResult:
 		return true

@@ -1429,13 +1429,16 @@ func (e EntrySummaryDelivery) Valid() bool {
 
 // Defines values for EntrySummaryKind.
 const (
-	EntrySummaryKindChildResult EntrySummaryKind = "child_result"
-	EntrySummaryKindMessage     EntrySummaryKind = "message"
+	EntrySummaryKindChildMessage EntrySummaryKind = "child_message"
+	EntrySummaryKindChildResult  EntrySummaryKind = "child_result"
+	EntrySummaryKindMessage      EntrySummaryKind = "message"
 )
 
 // Valid indicates whether the value is a known member of the EntrySummaryKind enum.
 func (e EntrySummaryKind) Valid() bool {
 	switch e {
+	case EntrySummaryKindChildMessage:
+		return true
 	case EntrySummaryKindChildResult:
 		return true
 	case EntrySummaryKindMessage:
@@ -1463,6 +1466,7 @@ func (e EntrySummaryView) Valid() bool {
 // Defines values for EntryViewKind.
 const (
 	EntryViewKindBrowserHandback EntryViewKind = "browser_handback"
+	EntryViewKindChildMessage    EntryViewKind = "child_message"
 	EntryViewKindChildResult     EntryViewKind = "child_result"
 	EntryViewKindDesktopHandback EntryViewKind = "desktop_handback"
 	EntryViewKindMessage         EntryViewKind = "message"
@@ -1473,6 +1477,8 @@ const (
 func (e EntryViewKind) Valid() bool {
 	switch e {
 	case EntryViewKindBrowserHandback:
+		return true
+	case EntryViewKindChildMessage:
 		return true
 	case EntryViewKindChildResult:
 		return true
@@ -4586,6 +4592,7 @@ func (e TraceBackendType) Valid() bool {
 // Defines values for Trigger.
 const (
 	TriggerBrowserHandback Trigger = "browser_handback"
+	TriggerChildMessage    Trigger = "child_message"
 	TriggerChildResult     Trigger = "child_result"
 	TriggerDesktopHandback Trigger = "desktop_handback"
 	TriggerInput           Trigger = "input"
@@ -4599,6 +4606,8 @@ const (
 func (e Trigger) Valid() bool {
 	switch e {
 	case TriggerBrowserHandback:
+		return true
+	case TriggerChildMessage:
 		return true
 	case TriggerChildResult:
 		return true
@@ -5542,13 +5551,16 @@ func (e ListThreadsParamsOrigin) Valid() bool {
 
 // Defines values for ListInboxParamsKind.
 const (
-	ListInboxParamsKindChildResult ListInboxParamsKind = "child_result"
-	ListInboxParamsKindMessage     ListInboxParamsKind = "message"
+	ListInboxParamsKindChildMessage ListInboxParamsKind = "child_message"
+	ListInboxParamsKindChildResult  ListInboxParamsKind = "child_result"
+	ListInboxParamsKindMessage      ListInboxParamsKind = "message"
 )
 
 // Valid indicates whether the value is a known member of the ListInboxParamsKind enum.
 func (e ListInboxParamsKind) Valid() bool {
 	switch e {
+	case ListInboxParamsKindChildMessage:
+		return true
 	case ListInboxParamsKindChildResult:
 		return true
 	case ListInboxParamsKindMessage:
