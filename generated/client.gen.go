@@ -9277,6 +9277,7 @@ type NetworkMetrics struct {
 type NewThread struct {
 	AgentId         string                               `json:"agent_id"`
 	AgentRevisionId nullable.Nullable[string]            `json:"agent_revision_id,omitempty"`
+	BrowserBinding  nullable.Nullable[BrowserBinding]    `json:"browser_binding,omitempty"`
 	Delivery        *Delivery                            `json:"delivery,omitempty"`
 	Environments    *InitialMounts                       `json:"environments,omitempty"`
 	Execution       nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
@@ -10518,9 +10519,11 @@ type ScheduleCreateState string
 
 // ScheduleInvocationInput defines model for ScheduleInvocation-Input.
 type ScheduleInvocationInput struct {
-	AgentId         string                    `json:"agent_id"`
-	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
-	Memories        *[]MemoryMount            `json:"memories,omitempty"`
+	AgentId         string                            `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string]         `json:"agent_revision_id"`
+	BrowserBinding  nullable.Nullable[BrowserBinding] `json:"browser_binding,omitempty"`
+	Environments    *InitialMounts                    `json:"environments,omitempty"`
+	Memories        *[]MemoryMount                    `json:"memories,omitempty"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 	Options *RunOptionsInput `json:"options,omitempty"`
@@ -10529,9 +10532,11 @@ type ScheduleInvocationInput struct {
 
 // ScheduleInvocationOutput defines model for ScheduleInvocation-Output.
 type ScheduleInvocationOutput struct {
-	AgentId         string                    `json:"agent_id"`
-	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
-	Memories        *[]MemoryMount            `json:"memories,omitempty"`
+	AgentId         string                            `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string]         `json:"agent_revision_id"`
+	BrowserBinding  nullable.Nullable[BrowserBinding] `json:"browser_binding,omitempty"`
+	Environments    *InitialMounts                    `json:"environments,omitempty"`
+	Memories        *[]MemoryMount                    `json:"memories,omitempty"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 	Options *RunOptionsOutput `json:"options,omitempty"`
