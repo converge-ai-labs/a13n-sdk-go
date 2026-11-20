@@ -623,6 +623,21 @@ func (e ClientConnectionObservationState) Valid() bool {
 	}
 }
 
+// Defines values for ClientOutputAlternativeKind.
+const (
+	ClientTool ClientOutputAlternativeKind = "client_tool"
+)
+
+// Valid indicates whether the value is a known member of the ClientOutputAlternativeKind enum.
+func (e ClientOutputAlternativeKind) Valid() bool {
+	switch e {
+	case ClientTool:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ClientToolDefinitionPermission.
 const (
 	ClientToolDefinitionPermissionAllow   ClientToolDefinitionPermission = "allow"
@@ -4232,6 +4247,21 @@ func (e Steering) Valid() bool {
 	}
 }
 
+// Defines values for StructuredOutputAlternativeKind.
+const (
+	Structured StructuredOutputAlternativeKind = "structured"
+)
+
+// Valid indicates whether the value is a known member of the StructuredOutputAlternativeKind enum.
+func (e StructuredOutputAlternativeKind) Valid() bool {
+	switch e {
+	case Structured:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SubagentsInputMode.
 const (
 	SubagentsInputModeAsync  SubagentsInputMode = "async"
@@ -6761,6 +6791,18 @@ type ClientEnvironmentConfiguration struct {
 	Description             nullable.Nullable[string]                         `json:"description,omitempty"`
 	PermissionCeiling       *EnvironmentPermissionSetOutput                   `json:"permission_ceiling,omitempty"`
 }
+
+// ClientOutputAlternative defines model for ClientOutputAlternative.
+type ClientOutputAlternative struct {
+	Description nullable.Nullable[string]   `json:"description,omitempty"`
+	Kind        ClientOutputAlternativeKind `json:"kind"`
+	Name        string                      `json:"name"`
+	Resources   *map[string]interface{}     `json:"resources,omitempty"`
+	Schema      map[string]JsonValue        `json:"schema"`
+}
+
+// ClientOutputAlternativeKind defines model for ClientOutputAlternative.Kind.
+type ClientOutputAlternativeKind string
 
 // ClientToolDefinition Portable model guidance for one externally executed client tool.
 type ClientToolDefinition struct {
@@ -9497,6 +9539,16 @@ type OrganizationUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
 }
 
+// OutputAlternative defines model for OutputAlternative.
+type OutputAlternative struct {
+	union json.RawMessage
+}
+
+// OutputDefinition defines model for OutputDefinition.
+type OutputDefinition struct {
+	union json.RawMessage
+}
+
 // OutputPreview defines model for OutputPreview.
 type OutputPreview struct {
 	ObservationClosed bool                   `json:"observation_closed"`
@@ -9505,15 +9557,19 @@ type OutputPreview struct {
 	Truncated         bool                   `json:"truncated"`
 }
 
+// OutputReference defines model for OutputReference.
+type OutputReference = string
+
 // OutputSpec Plain text without a schema, one structured output, or at least two named variants.
 //
 // `resources` are the schemas `$ref`s may name besides the schema's own definitions.
 type OutputSpec struct {
-	Description nullable.Nullable[string]               `json:"description,omitempty"`
-	Name        nullable.Nullable[string]               `json:"name,omitempty"`
-	Resources   *map[string]interface{}                 `json:"resources,omitempty"`
-	Schema      nullable.Nullable[map[string]JsonValue] `json:"schema,omitempty"`
-	Variants    nullable.Nullable[[]OutputVariant]      `json:"variants,omitempty"`
+	Alternatives nullable.Nullable[[]OutputAlternative]  `json:"alternatives,omitempty"`
+	Description  nullable.Nullable[string]               `json:"description,omitempty"`
+	Name         nullable.Nullable[string]               `json:"name,omitempty"`
+	Resources    *map[string]interface{}                 `json:"resources,omitempty"`
+	Schema       nullable.Nullable[map[string]JsonValue] `json:"schema,omitempty"`
+	Variants     nullable.Nullable[[]OutputVariant]      `json:"variants,omitempty"`
 }
 
 // OutputVariant defines model for OutputVariant.
@@ -9621,6 +9677,7 @@ type Pending struct {
 type PendingCall struct {
 	Arguments    map[string]JsonValue                    `json:"arguments"`
 	Presentation nullable.Nullable[map[string]JsonValue] `json:"presentation,omitempty"`
+	Terminal     *bool                                   `json:"terminal,omitempty"`
 	ToolCallId   ToolCallId                              `json:"tool_call_id"`
 	ToolName     string                                  `json:"tool_name"`
 }
@@ -11106,6 +11163,18 @@ type StatusChangeStatus string
 
 // Steering defines model for Steering.
 type Steering string
+
+// StructuredOutputAlternative defines model for StructuredOutputAlternative.
+type StructuredOutputAlternative struct {
+	Description nullable.Nullable[string]       `json:"description,omitempty"`
+	Kind        StructuredOutputAlternativeKind `json:"kind"`
+	Name        string                          `json:"name"`
+	Resources   *map[string]interface{}         `json:"resources,omitempty"`
+	Schema      map[string]JsonValue            `json:"schema"`
+}
+
+// StructuredOutputAlternativeKind defines model for StructuredOutputAlternative.Kind.
+type StructuredOutputAlternativeKind string
 
 // SubagentSelectionInput defines model for SubagentSelection-Input.
 type SubagentSelectionInput struct {
@@ -17148,6 +17217,169 @@ func (t OrganizationTarget) MarshalJSON() ([]byte, error) {
 }
 
 func (t *OrganizationTarget) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsOutputReference returns the union data inside the OutputAlternative as a OutputReference
+func (t OutputAlternative) AsOutputReference() (OutputReference, error) {
+	var body OutputReference
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromOutputReference overwrites any union data inside the OutputAlternative as the provided OutputReference
+func (t *OutputAlternative) FromOutputReference(v OutputReference) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeOutputReference performs a merge with any union data inside the OutputAlternative, using the provided OutputReference
+func (t *OutputAlternative) MergeOutputReference(v OutputReference) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsOutputDefinition returns the union data inside the OutputAlternative as a OutputDefinition
+func (t OutputAlternative) AsOutputDefinition() (OutputDefinition, error) {
+	var body OutputDefinition
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromOutputDefinition overwrites any union data inside the OutputAlternative as the provided OutputDefinition
+func (t *OutputAlternative) FromOutputDefinition(v OutputDefinition) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeOutputDefinition performs a merge with any union data inside the OutputAlternative, using the provided OutputDefinition
+func (t *OutputAlternative) MergeOutputDefinition(v OutputDefinition) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t OutputAlternative) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *OutputAlternative) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsStructuredOutputAlternative returns the union data inside the OutputDefinition as a StructuredOutputAlternative
+func (t OutputDefinition) AsStructuredOutputAlternative() (StructuredOutputAlternative, error) {
+	var body StructuredOutputAlternative
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromStructuredOutputAlternative overwrites any union data inside the OutputDefinition as the provided StructuredOutputAlternative
+func (t *OutputDefinition) FromStructuredOutputAlternative(v StructuredOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"structured"}`))
+	t.union = b
+	return err
+}
+
+// MergeStructuredOutputAlternative performs a merge with any union data inside the OutputDefinition, using the provided StructuredOutputAlternative
+func (t *OutputDefinition) MergeStructuredOutputAlternative(v StructuredOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"structured"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsClientOutputAlternative returns the union data inside the OutputDefinition as a ClientOutputAlternative
+func (t OutputDefinition) AsClientOutputAlternative() (ClientOutputAlternative, error) {
+	var body ClientOutputAlternative
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromClientOutputAlternative overwrites any union data inside the OutputDefinition as the provided ClientOutputAlternative
+func (t *OutputDefinition) FromClientOutputAlternative(v ClientOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"client_tool"}`))
+	t.union = b
+	return err
+}
+
+// MergeClientOutputAlternative performs a merge with any union data inside the OutputDefinition, using the provided ClientOutputAlternative
+func (t *OutputDefinition) MergeClientOutputAlternative(v ClientOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"client_tool"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t OutputDefinition) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t OutputDefinition) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "client_tool":
+		return t.AsClientOutputAlternative()
+	case "structured":
+		return t.AsStructuredOutputAlternative()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t OutputDefinition) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *OutputDefinition) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
