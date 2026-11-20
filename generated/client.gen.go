@@ -623,6 +623,21 @@ func (e ClientConnectionObservationState) Valid() bool {
 	}
 }
 
+// Defines values for ClientOutputAlternativeKind.
+const (
+	ClientTool ClientOutputAlternativeKind = "client_tool"
+)
+
+// Valid indicates whether the value is a known member of the ClientOutputAlternativeKind enum.
+func (e ClientOutputAlternativeKind) Valid() bool {
+	switch e {
+	case ClientTool:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ClientToolDefinitionPermission.
 const (
 	ClientToolDefinitionPermissionAllow   ClientToolDefinitionPermission = "allow"
@@ -1241,6 +1256,72 @@ func (e DenyAction) Valid() bool {
 	}
 }
 
+// Defines values for DeploymentCleanup.
+const (
+	DeploymentCleanupNotCreated DeploymentCleanup = "not_created"
+	DeploymentCleanupPending    DeploymentCleanup = "pending"
+	DeploymentCleanupRemoved    DeploymentCleanup = "removed"
+)
+
+// Valid indicates whether the value is a known member of the DeploymentCleanup enum.
+func (e DeploymentCleanup) Valid() bool {
+	switch e {
+	case DeploymentCleanupNotCreated:
+		return true
+	case DeploymentCleanupPending:
+		return true
+	case DeploymentCleanupRemoved:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeploymentOperation.
+const (
+	Deploy DeploymentOperation = "deploy"
+	Retire DeploymentOperation = "retire"
+)
+
+// Valid indicates whether the value is a known member of the DeploymentOperation enum.
+func (e DeploymentOperation) Valid() bool {
+	switch e {
+	case Deploy:
+		return true
+	case Retire:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeploymentStatus.
+const (
+	DeploymentStatusDeploying      DeploymentStatus = "deploying"
+	DeploymentStatusNeedsAttention DeploymentStatus = "needs_attention"
+	DeploymentStatusReady          DeploymentStatus = "ready"
+	DeploymentStatusRetired        DeploymentStatus = "retired"
+	DeploymentStatusRetiring       DeploymentStatus = "retiring"
+)
+
+// Valid indicates whether the value is a known member of the DeploymentStatus enum.
+func (e DeploymentStatus) Valid() bool {
+	switch e {
+	case DeploymentStatusDeploying:
+		return true
+	case DeploymentStatusNeedsAttention:
+		return true
+	case DeploymentStatusReady:
+		return true
+	case DeploymentStatusRetired:
+		return true
+	case DeploymentStatusRetiring:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DiagnosticsEnvd.
 const (
 	NotVerified     DiagnosticsEnvd = "not_verified"
@@ -1363,13 +1444,16 @@ func (e EntrySummaryDelivery) Valid() bool {
 
 // Defines values for EntrySummaryKind.
 const (
-	EntrySummaryKindChildResult EntrySummaryKind = "child_result"
-	EntrySummaryKindMessage     EntrySummaryKind = "message"
+	EntrySummaryKindChildMessage EntrySummaryKind = "child_message"
+	EntrySummaryKindChildResult  EntrySummaryKind = "child_result"
+	EntrySummaryKindMessage      EntrySummaryKind = "message"
 )
 
 // Valid indicates whether the value is a known member of the EntrySummaryKind enum.
 func (e EntrySummaryKind) Valid() bool {
 	switch e {
+	case EntrySummaryKindChildMessage:
+		return true
 	case EntrySummaryKindChildResult:
 		return true
 	case EntrySummaryKindMessage:
@@ -1397,6 +1481,7 @@ func (e EntrySummaryView) Valid() bool {
 // Defines values for EntryViewKind.
 const (
 	EntryViewKindBrowserHandback EntryViewKind = "browser_handback"
+	EntryViewKindChildMessage    EntryViewKind = "child_message"
 	EntryViewKindChildResult     EntryViewKind = "child_result"
 	EntryViewKindDesktopHandback EntryViewKind = "desktop_handback"
 	EntryViewKindMessage         EntryViewKind = "message"
@@ -1407,6 +1492,8 @@ const (
 func (e EntryViewKind) Valid() bool {
 	switch e {
 	case EntryViewKindBrowserHandback:
+		return true
+	case EntryViewKindChildMessage:
 		return true
 	case EntryViewKindChildResult:
 		return true
@@ -4160,6 +4247,21 @@ func (e Steering) Valid() bool {
 	}
 }
 
+// Defines values for StructuredOutputAlternativeKind.
+const (
+	Structured StructuredOutputAlternativeKind = "structured"
+)
+
+// Valid indicates whether the value is a known member of the StructuredOutputAlternativeKind enum.
+func (e StructuredOutputAlternativeKind) Valid() bool {
+	switch e {
+	case Structured:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SubagentsInputMode.
 const (
 	SubagentsInputModeAsync  SubagentsInputMode = "async"
@@ -4520,6 +4622,7 @@ func (e TraceBackendType) Valid() bool {
 // Defines values for Trigger.
 const (
 	TriggerBrowserHandback Trigger = "browser_handback"
+	TriggerChildMessage    Trigger = "child_message"
 	TriggerChildResult     Trigger = "child_result"
 	TriggerDesktopHandback Trigger = "desktop_handback"
 	TriggerInput           Trigger = "input"
@@ -4533,6 +4636,8 @@ const (
 func (e Trigger) Valid() bool {
 	switch e {
 	case TriggerBrowserHandback:
+		return true
+	case TriggerChildMessage:
 		return true
 	case TriggerChildResult:
 		return true
@@ -5476,13 +5581,16 @@ func (e ListThreadsParamsOrigin) Valid() bool {
 
 // Defines values for ListInboxParamsKind.
 const (
-	ListInboxParamsKindChildResult ListInboxParamsKind = "child_result"
-	ListInboxParamsKindMessage     ListInboxParamsKind = "message"
+	ListInboxParamsKindChildMessage ListInboxParamsKind = "child_message"
+	ListInboxParamsKindChildResult  ListInboxParamsKind = "child_result"
+	ListInboxParamsKindMessage      ListInboxParamsKind = "message"
 )
 
 // Valid indicates whether the value is a known member of the ListInboxParamsKind enum.
 func (e ListInboxParamsKind) Valid() bool {
 	switch e {
+	case ListInboxParamsKindChildMessage:
+		return true
 	case ListInboxParamsKindChildResult:
 		return true
 	case ListInboxParamsKindMessage:
@@ -6684,6 +6792,18 @@ type ClientEnvironmentConfiguration struct {
 	PermissionCeiling       *EnvironmentPermissionSetOutput                   `json:"permission_ceiling,omitempty"`
 }
 
+// ClientOutputAlternative defines model for ClientOutputAlternative.
+type ClientOutputAlternative struct {
+	Description nullable.Nullable[string]   `json:"description,omitempty"`
+	Kind        ClientOutputAlternativeKind `json:"kind"`
+	Name        string                      `json:"name"`
+	Resources   *map[string]interface{}     `json:"resources,omitempty"`
+	Schema      map[string]JsonValue        `json:"schema"`
+}
+
+// ClientOutputAlternativeKind defines model for ClientOutputAlternative.Kind.
+type ClientOutputAlternativeKind string
+
 // ClientToolDefinition Portable model guidance for one externally executed client tool.
 type ClientToolDefinition struct {
 	Description          string                          `json:"description"`
@@ -7250,12 +7370,57 @@ type Deny struct {
 // DenyAction defines model for Deny.Action.
 type DenyAction string
 
+// Deployment defines model for Deployment.
+type Deployment struct {
+	AccountId   string                       `json:"account_id"`
+	Cleanup     map[string]DeploymentCleanup `json:"cleanup"`
+	Endpoint    nullable.Nullable[string]    `json:"endpoint"`
+	Error       nullable.Nullable[string]    `json:"error"`
+	Id          string                       `json:"id"`
+	Name        string                       `json:"name"`
+	Operation   DeploymentOperation          `json:"operation"`
+	ProviderId  nullable.Nullable[string]    `json:"provider_id"`
+	SourceImage string                       `json:"source_image"`
+	Stage       string                       `json:"stage"`
+	Status      DeploymentStatus             `json:"status"`
+	Version     int                          `json:"version"`
+	WorkerName  string                       `json:"worker_name"`
+}
+
+// DeploymentCleanup defines model for Deployment.Cleanup.
+type DeploymentCleanup string
+
+// DeploymentOperation defines model for Deployment.Operation.
+type DeploymentOperation string
+
+// DeploymentStatus defines model for Deployment.Status.
+type DeploymentStatus string
+
+// DeploymentCreate defines model for DeploymentCreate.
+type DeploymentCreate struct {
+	AccountId string             `json:"account_id"`
+	ApiToken  *string            `json:"api_token,omitempty"`
+	Name      string             `json:"name"`
+	RequestId openapi_types.UUID `json:"request_id"`
+}
+
+// DeploymentList defines model for DeploymentList.
+type DeploymentList struct {
+	Available bool         `json:"available"`
+	Items     []Deployment `json:"items"`
+}
+
 // DeploymentPreset defines model for DeploymentPreset.
 type DeploymentPreset struct {
 	Config              Configuration `json:"config"`
 	HasQueryCredentials bool          `json:"has_query_credentials"`
 	Name                string        `json:"name"`
 	Revision            string        `json:"revision"`
+}
+
+// DeploymentRetry defines model for DeploymentRetry.
+type DeploymentRetry struct {
+	ApiToken nullable.Nullable[string] `json:"api_token,omitempty"`
 }
 
 // Description defines model for Description.
@@ -9374,6 +9539,16 @@ type OrganizationUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
 }
 
+// OutputAlternative defines model for OutputAlternative.
+type OutputAlternative struct {
+	union json.RawMessage
+}
+
+// OutputDefinition defines model for OutputDefinition.
+type OutputDefinition struct {
+	union json.RawMessage
+}
+
 // OutputPreview defines model for OutputPreview.
 type OutputPreview struct {
 	ObservationClosed bool                   `json:"observation_closed"`
@@ -9382,15 +9557,19 @@ type OutputPreview struct {
 	Truncated         bool                   `json:"truncated"`
 }
 
+// OutputReference defines model for OutputReference.
+type OutputReference = string
+
 // OutputSpec Plain text without a schema, one structured output, or at least two named variants.
 //
 // `resources` are the schemas `$ref`s may name besides the schema's own definitions.
 type OutputSpec struct {
-	Description nullable.Nullable[string]               `json:"description,omitempty"`
-	Name        nullable.Nullable[string]               `json:"name,omitempty"`
-	Resources   *map[string]interface{}                 `json:"resources,omitempty"`
-	Schema      nullable.Nullable[map[string]JsonValue] `json:"schema,omitempty"`
-	Variants    nullable.Nullable[[]OutputVariant]      `json:"variants,omitempty"`
+	Alternatives nullable.Nullable[[]OutputAlternative]  `json:"alternatives,omitempty"`
+	Description  nullable.Nullable[string]               `json:"description,omitempty"`
+	Name         nullable.Nullable[string]               `json:"name,omitempty"`
+	Resources    *map[string]interface{}                 `json:"resources,omitempty"`
+	Schema       nullable.Nullable[map[string]JsonValue] `json:"schema,omitempty"`
+	Variants     nullable.Nullable[[]OutputVariant]      `json:"variants,omitempty"`
 }
 
 // OutputVariant defines model for OutputVariant.
@@ -9498,6 +9677,7 @@ type Pending struct {
 type PendingCall struct {
 	Arguments    map[string]JsonValue                    `json:"arguments"`
 	Presentation nullable.Nullable[map[string]JsonValue] `json:"presentation,omitempty"`
+	Terminal     *bool                                   `json:"terminal,omitempty"`
 	ToolCallId   ToolCallId                              `json:"tool_call_id"`
 	ToolName     string                                  `json:"tool_name"`
 }
@@ -9686,6 +9866,7 @@ type Provider struct {
 	Enabled              bool                      `json:"enabled"`
 	HeaderNames          []string                  `json:"header_names"`
 	Id                   string                    `json:"id"`
+	ManagedDeployment    *bool                     `json:"managed_deployment,omitempty"`
 	Name                 string                    `json:"name"`
 	OrganizationId       string                    `json:"organization_id"`
 	Type                 string                    `json:"type"`
@@ -10983,6 +11164,18 @@ type StatusChangeStatus string
 // Steering defines model for Steering.
 type Steering string
 
+// StructuredOutputAlternative defines model for StructuredOutputAlternative.
+type StructuredOutputAlternative struct {
+	Description nullable.Nullable[string]       `json:"description,omitempty"`
+	Kind        StructuredOutputAlternativeKind `json:"kind"`
+	Name        string                          `json:"name"`
+	Resources   *map[string]interface{}         `json:"resources,omitempty"`
+	Schema      map[string]JsonValue            `json:"schema"`
+}
+
+// StructuredOutputAlternativeKind defines model for StructuredOutputAlternative.Kind.
+type StructuredOutputAlternativeKind string
+
 // SubagentSelectionInput defines model for SubagentSelection-Input.
 type SubagentSelectionInput struct {
 	AgentId     string                    `json:"agent_id"`
@@ -12247,6 +12440,42 @@ type RotateClientEnvironmentCredentialParams struct {
 
 // ChangeClientEnvironmentStatusParams defines parameters for ChangeClientEnvironmentStatus.
 type ChangeClientEnvironmentStatusParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListCloudflareDeploymentsParams defines parameters for ListCloudflareDeployments.
+type ListCloudflareDeploymentsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateCloudflareDeploymentParams defines parameters for CreateCloudflareDeployment.
+type CreateCloudflareDeploymentParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetCloudflareDeploymentParams defines parameters for GetCloudflareDeployment.
+type GetCloudflareDeploymentParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RetireCloudflareDeploymentParams defines parameters for RetireCloudflareDeployment.
+type RetireCloudflareDeploymentParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RetryCloudflareDeploymentParams defines parameters for RetryCloudflareDeployment.
+type RetryCloudflareDeploymentParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
@@ -15132,6 +15361,12 @@ type RecognizeClientPairingJSONRequestBody = Recognition
 // ChangeClientEnvironmentStatusJSONRequestBody defines body for ChangeClientEnvironmentStatus for application/json ContentType.
 type ChangeClientEnvironmentStatusJSONRequestBody = StatusChange
 
+// CreateCloudflareDeploymentJSONRequestBody defines body for CreateCloudflareDeployment for application/json ContentType.
+type CreateCloudflareDeploymentJSONRequestBody = DeploymentCreate
+
+// RetryCloudflareDeploymentJSONRequestBody defines body for RetryCloudflareDeployment for application/json ContentType.
+type RetryCloudflareDeploymentJSONRequestBody = DeploymentRetry
+
 // CreateConnectionJSONRequestBody defines body for CreateConnection for application/json ContentType.
 type CreateConnectionJSONRequestBody = ConnectionCreate
 
@@ -16982,6 +17217,169 @@ func (t OrganizationTarget) MarshalJSON() ([]byte, error) {
 }
 
 func (t *OrganizationTarget) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsOutputReference returns the union data inside the OutputAlternative as a OutputReference
+func (t OutputAlternative) AsOutputReference() (OutputReference, error) {
+	var body OutputReference
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromOutputReference overwrites any union data inside the OutputAlternative as the provided OutputReference
+func (t *OutputAlternative) FromOutputReference(v OutputReference) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeOutputReference performs a merge with any union data inside the OutputAlternative, using the provided OutputReference
+func (t *OutputAlternative) MergeOutputReference(v OutputReference) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsOutputDefinition returns the union data inside the OutputAlternative as a OutputDefinition
+func (t OutputAlternative) AsOutputDefinition() (OutputDefinition, error) {
+	var body OutputDefinition
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromOutputDefinition overwrites any union data inside the OutputAlternative as the provided OutputDefinition
+func (t *OutputAlternative) FromOutputDefinition(v OutputDefinition) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeOutputDefinition performs a merge with any union data inside the OutputAlternative, using the provided OutputDefinition
+func (t *OutputAlternative) MergeOutputDefinition(v OutputDefinition) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t OutputAlternative) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *OutputAlternative) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsStructuredOutputAlternative returns the union data inside the OutputDefinition as a StructuredOutputAlternative
+func (t OutputDefinition) AsStructuredOutputAlternative() (StructuredOutputAlternative, error) {
+	var body StructuredOutputAlternative
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromStructuredOutputAlternative overwrites any union data inside the OutputDefinition as the provided StructuredOutputAlternative
+func (t *OutputDefinition) FromStructuredOutputAlternative(v StructuredOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"structured"}`))
+	t.union = b
+	return err
+}
+
+// MergeStructuredOutputAlternative performs a merge with any union data inside the OutputDefinition, using the provided StructuredOutputAlternative
+func (t *OutputDefinition) MergeStructuredOutputAlternative(v StructuredOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"structured"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsClientOutputAlternative returns the union data inside the OutputDefinition as a ClientOutputAlternative
+func (t OutputDefinition) AsClientOutputAlternative() (ClientOutputAlternative, error) {
+	var body ClientOutputAlternative
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromClientOutputAlternative overwrites any union data inside the OutputDefinition as the provided ClientOutputAlternative
+func (t *OutputDefinition) FromClientOutputAlternative(v ClientOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"client_tool"}`))
+	t.union = b
+	return err
+}
+
+// MergeClientOutputAlternative performs a merge with any union data inside the OutputDefinition, using the provided ClientOutputAlternative
+func (t *OutputDefinition) MergeClientOutputAlternative(v ClientOutputAlternative) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"client_tool"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t OutputDefinition) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t OutputDefinition) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "client_tool":
+		return t.AsClientOutputAlternative()
+	case "structured":
+		return t.AsStructuredOutputAlternative()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t OutputDefinition) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *OutputDefinition) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -21005,6 +21403,49 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
 	ChangeClientEnvironmentStatus(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListCloudflareDeployments List Cloudflare Deployments
+	//
+	// Corresponds with GET /api/v1/cloudflare-deployments (the `ListCloudflareDeployments` operationId).
+	ListCloudflareDeployments(ctx context.Context, params *ListCloudflareDeploymentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateCloudflareDeploymentWithBody Create Cloudflare Deployment
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+	CreateCloudflareDeploymentWithBody(ctx context.Context, params *CreateCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateCloudflareDeployment Create Cloudflare Deployment
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+	CreateCloudflareDeployment(ctx context.Context, params *CreateCloudflareDeploymentParams, body CreateCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetCloudflareDeployment Get Cloudflare Deployment
+	//
+	// Corresponds with GET /api/v1/cloudflare-deployments/{deployment_id} (the `GetCloudflareDeployment` operationId).
+	GetCloudflareDeployment(ctx context.Context, deploymentId string, params *GetCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetireCloudflareDeployment Retire Cloudflare Deployment
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retire (the `RetireCloudflareDeployment` operationId).
+	RetireCloudflareDeployment(ctx context.Context, deploymentId string, params *RetireCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetryCloudflareDeploymentWithBody Retry Cloudflare Deployment
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+	RetryCloudflareDeploymentWithBody(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetryCloudflareDeployment Retry Cloudflare Deployment
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+	RetryCloudflareDeployment(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, body RetryCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListConnections List Connections
 	//
@@ -25272,6 +25713,119 @@ func (c *Client) ChangeClientEnvironmentStatusWithBody(ctx context.Context, envi
 // Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
 func (c *Client) ChangeClientEnvironmentStatus(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewChangeClientEnvironmentStatusRequest(c.Server, environmentId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListCloudflareDeployments List Cloudflare Deployments
+//
+// Corresponds with GET /api/v1/cloudflare-deployments (the `ListCloudflareDeployments` operationId).
+func (c *Client) ListCloudflareDeployments(ctx context.Context, params *ListCloudflareDeploymentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCloudflareDeploymentsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateCloudflareDeploymentWithBody Create Cloudflare Deployment
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+func (c *Client) CreateCloudflareDeploymentWithBody(ctx context.Context, params *CreateCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCloudflareDeploymentRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateCloudflareDeployment Create Cloudflare Deployment
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+func (c *Client) CreateCloudflareDeployment(ctx context.Context, params *CreateCloudflareDeploymentParams, body CreateCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCloudflareDeploymentRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetCloudflareDeployment Get Cloudflare Deployment
+//
+// Corresponds with GET /api/v1/cloudflare-deployments/{deployment_id} (the `GetCloudflareDeployment` operationId).
+func (c *Client) GetCloudflareDeployment(ctx context.Context, deploymentId string, params *GetCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCloudflareDeploymentRequest(c.Server, deploymentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RetireCloudflareDeployment Retire Cloudflare Deployment
+//
+// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retire (the `RetireCloudflareDeployment` operationId).
+func (c *Client) RetireCloudflareDeployment(ctx context.Context, deploymentId string, params *RetireCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetireCloudflareDeploymentRequest(c.Server, deploymentId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RetryCloudflareDeploymentWithBody Retry Cloudflare Deployment
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+func (c *Client) RetryCloudflareDeploymentWithBody(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryCloudflareDeploymentRequestWithBody(c.Server, deploymentId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RetryCloudflareDeployment Retry Cloudflare Deployment
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+func (c *Client) RetryCloudflareDeployment(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, body RetryCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryCloudflareDeploymentRequest(c.Server, deploymentId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -36221,6 +36775,285 @@ func NewChangeClientEnvironmentStatusRequestWithBody(server string, environmentI
 	}
 
 	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListCloudflareDeploymentsRequest constructs an http.Request for the ListCloudflareDeployments method
+func NewListCloudflareDeploymentsRequest(server string, params *ListCloudflareDeploymentsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/cloudflare-deployments")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateCloudflareDeploymentRequest calls the generic CreateCloudflareDeployment builder with application/json body
+func NewCreateCloudflareDeploymentRequest(server string, params *CreateCloudflareDeploymentParams, body CreateCloudflareDeploymentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateCloudflareDeploymentRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateCloudflareDeploymentRequestWithBody constructs an http.Request for the CreateCloudflareDeployment method, with any body, and a specified content type
+func NewCreateCloudflareDeploymentRequestWithBody(server string, params *CreateCloudflareDeploymentParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/cloudflare-deployments")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetCloudflareDeploymentRequest constructs an http.Request for the GetCloudflareDeployment method
+func NewGetCloudflareDeploymentRequest(server string, deploymentId string, params *GetCloudflareDeploymentParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "deployment_id", deploymentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/cloudflare-deployments/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetireCloudflareDeploymentRequest constructs an http.Request for the RetireCloudflareDeployment method
+func NewRetireCloudflareDeploymentRequest(server string, deploymentId string, params *RetireCloudflareDeploymentParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "deployment_id", deploymentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/cloudflare-deployments/%s/retire", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetryCloudflareDeploymentRequest calls the generic RetryCloudflareDeployment builder with application/json body
+func NewRetryCloudflareDeploymentRequest(server string, deploymentId string, params *RetryCloudflareDeploymentParams, body RetryCloudflareDeploymentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRetryCloudflareDeploymentRequestWithBody(server, deploymentId, params, "application/json", bodyReader)
+}
+
+// NewRetryCloudflareDeploymentRequestWithBody constructs an http.Request for the RetryCloudflareDeployment method, with any body, and a specified content type
+func NewRetryCloudflareDeploymentRequestWithBody(server string, deploymentId string, params *RetryCloudflareDeploymentParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "deployment_id", deploymentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/cloudflare-deployments/%s/retry", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -60298,6 +61131,55 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/client-environments/{environment_id}/status (the `ChangeClientEnvironmentStatus` operationId).
 	ChangeClientEnvironmentStatusWithResponse(ctx context.Context, environmentId string, params *ChangeClientEnvironmentStatusParams, body ChangeClientEnvironmentStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeClientEnvironmentStatusResponse, error)
 
+	// ListCloudflareDeploymentsWithResponse List Cloudflare Deployments
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/cloudflare-deployments (the `ListCloudflareDeployments` operationId).
+	ListCloudflareDeploymentsWithResponse(ctx context.Context, params *ListCloudflareDeploymentsParams, reqEditors ...RequestEditorFn) (*ListCloudflareDeploymentsResponse, error)
+
+	// CreateCloudflareDeploymentWithBodyWithResponse Create Cloudflare Deployment
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+	CreateCloudflareDeploymentWithBodyWithResponse(ctx context.Context, params *CreateCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCloudflareDeploymentResponse, error)
+
+	// CreateCloudflareDeploymentWithResponse Create Cloudflare Deployment
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+	CreateCloudflareDeploymentWithResponse(ctx context.Context, params *CreateCloudflareDeploymentParams, body CreateCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCloudflareDeploymentResponse, error)
+
+	// GetCloudflareDeploymentWithResponse Get Cloudflare Deployment
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/cloudflare-deployments/{deployment_id} (the `GetCloudflareDeployment` operationId).
+	GetCloudflareDeploymentWithResponse(ctx context.Context, deploymentId string, params *GetCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*GetCloudflareDeploymentResponse, error)
+
+	// RetireCloudflareDeploymentWithResponse Retire Cloudflare Deployment
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retire (the `RetireCloudflareDeployment` operationId).
+	RetireCloudflareDeploymentWithResponse(ctx context.Context, deploymentId string, params *RetireCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*RetireCloudflareDeploymentResponse, error)
+
+	// RetryCloudflareDeploymentWithBodyWithResponse Retry Cloudflare Deployment
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+	RetryCloudflareDeploymentWithBodyWithResponse(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RetryCloudflareDeploymentResponse, error)
+
+	// RetryCloudflareDeploymentWithResponse Retry Cloudflare Deployment
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+	RetryCloudflareDeploymentWithResponse(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, body RetryCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*RetryCloudflareDeploymentResponse, error)
+
 	// ListConnectionsWithResponse List Connections
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -67809,6 +68691,351 @@ func (r ChangeClientEnvironmentStatusResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ChangeClientEnvironmentStatusResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListCloudflareDeploymentsResponse400Headers the declared response headers of an HTTP 400 response for ListCloudflareDeployments
+type ListCloudflareDeploymentsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListCloudflareDeploymentsResponseDefaultHeaders the declared response headers of an HTTP default response for ListCloudflareDeployments
+type ListCloudflareDeploymentsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListCloudflareDeploymentsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DeploymentList
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListCloudflareDeploymentsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListCloudflareDeploymentsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListCloudflareDeploymentsResponse) GetJSON200() *DeploymentList {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListCloudflareDeploymentsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListCloudflareDeploymentsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListCloudflareDeploymentsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListCloudflareDeploymentsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListCloudflareDeploymentsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListCloudflareDeploymentsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateCloudflareDeploymentResponse400Headers the declared response headers of an HTTP 400 response for CreateCloudflareDeployment
+type CreateCloudflareDeploymentResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateCloudflareDeploymentResponseDefaultHeaders the declared response headers of an HTTP default response for CreateCloudflareDeployment
+type CreateCloudflareDeploymentResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateCloudflareDeploymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Deployment
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateCloudflareDeploymentResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateCloudflareDeploymentResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r CreateCloudflareDeploymentResponse) GetJSON202() *Deployment {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateCloudflareDeploymentResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateCloudflareDeploymentResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateCloudflareDeploymentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateCloudflareDeploymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateCloudflareDeploymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateCloudflareDeploymentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetCloudflareDeploymentResponse400Headers the declared response headers of an HTTP 400 response for GetCloudflareDeployment
+type GetCloudflareDeploymentResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetCloudflareDeploymentResponseDefaultHeaders the declared response headers of an HTTP default response for GetCloudflareDeployment
+type GetCloudflareDeploymentResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetCloudflareDeploymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Deployment
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetCloudflareDeploymentResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetCloudflareDeploymentResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetCloudflareDeploymentResponse) GetJSON200() *Deployment {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetCloudflareDeploymentResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetCloudflareDeploymentResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetCloudflareDeploymentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCloudflareDeploymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCloudflareDeploymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetCloudflareDeploymentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RetireCloudflareDeploymentResponse400Headers the declared response headers of an HTTP 400 response for RetireCloudflareDeployment
+type RetireCloudflareDeploymentResponse400Headers struct {
+	XRequestId *string
+}
+
+// RetireCloudflareDeploymentResponseDefaultHeaders the declared response headers of an HTTP default response for RetireCloudflareDeployment
+type RetireCloudflareDeploymentResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RetireCloudflareDeploymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Deployment
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RetireCloudflareDeploymentResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RetireCloudflareDeploymentResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r RetireCloudflareDeploymentResponse) GetJSON202() *Deployment {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RetireCloudflareDeploymentResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RetireCloudflareDeploymentResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RetireCloudflareDeploymentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RetireCloudflareDeploymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetireCloudflareDeploymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RetireCloudflareDeploymentResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RetryCloudflareDeploymentResponse400Headers the declared response headers of an HTTP 400 response for RetryCloudflareDeployment
+type RetryCloudflareDeploymentResponse400Headers struct {
+	XRequestId *string
+}
+
+// RetryCloudflareDeploymentResponseDefaultHeaders the declared response headers of an HTTP default response for RetryCloudflareDeployment
+type RetryCloudflareDeploymentResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RetryCloudflareDeploymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Deployment
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RetryCloudflareDeploymentResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RetryCloudflareDeploymentResponseDefaultHeaders
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r RetryCloudflareDeploymentResponse) GetJSON202() *Deployment {
+	return r.JSON202
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RetryCloudflareDeploymentResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RetryCloudflareDeploymentResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RetryCloudflareDeploymentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RetryCloudflareDeploymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetryCloudflareDeploymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RetryCloudflareDeploymentResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -91736,6 +92963,97 @@ func (c *ClientWithResponses) ChangeClientEnvironmentStatusWithResponse(ctx cont
 	return ParseChangeClientEnvironmentStatusResponse(rsp)
 }
 
+// ListCloudflareDeploymentsWithResponse List Cloudflare Deployments
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/cloudflare-deployments (the `ListCloudflareDeployments` operationId).
+func (c *ClientWithResponses) ListCloudflareDeploymentsWithResponse(ctx context.Context, params *ListCloudflareDeploymentsParams, reqEditors ...RequestEditorFn) (*ListCloudflareDeploymentsResponse, error) {
+	rsp, err := c.ListCloudflareDeployments(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListCloudflareDeploymentsResponse(rsp)
+}
+
+// CreateCloudflareDeploymentWithBodyWithResponse Create Cloudflare Deployment
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+func (c *ClientWithResponses) CreateCloudflareDeploymentWithBodyWithResponse(ctx context.Context, params *CreateCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCloudflareDeploymentResponse, error) {
+	rsp, err := c.CreateCloudflareDeploymentWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCloudflareDeploymentResponse(rsp)
+}
+
+// CreateCloudflareDeploymentWithResponse Create Cloudflare Deployment
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/cloudflare-deployments (the `CreateCloudflareDeployment` operationId).
+func (c *ClientWithResponses) CreateCloudflareDeploymentWithResponse(ctx context.Context, params *CreateCloudflareDeploymentParams, body CreateCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCloudflareDeploymentResponse, error) {
+	rsp, err := c.CreateCloudflareDeployment(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCloudflareDeploymentResponse(rsp)
+}
+
+// GetCloudflareDeploymentWithResponse Get Cloudflare Deployment
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/cloudflare-deployments/{deployment_id} (the `GetCloudflareDeployment` operationId).
+func (c *ClientWithResponses) GetCloudflareDeploymentWithResponse(ctx context.Context, deploymentId string, params *GetCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*GetCloudflareDeploymentResponse, error) {
+	rsp, err := c.GetCloudflareDeployment(ctx, deploymentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCloudflareDeploymentResponse(rsp)
+}
+
+// RetireCloudflareDeploymentWithResponse Retire Cloudflare Deployment
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retire (the `RetireCloudflareDeployment` operationId).
+func (c *ClientWithResponses) RetireCloudflareDeploymentWithResponse(ctx context.Context, deploymentId string, params *RetireCloudflareDeploymentParams, reqEditors ...RequestEditorFn) (*RetireCloudflareDeploymentResponse, error) {
+	rsp, err := c.RetireCloudflareDeployment(ctx, deploymentId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetireCloudflareDeploymentResponse(rsp)
+}
+
+// RetryCloudflareDeploymentWithBodyWithResponse Retry Cloudflare Deployment
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+func (c *ClientWithResponses) RetryCloudflareDeploymentWithBodyWithResponse(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RetryCloudflareDeploymentResponse, error) {
+	rsp, err := c.RetryCloudflareDeploymentWithBody(ctx, deploymentId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryCloudflareDeploymentResponse(rsp)
+}
+
+// RetryCloudflareDeploymentWithResponse Retry Cloudflare Deployment
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/cloudflare-deployments/{deployment_id}/retry (the `RetryCloudflareDeployment` operationId).
+func (c *ClientWithResponses) RetryCloudflareDeploymentWithResponse(ctx context.Context, deploymentId string, params *RetryCloudflareDeploymentParams, body RetryCloudflareDeploymentJSONRequestBody, reqEditors ...RequestEditorFn) (*RetryCloudflareDeploymentResponse, error) {
+	rsp, err := c.RetryCloudflareDeployment(ctx, deploymentId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryCloudflareDeploymentResponse(rsp)
+}
+
 // ListConnectionsWithResponse List Connections
 //
 // Returns a wrapper object for the known response body format(s).
@@ -101504,6 +102822,321 @@ func ParseChangeClientEnvironmentStatusResponse(rsp *http.Response) (*ChangeClie
 		response.Headers400 = &headers
 	case true:
 		var headers ChangeClientEnvironmentStatusResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListCloudflareDeploymentsResponse parses an HTTP response from a ListCloudflareDeploymentsWithResponse call
+func ParseListCloudflareDeploymentsResponse(rsp *http.Response) (*ListCloudflareDeploymentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListCloudflareDeploymentsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DeploymentList
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListCloudflareDeploymentsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListCloudflareDeploymentsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateCloudflareDeploymentResponse parses an HTTP response from a CreateCloudflareDeploymentWithResponse call
+func ParseCreateCloudflareDeploymentResponse(rsp *http.Response) (*CreateCloudflareDeploymentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateCloudflareDeploymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Deployment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateCloudflareDeploymentResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateCloudflareDeploymentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetCloudflareDeploymentResponse parses an HTTP response from a GetCloudflareDeploymentWithResponse call
+func ParseGetCloudflareDeploymentResponse(rsp *http.Response) (*GetCloudflareDeploymentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCloudflareDeploymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Deployment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetCloudflareDeploymentResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetCloudflareDeploymentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRetireCloudflareDeploymentResponse parses an HTTP response from a RetireCloudflareDeploymentWithResponse call
+func ParseRetireCloudflareDeploymentResponse(rsp *http.Response) (*RetireCloudflareDeploymentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetireCloudflareDeploymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Deployment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RetireCloudflareDeploymentResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RetireCloudflareDeploymentResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRetryCloudflareDeploymentResponse parses an HTTP response from a RetryCloudflareDeploymentWithResponse call
+func ParseRetryCloudflareDeploymentResponse(rsp *http.Response) (*RetryCloudflareDeploymentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetryCloudflareDeploymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Deployment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RetryCloudflareDeploymentResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RetryCloudflareDeploymentResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

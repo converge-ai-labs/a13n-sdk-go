@@ -15,6 +15,10 @@ func (ConnectionCreate) String() string        { return "ConnectionCreate { .. }
 func (ConnectionCreate) GoString() string      { return "ConnectionCreate { .. }" }
 func (ConnectionUpdate) String() string        { return "ConnectionUpdate { .. }" }
 func (ConnectionUpdate) GoString() string      { return "ConnectionUpdate { .. }" }
+func (DeploymentCreate) String() string        { return "DeploymentCreate { .. }" }
+func (DeploymentCreate) GoString() string      { return "DeploymentCreate { .. }" }
+func (DeploymentRetry) String() string         { return "DeploymentRetry { .. }" }
+func (DeploymentRetry) GoString() string       { return "DeploymentRetry { .. }" }
 func (ExternalTargetCreate) String() string    { return "ExternalTargetCreate { .. }" }
 func (ExternalTargetCreate) GoString() string  { return "ExternalTargetCreate { .. }" }
 func (InvitationAccept) String() string        { return "InvitationAccept { .. }" }
