@@ -40,6 +40,7 @@ type Run struct {
 type StartOptions struct {
 	IdempotencyKey  string
 	AgentRevisionId nullable.Nullable[string]
+	BrowserBinding  nullable.Nullable[generated.BrowserBinding]
 	Delivery        *Delivery
 	Environments    *InitialMounts
 	Execution       nullable.Nullable[generated.ExecutionOverride]
@@ -167,7 +168,7 @@ func (a Agent) StartInput(ctx context.Context, input Input, options ...StartOpti
 		return nil, err
 	}
 	body := generated.NewThread{AgentId: a.ID, Payload: payload, AgentRevisionId: opts.AgentRevisionId,
-		Delivery: opts.Delivery, Environments: opts.Environments, Execution: opts.Execution, Session: opts.Session, Kind: opts.Kind, McpHeaders: opts.McpHeaders,
+		BrowserBinding: opts.BrowserBinding, Delivery: opts.Delivery, Environments: opts.Environments, Execution: opts.Execution, Session: opts.Session, Kind: opts.Kind, McpHeaders: opts.McpHeaders,
 		Memories: opts.Memories, MessageHistory: opts.MessageHistory, Options: opts.Options, SessionId: opts.SessionId}
 	observation, cancel := observationContext(ctx)
 	mutation, dispatch, key, err := mutationContext(observation, a.client, opts.IdempotencyKey)

@@ -470,3 +470,58 @@ func testTextPayload(text string) generated.MessagePayload {
 	}
 	return payload
 }
+
+func TestStartBrowserBindingWire(t *testing.T) {
+	bodies := []map[string]json.RawMessage{}
+	client := coverageClient(t, func(req *http.Request) *http.Response {
+		var body map[string]json.RawMessage
+		if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
+			t.Fatal(err)
+		}
+		bodies = append(bodies, body)
+		return coverageResponse(201, queuedReceipt)
+	})
+	for _, option := range []StartOptions{
+		{},
+		{BrowserBinding: nullable.NewNullNullable[generated.BrowserBinding]()},
+		{BrowserBinding: nullable.NewNullableWithValue(generated.BrowserBinding{BrowserId: "brw_123"})},
+	} {
+		interaction, err := client.Agent("agent").Start(context.Background(), "hello", option)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_ = interaction.Close()
+	}
+	if _, ok := bodies[0]["browser_binding"]; ok {
+		t.Fatal("omitted browser binding was sent")
+	}
+	if string(bodies[1]["browser_binding"]) != "null" {
+		t.Fatal("explicit null was lost")
+	}
+	var binding generated.BrowserBinding
+	if err := json.Unmarshal(bodies[2]["browser_binding"], &binding); err != nil || binding.BrowserId != "brw_123" {
+		t.Fatalf("binding: %#v, %v", binding, err)
+	}
+}
+
+func TestSessionUsageQueryAndTypedPage(t *testing.T) {
+	client := coverageClient(t, func(req *http.Request) *http.Response {
+		if req.URL.Path != "/proxy/api/v1/usage/sessions" || req.URL.Query().Get("agent_id") != "agt_123" || req.URL.Query().Get("cursor") != "next +/" || req.URL.Query().Get("limit") != "7" {
+			t.Errorf("unexpected query: %s", req.URL.String())
+		}
+		return coverageResponse(200, `{"items":[{"session_id":"ses_123","title":null,"usage":{"requests":2,"input_tokens":12,"output_tokens":4,"cache_read_tokens":0,"cache_hit_rate":null,"cost":null,"unpriced_requests":1},"runs":{"runs":3,"average_duration_seconds":null}}],"next_cursor":"later"}`)
+	})
+	api, err := client.API()
+	if err != nil {
+		t.Fatal(err)
+	}
+	cursor, limit := "next +/", 7
+	response, err := api.ListSessionUsageWithResponse(context.Background(), &generated.ListSessionUsageParams{AgentId: "agt_123", Start: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC), End: time.Date(2026, 1, 2, 0, 0, 0, 0, time.UTC), Cursor: &cursor, Limit: &limit})
+	if err != nil || response.JSON200 == nil {
+		t.Fatalf("response: %#v %v", response, err)
+	}
+	page := response.JSON200
+	if len(page.Items) != 1 || page.Items[0].SessionId != "ses_123" || page.Items[0].Usage.InputTokens != 12 {
+		t.Fatalf("page: %#v", page)
+	}
+}
