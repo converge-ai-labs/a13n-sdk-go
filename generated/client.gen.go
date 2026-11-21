@@ -9277,6 +9277,7 @@ type NetworkMetrics struct {
 type NewThread struct {
 	AgentId         string                               `json:"agent_id"`
 	AgentRevisionId nullable.Nullable[string]            `json:"agent_revision_id,omitempty"`
+	BrowserBinding  nullable.Nullable[BrowserBinding]    `json:"browser_binding,omitempty"`
 	Delivery        *Delivery                            `json:"delivery,omitempty"`
 	Environments    *InitialMounts                       `json:"environments,omitempty"`
 	Execution       nullable.Nullable[ExecutionOverride] `json:"execution,omitempty"`
@@ -10518,9 +10519,11 @@ type ScheduleCreateState string
 
 // ScheduleInvocationInput defines model for ScheduleInvocation-Input.
 type ScheduleInvocationInput struct {
-	AgentId         string                    `json:"agent_id"`
-	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
-	Memories        *[]MemoryMount            `json:"memories,omitempty"`
+	AgentId         string                            `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string]         `json:"agent_revision_id"`
+	BrowserBinding  nullable.Nullable[BrowserBinding] `json:"browser_binding,omitempty"`
+	Environments    *InitialMounts                    `json:"environments,omitempty"`
+	Memories        *[]MemoryMount                    `json:"memories,omitempty"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 	Options *RunOptionsInput `json:"options,omitempty"`
@@ -10529,9 +10532,11 @@ type ScheduleInvocationInput struct {
 
 // ScheduleInvocationOutput defines model for ScheduleInvocation-Output.
 type ScheduleInvocationOutput struct {
-	AgentId         string                    `json:"agent_id"`
-	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
-	Memories        *[]MemoryMount            `json:"memories,omitempty"`
+	AgentId         string                            `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string]         `json:"agent_revision_id"`
+	BrowserBinding  nullable.Nullable[BrowserBinding] `json:"browser_binding,omitempty"`
+	Environments    *InitialMounts                    `json:"environments,omitempty"`
+	Memories        *[]MemoryMount                    `json:"memories,omitempty"`
 
 	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
 	Options *RunOptionsOutput `json:"options,omitempty"`
@@ -10817,6 +10822,20 @@ type SessionUpdate struct {
 	Memory                      nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
 	Origin                      nullable.Nullable[SessionOrigin]         `json:"origin,omitempty"`
 	Title                       nullable.Nullable[string]                `json:"title,omitempty"`
+}
+
+// SessionUsage defines model for SessionUsage.
+type SessionUsage struct {
+	Runs      RunMetrics                `json:"runs"`
+	SessionId string                    `json:"session_id"`
+	Title     nullable.Nullable[string] `json:"title"`
+	Usage     ModelMetrics              `json:"usage"`
+}
+
+// SessionUsagePage defines model for SessionUsagePage.
+type SessionUsagePage struct {
+	Items      []SessionUsage            `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
 // SessionView defines model for SessionView.
@@ -15102,6 +15121,21 @@ type ListRunUsageParams struct {
 	IngestedBefore *time.Time `form:"ingested_before,omitempty" json:"ingested_before,omitempty"`
 	Limit          *int       `form:"limit,omitempty" json:"limit,omitempty"`
 	Cursor         *string    `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ListSessionUsageParams defines parameters for ListSessionUsage.
+type ListSessionUsageParams struct {
+	Start time.Time `form:"start" json:"start"`
+	End   time.Time `form:"end" json:"end"`
+
+	// PrincipalId Filter by Run execution identity; requires workspace admin.
+	PrincipalId *string `form:"principal_id,omitempty" json:"principal_id,omitempty"`
+	Limit       *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor      *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	AgentId     string  `form:"agent_id" json:"agent_id"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -23941,6 +23975,13 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/usage/runs (the `ListRunUsage` operationId).
 	ListRunUsage(ctx context.Context, params *ListRunUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListSessionUsage List Session Usage
+	//
+	// Sessions ranked by recorded cost for one Agent within the selected window.
+	//
+	// Corresponds with GET /api/v1/usage/sessions (the `ListSessionUsage` operationId).
+	ListSessionUsage(ctx context.Context, params *ListSessionUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetProfile Get Profile
 	//
 	// Corresponds with GET /api/v1/users/me (the `GetProfile` operationId).
@@ -32110,6 +32151,23 @@ func (c *Client) ModelRequestMetrics(ctx context.Context, recordId string, param
 // Corresponds with GET /api/v1/usage/runs (the `ListRunUsage` operationId).
 func (c *Client) ListRunUsage(ctx context.Context, params *ListRunUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListRunUsageRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListSessionUsage List Session Usage
+//
+// Sessions ranked by recorded cost for one Agent within the selected window.
+//
+// Corresponds with GET /api/v1/usage/sessions (the `ListSessionUsage` operationId).
+func (c *Client) ListSessionUsage(ctx context.Context, params *ListSessionUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSessionUsageRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -57994,6 +58052,123 @@ func NewListRunUsageRequest(server string, params *ListRunUsageParams) (*http.Re
 	return req, nil
 }
 
+// NewListSessionUsageRequest constructs an http.Request for the ListSessionUsage method
+func NewListSessionUsageRequest(server string, params *ListSessionUsageParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/usage/sessions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start", params.Start, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end", params.End, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: "date-time"}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.PrincipalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "principal_id", *params.PrincipalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetProfileRequest constructs an http.Request for the GetProfile method
 func NewGetProfileRequest(server string) (*http.Request, error) {
 	var err error
@@ -64063,6 +64238,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/usage/runs (the `ListRunUsage` operationId).
 	ListRunUsageWithResponse(ctx context.Context, params *ListRunUsageParams, reqEditors ...RequestEditorFn) (*ListRunUsageResponse, error)
+
+	// ListSessionUsageWithResponse List Session Usage
+	//
+	// Sessions ranked by recorded cost for one Agent within the selected window.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/usage/sessions (the `ListSessionUsage` operationId).
+	ListSessionUsageWithResponse(ctx context.Context, params *ListSessionUsageParams, reqEditors ...RequestEditorFn) (*ListSessionUsageResponse, error)
 
 	// GetProfileWithResponse Get Profile
 	//
@@ -88767,6 +88951,75 @@ func (r ListRunUsageResponse) ContentType() string {
 	return ""
 }
 
+// ListSessionUsageResponse400Headers the declared response headers of an HTTP 400 response for ListSessionUsage
+type ListSessionUsageResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListSessionUsageResponseDefaultHeaders the declared response headers of an HTTP default response for ListSessionUsage
+type ListSessionUsageResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListSessionUsageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SessionUsagePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListSessionUsageResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListSessionUsageResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListSessionUsageResponse) GetJSON200() *SessionUsagePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListSessionUsageResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListSessionUsageResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListSessionUsageResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSessionUsageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSessionUsageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListSessionUsageResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetProfileResponseDefaultHeaders the declared response headers of an HTTP default response for GetProfile
 type GetProfileResponseDefaultHeaders struct {
 	XRequestId *string
@@ -98210,6 +98463,21 @@ func (c *ClientWithResponses) ListRunUsageWithResponse(ctx context.Context, para
 		return nil, err
 	}
 	return ParseListRunUsageResponse(rsp)
+}
+
+// ListSessionUsageWithResponse List Session Usage
+//
+// Sessions ranked by recorded cost for one Agent within the selected window.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/usage/sessions (the `ListSessionUsage` operationId).
+func (c *ClientWithResponses) ListSessionUsageWithResponse(ctx context.Context, params *ListSessionUsageParams, reqEditors ...RequestEditorFn) (*ListSessionUsageResponse, error) {
+	rsp, err := c.ListSessionUsage(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSessionUsageResponse(rsp)
 }
 
 // GetProfileWithResponse Get Profile
@@ -121182,6 +121450,69 @@ func ParseListRunUsageResponse(rsp *http.Response) (*ListRunUsageResponse, error
 		response.Headers400 = &headers
 	case true:
 		var headers ListRunUsageResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListSessionUsageResponse parses an HTTP response from a ListSessionUsageWithResponse call
+func ParseListSessionUsageResponse(rsp *http.Response) (*ListSessionUsageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSessionUsageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SessionUsagePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListSessionUsageResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListSessionUsageResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
