@@ -2357,6 +2357,24 @@ func (e GrantAccess) Valid() bool {
 	}
 }
 
+// Defines values for GrantViewSource.
+const (
+	GrantViewSourceManual GrantViewSource = "manual"
+	GrantViewSourceOidc   GrantViewSource = "oidc"
+)
+
+// Valid indicates whether the value is a known member of the GrantViewSource enum.
+func (e GrantViewSource) Valid() bool {
+	switch e {
+	case GrantViewSourceManual:
+		return true
+	case GrantViewSourceOidc:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GuideModule.
 const (
 	GuideModuleJournal      GuideModule = "journal"
@@ -2975,6 +2993,21 @@ func (e NewThreadKind) Valid() bool {
 	}
 }
 
+// Defines values for NoPrimaryEnvironmentMode.
+const (
+	NoPrimaryEnvironmentModeNone NoPrimaryEnvironmentMode = "none"
+)
+
+// Valid indicates whether the value is a known member of the NoPrimaryEnvironmentMode enum.
+func (e NoPrimaryEnvironmentMode) Valid() bool {
+	switch e {
+	case NoPrimaryEnvironmentModeNone:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OAuthGrant.
 const (
 	AuthorizationCode OAuthGrant = "authorization_code"
@@ -2987,6 +3020,27 @@ func (e OAuthGrant) Valid() bool {
 	case AuthorizationCode:
 		return true
 	case ClientCredentials:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OIDCBrand.
+const (
+	Generic   OIDCBrand = "generic"
+	Google    OIDCBrand = "google"
+	Microsoft OIDCBrand = "microsoft"
+)
+
+// Valid indicates whether the value is a known member of the OIDCBrand enum.
+func (e OIDCBrand) Valid() bool {
+	switch e {
+	case Generic:
+		return true
+	case Google:
+		return true
+	case Microsoft:
 		return true
 	default:
 		return false
@@ -3300,12 +3354,15 @@ func (e PanelVisualization) Valid() bool {
 const (
 	PlatformGroupAgents               PlatformGroup = "agents"
 	PlatformGroupConnections          PlatformGroup = "connections"
+	PlatformGroupEgressCredentials    PlatformGroup = "egress_credentials"
 	PlatformGroupEnvironmentTemplates PlatformGroup = "environment_templates"
 	PlatformGroupExecution            PlatformGroup = "execution"
 	PlatformGroupModels               PlatformGroup = "models"
 	PlatformGroupProviders            PlatformGroup = "providers"
 	PlatformGroupSchedules            PlatformGroup = "schedules"
 	PlatformGroupSkills               PlatformGroup = "skills"
+	PlatformGroupSubscriptions        PlatformGroup = "subscriptions"
+	PlatformGroupUsage                PlatformGroup = "usage"
 )
 
 // Valid indicates whether the value is a known member of the PlatformGroup enum.
@@ -3314,6 +3371,8 @@ func (e PlatformGroup) Valid() bool {
 	case PlatformGroupAgents:
 		return true
 	case PlatformGroupConnections:
+		return true
+	case PlatformGroupEgressCredentials:
 		return true
 	case PlatformGroupEnvironmentTemplates:
 		return true
@@ -3326,6 +3385,10 @@ func (e PlatformGroup) Valid() bool {
 	case PlatformGroupSchedules:
 		return true
 	case PlatformGroupSkills:
+		return true
+	case PlatformGroupSubscriptions:
+		return true
+	case PlatformGroupUsage:
 		return true
 	default:
 		return false
@@ -6382,8 +6445,11 @@ type AuditPage struct {
 
 // AuthConfiguration defines model for AuthConfiguration.
 type AuthConfiguration struct {
-	EmailDelivery bool `json:"email_delivery"`
-	Initialized   bool `json:"initialized"`
+	EmailDelivery       bool         `json:"email_delivery"`
+	Initialized         bool         `json:"initialized"`
+	ManualPasswordReset bool         `json:"manual_password_reset"`
+	OidcProviders       []OIDCSignIn `json:"oidc_providers"`
+	PasswordEnabled     bool         `json:"password_enabled"`
 }
 
 // Authentication defines model for Authentication.
@@ -7150,6 +7216,7 @@ type Credential struct {
 	Id                string                       `json:"id"`
 	Name              string                       `json:"name"`
 	OrganizationId    string                       `json:"organization_id"`
+	OwnerAppId        nullable.Nullable[string]    `json:"owner_app_id,omitempty"`
 	RevokedAt         nullable.Nullable[time.Time] `json:"revoked_at"`
 	State             CredentialState              `json:"state"`
 	UpdatedAt         time.Time                    `json:"updated_at"`
@@ -8024,10 +8091,12 @@ type Finding struct {
 	AssessmentNote  string                    `json:"assessment_note"`
 
 	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
-	Category    Category                  `json:"category"`
-	Closed      bool                      `json:"closed"`
-	CreatedAt   time.Time                 `json:"created_at"`
-	CreatedById string                    `json:"created_by_id"`
+	Category    Category  `json:"category"`
+	Closed      bool      `json:"closed"`
+	CreatedAt   time.Time `json:"created_at"`
+	CreatedById string    `json:"created_by_id"`
+
+	// Evidence Pair each trace with its owning Run. In an analysis, first read every cited trace with get_trace, get_trace_span or a list_trace_spans call that returns spans.
 	Evidence    []Evidence                `json:"evidence"`
 	Explanation string                    `json:"explanation"`
 	Id          string                    `json:"id"`
@@ -8048,7 +8117,9 @@ type FindingCreate struct {
 	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
 
 	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
-	Category    Category   `json:"category"`
+	Category Category `json:"category"`
+
+	// Evidence Pair each trace with its owning Run. In an analysis, first read every cited trace with get_trace, get_trace_span or a list_trace_spans call that returns spans.
 	Evidence    []Evidence `json:"evidence"`
 	Explanation string     `json:"explanation"`
 	Limitations *string    `json:"limitations,omitempty"`
@@ -8159,14 +8230,21 @@ type GrantUpdate struct {
 
 // GrantView defines model for GrantView.
 type GrantView struct {
-	CreatedAt      time.Time                 `json:"created_at"`
-	CreatedById    string                    `json:"created_by_id"`
-	Id             string                    `json:"id"`
-	OrganizationId string                    `json:"organization_id"`
-	Principal      PrincipalSummary          `json:"principal"`
-	Role           string                    `json:"role"`
-	WorkspaceId    nullable.Nullable[string] `json:"workspace_id"`
+	CreatedAt      time.Time `json:"created_at"`
+	CreatedById    string    `json:"created_by_id"`
+	Id             string    `json:"id"`
+	OrganizationId string    `json:"organization_id"`
+
+	// OverridesSso The manual grant overrides an SSO default at this scope.
+	OverridesSso *bool                     `json:"overrides_sso,omitempty"`
+	Principal    PrincipalSummary          `json:"principal"`
+	Role         string                    `json:"role"`
+	Source       *GrantViewSource          `json:"source,omitempty"`
+	WorkspaceId  nullable.Nullable[string] `json:"workspace_id"`
 }
+
+// GrantViewSource defines model for GrantView.Source.
+type GrantViewSource string
 
 // GuideModule defines model for GuideModule.
 type GuideModule string
@@ -9185,6 +9263,7 @@ type ModelUsage struct {
 	OutputTokens                   int                        `json:"output_tokens"`
 	OutputTokensPerSecond          nullable.Nullable[float32] `json:"output_tokens_per_second"`
 	Requests                       int                        `json:"requests"`
+	UnpricedRequests               int                        `json:"unpriced_requests"`
 }
 
 // ModelUsageGroup defines model for ModelUsageGroup.
@@ -9298,6 +9377,14 @@ type NewThread struct {
 // NewThreadKind defines model for NewThread.Kind.
 type NewThreadKind string
 
+// NoPrimaryEnvironment Skip the primary mount for this Run. Named mounts remain available.
+type NoPrimaryEnvironment struct {
+	Mode NoPrimaryEnvironmentMode `json:"mode"`
+}
+
+// NoPrimaryEnvironmentMode defines model for NoPrimaryEnvironment.Mode.
+type NoPrimaryEnvironmentMode string
+
 // OAuthGrant defines model for OAuthGrant.
 type OAuthGrant string
 
@@ -9312,6 +9399,16 @@ type OAuthSettings struct {
 	GrantType               *OAuthGrant               `json:"grant_type,omitempty"`
 	Scopes                  *[]string                 `json:"scopes,omitempty"`
 	TokenEndpointAuthMethod *ClientAuthentication     `json:"token_endpoint_auth_method,omitempty"`
+}
+
+// OIDCBrand defines model for OIDCBrand.
+type OIDCBrand string
+
+// OIDCSignIn defines model for OIDCSignIn.
+type OIDCSignIn struct {
+	Brand OIDCBrand `json:"brand"`
+	Id    string    `json:"id"`
+	Label string    `json:"label"`
 }
 
 // Observation defines model for Observation.
@@ -9668,6 +9765,12 @@ type PasswordResetConfirm struct {
 	Token    string  `json:"token"`
 }
 
+// PasswordResetReceipt defines model for PasswordResetReceipt.
+type PasswordResetReceipt struct {
+	EmailQueued bool                      `json:"email_queued"`
+	ResetUrl    nullable.Nullable[string] `json:"reset_url,omitempty"`
+}
+
 // Pending Public projection; complete native requests and private metadata stay in the checkpoint.
 type Pending struct {
 	Approvals []PendingCall `json:"approvals"`
@@ -9811,12 +9914,13 @@ type PricingConstraintKind string
 
 // PrincipalSummary defines model for PrincipalSummary.
 type PrincipalSummary struct {
-	Email    nullable.Nullable[string] `json:"email"`
-	Id       string                    `json:"id"`
-	ImageUrl nullable.Nullable[string] `json:"image_url"`
-	Kind     string                    `json:"kind"`
-	Name     string                    `json:"name"`
-	Status   string                    `json:"status"`
+	Email     nullable.Nullable[string] `json:"email"`
+	Id        string                    `json:"id"`
+	ImageUrl  nullable.Nullable[string] `json:"image_url"`
+	Kind      string                    `json:"kind"`
+	Name      string                    `json:"name"`
+	OidcEmail nullable.Nullable[string] `json:"oidc_email,omitempty"`
+	Status    string                    `json:"status"`
 }
 
 // ProcessStatusProjection defines model for ProcessStatusProjection.
@@ -9836,6 +9940,7 @@ type Profile struct {
 	ImageUrl  nullable.Nullable[string] `json:"image_url"`
 	Kind      string                    `json:"kind"`
 	Name      string                    `json:"name"`
+	OidcEmail nullable.Nullable[string] `json:"oidc_email,omitempty"`
 	Status    string                    `json:"status"`
 	UpdatedAt time.Time                 `json:"updated_at"`
 	Version   int                       `json:"version"`
@@ -11266,7 +11371,7 @@ type Subscription struct {
 	WorkspaceId string             `json:"workspace_id"`
 }
 
-// SubscriptionCreate Without `signing_secret` the service generates one; either way it is returned only by this request.
+// SubscriptionCreate The supplied or generated signing secret is returned only at creation.
 type SubscriptionCreate struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -11292,7 +11397,7 @@ type SubscriptionPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
-// SubscriptionUpdate `signing_secret` replaces the secret for deliveries queued after this change.
+// SubscriptionUpdate Secret replacement applies only to newly queued deliveries.
 type SubscriptionUpdate struct {
 	Enabled       nullable.Nullable[bool]               `json:"enabled,omitempty"`
 	Filter        nullable.Nullable[SubscriptionFilter] `json:"filter,omitempty"`
@@ -14872,28 +14977,23 @@ type ListTraces200JSONResponseBody struct {
 
 // SearchTracesParams defines parameters for SearchTraces.
 type SearchTracesParams struct {
-	SessionId          *string                      `form:"session_id,omitempty" json:"session_id,omitempty"`
-	ThreadId           *string                      `form:"thread_id,omitempty" json:"thread_id,omitempty"`
-	RunId              *string                      `form:"run_id,omitempty" json:"run_id,omitempty"`
-	Attribute          *[]string                    `form:"attribute,omitempty" json:"attribute,omitempty"`
-	StartedAfter       time.Time                    `form:"started_after" json:"started_after"`
-	StartedBefore      time.Time                    `form:"started_before" json:"started_before"`
-	OrderBy            *SearchTracesParamsOrderBy   `form:"order_by,omitempty" json:"order_by,omitempty"`
-	Direction          *SearchTracesParamsDirection `form:"direction,omitempty" json:"direction,omitempty"`
-	MinDurationSeconds *struct {
-		union json.RawMessage
-	} `form:"min_duration_seconds,omitempty" json:"min_duration_seconds,omitempty"`
-	MaxDurationSeconds *struct {
-		union json.RawMessage
-	} `form:"max_duration_seconds,omitempty" json:"max_duration_seconds,omitempty"`
-	MinCostUsd *struct {
-		union json.RawMessage
-	} `form:"min_cost_usd,omitempty" json:"min_cost_usd,omitempty"`
-	MaxCostUsd *struct {
-		union json.RawMessage
-	} `form:"max_cost_usd,omitempty" json:"max_cost_usd,omitempty"`
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	// SessionId Scope a comparison across Threads to this Session.
+	SessionId     *string                      `form:"session_id,omitempty" json:"session_id,omitempty"`
+	ThreadId      *string                      `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	RunId         *string                      `form:"run_id,omitempty" json:"run_id,omitempty"`
+	Attribute     *[]string                    `form:"attribute,omitempty" json:"attribute,omitempty"`
+	StartedAfter  time.Time                    `form:"started_after" json:"started_after"`
+	StartedBefore time.Time                    `form:"started_before" json:"started_before"`
+	OrderBy       *SearchTracesParamsOrderBy   `form:"order_by,omitempty" json:"order_by,omitempty"`
+	Direction     *SearchTracesParamsDirection `form:"direction,omitempty" json:"direction,omitempty"`
+
+	// MinDurationSeconds Inclusive lower bound on trace duration in seconds, applied before ranking.
+	MinDurationSeconds *string `form:"min_duration_seconds,omitempty" json:"min_duration_seconds,omitempty"`
+	MaxDurationSeconds *string `form:"max_duration_seconds,omitempty" json:"max_duration_seconds,omitempty"`
+	MinCostUsd         *string `form:"min_cost_usd,omitempty" json:"min_cost_usd,omitempty"`
+	MaxCostUsd         *string `form:"max_cost_usd,omitempty" json:"max_cost_usd,omitempty"`
+	Limit              *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor             *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -14904,30 +15004,6 @@ type SearchTracesParamsOrderBy string
 
 // SearchTracesParamsDirection defines parameters for SearchTraces.
 type SearchTracesParamsDirection string
-
-// SearchTracesParamsMinDurationSeconds0 defines parameters for SearchTraces.
-type SearchTracesParamsMinDurationSeconds0 = float32
-
-// SearchTracesParamsMinDurationSeconds1 defines parameters for SearchTraces.
-type SearchTracesParamsMinDurationSeconds1 = string
-
-// SearchTracesParamsMaxDurationSeconds0 defines parameters for SearchTraces.
-type SearchTracesParamsMaxDurationSeconds0 = float32
-
-// SearchTracesParamsMaxDurationSeconds1 defines parameters for SearchTraces.
-type SearchTracesParamsMaxDurationSeconds1 = string
-
-// SearchTracesParamsMinCostUsd0 defines parameters for SearchTraces.
-type SearchTracesParamsMinCostUsd0 = float32
-
-// SearchTracesParamsMinCostUsd1 defines parameters for SearchTraces.
-type SearchTracesParamsMinCostUsd1 = string
-
-// SearchTracesParamsMaxCostUsd0 defines parameters for SearchTraces.
-type SearchTracesParamsMaxCostUsd0 = float32
-
-// SearchTracesParamsMaxCostUsd1 defines parameters for SearchTraces.
-type SearchTracesParamsMaxCostUsd1 = string
 
 // GetTraceParams defines parameters for GetTrace.
 type GetTraceParams struct {
@@ -17884,6 +17960,40 @@ func (t *RunEnvironmentInput) MergeExistingRunEnvironmentInput(v ExistingRunEnvi
 	return err
 }
 
+// AsNoPrimaryEnvironment returns the union data inside the RunEnvironmentInput as a NoPrimaryEnvironment
+func (t RunEnvironmentInput) AsNoPrimaryEnvironment() (NoPrimaryEnvironment, error) {
+	var body NoPrimaryEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNoPrimaryEnvironment overwrites any union data inside the RunEnvironmentInput as the provided NoPrimaryEnvironment
+func (t *RunEnvironmentInput) FromNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	t.union = b
+	return err
+}
+
+// MergeNoPrimaryEnvironment performs a merge with any union data inside the RunEnvironmentInput, using the provided NoPrimaryEnvironment
+func (t *RunEnvironmentInput) MergeNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
 func (t RunEnvironmentInput) Discriminator() (string, error) {
 	var discriminator struct {
 		Discriminator string `json:"mode"`
@@ -17902,6 +18012,8 @@ func (t RunEnvironmentInput) ValueByDiscriminator() (interface{}, error) {
 		return t.AsExistingRunEnvironmentInput()
 	case "fresh":
 		return t.AsFreshRunEnvironmentInput()
+	case "none":
+		return t.AsNoPrimaryEnvironment()
 	default:
 		return nil, errors.New("unknown discriminator value: " + discriminator)
 	}
@@ -17985,6 +18097,40 @@ func (t *RunEnvironmentOutput) MergeExistingRunEnvironmentOutput(v ExistingRunEn
 	return err
 }
 
+// AsNoPrimaryEnvironment returns the union data inside the RunEnvironmentOutput as a NoPrimaryEnvironment
+func (t RunEnvironmentOutput) AsNoPrimaryEnvironment() (NoPrimaryEnvironment, error) {
+	var body NoPrimaryEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNoPrimaryEnvironment overwrites any union data inside the RunEnvironmentOutput as the provided NoPrimaryEnvironment
+func (t *RunEnvironmentOutput) FromNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	t.union = b
+	return err
+}
+
+// MergeNoPrimaryEnvironment performs a merge with any union data inside the RunEnvironmentOutput, using the provided NoPrimaryEnvironment
+func (t *RunEnvironmentOutput) MergeNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
 func (t RunEnvironmentOutput) Discriminator() (string, error) {
 	var discriminator struct {
 		Discriminator string `json:"mode"`
@@ -18003,6 +18149,8 @@ func (t RunEnvironmentOutput) ValueByDiscriminator() (interface{}, error) {
 		return t.AsExistingRunEnvironmentOutput()
 	case "fresh":
 		return t.AsFreshRunEnvironmentOutput()
+	case "none":
+		return t.AsNoPrimaryEnvironment()
 	default:
 		return nil, errors.New("unknown discriminator value: " + discriminator)
 	}
@@ -23011,6 +23159,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /api/v1/organizations/{organization_id}/members (the `ListMembers` operationId).
 	ListMembers(ctx context.Context, organizationId string, params *ListMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ResetMemberPassword Reset Member Password
+	//
+	// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+	ResetMemberPassword(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListOrganizationWorkspaces List Organization Workspaces
 	//
@@ -29778,6 +29931,21 @@ func (c *Client) RevokeOrganizationInvitation(ctx context.Context, organizationI
 // Corresponds with GET /api/v1/organizations/{organization_id}/members (the `ListMembers` operationId).
 func (c *Client) ListMembers(ctx context.Context, organizationId string, params *ListMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListMembersRequest(c.Server, organizationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ResetMemberPassword Reset Member Password
+//
+// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+func (c *Client) ResetMemberPassword(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResetMemberPasswordRequest(c.Server, organizationId, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -48716,6 +48884,47 @@ func NewListMembersRequest(server string, organizationId string, params *ListMem
 	return req, nil
 }
 
+// NewResetMemberPasswordRequest constructs an http.Request for the ResetMemberPassword method
+func NewResetMemberPasswordRequest(server string, organizationId string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/organizations/%s/members/%s/password-reset", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListOrganizationWorkspacesRequest constructs an http.Request for the ListOrganizationWorkspaces method
 func NewListOrganizationWorkspacesRequest(server string, organizationId string, params *ListOrganizationWorkspacesParams) (*http.Request, error) {
 	var err error
@@ -56593,7 +56802,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MinDurationSeconds != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_duration_seconds", *params.MinDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_duration_seconds", *params.MinDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -56605,7 +56814,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MaxDurationSeconds != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_duration_seconds", *params.MaxDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_duration_seconds", *params.MaxDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -56617,7 +56826,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MinCostUsd != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_cost_usd", *params.MinCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_cost_usd", *params.MinCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -56629,7 +56838,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MaxCostUsd != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_cost_usd", *params.MaxCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_cost_usd", *params.MaxCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -63119,6 +63328,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/organizations/{organization_id}/members (the `ListMembers` operationId).
 	ListMembersWithResponse(ctx context.Context, organizationId string, params *ListMembersParams, reqEditors ...RequestEditorFn) (*ListMembersResponse, error)
+
+	// ResetMemberPasswordWithResponse Reset Member Password
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+	ResetMemberPasswordWithResponse(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*ResetMemberPasswordResponse, error)
 
 	// ListOrganizationWorkspacesWithResponse List Organization Workspaces
 	//
@@ -81396,6 +81612,75 @@ func (r ListMembersResponse) ContentType() string {
 	return ""
 }
 
+// ResetMemberPasswordResponse400Headers the declared response headers of an HTTP 400 response for ResetMemberPassword
+type ResetMemberPasswordResponse400Headers struct {
+	XRequestId *string
+}
+
+// ResetMemberPasswordResponseDefaultHeaders the declared response headers of an HTTP default response for ResetMemberPassword
+type ResetMemberPasswordResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ResetMemberPasswordResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PasswordResetReceipt
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ResetMemberPasswordResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ResetMemberPasswordResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ResetMemberPasswordResponse) GetJSON200() *PasswordResetReceipt {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ResetMemberPasswordResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ResetMemberPasswordResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ResetMemberPasswordResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ResetMemberPasswordResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ResetMemberPasswordResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ResetMemberPasswordResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListOrganizationWorkspacesResponse400Headers the declared response headers of an HTTP 400 response for ListOrganizationWorkspaces
 type ListOrganizationWorkspacesResponse400Headers struct {
 	XRequestId *string
@@ -96498,6 +96783,19 @@ func (c *ClientWithResponses) ListMembersWithResponse(ctx context.Context, organ
 		return nil, err
 	}
 	return ParseListMembersResponse(rsp)
+}
+
+// ResetMemberPasswordWithResponse Reset Member Password
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+func (c *ClientWithResponses) ResetMemberPasswordWithResponse(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*ResetMemberPasswordResponse, error) {
+	rsp, err := c.ResetMemberPassword(ctx, organizationId, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResetMemberPasswordResponse(rsp)
 }
 
 // ListOrganizationWorkspacesWithResponse List Organization Workspaces
@@ -114543,6 +114841,69 @@ func ParseListMembersResponse(rsp *http.Response) (*ListMembersResponse, error) 
 		response.Headers400 = &headers
 	case true:
 		var headers ListMembersResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseResetMemberPasswordResponse parses an HTTP response from a ResetMemberPasswordWithResponse call
+func ParseResetMemberPasswordResponse(rsp *http.Response) (*ResetMemberPasswordResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ResetMemberPasswordResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PasswordResetReceipt
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ResetMemberPasswordResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ResetMemberPasswordResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

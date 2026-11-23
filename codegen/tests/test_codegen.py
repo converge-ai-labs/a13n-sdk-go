@@ -1,4 +1,4 @@
-"""Generated Go operations follow the exact pinned OpenAPI contract."""
+"""Generated Go operations follow the supported pinned OpenAPI projection."""
 
 import importlib.util
 import json
@@ -72,7 +72,7 @@ def test_skill_sync_factoring_keeps_the_wire_schema() -> None:
     assert document == original
 
 
-def test_generated_operations_are_exactly_pinned_contract() -> None:
+def test_generated_operations_are_exactly_supported_contract() -> None:
     """Compare operation identity, method and path, not a count-only inventory."""
     document = json.loads((ROOT / "contract/openapi.json").read_text())
     generated = (ROOT / "generated/client.gen.go").read_text()
@@ -82,6 +82,7 @@ def test_generated_operations_are_exactly_pinned_contract() -> None:
     expected = {
         (verb, path, "".join(part[:1].upper() + part[1:] for part in operation_id.split("_")))
         for verb, path, operation_id in operations(document)
+        if operation_id not in {"start_oidc_sign_in", "finish_oidc_sign_in"}
     }
     import re
 
@@ -89,6 +90,8 @@ def test_generated_operations_are_exactly_pinned_contract() -> None:
         re.findall(r"Corresponds with (GET|POST|PUT|PATCH|DELETE) (\S+) \(the `([^`]+)` operationId\)", generated)
     )
     assert actual == expected
+    assert "StartOidcSignIn" not in generated and "FinishOidcSignIn" not in generated
+    assert "type OIDCSignIn " in generated and "type AuthConfiguration " in generated
     for _, _, operation_id in expected:
         assert re.search(rf"func \(c \*Client\) {operation_id}(WithBody)?\(", generated)
     for schema_name in document["components"]["schemas"]:
@@ -123,3 +126,14 @@ def test_both_generated_graphs_match_pinned_inputs(tmp_path: Path) -> None:
     for name in schema["$defs"]:
         go_name = "Underscore" + name[1:] if name.startswith("_") else name
         assert re.search(rf"^type {go_name}\b", text, re.MULTILINE)
+
+
+def test_browser_navigation_projection_preserves_contract_and_all_other_operations() -> None:
+    document = json.loads((ROOT / "contract/openapi.json").read_text())
+    original = json.loads(json.dumps(document))
+    projected = codegen.project_operations(document)
+    before, after = operations(document), operations(projected)
+    assert {operation[2] for operation in before - after} == {"start_oidc_sign_in", "finish_oidc_sign_in"}
+    assert len(before - after) == 2 and not after - before
+    assert projected["components"] == document["components"]
+    assert document == original

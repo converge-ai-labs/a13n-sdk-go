@@ -92,7 +92,33 @@ func (t *ToolSearchConfig) UnmarshalJSON(data []byte) error {
     run("gofmt", "-w", str(output.parent / "tool_search.gen.go"))
 
 
+def project_operations(document: dict) -> dict:
+    """Omit browser navigation from callable bindings without changing the contract."""
+    document = json.loads(json.dumps(document))
+    excluded = {"start_oidc_sign_in", "finish_oidc_sign_in"}
+    methods = {"get", "put", "post", "delete", "options", "head", "patch", "trace"}
+    for path, item in list(document["paths"].items()):
+        removed = False
+        for method in methods:
+            if item.get(method, {}).get("operationId") in excluded:
+                del item[method]
+                removed = True
+        if removed and not methods.intersection(item):
+            del document["paths"][path]
+    return document
+
+
 def generate(document: dict, work: Path) -> Path:
+    document = project_operations(document)
+    # Query parameters are text on the wire. oapi-codegen maps these inline
+    # number/string/null unions to inaccessible anonymous structs, so expose
+    # their decimal representation as strings without changing the snapshot.
+    for parameter in document["paths"].get("/api/v1/traces/search", {}).get("get", {}).get("parameters", []):
+        if parameter.get("name") in {"min_duration_seconds", "max_duration_seconds", "min_cost_usd", "max_cost_usd"}:
+            schema = parameter["schema"]
+            parameter["schema"] = {key: value for key, value in schema.items() if key in {"title", "description"}} | {
+                "type": "string"
+            }
     name_skill_sync(document)
     history = document["components"]["schemas"].get("MessageHistory")
     if history is not None:
