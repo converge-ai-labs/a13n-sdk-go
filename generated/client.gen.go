@@ -7150,6 +7150,7 @@ type Credential struct {
 	Id                string                       `json:"id"`
 	Name              string                       `json:"name"`
 	OrganizationId    string                       `json:"organization_id"`
+	OwnerAppId        nullable.Nullable[string]    `json:"owner_app_id,omitempty"`
 	RevokedAt         nullable.Nullable[time.Time] `json:"revoked_at"`
 	State             CredentialState              `json:"state"`
 	UpdatedAt         time.Time                    `json:"updated_at"`
