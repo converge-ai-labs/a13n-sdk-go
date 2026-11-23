@@ -6445,10 +6445,11 @@ type AuditPage struct {
 
 // AuthConfiguration defines model for AuthConfiguration.
 type AuthConfiguration struct {
-	EmailDelivery   bool         `json:"email_delivery"`
-	Initialized     bool         `json:"initialized"`
-	OidcProviders   []OIDCSignIn `json:"oidc_providers"`
-	PasswordEnabled bool         `json:"password_enabled"`
+	EmailDelivery       bool         `json:"email_delivery"`
+	Initialized         bool         `json:"initialized"`
+	ManualPasswordReset bool         `json:"manual_password_reset"`
+	OidcProviders       []OIDCSignIn `json:"oidc_providers"`
+	PasswordEnabled     bool         `json:"password_enabled"`
 }
 
 // Authentication defines model for Authentication.
@@ -9762,6 +9763,12 @@ type PasswordReset struct {
 type PasswordResetConfirm struct {
 	Password *string `json:"password,omitempty"`
 	Token    string  `json:"token"`
+}
+
+// PasswordResetReceipt defines model for PasswordResetReceipt.
+type PasswordResetReceipt struct {
+	EmailQueued bool                      `json:"email_queued"`
+	ResetUrl    nullable.Nullable[string] `json:"reset_url,omitempty"`
 }
 
 // Pending Public projection; complete native requests and private metadata stay in the checkpoint.
@@ -23199,6 +23206,11 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/organizations/{organization_id}/members (the `ListMembers` operationId).
 	ListMembers(ctx context.Context, organizationId string, params *ListMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ResetMemberPassword Reset Member Password
+	//
+	// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+	ResetMemberPassword(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListOrganizationWorkspaces List Organization Workspaces
 	//
 	// Corresponds with GET /api/v1/organizations/{organization_id}/workspaces (the `ListOrganizationWorkspaces` operationId).
@@ -29999,6 +30011,21 @@ func (c *Client) RevokeOrganizationInvitation(ctx context.Context, organizationI
 // Corresponds with GET /api/v1/organizations/{organization_id}/members (the `ListMembers` operationId).
 func (c *Client) ListMembers(ctx context.Context, organizationId string, params *ListMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListMembersRequest(c.Server, organizationId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ResetMemberPassword Reset Member Password
+//
+// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+func (c *Client) ResetMemberPassword(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResetMemberPasswordRequest(c.Server, organizationId, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -49005,6 +49032,47 @@ func NewListMembersRequest(server string, organizationId string, params *ListMem
 	return req, nil
 }
 
+// NewResetMemberPasswordRequest constructs an http.Request for the ResetMemberPassword method
+func NewResetMemberPasswordRequest(server string, organizationId string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/organizations/%s/members/%s/password-reset", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListOrganizationWorkspacesRequest constructs an http.Request for the ListOrganizationWorkspaces method
 func NewListOrganizationWorkspacesRequest(server string, organizationId string, params *ListOrganizationWorkspacesParams) (*http.Request, error) {
 	var err error
@@ -63426,6 +63494,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/organizations/{organization_id}/members (the `ListMembers` operationId).
 	ListMembersWithResponse(ctx context.Context, organizationId string, params *ListMembersParams, reqEditors ...RequestEditorFn) (*ListMembersResponse, error)
+
+	// ResetMemberPasswordWithResponse Reset Member Password
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+	ResetMemberPasswordWithResponse(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*ResetMemberPasswordResponse, error)
 
 	// ListOrganizationWorkspacesWithResponse List Organization Workspaces
 	//
@@ -81827,6 +81902,75 @@ func (r ListMembersResponse) ContentType() string {
 	return ""
 }
 
+// ResetMemberPasswordResponse400Headers the declared response headers of an HTTP 400 response for ResetMemberPassword
+type ResetMemberPasswordResponse400Headers struct {
+	XRequestId *string
+}
+
+// ResetMemberPasswordResponseDefaultHeaders the declared response headers of an HTTP default response for ResetMemberPassword
+type ResetMemberPasswordResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ResetMemberPasswordResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PasswordResetReceipt
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ResetMemberPasswordResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ResetMemberPasswordResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ResetMemberPasswordResponse) GetJSON200() *PasswordResetReceipt {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ResetMemberPasswordResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ResetMemberPasswordResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ResetMemberPasswordResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ResetMemberPasswordResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ResetMemberPasswordResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ResetMemberPasswordResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListOrganizationWorkspacesResponse400Headers the declared response headers of an HTTP 400 response for ListOrganizationWorkspaces
 type ListOrganizationWorkspacesResponse400Headers struct {
 	XRequestId *string
@@ -96959,6 +97103,19 @@ func (c *ClientWithResponses) ListMembersWithResponse(ctx context.Context, organ
 		return nil, err
 	}
 	return ParseListMembersResponse(rsp)
+}
+
+// ResetMemberPasswordWithResponse Reset Member Password
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
+func (c *ClientWithResponses) ResetMemberPasswordWithResponse(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*ResetMemberPasswordResponse, error) {
+	rsp, err := c.ResetMemberPassword(ctx, organizationId, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResetMemberPasswordResponse(rsp)
 }
 
 // ListOrganizationWorkspacesWithResponse List Organization Workspaces
@@ -115122,6 +115279,69 @@ func ParseListMembersResponse(rsp *http.Response) (*ListMembersResponse, error) 
 		response.Headers400 = &headers
 	case true:
 		var headers ListMembersResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseResetMemberPasswordResponse parses an HTTP response from a ResetMemberPasswordWithResponse call
+func ParseResetMemberPasswordResponse(rsp *http.Response) (*ResetMemberPasswordResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ResetMemberPasswordResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PasswordResetReceipt
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ResetMemberPasswordResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ResetMemberPasswordResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
