@@ -14988,20 +14988,12 @@ type SearchTracesParams struct {
 	Direction     *SearchTracesParamsDirection `form:"direction,omitempty" json:"direction,omitempty"`
 
 	// MinDurationSeconds Inclusive lower bound on trace duration in seconds, applied before ranking.
-	MinDurationSeconds *struct {
-		union json.RawMessage
-	} `form:"min_duration_seconds,omitempty" json:"min_duration_seconds,omitempty"`
-	MaxDurationSeconds *struct {
-		union json.RawMessage
-	} `form:"max_duration_seconds,omitempty" json:"max_duration_seconds,omitempty"`
-	MinCostUsd *struct {
-		union json.RawMessage
-	} `form:"min_cost_usd,omitempty" json:"min_cost_usd,omitempty"`
-	MaxCostUsd *struct {
-		union json.RawMessage
-	} `form:"max_cost_usd,omitempty" json:"max_cost_usd,omitempty"`
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	MinDurationSeconds *string `form:"min_duration_seconds,omitempty" json:"min_duration_seconds,omitempty"`
+	MaxDurationSeconds *string `form:"max_duration_seconds,omitempty" json:"max_duration_seconds,omitempty"`
+	MinCostUsd         *string `form:"min_cost_usd,omitempty" json:"min_cost_usd,omitempty"`
+	MaxCostUsd         *string `form:"max_cost_usd,omitempty" json:"max_cost_usd,omitempty"`
+	Limit              *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor             *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -15012,30 +15004,6 @@ type SearchTracesParamsOrderBy string
 
 // SearchTracesParamsDirection defines parameters for SearchTraces.
 type SearchTracesParamsDirection string
-
-// SearchTracesParamsMinDurationSeconds0 defines parameters for SearchTraces.
-type SearchTracesParamsMinDurationSeconds0 = float32
-
-// SearchTracesParamsMinDurationSeconds1 defines parameters for SearchTraces.
-type SearchTracesParamsMinDurationSeconds1 = string
-
-// SearchTracesParamsMaxDurationSeconds0 defines parameters for SearchTraces.
-type SearchTracesParamsMaxDurationSeconds0 = float32
-
-// SearchTracesParamsMaxDurationSeconds1 defines parameters for SearchTraces.
-type SearchTracesParamsMaxDurationSeconds1 = string
-
-// SearchTracesParamsMinCostUsd0 defines parameters for SearchTraces.
-type SearchTracesParamsMinCostUsd0 = float32
-
-// SearchTracesParamsMinCostUsd1 defines parameters for SearchTraces.
-type SearchTracesParamsMinCostUsd1 = string
-
-// SearchTracesParamsMaxCostUsd0 defines parameters for SearchTraces.
-type SearchTracesParamsMaxCostUsd0 = float32
-
-// SearchTracesParamsMaxCostUsd1 defines parameters for SearchTraces.
-type SearchTracesParamsMaxCostUsd1 = string
 
 // GetTraceParams defines parameters for GetTrace.
 type GetTraceParams struct {
@@ -21305,20 +21273,6 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 	Logout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FinishOidcSignIn Finish Oidc Sign In
-	//
-	// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
-	//
-	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
-	FinishOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// StartOidcSignIn Start Oidc Sign In
-	//
-	// Start sign-in at the configured identity provider in the top-level browser window.
-	//
-	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
-	StartOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// RequestPasswordResetWithBody Request Password Reset
 	//
 	// Takes any type of body and a specified content type.
@@ -25150,40 +25104,6 @@ func (c *Client) PasswordLogin(ctx context.Context, body PasswordLoginJSONReques
 // Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 func (c *Client) Logout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewLogoutRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// FinishOidcSignIn Finish Oidc Sign In
-//
-// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
-//
-// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
-func (c *Client) FinishOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFinishOidcSignInRequest(c.Server, providerId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// StartOidcSignIn Start Oidc Sign In
-//
-// Start sign-in at the configured identity provider in the top-level browser window.
-//
-// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
-func (c *Client) StartOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewStartOidcSignInRequest(c.Server, providerId)
 	if err != nil {
 		return nil, err
 	}
@@ -35167,74 +35087,6 @@ func NewLogoutRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewFinishOidcSignInRequest constructs an http.Request for the FinishOidcSignIn method
-func NewFinishOidcSignInRequest(server string, providerId string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/auth/oidc/%s/callback", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewStartOidcSignInRequest constructs an http.Request for the StartOidcSignIn method
-func NewStartOidcSignInRequest(server string, providerId string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/v1/auth/oidc/%s/start", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -56950,7 +56802,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MinDurationSeconds != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_duration_seconds", *params.MinDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_duration_seconds", *params.MinDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -56962,7 +56814,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MaxDurationSeconds != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_duration_seconds", *params.MaxDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_duration_seconds", *params.MaxDurationSeconds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -56974,7 +56826,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MinCostUsd != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_cost_usd", *params.MinCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "min_cost_usd", *params.MinCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -56986,7 +56838,7 @@ func NewSearchTracesRequest(server string, params *SearchTracesParams) (*http.Re
 
 		if params.MaxCostUsd != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_cost_usd", *params.MaxCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "max_cost_usd", *params.MaxCostUsd, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -61307,24 +61159,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 	LogoutWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LogoutResponse, error)
-
-	// FinishOidcSignInWithResponse Finish Oidc Sign In
-	//
-	// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
-	FinishOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*FinishOidcSignInResponse, error)
-
-	// StartOidcSignInWithResponse Start Oidc Sign In
-	//
-	// Start sign-in at the configured identity provider in the top-level browser window.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
-	StartOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*StartOidcSignInResponse, error)
 
 	// RequestPasswordResetWithBodyWithResponse Request Password Reset
 	//
@@ -66870,130 +66704,6 @@ func (r LogoutResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r LogoutResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// FinishOidcSignInResponse400Headers the declared response headers of an HTTP 400 response for FinishOidcSignIn
-type FinishOidcSignInResponse400Headers struct {
-	XRequestId *string
-}
-
-// FinishOidcSignInResponseDefaultHeaders the declared response headers of an HTTP default response for FinishOidcSignIn
-type FinishOidcSignInResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type FinishOidcSignInResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *FinishOidcSignInResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *FinishOidcSignInResponseDefaultHeaders
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r FinishOidcSignInResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r FinishOidcSignInResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r FinishOidcSignInResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r FinishOidcSignInResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r FinishOidcSignInResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r FinishOidcSignInResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-// StartOidcSignInResponse400Headers the declared response headers of an HTTP 400 response for StartOidcSignIn
-type StartOidcSignInResponse400Headers struct {
-	XRequestId *string
-}
-
-// StartOidcSignInResponseDefaultHeaders the declared response headers of an HTTP default response for StartOidcSignIn
-type StartOidcSignInResponseDefaultHeaders struct {
-	XRequestId *string
-}
-
-type StartOidcSignInResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON400 the response for an HTTP 400 `application/json` response
-	JSON400 *Error
-	// JSONDefault the response for an HTTP default `application/json` response
-	JSONDefault *Error
-	// Headers400 the parsed response headers for an HTTP 400 response
-	Headers400 *StartOidcSignInResponse400Headers
-	// HeadersDefault the parsed response headers for an HTTP default response
-	HeadersDefault *StartOidcSignInResponseDefaultHeaders
-}
-
-// GetJSON400 returns the response for an HTTP 400 `application/json` response
-func (r StartOidcSignInResponse) GetJSON400() *Error {
-	return r.JSON400
-}
-
-// GetJSONDefault returns the response for an HTTP default `application/json` response
-func (r StartOidcSignInResponse) GetJSONDefault() *Error {
-	return r.JSONDefault
-}
-
-// GetBody returns the raw response body bytes
-func (r StartOidcSignInResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r StartOidcSignInResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r StartOidcSignInResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r StartOidcSignInResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -93142,36 +92852,6 @@ func (c *ClientWithResponses) LogoutWithResponse(ctx context.Context, reqEditors
 	return ParseLogoutResponse(rsp)
 }
 
-// FinishOidcSignInWithResponse Finish Oidc Sign In
-//
-// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
-//
-// Returns a wrapper object for the known response body format(s).
-//
-// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
-func (c *ClientWithResponses) FinishOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*FinishOidcSignInResponse, error) {
-	rsp, err := c.FinishOidcSignIn(ctx, providerId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFinishOidcSignInResponse(rsp)
-}
-
-// StartOidcSignInWithResponse Start Oidc Sign In
-//
-// Start sign-in at the configured identity provider in the top-level browser window.
-//
-// Returns a wrapper object for the known response body format(s).
-//
-// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
-func (c *ClientWithResponses) StartOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*StartOidcSignInResponse, error) {
-	rsp, err := c.StartOidcSignIn(ctx, providerId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseStartOidcSignInResponse(rsp)
-}
-
 // RequestPasswordResetWithBodyWithResponse Request Password Reset
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -101525,124 +101205,6 @@ func ParseLogoutResponse(rsp *http.Response) (*LogoutResponse, error) {
 	switch {
 	case true:
 		var headers LogoutResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseFinishOidcSignInResponse parses an HTTP response from a FinishOidcSignInWithResponse call
-func ParseFinishOidcSignInResponse(rsp *http.Response) (*FinishOidcSignInResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &FinishOidcSignInResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case rsp.StatusCode == 303:
-		break // No content-type
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers FinishOidcSignInResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers FinishOidcSignInResponseDefaultHeaders
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.HeadersDefault = &headers
-	}
-
-	return response, nil
-}
-
-// ParseStartOidcSignInResponse parses an HTTP response from a StartOidcSignInWithResponse call
-func ParseStartOidcSignInResponse(rsp *http.Response) (*StartOidcSignInResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &StartOidcSignInResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case rsp.StatusCode == 303:
-		break // No content-type
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	switch {
-	case rsp.StatusCode == 400:
-		var headers StartOidcSignInResponse400Headers
-		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
-			var value string
-			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
-				return nil, err
-			}
-			headers.XRequestId = &value
-		}
-		response.Headers400 = &headers
-	case true:
-		var headers StartOidcSignInResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

@@ -493,3 +493,36 @@ func TestSessionAppReadyIsTypedRepeatableAndHasNoCursor(t *testing.T) {
 		}
 	}
 }
+
+func TestSessionThreadSnapshotPreservesNoEnvironmentAndPlatformGroups(t *testing.T) {
+	options := `{"environment":{"mode":"none"},"overrides":{"toolsets":{"usage":{},"subscriptions":{},"egress_credentials":{}}}}`
+	run := strings.Replace(sessionRunJSON, `"options":{}`, `"options":`+options, 1)
+	data := strings.Replace(sessionThreadJSON, `"current_run":null`, `"current_run":`+run, 1)
+	frame, err := parseSessionFrame(sseEvent{event: "thread", data: []byte(data)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	encoded, err := json.Marshal(frame)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got map[string]any
+	if err := json.Unmarshal(encoded, &got); err != nil {
+		t.Fatal(err)
+	}
+	current := got["current_run"].(map[string]any)
+	actual := current["options"].(map[string]any)
+	if !reflect.DeepEqual(actual["environment"], map[string]any{"mode": "none"}) {
+		t.Fatal(actual)
+	}
+	toolsets := actual["overrides"].(map[string]any)["toolsets"].(map[string]any)
+	for _, key := range []string{"usage", "subscriptions", "egress_credentials"} {
+		if _, ok := toolsets[key]; !ok {
+			t.Fatalf("missing %s", key)
+		}
+	}
+	invalid := strings.Replace(data, `"mode":"none"`, `"mode":"unknown"`, 1)
+	if _, err := parseSessionFrame(sseEvent{event: "thread", data: []byte(invalid)}); err == nil {
+		t.Fatal("unknown environment accepted")
+	}
+}
