@@ -2357,6 +2357,24 @@ func (e GrantAccess) Valid() bool {
 	}
 }
 
+// Defines values for GrantViewSource.
+const (
+	GrantViewSourceManual GrantViewSource = "manual"
+	GrantViewSourceOidc   GrantViewSource = "oidc"
+)
+
+// Valid indicates whether the value is a known member of the GrantViewSource enum.
+func (e GrantViewSource) Valid() bool {
+	switch e {
+	case GrantViewSourceManual:
+		return true
+	case GrantViewSourceOidc:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GuideModule.
 const (
 	GuideModuleJournal      GuideModule = "journal"
@@ -3002,6 +3020,27 @@ func (e OAuthGrant) Valid() bool {
 	case AuthorizationCode:
 		return true
 	case ClientCredentials:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OIDCBrand.
+const (
+	Generic   OIDCBrand = "generic"
+	Google    OIDCBrand = "google"
+	Microsoft OIDCBrand = "microsoft"
+)
+
+// Valid indicates whether the value is a known member of the OIDCBrand enum.
+func (e OIDCBrand) Valid() bool {
+	switch e {
+	case Generic:
+		return true
+	case Google:
+		return true
+	case Microsoft:
 		return true
 	default:
 		return false
@@ -6406,8 +6445,10 @@ type AuditPage struct {
 
 // AuthConfiguration defines model for AuthConfiguration.
 type AuthConfiguration struct {
-	EmailDelivery bool `json:"email_delivery"`
-	Initialized   bool `json:"initialized"`
+	EmailDelivery   bool         `json:"email_delivery"`
+	Initialized     bool         `json:"initialized"`
+	OidcProviders   []OIDCSignIn `json:"oidc_providers"`
+	PasswordEnabled bool         `json:"password_enabled"`
 }
 
 // Authentication defines model for Authentication.
@@ -8188,14 +8229,21 @@ type GrantUpdate struct {
 
 // GrantView defines model for GrantView.
 type GrantView struct {
-	CreatedAt      time.Time                 `json:"created_at"`
-	CreatedById    string                    `json:"created_by_id"`
-	Id             string                    `json:"id"`
-	OrganizationId string                    `json:"organization_id"`
-	Principal      PrincipalSummary          `json:"principal"`
-	Role           string                    `json:"role"`
-	WorkspaceId    nullable.Nullable[string] `json:"workspace_id"`
+	CreatedAt      time.Time `json:"created_at"`
+	CreatedById    string    `json:"created_by_id"`
+	Id             string    `json:"id"`
+	OrganizationId string    `json:"organization_id"`
+
+	// OverridesSso The manual grant overrides an SSO default at this scope.
+	OverridesSso *bool                     `json:"overrides_sso,omitempty"`
+	Principal    PrincipalSummary          `json:"principal"`
+	Role         string                    `json:"role"`
+	Source       *GrantViewSource          `json:"source,omitempty"`
+	WorkspaceId  nullable.Nullable[string] `json:"workspace_id"`
 }
+
+// GrantViewSource defines model for GrantView.Source.
+type GrantViewSource string
 
 // GuideModule defines model for GuideModule.
 type GuideModule string
@@ -9352,6 +9400,16 @@ type OAuthSettings struct {
 	TokenEndpointAuthMethod *ClientAuthentication     `json:"token_endpoint_auth_method,omitempty"`
 }
 
+// OIDCBrand defines model for OIDCBrand.
+type OIDCBrand string
+
+// OIDCSignIn defines model for OIDCSignIn.
+type OIDCSignIn struct {
+	Brand OIDCBrand `json:"brand"`
+	Id    string    `json:"id"`
+	Label string    `json:"label"`
+}
+
 // Observation defines model for Observation.
 type Observation struct {
 	AgeMs            nullable.Nullable[int]           `json:"age_ms,omitempty"`
@@ -9849,12 +9907,13 @@ type PricingConstraintKind string
 
 // PrincipalSummary defines model for PrincipalSummary.
 type PrincipalSummary struct {
-	Email    nullable.Nullable[string] `json:"email"`
-	Id       string                    `json:"id"`
-	ImageUrl nullable.Nullable[string] `json:"image_url"`
-	Kind     string                    `json:"kind"`
-	Name     string                    `json:"name"`
-	Status   string                    `json:"status"`
+	Email     nullable.Nullable[string] `json:"email"`
+	Id        string                    `json:"id"`
+	ImageUrl  nullable.Nullable[string] `json:"image_url"`
+	Kind      string                    `json:"kind"`
+	Name      string                    `json:"name"`
+	OidcEmail nullable.Nullable[string] `json:"oidc_email,omitempty"`
+	Status    string                    `json:"status"`
 }
 
 // ProcessStatusProjection defines model for ProcessStatusProjection.
@@ -9874,6 +9933,7 @@ type Profile struct {
 	ImageUrl  nullable.Nullable[string] `json:"image_url"`
 	Kind      string                    `json:"kind"`
 	Name      string                    `json:"name"`
+	OidcEmail nullable.Nullable[string] `json:"oidc_email,omitempty"`
 	Status    string                    `json:"status"`
 	UpdatedAt time.Time                 `json:"updated_at"`
 	Version   int                       `json:"version"`
@@ -21238,6 +21298,20 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 	Logout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FinishOidcSignIn Finish Oidc Sign In
+	//
+	// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
+	//
+	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
+	FinishOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StartOidcSignIn Start Oidc Sign In
+	//
+	// Start sign-in at the configured identity provider in the top-level browser window.
+	//
+	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
+	StartOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// RequestPasswordResetWithBody Request Password Reset
 	//
 	// Takes any type of body and a specified content type.
@@ -25064,6 +25138,40 @@ func (c *Client) PasswordLogin(ctx context.Context, body PasswordLoginJSONReques
 // Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 func (c *Client) Logout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewLogoutRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FinishOidcSignIn Finish Oidc Sign In
+//
+// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
+//
+// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
+func (c *Client) FinishOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFinishOidcSignInRequest(c.Server, providerId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// StartOidcSignIn Start Oidc Sign In
+//
+// Start sign-in at the configured identity provider in the top-level browser window.
+//
+// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
+func (c *Client) StartOidcSignIn(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStartOidcSignInRequest(c.Server, providerId)
 	if err != nil {
 		return nil, err
 	}
@@ -35032,6 +35140,74 @@ func NewLogoutRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFinishOidcSignInRequest constructs an http.Request for the FinishOidcSignIn method
+func NewFinishOidcSignInRequest(server string, providerId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/auth/oidc/%s/callback", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewStartOidcSignInRequest constructs an http.Request for the StartOidcSignIn method
+func NewStartOidcSignInRequest(server string, providerId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/auth/oidc/%s/start", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -61064,6 +61240,24 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 	LogoutWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LogoutResponse, error)
 
+	// FinishOidcSignInWithResponse Finish Oidc Sign In
+	//
+	// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
+	FinishOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*FinishOidcSignInResponse, error)
+
+	// StartOidcSignInWithResponse Start Oidc Sign In
+	//
+	// Start sign-in at the configured identity provider in the top-level browser window.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
+	StartOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*StartOidcSignInResponse, error)
+
 	// RequestPasswordResetWithBodyWithResponse Request Password Reset
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -66601,6 +66795,130 @@ func (r LogoutResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r LogoutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// FinishOidcSignInResponse400Headers the declared response headers of an HTTP 400 response for FinishOidcSignIn
+type FinishOidcSignInResponse400Headers struct {
+	XRequestId *string
+}
+
+// FinishOidcSignInResponseDefaultHeaders the declared response headers of an HTTP default response for FinishOidcSignIn
+type FinishOidcSignInResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type FinishOidcSignInResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *FinishOidcSignInResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *FinishOidcSignInResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r FinishOidcSignInResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r FinishOidcSignInResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r FinishOidcSignInResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FinishOidcSignInResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FinishOidcSignInResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FinishOidcSignInResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// StartOidcSignInResponse400Headers the declared response headers of an HTTP 400 response for StartOidcSignIn
+type StartOidcSignInResponse400Headers struct {
+	XRequestId *string
+}
+
+// StartOidcSignInResponseDefaultHeaders the declared response headers of an HTTP default response for StartOidcSignIn
+type StartOidcSignInResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type StartOidcSignInResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *StartOidcSignInResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *StartOidcSignInResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r StartOidcSignInResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r StartOidcSignInResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r StartOidcSignInResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r StartOidcSignInResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StartOidcSignInResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r StartOidcSignInResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -92680,6 +92998,36 @@ func (c *ClientWithResponses) LogoutWithResponse(ctx context.Context, reqEditors
 	return ParseLogoutResponse(rsp)
 }
 
+// FinishOidcSignInWithResponse Finish Oidc Sign In
+//
+// Consume a browser-bound OIDC callback and establish an ordinary Service browser session.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/auth/oidc/{provider_id}/callback (the `FinishOidcSignIn` operationId).
+func (c *ClientWithResponses) FinishOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*FinishOidcSignInResponse, error) {
+	rsp, err := c.FinishOidcSignIn(ctx, providerId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFinishOidcSignInResponse(rsp)
+}
+
+// StartOidcSignInWithResponse Start Oidc Sign In
+//
+// Start sign-in at the configured identity provider in the top-level browser window.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/auth/oidc/{provider_id}/start (the `StartOidcSignIn` operationId).
+func (c *ClientWithResponses) StartOidcSignInWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*StartOidcSignInResponse, error) {
+	rsp, err := c.StartOidcSignIn(ctx, providerId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStartOidcSignInResponse(rsp)
+}
+
 // RequestPasswordResetWithBodyWithResponse Request Password Reset
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -101020,6 +101368,124 @@ func ParseLogoutResponse(rsp *http.Response) (*LogoutResponse, error) {
 	switch {
 	case true:
 		var headers LogoutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseFinishOidcSignInResponse parses an HTTP response from a FinishOidcSignInWithResponse call
+func ParseFinishOidcSignInResponse(rsp *http.Response) (*FinishOidcSignInResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FinishOidcSignInResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 303:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers FinishOidcSignInResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers FinishOidcSignInResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseStartOidcSignInResponse parses an HTTP response from a StartOidcSignInWithResponse call
+func ParseStartOidcSignInResponse(rsp *http.Response) (*StartOidcSignInResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StartOidcSignInResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 303:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers StartOidcSignInResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers StartOidcSignInResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
