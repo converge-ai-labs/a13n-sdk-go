@@ -1174,12 +1174,15 @@ func (e OnceScheduleType) Valid() bool {
 const (
 	Agents               PlatformGroup = "agents"
 	Connections          PlatformGroup = "connections"
+	EgressCredentials    PlatformGroup = "egress_credentials"
 	EnvironmentTemplates PlatformGroup = "environment_templates"
 	Execution            PlatformGroup = "execution"
 	Models               PlatformGroup = "models"
 	Providers            PlatformGroup = "providers"
 	Schedules            PlatformGroup = "schedules"
 	Skills               PlatformGroup = "skills"
+	Subscriptions        PlatformGroup = "subscriptions"
+	Usage                PlatformGroup = "usage"
 )
 
 // Valid indicates whether the value is a known member of the PlatformGroup enum.
@@ -1188,6 +1191,8 @@ func (e PlatformGroup) Valid() bool {
 	case Agents:
 		return true
 	case Connections:
+		return true
+	case EgressCredentials:
 		return true
 	case EnvironmentTemplates:
 		return true
@@ -1200,6 +1205,10 @@ func (e PlatformGroup) Valid() bool {
 	case Schedules:
 		return true
 	case Skills:
+		return true
+	case Subscriptions:
+		return true
+	case Usage:
 		return true
 	default:
 		return false

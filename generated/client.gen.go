@@ -3300,12 +3300,15 @@ func (e PanelVisualization) Valid() bool {
 const (
 	PlatformGroupAgents               PlatformGroup = "agents"
 	PlatformGroupConnections          PlatformGroup = "connections"
+	PlatformGroupEgressCredentials    PlatformGroup = "egress_credentials"
 	PlatformGroupEnvironmentTemplates PlatformGroup = "environment_templates"
 	PlatformGroupExecution            PlatformGroup = "execution"
 	PlatformGroupModels               PlatformGroup = "models"
 	PlatformGroupProviders            PlatformGroup = "providers"
 	PlatformGroupSchedules            PlatformGroup = "schedules"
 	PlatformGroupSkills               PlatformGroup = "skills"
+	PlatformGroupSubscriptions        PlatformGroup = "subscriptions"
+	PlatformGroupUsage                PlatformGroup = "usage"
 )
 
 // Valid indicates whether the value is a known member of the PlatformGroup enum.
@@ -3314,6 +3317,8 @@ func (e PlatformGroup) Valid() bool {
 	case PlatformGroupAgents:
 		return true
 	case PlatformGroupConnections:
+		return true
+	case PlatformGroupEgressCredentials:
 		return true
 	case PlatformGroupEnvironmentTemplates:
 		return true
@@ -3326,6 +3331,10 @@ func (e PlatformGroup) Valid() bool {
 	case PlatformGroupSchedules:
 		return true
 	case PlatformGroupSkills:
+		return true
+	case PlatformGroupSubscriptions:
+		return true
+	case PlatformGroupUsage:
 		return true
 	default:
 		return false
@@ -9186,6 +9195,7 @@ type ModelUsage struct {
 	OutputTokens                   int                        `json:"output_tokens"`
 	OutputTokensPerSecond          nullable.Nullable[float32] `json:"output_tokens_per_second"`
 	Requests                       int                        `json:"requests"`
+	UnpricedRequests               int                        `json:"unpriced_requests"`
 }
 
 // ModelUsageGroup defines model for ModelUsageGroup.
@@ -11267,7 +11277,7 @@ type Subscription struct {
 	WorkspaceId string             `json:"workspace_id"`
 }
 
-// SubscriptionCreate Without `signing_secret` the service generates one; either way it is returned only by this request.
+// SubscriptionCreate The supplied or generated signing secret is returned only at creation.
 type SubscriptionCreate struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -11293,7 +11303,7 @@ type SubscriptionPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
-// SubscriptionUpdate `signing_secret` replaces the secret for deliveries queued after this change.
+// SubscriptionUpdate Secret replacement applies only to newly queued deliveries.
 type SubscriptionUpdate struct {
 	Enabled       nullable.Nullable[bool]               `json:"enabled,omitempty"`
 	Filter        nullable.Nullable[SubscriptionFilter] `json:"filter,omitempty"`
