@@ -2975,6 +2975,21 @@ func (e NewThreadKind) Valid() bool {
 	}
 }
 
+// Defines values for NoPrimaryEnvironmentMode.
+const (
+	NoPrimaryEnvironmentModeNone NoPrimaryEnvironmentMode = "none"
+)
+
+// Valid indicates whether the value is a known member of the NoPrimaryEnvironmentMode enum.
+func (e NoPrimaryEnvironmentMode) Valid() bool {
+	switch e {
+	case NoPrimaryEnvironmentModeNone:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OAuthGrant.
 const (
 	AuthorizationCode OAuthGrant = "authorization_code"
@@ -9308,6 +9323,14 @@ type NewThread struct {
 
 // NewThreadKind defines model for NewThread.Kind.
 type NewThreadKind string
+
+// NoPrimaryEnvironment Skip the primary mount for this Run. Named mounts remain available.
+type NoPrimaryEnvironment struct {
+	Mode NoPrimaryEnvironmentMode `json:"mode"`
+}
+
+// NoPrimaryEnvironmentMode defines model for NoPrimaryEnvironment.Mode.
+type NoPrimaryEnvironmentMode string
 
 // OAuthGrant defines model for OAuthGrant.
 type OAuthGrant string
@@ -17895,6 +17918,40 @@ func (t *RunEnvironmentInput) MergeExistingRunEnvironmentInput(v ExistingRunEnvi
 	return err
 }
 
+// AsNoPrimaryEnvironment returns the union data inside the RunEnvironmentInput as a NoPrimaryEnvironment
+func (t RunEnvironmentInput) AsNoPrimaryEnvironment() (NoPrimaryEnvironment, error) {
+	var body NoPrimaryEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNoPrimaryEnvironment overwrites any union data inside the RunEnvironmentInput as the provided NoPrimaryEnvironment
+func (t *RunEnvironmentInput) FromNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	t.union = b
+	return err
+}
+
+// MergeNoPrimaryEnvironment performs a merge with any union data inside the RunEnvironmentInput, using the provided NoPrimaryEnvironment
+func (t *RunEnvironmentInput) MergeNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
 func (t RunEnvironmentInput) Discriminator() (string, error) {
 	var discriminator struct {
 		Discriminator string `json:"mode"`
@@ -17913,6 +17970,8 @@ func (t RunEnvironmentInput) ValueByDiscriminator() (interface{}, error) {
 		return t.AsExistingRunEnvironmentInput()
 	case "fresh":
 		return t.AsFreshRunEnvironmentInput()
+	case "none":
+		return t.AsNoPrimaryEnvironment()
 	default:
 		return nil, errors.New("unknown discriminator value: " + discriminator)
 	}
@@ -17996,6 +18055,40 @@ func (t *RunEnvironmentOutput) MergeExistingRunEnvironmentOutput(v ExistingRunEn
 	return err
 }
 
+// AsNoPrimaryEnvironment returns the union data inside the RunEnvironmentOutput as a NoPrimaryEnvironment
+func (t RunEnvironmentOutput) AsNoPrimaryEnvironment() (NoPrimaryEnvironment, error) {
+	var body NoPrimaryEnvironment
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromNoPrimaryEnvironment overwrites any union data inside the RunEnvironmentOutput as the provided NoPrimaryEnvironment
+func (t *RunEnvironmentOutput) FromNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	t.union = b
+	return err
+}
+
+// MergeNoPrimaryEnvironment performs a merge with any union data inside the RunEnvironmentOutput, using the provided NoPrimaryEnvironment
+func (t *RunEnvironmentOutput) MergeNoPrimaryEnvironment(v NoPrimaryEnvironment) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"none"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
 func (t RunEnvironmentOutput) Discriminator() (string, error) {
 	var discriminator struct {
 		Discriminator string `json:"mode"`
@@ -18014,6 +18107,8 @@ func (t RunEnvironmentOutput) ValueByDiscriminator() (interface{}, error) {
 		return t.AsExistingRunEnvironmentOutput()
 	case "fresh":
 		return t.AsFreshRunEnvironmentOutput()
+	case "none":
+		return t.AsNoPrimaryEnvironment()
 	default:
 		return nil, errors.New("unknown discriminator value: " + discriminator)
 	}
