@@ -8049,10 +8049,12 @@ type Finding struct {
 	AssessmentNote  string                    `json:"assessment_note"`
 
 	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
-	Category    Category                  `json:"category"`
-	Closed      bool                      `json:"closed"`
-	CreatedAt   time.Time                 `json:"created_at"`
-	CreatedById string                    `json:"created_by_id"`
+	Category    Category  `json:"category"`
+	Closed      bool      `json:"closed"`
+	CreatedAt   time.Time `json:"created_at"`
+	CreatedById string    `json:"created_by_id"`
+
+	// Evidence Pair each trace with its owning Run. In an analysis, first read every cited trace with get_trace, get_trace_span or a list_trace_spans call that returns spans.
 	Evidence    []Evidence                `json:"evidence"`
 	Explanation string                    `json:"explanation"`
 	Id          string                    `json:"id"`
@@ -8073,7 +8075,9 @@ type FindingCreate struct {
 	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id"`
 
 	// Category One primary issue type for the central evidenced claim, separate from analysis presets, impact and review. Put uncertainty in explanation/limitations; do not invent categories.
-	Category    Category   `json:"category"`
+	Category Category `json:"category"`
+
+	// Evidence Pair each trace with its owning Run. In an analysis, first read every cited trace with get_trace, get_trace_span or a list_trace_spans call that returns spans.
 	Evidence    []Evidence `json:"evidence"`
 	Explanation string     `json:"explanation"`
 	Limitations *string    `json:"limitations,omitempty"`
@@ -14906,14 +14910,17 @@ type ListTraces200JSONResponseBody struct {
 
 // SearchTracesParams defines parameters for SearchTraces.
 type SearchTracesParams struct {
-	SessionId          *string                      `form:"session_id,omitempty" json:"session_id,omitempty"`
-	ThreadId           *string                      `form:"thread_id,omitempty" json:"thread_id,omitempty"`
-	RunId              *string                      `form:"run_id,omitempty" json:"run_id,omitempty"`
-	Attribute          *[]string                    `form:"attribute,omitempty" json:"attribute,omitempty"`
-	StartedAfter       time.Time                    `form:"started_after" json:"started_after"`
-	StartedBefore      time.Time                    `form:"started_before" json:"started_before"`
-	OrderBy            *SearchTracesParamsOrderBy   `form:"order_by,omitempty" json:"order_by,omitempty"`
-	Direction          *SearchTracesParamsDirection `form:"direction,omitempty" json:"direction,omitempty"`
+	// SessionId Scope a comparison across Threads to this Session.
+	SessionId     *string                      `form:"session_id,omitempty" json:"session_id,omitempty"`
+	ThreadId      *string                      `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	RunId         *string                      `form:"run_id,omitempty" json:"run_id,omitempty"`
+	Attribute     *[]string                    `form:"attribute,omitempty" json:"attribute,omitempty"`
+	StartedAfter  time.Time                    `form:"started_after" json:"started_after"`
+	StartedBefore time.Time                    `form:"started_before" json:"started_before"`
+	OrderBy       *SearchTracesParamsOrderBy   `form:"order_by,omitempty" json:"order_by,omitempty"`
+	Direction     *SearchTracesParamsDirection `form:"direction,omitempty" json:"direction,omitempty"`
+
+	// MinDurationSeconds Inclusive lower bound on trace duration in seconds, applied before ranking.
 	MinDurationSeconds *struct {
 		union json.RawMessage
 	} `form:"min_duration_seconds,omitempty" json:"min_duration_seconds,omitempty"`
