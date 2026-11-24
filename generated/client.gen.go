@@ -3028,19 +3028,46 @@ func (e OAuthGrant) Valid() bool {
 
 // Defines values for OIDCBrand.
 const (
-	Generic   OIDCBrand = "generic"
-	Google    OIDCBrand = "google"
-	Microsoft OIDCBrand = "microsoft"
+	OIDCBrandAuth0      OIDCBrand = "auth0"
+	OIDCBrandAuthelia   OIDCBrand = "authelia"
+	OIDCBrandAuthentik  OIDCBrand = "authentik"
+	OIDCBrandCloudflare OIDCBrand = "cloudflare"
+	OIDCBrandGeneric    OIDCBrand = "generic"
+	OIDCBrandGithub     OIDCBrand = "github"
+	OIDCBrandGitlab     OIDCBrand = "gitlab"
+	OIDCBrandGoogle     OIDCBrand = "google"
+	OIDCBrandKeycloak   OIDCBrand = "keycloak"
+	OIDCBrandMicrosoft  OIDCBrand = "microsoft"
+	OIDCBrandOkta       OIDCBrand = "okta"
+	OIDCBrandZitadel    OIDCBrand = "zitadel"
 )
 
 // Valid indicates whether the value is a known member of the OIDCBrand enum.
 func (e OIDCBrand) Valid() bool {
 	switch e {
-	case Generic:
+	case OIDCBrandAuth0:
 		return true
-	case Google:
+	case OIDCBrandAuthelia:
 		return true
-	case Microsoft:
+	case OIDCBrandAuthentik:
+		return true
+	case OIDCBrandCloudflare:
+		return true
+	case OIDCBrandGeneric:
+		return true
+	case OIDCBrandGithub:
+		return true
+	case OIDCBrandGitlab:
+		return true
+	case OIDCBrandGoogle:
+		return true
+	case OIDCBrandKeycloak:
+		return true
+	case OIDCBrandMicrosoft:
+		return true
+	case OIDCBrandOkta:
+		return true
+	case OIDCBrandZitadel:
 		return true
 	default:
 		return false
