@@ -8740,6 +8740,7 @@ type McpAuth string
 
 // McpConfig defines model for McpConfig.
 type McpConfig struct {
+	DurableTasks          *bool                            `json:"durable_tasks,omitempty"`
 	ForwardContextHeaders *bool                            `json:"forward_context_headers,omitempty"`
 	Headers               *[]string                        `json:"headers,omitempty"`
 	Oauth                 nullable.Nullable[OAuthSettings] `json:"oauth,omitempty"`
