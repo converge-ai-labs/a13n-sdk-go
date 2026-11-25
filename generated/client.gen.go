@@ -5237,6 +5237,63 @@ func (e CompareAgentRevisionsParamsSection) Valid() bool {
 	}
 }
 
+// Defines values for ListAssetsParamsSourceKind.
+const (
+	AgentRun   ListAssetsParamsSourceKind = "agent_run"
+	UserUpload ListAssetsParamsSourceKind = "user_upload"
+)
+
+// Valid indicates whether the value is a known member of the ListAssetsParamsSourceKind enum.
+func (e ListAssetsParamsSourceKind) Valid() bool {
+	switch e {
+	case AgentRun:
+		return true
+	case UserUpload:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAssetsParamsStatus.
+const (
+	ListAssetsParamsStatusActive  ListAssetsParamsStatus = "active"
+	ListAssetsParamsStatusAll     ListAssetsParamsStatus = "all"
+	ListAssetsParamsStatusRetired ListAssetsParamsStatus = "retired"
+)
+
+// Valid indicates whether the value is a known member of the ListAssetsParamsStatus enum.
+func (e ListAssetsParamsStatus) Valid() bool {
+	switch e {
+	case ListAssetsParamsStatusActive:
+		return true
+	case ListAssetsParamsStatusAll:
+		return true
+	case ListAssetsParamsStatusRetired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAssetsParamsOrder.
+const (
+	Id     ListAssetsParamsOrder = "id"
+	Newest ListAssetsParamsOrder = "newest"
+)
+
+// Valid indicates whether the value is a known member of the ListAssetsParamsOrder enum.
+func (e ListAssetsParamsOrder) Valid() bool {
+	switch e {
+	case Id:
+		return true
+	case Newest:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetModelCatalogParamsSection.
 const (
 	GetModelCatalogParamsSectionAll             GetModelCatalogParamsSection = "all"
@@ -6408,8 +6465,9 @@ type AssetCreate struct {
 
 // AssetPage defines model for AssetPage.
 type AssetPage struct {
-	Items      []Asset                   `json:"items"`
+	Items      []ListedAsset             `json:"items"`
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+	TotalCount int                       `json:"total_count"`
 }
 
 // AssetPart defines model for AssetPart.
@@ -7232,6 +7290,16 @@ type CreationProgressProfile string
 
 // CreationProgressStage defines model for CreationProgress.Stage.
 type CreationProgressStage string
+
+// CreatorStorage defines model for CreatorStorage.
+type CreatorStorage struct {
+	ActiveBytes       int    `json:"active_bytes"`
+	CreatedById       string `json:"created_by_id"`
+	CreatorName       string `json:"creator_name"`
+	RetiredBytes      int    `json:"retired_bytes"`
+	StagedUploadBytes int    `json:"staged_upload_bytes"`
+	TotalBytes        int    `json:"total_bytes"`
+}
 
 // Credential defines model for Credential.
 type Credential struct {
@@ -8560,6 +8628,25 @@ type LimitedMemoryLimitKind string
 
 // Lineage defines model for Lineage.
 type Lineage string
+
+// ListedAsset defines model for ListedAsset.
+type ListedAsset struct {
+	ContentType string                                  `json:"content_type"`
+	CreatedAt   time.Time                               `json:"created_at"`
+	CreatedById string                                  `json:"created_by_id"`
+	CreatorName string                                  `json:"creator_name"`
+	Digest      string                                  `json:"digest"`
+	Id          string                                  `json:"id"`
+	Name        string                                  `json:"name"`
+	RetiredAt   nullable.Nullable[time.Time]            `json:"retired_at"`
+	SessionId   nullable.Nullable[string]               `json:"session_id"`
+	Size        int                                     `json:"size"`
+	Source      nullable.Nullable[map[string]JsonValue] `json:"source"`
+	ThreadId    nullable.Nullable[string]               `json:"thread_id"`
+	UpdatedAt   time.Time                               `json:"updated_at"`
+	Version     int                                     `json:"version"`
+	WorkspaceId string                                  `json:"workspace_id"`
+}
 
 // LocalResult defines model for LocalResult.
 type LocalResult struct {
@@ -12117,6 +12204,15 @@ type WorkspacePage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// WorkspaceStorage defines model for WorkspaceStorage.
+type WorkspaceStorage struct {
+	ActiveBytes       int              `json:"active_bytes"`
+	ByCreator         []CreatorStorage `json:"by_creator"`
+	RetiredBytes      int              `json:"retired_bytes"`
+	StagedUploadBytes int              `json:"staged_upload_bytes"`
+	TotalBytes        int              `json:"total_bytes"`
+}
+
 // WorkspaceUpdate defines model for WorkspaceUpdate.
 type WorkspaceUpdate struct {
 	Name nullable.Nullable[string] `json:"name,omitempty"`
@@ -12352,9 +12448,25 @@ type ListAssetsParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 
+	// Query Case-insensitive literal filename substring.
+	Query       *string                     `form:"query,omitempty" json:"query,omitempty"`
+	CreatedById *string                     `form:"created_by_id,omitempty" json:"created_by_id,omitempty"`
+	SourceKind  *ListAssetsParamsSourceKind `form:"source_kind,omitempty" json:"source_kind,omitempty"`
+	Status      *ListAssetsParamsStatus     `form:"status,omitempty" json:"status,omitempty"`
+	Order       *ListAssetsParamsOrder      `form:"order,omitempty" json:"order,omitempty"`
+
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// ListAssetsParamsSourceKind defines parameters for ListAssets.
+type ListAssetsParamsSourceKind string
+
+// ListAssetsParamsStatus defines parameters for ListAssets.
+type ListAssetsParamsStatus string
+
+// ListAssetsParamsOrder defines parameters for ListAssets.
+type ListAssetsParamsOrder string
 
 // CreateAssetParams defines parameters for CreateAsset.
 type CreateAssetParams struct {
@@ -14556,6 +14668,12 @@ type UnarchiveSkillParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetWorkspaceStorageParams defines parameters for GetWorkspaceStorage.
+type GetWorkspaceStorageParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -23706,6 +23824,13 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/skills/{skill_id}/unarchive (the `UnarchiveSkill` operationId).
 	UnarchiveSkill(ctx context.Context, skillId string, params *UnarchiveSkillParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetWorkspaceStorage Get Workspace Storage
+	//
+	// Summarize this workspace's asset and staged upload bytes by creator.
+	//
+	// Corresponds with GET /api/v1/storage (the `GetWorkspaceStorage` operationId).
+	GetWorkspaceStorage(ctx context.Context, params *GetWorkspaceStorageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListSubscriptions List Subscriptions
 	//
 	// Corresponds with GET /api/v1/subscriptions (the `ListSubscriptions` operationId).
@@ -31217,6 +31342,23 @@ func (c *Client) UnarchiveSkill(ctx context.Context, skillId string, params *Una
 	return c.Client.Do(req)
 }
 
+// GetWorkspaceStorage Get Workspace Storage
+//
+// Summarize this workspace's asset and staged upload bytes by creator.
+//
+// Corresponds with GET /api/v1/storage (the `GetWorkspaceStorage` operationId).
+func (c *Client) GetWorkspaceStorage(ctx context.Context, params *GetWorkspaceStorageParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetWorkspaceStorageRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListSubscriptions List Subscriptions
 //
 // Corresponds with GET /api/v1/subscriptions (the `ListSubscriptions` operationId).
@@ -34696,6 +34838,66 @@ func NewListAssetsRequest(server string, params *ListAssetsParams) (*http.Reques
 		if params.Cursor != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CreatedById != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_by_id", *params.CreatedById, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.SourceKind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "source_kind", *params.SourceKind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Order != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "order", *params.Order, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -53350,6 +53552,48 @@ func NewUnarchiveSkillRequest(server string, skillId string, params *UnarchiveSk
 	return req, nil
 }
 
+// NewGetWorkspaceStorageRequest constructs an http.Request for the GetWorkspaceStorage method
+func NewGetWorkspaceStorageRequest(server string, params *GetWorkspaceStorageParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/storage")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListSubscriptionsRequest constructs an http.Request for the ListSubscriptions method
 func NewListSubscriptionsRequest(server string, params *ListSubscriptionsParams) (*http.Request, error) {
 	var err error
@@ -63948,6 +64192,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/skills/{skill_id}/unarchive (the `UnarchiveSkill` operationId).
 	UnarchiveSkillWithResponse(ctx context.Context, skillId string, params *UnarchiveSkillParams, reqEditors ...RequestEditorFn) (*UnarchiveSkillResponse, error)
+
+	// GetWorkspaceStorageWithResponse Get Workspace Storage
+	//
+	// Summarize this workspace's asset and staged upload bytes by creator.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/storage (the `GetWorkspaceStorage` operationId).
+	GetWorkspaceStorageWithResponse(ctx context.Context, params *GetWorkspaceStorageParams, reqEditors ...RequestEditorFn) (*GetWorkspaceStorageResponse, error)
 
 	// ListSubscriptionsWithResponse List Subscriptions
 	//
@@ -85413,6 +85666,75 @@ func (r UnarchiveSkillResponse) ContentType() string {
 	return ""
 }
 
+// GetWorkspaceStorageResponse400Headers the declared response headers of an HTTP 400 response for GetWorkspaceStorage
+type GetWorkspaceStorageResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetWorkspaceStorageResponseDefaultHeaders the declared response headers of an HTTP default response for GetWorkspaceStorage
+type GetWorkspaceStorageResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetWorkspaceStorageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *WorkspaceStorage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetWorkspaceStorageResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetWorkspaceStorageResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetWorkspaceStorageResponse) GetJSON200() *WorkspaceStorage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetWorkspaceStorageResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetWorkspaceStorageResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetWorkspaceStorageResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetWorkspaceStorageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetWorkspaceStorageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetWorkspaceStorageResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListSubscriptionsResponse400Headers the declared response headers of an HTTP 400 response for ListSubscriptions
 type ListSubscriptionsResponse400Headers struct {
 	XRequestId *string
@@ -97841,6 +98163,21 @@ func (c *ClientWithResponses) UnarchiveSkillWithResponse(ctx context.Context, sk
 		return nil, err
 	}
 	return ParseUnarchiveSkillResponse(rsp)
+}
+
+// GetWorkspaceStorageWithResponse Get Workspace Storage
+//
+// Summarize this workspace's asset and staged upload bytes by creator.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/storage (the `GetWorkspaceStorage` operationId).
+func (c *ClientWithResponses) GetWorkspaceStorageWithResponse(ctx context.Context, params *GetWorkspaceStorageParams, reqEditors ...RequestEditorFn) (*GetWorkspaceStorageResponse, error) {
+	rsp, err := c.GetWorkspaceStorage(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetWorkspaceStorageResponse(rsp)
 }
 
 // ListSubscriptionsWithResponse List Subscriptions
@@ -118315,6 +118652,69 @@ func ParseUnarchiveSkillResponse(rsp *http.Response) (*UnarchiveSkillResponse, e
 		response.Headers400 = &headers
 	case true:
 		var headers UnarchiveSkillResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetWorkspaceStorageResponse parses an HTTP response from a GetWorkspaceStorageWithResponse call
+func ParseGetWorkspaceStorageResponse(rsp *http.Response) (*GetWorkspaceStorageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetWorkspaceStorageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest WorkspaceStorage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetWorkspaceStorageResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetWorkspaceStorageResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
