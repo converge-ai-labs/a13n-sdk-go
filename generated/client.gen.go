@@ -9299,6 +9299,13 @@ type ModelCreate struct {
 	ProviderId  string                                    `json:"provider_id"`
 }
 
+// ModelDuplicate defines model for ModelDuplicate.
+type ModelDuplicate struct {
+	Description nullable.Nullable[string] `json:"description,omitempty"`
+	Key         string                    `json:"key"`
+	Name        nullable.Nullable[string] `json:"name,omitempty"`
+}
+
 // ModelMetrics defines model for ModelMetrics.
 type ModelMetrics struct {
 	CacheHitRate     nullable.Nullable[float32] `json:"cache_hit_rate"`
@@ -10761,6 +10768,14 @@ type ScheduleCreate struct {
 // ScheduleCreateState defines model for ScheduleCreate.State.
 type ScheduleCreateState string
 
+// ScheduleDuplicate defines model for ScheduleDuplicate.
+type ScheduleDuplicate struct {
+	Description nullable.Nullable[string]            `json:"description,omitempty"`
+	Labels      nullable.Nullable[map[string]string] `json:"labels,omitempty"`
+	Name        nullable.Nullable[string]            `json:"name,omitempty"`
+	Target      nullable.Nullable[ScheduleTarget]    `json:"target,omitempty"`
+}
+
 // ScheduleInvocationInput defines model for ScheduleInvocation-Input.
 type ScheduleInvocationInput struct {
 	AgentId         string                            `json:"agent_id"`
@@ -11170,6 +11185,14 @@ type SkillCreate struct {
 // SkillCreate_Source defines model for SkillCreate.Source.
 type SkillCreate_Source struct {
 	union json.RawMessage
+}
+
+// SkillDuplicate defines model for SkillDuplicate.
+type SkillDuplicate struct {
+	Description nullable.Nullable[string]            `json:"description,omitempty"`
+	Labels      nullable.Nullable[map[string]string] `json:"labels,omitempty"`
+	Name        nullable.Nullable[string]            `json:"name,omitempty"`
+	RevisionId  nullable.Nullable[string]            `json:"revision_id,omitempty"`
 }
 
 // SkillFile defines model for SkillFile.
@@ -11630,6 +11653,13 @@ type TemplateCreate struct {
 	Labels      *map[string]string        `json:"labels,omitempty"`
 	Name        string                    `json:"name"`
 	ProviderId  string                    `json:"provider_id"`
+}
+
+// TemplateDuplicate defines model for TemplateDuplicate.
+type TemplateDuplicate struct {
+	Description nullable.Nullable[string]            `json:"description,omitempty"`
+	Labels      nullable.Nullable[map[string]string] `json:"labels,omitempty"`
+	Name        nullable.Nullable[string]            `json:"name,omitempty"`
 }
 
 // TemplatePage defines model for TemplatePage.
@@ -13219,6 +13249,12 @@ type UpdateEnvironmentTemplateParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DuplicateEnvironmentTemplateParams defines parameters for DuplicateEnvironmentTemplate.
+type DuplicateEnvironmentTemplateParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListEnvironmentsParams defines parameters for ListEnvironments.
 type ListEnvironmentsParams struct {
 	Status *string `form:"status,omitempty" json:"status,omitempty"`
@@ -14087,6 +14123,12 @@ type UpdateModelParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DuplicateModelParams defines parameters for DuplicateModel.
+type DuplicateModelParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListOrganizationsParams defines parameters for ListOrganizations.
 type ListOrganizationsParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -14491,6 +14533,12 @@ type DispatchScheduleParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// DuplicateScheduleParams defines parameters for DuplicateSchedule.
+type DuplicateScheduleParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // EnableScheduleParams defines parameters for EnableSchedule.
 type EnableScheduleParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
@@ -14670,6 +14718,12 @@ type ArchiveSkillParams struct {
 	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
 	IfMatch *string `json:"If-Match,omitempty"`
 
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// DuplicateSkillParams defines parameters for DuplicateSkill.
+type DuplicateSkillParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
@@ -15729,6 +15783,9 @@ type CreateEnvironmentTemplateJSONRequestBody = TemplateCreate
 // UpdateEnvironmentTemplateJSONRequestBody defines body for UpdateEnvironmentTemplate for application/json ContentType.
 type UpdateEnvironmentTemplateJSONRequestBody = TemplateUpdate
 
+// DuplicateEnvironmentTemplateJSONRequestBody defines body for DuplicateEnvironmentTemplate for application/json ContentType.
+type DuplicateEnvironmentTemplateJSONRequestBody = TemplateDuplicate
+
 // CreateEnvironmentJSONRequestBody defines body for CreateEnvironment for application/json ContentType.
 type CreateEnvironmentJSONRequestBody CreateEnvironmentJSONBody
 
@@ -15846,6 +15903,9 @@ type CreateModelJSONRequestBody = ModelCreate
 // UpdateModelJSONRequestBody defines body for UpdateModel for application/json ContentType.
 type UpdateModelJSONRequestBody = ModelUpdate
 
+// DuplicateModelJSONRequestBody defines body for DuplicateModel for application/json ContentType.
+type DuplicateModelJSONRequestBody = ModelDuplicate
+
 // UpdateOrganizationJSONRequestBody defines body for UpdateOrganization for application/json ContentType.
 type UpdateOrganizationJSONRequestBody = OrganizationUpdate
 
@@ -15891,6 +15951,9 @@ type UpdateScheduleJSONRequestBody = ScheduleUpdate
 // DispatchScheduleJSONRequestBody defines body for DispatchSchedule for application/json ContentType.
 type DispatchScheduleJSONRequestBody = ScheduleCommand
 
+// DuplicateScheduleJSONRequestBody defines body for DuplicateSchedule for application/json ContentType.
+type DuplicateScheduleJSONRequestBody = ScheduleDuplicate
+
 // EnableScheduleJSONRequestBody defines body for EnableSchedule for application/json ContentType.
 type EnableScheduleJSONRequestBody = ScheduleCommand
 
@@ -15911,6 +15974,9 @@ type ValidateSkillJSONRequestBody = SkillValidate
 
 // UpdateSkillJSONRequestBody defines body for UpdateSkill for application/json ContentType.
 type UpdateSkillJSONRequestBody = SkillUpdate
+
+// DuplicateSkillJSONRequestBody defines body for DuplicateSkill for application/json ContentType.
+type DuplicateSkillJSONRequestBody = SkillDuplicate
 
 // CreateSkillRevisionJSONRequestBody defines body for CreateSkillRevision for application/json ContentType.
 type CreateSkillRevisionJSONRequestBody = SkillRevisionCreate
@@ -22280,6 +22346,20 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/environment-templates/{template_id} (the `UpdateEnvironmentTemplate` operationId).
 	UpdateEnvironmentTemplate(ctx context.Context, templateId string, params *UpdateEnvironmentTemplateParams, body UpdateEnvironmentTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DuplicateEnvironmentTemplateWithBody Duplicate Environment Template
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+	DuplicateEnvironmentTemplateWithBody(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DuplicateEnvironmentTemplate Duplicate Environment Template
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+	DuplicateEnvironmentTemplate(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, body DuplicateEnvironmentTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListEnvironments List Environments
 	//
 	// Corresponds with GET /api/v1/environments (the `ListEnvironments` operationId).
@@ -23241,6 +23321,20 @@ type ClientInterface interface {
 	// Corresponds with PATCH /api/v1/models/{key} (the `UpdateModel` operationId).
 	UpdateModel(ctx context.Context, key string, params *UpdateModelParams, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DuplicateModelWithBody Duplicate Model
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+	DuplicateModelWithBody(ctx context.Context, key string, params *DuplicateModelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DuplicateModel Duplicate Model
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+	DuplicateModel(ctx context.Context, key string, params *DuplicateModelParams, body DuplicateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListOrganizations List Organizations
 	//
 	// Corresponds with GET /api/v1/organizations (the `ListOrganizations` operationId).
@@ -23679,6 +23773,20 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
 	DispatchSchedule(ctx context.Context, scheduleId string, params *DispatchScheduleParams, body DispatchScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DuplicateScheduleWithBody Duplicate Schedule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+	DuplicateScheduleWithBody(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DuplicateSchedule Duplicate Schedule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+	DuplicateSchedule(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, body DuplicateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// EnableScheduleWithBody Enable Schedule
 	//
 	// Takes any type of body and a specified content type.
@@ -23857,6 +23965,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /api/v1/skills/{skill_id}/archive (the `ArchiveSkill` operationId).
 	ArchiveSkill(ctx context.Context, skillId string, params *ArchiveSkillParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DuplicateSkillWithBody Duplicate Skill
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+	DuplicateSkillWithBody(ctx context.Context, skillId string, params *DuplicateSkillParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DuplicateSkill Duplicate Skill
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+	DuplicateSkill(ctx context.Context, skillId string, params *DuplicateSkillParams, body DuplicateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSkillRevisions List Skill Revisions
 	//
@@ -27395,6 +27517,40 @@ func (c *Client) UpdateEnvironmentTemplate(ctx context.Context, templateId strin
 	return c.Client.Do(req)
 }
 
+// DuplicateEnvironmentTemplateWithBody Duplicate Environment Template
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+func (c *Client) DuplicateEnvironmentTemplateWithBody(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateEnvironmentTemplateRequestWithBody(c.Server, templateId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DuplicateEnvironmentTemplate Duplicate Environment Template
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+func (c *Client) DuplicateEnvironmentTemplate(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, body DuplicateEnvironmentTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateEnvironmentTemplateRequest(c.Server, templateId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListEnvironments List Environments
 //
 // Corresponds with GET /api/v1/environments (the `ListEnvironments` operationId).
@@ -29846,6 +30002,40 @@ func (c *Client) UpdateModel(ctx context.Context, key string, params *UpdateMode
 	return c.Client.Do(req)
 }
 
+// DuplicateModelWithBody Duplicate Model
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+func (c *Client) DuplicateModelWithBody(ctx context.Context, key string, params *DuplicateModelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateModelRequestWithBody(c.Server, key, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DuplicateModel Duplicate Model
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+func (c *Client) DuplicateModel(ctx context.Context, key string, params *DuplicateModelParams, body DuplicateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateModelRequest(c.Server, key, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListOrganizations List Organizations
 //
 // Corresponds with GET /api/v1/organizations (the `ListOrganizations` operationId).
@@ -30924,6 +31114,40 @@ func (c *Client) DispatchSchedule(ctx context.Context, scheduleId string, params
 	return c.Client.Do(req)
 }
 
+// DuplicateScheduleWithBody Duplicate Schedule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+func (c *Client) DuplicateScheduleWithBody(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateScheduleRequestWithBody(c.Server, scheduleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DuplicateSchedule Duplicate Schedule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+func (c *Client) DuplicateSchedule(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, body DuplicateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateScheduleRequest(c.Server, scheduleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // EnableScheduleWithBody Enable Schedule
 //
 // Takes any type of body and a specified content type.
@@ -31343,6 +31567,40 @@ func (c *Client) UpdateSkill(ctx context.Context, skillId string, params *Update
 // Corresponds with POST /api/v1/skills/{skill_id}/archive (the `ArchiveSkill` operationId).
 func (c *Client) ArchiveSkill(ctx context.Context, skillId string, params *ArchiveSkillParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewArchiveSkillRequest(c.Server, skillId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DuplicateSkillWithBody Duplicate Skill
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+func (c *Client) DuplicateSkillWithBody(ctx context.Context, skillId string, params *DuplicateSkillParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateSkillRequestWithBody(c.Server, skillId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DuplicateSkill Duplicate Skill
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+func (c *Client) DuplicateSkill(ctx context.Context, skillId string, params *DuplicateSkillParams, body DuplicateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDuplicateSkillRequest(c.Server, skillId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -41110,6 +41368,68 @@ func NewUpdateEnvironmentTemplateRequestWithBody(server string, templateId strin
 	return req, nil
 }
 
+// NewDuplicateEnvironmentTemplateRequest calls the generic DuplicateEnvironmentTemplate builder with application/json body
+func NewDuplicateEnvironmentTemplateRequest(server string, templateId string, params *DuplicateEnvironmentTemplateParams, body DuplicateEnvironmentTemplateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDuplicateEnvironmentTemplateRequestWithBody(server, templateId, params, "application/json", bodyReader)
+}
+
+// NewDuplicateEnvironmentTemplateRequestWithBody constructs an http.Request for the DuplicateEnvironmentTemplate method, with any body, and a specified content type
+func NewDuplicateEnvironmentTemplateRequestWithBody(server string, templateId string, params *DuplicateEnvironmentTemplateParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "template_id", templateId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/environment-templates/%s/duplicate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListEnvironmentsRequest constructs an http.Request for the ListEnvironments method
 func NewListEnvironmentsRequest(server string, params *ListEnvironmentsParams) (*http.Request, error) {
 	var err error
@@ -48299,6 +48619,68 @@ func NewUpdateModelRequestWithBody(server string, key string, params *UpdateMode
 	return req, nil
 }
 
+// NewDuplicateModelRequest calls the generic DuplicateModel builder with application/json body
+func NewDuplicateModelRequest(server string, key string, params *DuplicateModelParams, body DuplicateModelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDuplicateModelRequestWithBody(server, key, params, "application/json", bodyReader)
+}
+
+// NewDuplicateModelRequestWithBody constructs an http.Request for the DuplicateModel method, with any body, and a specified content type
+func NewDuplicateModelRequestWithBody(server string, key string, params *DuplicateModelParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key", key, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/models/%s/duplicate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListOrganizationsRequest constructs an http.Request for the ListOrganizations method
 func NewListOrganizationsRequest(server string, params *ListOrganizationsParams) (*http.Request, error) {
 	var err error
@@ -51827,6 +52209,68 @@ func NewDispatchScheduleRequestWithBody(server string, scheduleId string, params
 	return req, nil
 }
 
+// NewDuplicateScheduleRequest calls the generic DuplicateSchedule builder with application/json body
+func NewDuplicateScheduleRequest(server string, scheduleId string, params *DuplicateScheduleParams, body DuplicateScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDuplicateScheduleRequestWithBody(server, scheduleId, params, "application/json", bodyReader)
+}
+
+// NewDuplicateScheduleRequestWithBody constructs an http.Request for the DuplicateSchedule method, with any body, and a specified content type
+func NewDuplicateScheduleRequestWithBody(server string, scheduleId string, params *DuplicateScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "schedule_id", scheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/schedules/%s/duplicate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewEnableScheduleRequest calls the generic EnableSchedule builder with application/json body
 func NewEnableScheduleRequest(server string, scheduleId string, params *EnableScheduleParams, body EnableScheduleJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -53306,6 +53750,68 @@ func NewArchiveSkillRequest(server string, skillId string, params *ArchiveSkillP
 			}
 
 			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDuplicateSkillRequest calls the generic DuplicateSkill builder with application/json body
+func NewDuplicateSkillRequest(server string, skillId string, params *DuplicateSkillParams, body DuplicateSkillJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDuplicateSkillRequestWithBody(server, skillId, params, "application/json", bodyReader)
+}
+
+// NewDuplicateSkillRequestWithBody constructs an http.Request for the DuplicateSkill method, with any body, and a specified content type
+func NewDuplicateSkillRequestWithBody(server string, skillId string, params *DuplicateSkillParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "skill_id", skillId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/skills/%s/duplicate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
 	}
@@ -62574,6 +63080,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/environment-templates/{template_id} (the `UpdateEnvironmentTemplate` operationId).
 	UpdateEnvironmentTemplateWithResponse(ctx context.Context, templateId string, params *UpdateEnvironmentTemplateParams, body UpdateEnvironmentTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentTemplateResponse, error)
 
+	// DuplicateEnvironmentTemplateWithBodyWithResponse Duplicate Environment Template
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+	DuplicateEnvironmentTemplateWithBodyWithResponse(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateEnvironmentTemplateResponse, error)
+
+	// DuplicateEnvironmentTemplateWithResponse Duplicate Environment Template
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+	DuplicateEnvironmentTemplateWithResponse(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, body DuplicateEnvironmentTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateEnvironmentTemplateResponse, error)
+
 	// ListEnvironmentsWithResponse List Environments
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -63677,6 +64197,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /api/v1/models/{key} (the `UpdateModel` operationId).
 	UpdateModelWithResponse(ctx context.Context, key string, params *UpdateModelParams, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateModelResponse, error)
 
+	// DuplicateModelWithBodyWithResponse Duplicate Model
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+	DuplicateModelWithBodyWithResponse(ctx context.Context, key string, params *DuplicateModelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateModelResponse, error)
+
+	// DuplicateModelWithResponse Duplicate Model
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+	DuplicateModelWithResponse(ctx context.Context, key string, params *DuplicateModelParams, body DuplicateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateModelResponse, error)
+
 	// ListOrganizationsWithResponse List Organizations
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -64181,6 +64715,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /api/v1/schedules/{schedule_id}/dispatch (the `DispatchSchedule` operationId).
 	DispatchScheduleWithResponse(ctx context.Context, scheduleId string, params *DispatchScheduleParams, body DispatchScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*DispatchScheduleResponse, error)
 
+	// DuplicateScheduleWithBodyWithResponse Duplicate Schedule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+	DuplicateScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateScheduleResponse, error)
+
+	// DuplicateScheduleWithResponse Duplicate Schedule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+	DuplicateScheduleWithResponse(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, body DuplicateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateScheduleResponse, error)
+
 	// EnableScheduleWithBodyWithResponse Enable Schedule
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -64381,6 +64929,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/skills/{skill_id}/archive (the `ArchiveSkill` operationId).
 	ArchiveSkillWithResponse(ctx context.Context, skillId string, params *ArchiveSkillParams, reqEditors ...RequestEditorFn) (*ArchiveSkillResponse, error)
+
+	// DuplicateSkillWithBodyWithResponse Duplicate Skill
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+	DuplicateSkillWithBodyWithResponse(ctx context.Context, skillId string, params *DuplicateSkillParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateSkillResponse, error)
+
+	// DuplicateSkillWithResponse Duplicate Skill
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+	DuplicateSkillWithResponse(ctx context.Context, skillId string, params *DuplicateSkillParams, body DuplicateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateSkillResponse, error)
 
 	// ListSkillRevisionsWithResponse List Skill Revisions
 	//
@@ -73459,6 +74021,75 @@ func (r UpdateEnvironmentTemplateResponse) ContentType() string {
 	return ""
 }
 
+// DuplicateEnvironmentTemplateResponse400Headers the declared response headers of an HTTP 400 response for DuplicateEnvironmentTemplate
+type DuplicateEnvironmentTemplateResponse400Headers struct {
+	XRequestId *string
+}
+
+// DuplicateEnvironmentTemplateResponseDefaultHeaders the declared response headers of an HTTP default response for DuplicateEnvironmentTemplate
+type DuplicateEnvironmentTemplateResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DuplicateEnvironmentTemplateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Template
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DuplicateEnvironmentTemplateResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DuplicateEnvironmentTemplateResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r DuplicateEnvironmentTemplateResponse) GetJSON201() *Template {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DuplicateEnvironmentTemplateResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DuplicateEnvironmentTemplateResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DuplicateEnvironmentTemplateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DuplicateEnvironmentTemplateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DuplicateEnvironmentTemplateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DuplicateEnvironmentTemplateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListEnvironmentsResponse400Headers the declared response headers of an HTTP 400 response for ListEnvironments
 type ListEnvironmentsResponse400Headers struct {
 	XRequestId *string
@@ -80986,6 +81617,75 @@ func (r UpdateModelResponse) ContentType() string {
 	return ""
 }
 
+// DuplicateModelResponse400Headers the declared response headers of an HTTP 400 response for DuplicateModel
+type DuplicateModelResponse400Headers struct {
+	XRequestId *string
+}
+
+// DuplicateModelResponseDefaultHeaders the declared response headers of an HTTP default response for DuplicateModel
+type DuplicateModelResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DuplicateModelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Model
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DuplicateModelResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DuplicateModelResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r DuplicateModelResponse) GetJSON201() *Model {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DuplicateModelResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DuplicateModelResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DuplicateModelResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DuplicateModelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DuplicateModelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DuplicateModelResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListOrganizationsResponse400Headers the declared response headers of an HTTP 400 response for ListOrganizations
 type ListOrganizationsResponse400Headers struct {
 	XRequestId *string
@@ -84353,6 +85053,75 @@ func (r DispatchScheduleResponse) ContentType() string {
 	return ""
 }
 
+// DuplicateScheduleResponse400Headers the declared response headers of an HTTP 400 response for DuplicateSchedule
+type DuplicateScheduleResponse400Headers struct {
+	XRequestId *string
+}
+
+// DuplicateScheduleResponseDefaultHeaders the declared response headers of an HTTP default response for DuplicateSchedule
+type DuplicateScheduleResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DuplicateScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Schedule
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DuplicateScheduleResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DuplicateScheduleResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r DuplicateScheduleResponse) GetJSON201() *Schedule {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DuplicateScheduleResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DuplicateScheduleResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DuplicateScheduleResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DuplicateScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DuplicateScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DuplicateScheduleResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // EnableScheduleResponse400Headers the declared response headers of an HTTP 400 response for EnableSchedule
 type EnableScheduleResponse400Headers struct {
 	XRequestId *string
@@ -85582,6 +86351,75 @@ func (r ArchiveSkillResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ArchiveSkillResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DuplicateSkillResponse400Headers the declared response headers of an HTTP 400 response for DuplicateSkill
+type DuplicateSkillResponse400Headers struct {
+	XRequestId *string
+}
+
+// DuplicateSkillResponseDefaultHeaders the declared response headers of an HTTP default response for DuplicateSkill
+type DuplicateSkillResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type DuplicateSkillResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Skill
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *DuplicateSkillResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *DuplicateSkillResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r DuplicateSkillResponse) GetJSON201() *Skill {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r DuplicateSkillResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r DuplicateSkillResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r DuplicateSkillResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DuplicateSkillResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DuplicateSkillResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DuplicateSkillResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -95255,6 +96093,32 @@ func (c *ClientWithResponses) UpdateEnvironmentTemplateWithResponse(ctx context.
 	return ParseUpdateEnvironmentTemplateResponse(rsp)
 }
 
+// DuplicateEnvironmentTemplateWithBodyWithResponse Duplicate Environment Template
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+func (c *ClientWithResponses) DuplicateEnvironmentTemplateWithBodyWithResponse(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateEnvironmentTemplateResponse, error) {
+	rsp, err := c.DuplicateEnvironmentTemplateWithBody(ctx, templateId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateEnvironmentTemplateResponse(rsp)
+}
+
+// DuplicateEnvironmentTemplateWithResponse Duplicate Environment Template
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/environment-templates/{template_id}/duplicate (the `DuplicateEnvironmentTemplate` operationId).
+func (c *ClientWithResponses) DuplicateEnvironmentTemplateWithResponse(ctx context.Context, templateId string, params *DuplicateEnvironmentTemplateParams, body DuplicateEnvironmentTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateEnvironmentTemplateResponse, error) {
+	rsp, err := c.DuplicateEnvironmentTemplate(ctx, templateId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateEnvironmentTemplateResponse(rsp)
+}
+
 // ListEnvironmentsWithResponse List Environments
 //
 // Returns a wrapper object for the known response body format(s).
@@ -97252,6 +98116,32 @@ func (c *ClientWithResponses) UpdateModelWithResponse(ctx context.Context, key s
 	return ParseUpdateModelResponse(rsp)
 }
 
+// DuplicateModelWithBodyWithResponse Duplicate Model
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+func (c *ClientWithResponses) DuplicateModelWithBodyWithResponse(ctx context.Context, key string, params *DuplicateModelParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateModelResponse, error) {
+	rsp, err := c.DuplicateModelWithBody(ctx, key, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateModelResponse(rsp)
+}
+
+// DuplicateModelWithResponse Duplicate Model
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/models/{key}/duplicate (the `DuplicateModel` operationId).
+func (c *ClientWithResponses) DuplicateModelWithResponse(ctx context.Context, key string, params *DuplicateModelParams, body DuplicateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateModelResponse, error) {
+	rsp, err := c.DuplicateModel(ctx, key, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateModelResponse(rsp)
+}
+
 // ListOrganizationsWithResponse List Organizations
 //
 // Returns a wrapper object for the known response body format(s).
@@ -98140,6 +99030,32 @@ func (c *ClientWithResponses) DispatchScheduleWithResponse(ctx context.Context, 
 	return ParseDispatchScheduleResponse(rsp)
 }
 
+// DuplicateScheduleWithBodyWithResponse Duplicate Schedule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+func (c *ClientWithResponses) DuplicateScheduleWithBodyWithResponse(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateScheduleResponse, error) {
+	rsp, err := c.DuplicateScheduleWithBody(ctx, scheduleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateScheduleResponse(rsp)
+}
+
+// DuplicateScheduleWithResponse Duplicate Schedule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/schedules/{schedule_id}/duplicate (the `DuplicateSchedule` operationId).
+func (c *ClientWithResponses) DuplicateScheduleWithResponse(ctx context.Context, scheduleId string, params *DuplicateScheduleParams, body DuplicateScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateScheduleResponse, error) {
+	rsp, err := c.DuplicateSchedule(ctx, scheduleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateScheduleResponse(rsp)
+}
+
 // EnableScheduleWithBodyWithResponse Enable Schedule
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -98489,6 +99405,32 @@ func (c *ClientWithResponses) ArchiveSkillWithResponse(ctx context.Context, skil
 		return nil, err
 	}
 	return ParseArchiveSkillResponse(rsp)
+}
+
+// DuplicateSkillWithBodyWithResponse Duplicate Skill
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+func (c *ClientWithResponses) DuplicateSkillWithBodyWithResponse(ctx context.Context, skillId string, params *DuplicateSkillParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DuplicateSkillResponse, error) {
+	rsp, err := c.DuplicateSkillWithBody(ctx, skillId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateSkillResponse(rsp)
+}
+
+// DuplicateSkillWithResponse Duplicate Skill
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/skills/{skill_id}/duplicate (the `DuplicateSkill` operationId).
+func (c *ClientWithResponses) DuplicateSkillWithResponse(ctx context.Context, skillId string, params *DuplicateSkillParams, body DuplicateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*DuplicateSkillResponse, error) {
+	rsp, err := c.DuplicateSkill(ctx, skillId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDuplicateSkillResponse(rsp)
 }
 
 // ListSkillRevisionsWithResponse List Skill Revisions
@@ -107711,6 +108653,69 @@ func ParseUpdateEnvironmentTemplateResponse(rsp *http.Response) (*UpdateEnvironm
 	return response, nil
 }
 
+// ParseDuplicateEnvironmentTemplateResponse parses an HTTP response from a DuplicateEnvironmentTemplateWithResponse call
+func ParseDuplicateEnvironmentTemplateResponse(rsp *http.Response) (*DuplicateEnvironmentTemplateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DuplicateEnvironmentTemplateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Template
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DuplicateEnvironmentTemplateResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DuplicateEnvironmentTemplateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListEnvironmentsResponse parses an HTTP response from a ListEnvironmentsWithResponse call
 func ParseListEnvironmentsResponse(rsp *http.Response) (*ListEnvironmentsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -114602,6 +115607,69 @@ func ParseUpdateModelResponse(rsp *http.Response) (*UpdateModelResponse, error) 
 	return response, nil
 }
 
+// ParseDuplicateModelResponse parses an HTTP response from a DuplicateModelWithResponse call
+func ParseDuplicateModelResponse(rsp *http.Response) (*DuplicateModelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DuplicateModelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Model
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DuplicateModelResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DuplicateModelResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListOrganizationsResponse parses an HTTP response from a ListOrganizationsWithResponse call
 func ParseListOrganizationsResponse(rsp *http.Response) (*ListOrganizationsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -117681,6 +118749,69 @@ func ParseDispatchScheduleResponse(rsp *http.Response) (*DispatchScheduleRespons
 	return response, nil
 }
 
+// ParseDuplicateScheduleResponse parses an HTTP response from a DuplicateScheduleWithResponse call
+func ParseDuplicateScheduleResponse(rsp *http.Response) (*DuplicateScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DuplicateScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Schedule
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DuplicateScheduleResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DuplicateScheduleResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseEnableScheduleResponse parses an HTTP response from a EnableScheduleWithResponse call
 func ParseEnableScheduleResponse(rsp *http.Response) (*EnableScheduleResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -118795,6 +119926,69 @@ func ParseArchiveSkillResponse(rsp *http.Response) (*ArchiveSkillResponse, error
 		response.Headers400 = &headers
 	case true:
 		var headers ArchiveSkillResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDuplicateSkillResponse parses an HTTP response from a DuplicateSkillWithResponse call
+func ParseDuplicateSkillResponse(rsp *http.Response) (*DuplicateSkillResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DuplicateSkillResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Skill
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers DuplicateSkillResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers DuplicateSkillResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
