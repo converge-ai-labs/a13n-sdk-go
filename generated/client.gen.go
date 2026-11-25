@@ -8724,6 +8724,7 @@ type ManagedEnvironmentCreate struct {
 	MetricsDataSourceId nullable.Nullable[string] `json:"metrics_data_source_id,omitempty"`
 	MetricsLabels       *map[string]interface{}   `json:"metrics_labels,omitempty"`
 	Name                nullable.Nullable[string] `json:"name,omitempty"`
+	RecipeOverrides     *RecipeOverrides          `json:"recipe_overrides,omitempty"`
 	TemplateId          string                    `json:"template_id"`
 }
 
@@ -10262,6 +10263,11 @@ type RangeQueryKind string
 
 // ReadView defines model for ReadView.
 type ReadView string
+
+// RecipeOverrides defines model for RecipeOverrides.
+type RecipeOverrides struct {
+	VolumeMounts *map[string]string `json:"volume_mounts,omitempty"`
+}
 
 // Reclamation Instance-scoped reclamation settings copied at reservation; no stop/resume semantics.
 type Reclamation struct {
