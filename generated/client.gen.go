@@ -4010,6 +4010,24 @@ func (e ScheduleTrigger) Valid() bool {
 	}
 }
 
+// Defines values for SecurityAdvisorySeverity.
+const (
+	SecurityAdvisorySeverityCritical SecurityAdvisorySeverity = "critical"
+	SecurityAdvisorySeverityHigh     SecurityAdvisorySeverity = "high"
+)
+
+// Valid indicates whether the value is a known member of the SecurityAdvisorySeverity enum.
+func (e SecurityAdvisorySeverity) Valid() bool {
+	switch e {
+	case SecurityAdvisorySeverityCritical:
+		return true
+	case SecurityAdvisorySeverityHigh:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ServiceAccountStatus.
 const (
 	ServiceAccountStatusActive   ServiceAccountStatus = "active"
@@ -4084,19 +4102,19 @@ func (e SessionViewPurpose) Valid() bool {
 
 // Defines values for Severity.
 const (
-	Critical   Severity = "critical"
-	Suggestion Severity = "suggestion"
-	Warning    Severity = "warning"
+	SeverityCritical   Severity = "critical"
+	SeveritySuggestion Severity = "suggestion"
+	SeverityWarning    Severity = "warning"
 )
 
 // Valid indicates whether the value is a known member of the Severity enum.
 func (e Severity) Valid() bool {
 	switch e {
-	case Critical:
+	case SeverityCritical:
 		return true
-	case Suggestion:
+	case SeveritySuggestion:
 		return true
-	case Warning:
+	case SeverityWarning:
 		return true
 	default:
 		return false
@@ -4654,22 +4672,22 @@ func (e ToolReviewRuleOnFlagged) Valid() bool {
 
 // Defines values for ToolRiskLevel.
 const (
-	ExtraHigh ToolRiskLevel = "extra_high"
-	High      ToolRiskLevel = "high"
-	Low       ToolRiskLevel = "low"
-	Medium    ToolRiskLevel = "medium"
+	ToolRiskLevelExtraHigh ToolRiskLevel = "extra_high"
+	ToolRiskLevelHigh      ToolRiskLevel = "high"
+	ToolRiskLevelLow       ToolRiskLevel = "low"
+	ToolRiskLevelMedium    ToolRiskLevel = "medium"
 )
 
 // Valid indicates whether the value is a known member of the ToolRiskLevel enum.
 func (e ToolRiskLevel) Valid() bool {
 	switch e {
-	case ExtraHigh:
+	case ToolRiskLevelExtraHigh:
 		return true
-	case High:
+	case ToolRiskLevelHigh:
 		return true
-	case Low:
+	case ToolRiskLevelLow:
 		return true
-	case Medium:
+	case ToolRiskLevelMedium:
 		return true
 	default:
 		return false
@@ -10846,6 +10864,18 @@ type SecretReference struct {
 	InjectHosts  Hosts  `json:"inject_hosts"`
 }
 
+// SecurityAdvisory defines model for SecurityAdvisory.
+type SecurityAdvisory struct {
+	Id        string                    `json:"id"`
+	Severity  SecurityAdvisorySeverity  `json:"severity"`
+	Summary   string                    `json:"summary"`
+	UpdatedAt nullable.Nullable[string] `json:"updated_at"`
+	Url       string                    `json:"url"`
+}
+
+// SecurityAdvisorySeverity defines model for SecurityAdvisory.Severity.
+type SecurityAdvisorySeverity string
+
 // SelectedTrace defines model for SelectedTrace.
 type SelectedTrace struct {
 	RunId     string                    `json:"run_id"`
@@ -11383,6 +11413,13 @@ type SpanSummaryStatus string
 
 // SpanSummaryView defines model for SpanSummary.View.
 type SpanSummaryView string
+
+// StableRelease defines model for StableRelease.
+type StableRelease struct {
+	IsNewer bool   `json:"is_newer"`
+	Url     string `json:"url"`
+	Version string `json:"version"`
+}
 
 // StartupErrorPolicy defines model for StartupErrorPolicy.
 type StartupErrorPolicy string
@@ -11984,6 +12021,13 @@ type UnlimitedMemoryLimit struct {
 
 // UnlimitedMemoryLimitKind defines model for UnlimitedMemoryLimit.Kind.
 type UnlimitedMemoryLimitKind string
+
+// UpdateNotices defines model for UpdateNotices.
+type UpdateNotices struct {
+	Advisories     []SecurityAdvisory               `json:"advisories"`
+	CurrentVersion string                           `json:"current_version"`
+	LatestStable   nullable.Nullable[StableRelease] `json:"latest_stable"`
+}
 
 // Upload defines model for Upload.
 type Upload struct {
@@ -23312,6 +23356,13 @@ type ClientInterface interface {
 	// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
 	ResetMemberPassword(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetUpdateNotices Get Update Notices
+	//
+	// Read the Control process's cached release and security notices as an organization administrator.
+	//
+	// Corresponds with GET /api/v1/organizations/{organization_id}/update-notices (the `GetUpdateNotices` operationId).
+	GetUpdateNotices(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListOrganizationWorkspaces List Organization Workspaces
 	//
 	// Corresponds with GET /api/v1/organizations/{organization_id}/workspaces (the `ListOrganizationWorkspaces` operationId).
@@ -30100,6 +30151,23 @@ func (c *Client) ListMembers(ctx context.Context, organizationId string, params 
 // Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
 func (c *Client) ResetMemberPassword(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewResetMemberPasswordRequest(c.Server, organizationId, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetUpdateNotices Get Update Notices
+//
+// Read the Control process's cached release and security notices as an organization administrator.
+//
+// Corresponds with GET /api/v1/organizations/{organization_id}/update-notices (the `GetUpdateNotices` operationId).
+func (c *Client) GetUpdateNotices(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUpdateNoticesRequest(c.Server, organizationId)
 	if err != nil {
 		return nil, err
 	}
@@ -49156,6 +49224,40 @@ func NewResetMemberPasswordRequest(server string, organizationId string, userId 
 	return req, nil
 }
 
+// NewGetUpdateNoticesRequest constructs an http.Request for the GetUpdateNotices method
+func NewGetUpdateNoticesRequest(server string, organizationId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "organization_id", organizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/organizations/%s/update-notices", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewListOrganizationWorkspacesRequest constructs an http.Request for the ListOrganizationWorkspaces method
 func NewListOrganizationWorkspacesRequest(server string, organizationId string, params *ListOrganizationWorkspacesParams) (*http.Request, error) {
 	var err error
@@ -63608,6 +63710,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /api/v1/organizations/{organization_id}/members/{user_id}/password-reset (the `ResetMemberPassword` operationId).
 	ResetMemberPasswordWithResponse(ctx context.Context, organizationId string, userId string, reqEditors ...RequestEditorFn) (*ResetMemberPasswordResponse, error)
+
+	// GetUpdateNoticesWithResponse Get Update Notices
+	//
+	// Read the Control process's cached release and security notices as an organization administrator.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/organizations/{organization_id}/update-notices (the `GetUpdateNotices` operationId).
+	GetUpdateNoticesWithResponse(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*GetUpdateNoticesResponse, error)
 
 	// ListOrganizationWorkspacesWithResponse List Organization Workspaces
 	//
@@ -81963,6 +82074,75 @@ func (r ResetMemberPasswordResponse) ContentType() string {
 	return ""
 }
 
+// GetUpdateNoticesResponse400Headers the declared response headers of an HTTP 400 response for GetUpdateNotices
+type GetUpdateNoticesResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetUpdateNoticesResponseDefaultHeaders the declared response headers of an HTTP default response for GetUpdateNotices
+type GetUpdateNoticesResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetUpdateNoticesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *UpdateNotices
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetUpdateNoticesResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetUpdateNoticesResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetUpdateNoticesResponse) GetJSON200() *UpdateNotices {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetUpdateNoticesResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetUpdateNoticesResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetUpdateNoticesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetUpdateNoticesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetUpdateNoticesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetUpdateNoticesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListOrganizationWorkspacesResponse400Headers the declared response headers of an HTTP 400 response for ListOrganizationWorkspaces
 type ListOrganizationWorkspacesResponse400Headers struct {
 	XRequestId *string
@@ -97147,6 +97327,21 @@ func (c *ClientWithResponses) ResetMemberPasswordWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseResetMemberPasswordResponse(rsp)
+}
+
+// GetUpdateNoticesWithResponse Get Update Notices
+//
+// Read the Control process's cached release and security notices as an organization administrator.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/organizations/{organization_id}/update-notices (the `GetUpdateNotices` operationId).
+func (c *ClientWithResponses) GetUpdateNoticesWithResponse(ctx context.Context, organizationId string, reqEditors ...RequestEditorFn) (*GetUpdateNoticesResponse, error) {
+	rsp, err := c.GetUpdateNotices(ctx, organizationId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetUpdateNoticesResponse(rsp)
 }
 
 // ListOrganizationWorkspacesWithResponse List Organization Workspaces
@@ -115270,6 +115465,69 @@ func ParseResetMemberPasswordResponse(rsp *http.Response) (*ResetMemberPasswordR
 		response.Headers400 = &headers
 	case true:
 		var headers ResetMemberPasswordResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetUpdateNoticesResponse parses an HTTP response from a GetUpdateNoticesWithResponse call
+func ParseGetUpdateNoticesResponse(rsp *http.Response) (*GetUpdateNoticesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetUpdateNoticesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest UpdateNotices
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetUpdateNoticesResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetUpdateNoticesResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
