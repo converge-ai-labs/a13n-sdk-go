@@ -6056,19 +6056,20 @@ type AgentConfigInput struct {
 	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics                     `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue                          `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection                             `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]                 `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                                     `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                              `json:"skills,omitempty"`
-	Subagents            *SubagentsInput                                `json:"subagents,omitempty"`
-	Summarize            *bool                                          `json:"summarize,omitempty"`
-	ToolSearch           nullable.Nullable[AgentConfigInput_ToolSearch] `json:"tool_search,omitempty"`
-	Toolsets             *map[string]ToolsetSelection                   `json:"toolsets,omitempty"`
-	UserQuestions        *bool                                          `json:"user_questions,omitempty"`
+	ModelCharacteristics  *AgentModelCharacteristics                     `json:"model_characteristics,omitempty"`
+	ModelSettings         *map[string]JsonValue                          `json:"model_settings,omitempty"`
+	OutputSpec            nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
+	Plugins               *[]PluginSelection                             `json:"plugins,omitempty"`
+	RespectMcpAnnotations *bool                                          `json:"respect_mcp_annotations,omitempty"`
+	Retries               nullable.Nullable[RetryConfig]                 `json:"retries,omitempty"`
+	Reviewer              nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
+	SkillSync             *SkillSync                                     `json:"skill_sync,omitempty"`
+	Skills                *[]SkillSelection                              `json:"skills,omitempty"`
+	Subagents             *SubagentsInput                                `json:"subagents,omitempty"`
+	Summarize             *bool                                          `json:"summarize,omitempty"`
+	ToolSearch            nullable.Nullable[AgentConfigInput_ToolSearch] `json:"tool_search,omitempty"`
+	Toolsets              *map[string]ToolsetSelection                   `json:"toolsets,omitempty"`
+	UserQuestions         *bool                                          `json:"user_questions,omitempty"`
 }
 
 // AgentConfigInput_ToolSearch defines model for AgentConfigInput.ToolSearch.
@@ -6099,19 +6100,20 @@ type AgentConfigOutput struct {
 	Model        string                 `json:"model"`
 
 	// ModelCharacteristics The agent's context policy, layered over what the model declares.
-	ModelCharacteristics *AgentModelCharacteristics                      `json:"model_characteristics,omitempty"`
-	ModelSettings        *map[string]JsonValue                           `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                   `json:"output_spec,omitempty"`
-	Plugins              *[]PluginSelection                              `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryConfig]                  `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]                `json:"reviewer,omitempty"`
-	SkillSync            *SkillSync                                      `json:"skill_sync,omitempty"`
-	Skills               *[]SkillSelection                               `json:"skills,omitempty"`
-	Subagents            *SubagentsOutput                                `json:"subagents,omitempty"`
-	Summarize            *bool                                           `json:"summarize,omitempty"`
-	ToolSearch           nullable.Nullable[AgentConfigOutput_ToolSearch] `json:"tool_search,omitempty"`
-	Toolsets             *map[string]ToolsetSelection                    `json:"toolsets,omitempty"`
-	UserQuestions        *bool                                           `json:"user_questions,omitempty"`
+	ModelCharacteristics  *AgentModelCharacteristics                      `json:"model_characteristics,omitempty"`
+	ModelSettings         *map[string]JsonValue                           `json:"model_settings,omitempty"`
+	OutputSpec            nullable.Nullable[OutputSpec]                   `json:"output_spec,omitempty"`
+	Plugins               *[]PluginSelection                              `json:"plugins,omitempty"`
+	RespectMcpAnnotations *bool                                           `json:"respect_mcp_annotations,omitempty"`
+	Retries               nullable.Nullable[RetryConfig]                  `json:"retries,omitempty"`
+	Reviewer              nullable.Nullable[AgentReviewer]                `json:"reviewer,omitempty"`
+	SkillSync             *SkillSync                                      `json:"skill_sync,omitempty"`
+	Skills                *[]SkillSelection                               `json:"skills,omitempty"`
+	Subagents             *SubagentsOutput                                `json:"subagents,omitempty"`
+	Summarize             *bool                                           `json:"summarize,omitempty"`
+	ToolSearch            nullable.Nullable[AgentConfigOutput_ToolSearch] `json:"tool_search,omitempty"`
+	Toolsets              *map[string]ToolsetSelection                    `json:"toolsets,omitempty"`
+	UserQuestions         *bool                                           `json:"user_questions,omitempty"`
 }
 
 // AgentConfigOutput_ToolSearch defines model for AgentConfigOutput.ToolSearch.
