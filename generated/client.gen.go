@@ -2705,6 +2705,60 @@ func (e McpAuth) Valid() bool {
 	}
 }
 
+// Defines values for McpElicitationKind.
+const (
+	McpElicitationKindMcpElicitation McpElicitationKind = "mcp_elicitation"
+)
+
+// Valid indicates whether the value is a known member of the McpElicitationKind enum.
+func (e McpElicitationKind) Valid() bool {
+	switch e {
+	case McpElicitationKindMcpElicitation:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for McpElicitationMode.
+const (
+	McpElicitationModeForm McpElicitationMode = "form"
+	McpElicitationModeUrl  McpElicitationMode = "url"
+)
+
+// Valid indicates whether the value is a known member of the McpElicitationMode enum.
+func (e McpElicitationMode) Valid() bool {
+	switch e {
+	case McpElicitationModeForm:
+		return true
+	case McpElicitationModeUrl:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for McpInputResponseAction.
+const (
+	Accept  McpInputResponseAction = "accept"
+	Cancel  McpInputResponseAction = "cancel"
+	Decline McpInputResponseAction = "decline"
+)
+
+// Valid indicates whether the value is a known member of the McpInputResponseAction enum.
+func (e McpInputResponseAction) Valid() bool {
+	switch e {
+	case Accept:
+		return true
+	case Cancel:
+		return true
+	case Decline:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for MemberUsageKind.
 const (
 	MemberUsageKindServiceAccount MemberUsageKind = "service_account"
@@ -4984,13 +5038,13 @@ func (e UploadSourceKind) Valid() bool {
 
 // Defines values for UrlPartType.
 const (
-	Url UrlPartType = "url"
+	UrlPartTypeUrl UrlPartType = "url"
 )
 
 // Valid indicates whether the value is a known member of the UrlPartType enum.
 func (e UrlPartType) Valid() bool {
 	switch e {
-	case Url:
+	case UrlPartTypeUrl:
 		return true
 	default:
 		return false
@@ -8759,8 +8813,40 @@ type McpConfig struct {
 	Url            string                      `json:"url"`
 }
 
+// McpElicitation defines model for McpElicitation.
+type McpElicitation struct {
+	ExpiresAt  time.Time                               `json:"expires_at"`
+	Kind       *McpElicitationKind                     `json:"kind,omitempty"`
+	Message    string                                  `json:"message"`
+	Mode       McpElicitationMode                      `json:"mode"`
+	RequestId  string                                  `json:"request_id"`
+	RunId      nullable.Nullable[string]               `json:"run_id,omitempty"`
+	Schema     nullable.Nullable[map[string]JsonValue] `json:"schema,omitempty"`
+	ServerId   string                                  `json:"server_id"`
+	ServerName nullable.Nullable[string]               `json:"server_name,omitempty"`
+	ThreadId   string                                  `json:"thread_id"`
+	ToolCallId nullable.Nullable[string]               `json:"tool_call_id,omitempty"`
+	Url        nullable.Nullable[string]               `json:"url,omitempty"`
+	UrlHost    nullable.Nullable[string]               `json:"url_host,omitempty"`
+}
+
+// McpElicitationKind defines model for McpElicitation.Kind.
+type McpElicitationKind string
+
+// McpElicitationMode defines model for McpElicitation.Mode.
+type McpElicitationMode string
+
 // McpHeaders defines model for McpHeaders.
 type McpHeaders = map[string]interface{}
+
+// McpInputResponse defines model for McpInputResponse.
+type McpInputResponse struct {
+	Action  McpInputResponseAction                  `json:"action"`
+	Content nullable.Nullable[map[string]JsonValue] `json:"content,omitempty"`
+}
+
+// McpInputResponseAction defines model for McpInputResponse.Action.
+type McpInputResponseAction string
 
 // McpServer defines model for McpServer.
 type McpServer struct {
@@ -14506,6 +14592,18 @@ type GetRunLineageParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListMcpInputsParams defines parameters for ListMcpInputs.
+type ListMcpInputsParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RespondToMcpInputParams defines parameters for RespondToMcpInput.
+type RespondToMcpInputParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ResumeRunParams defines parameters for ResumeRun.
 type ResumeRunParams struct {
 	IdempotencyKey string `json:"Idempotency-Key"`
@@ -15979,6 +16077,9 @@ type CallRunAppToolJSONRequestBody = AppToolCall
 
 // ForkRunJSONRequestBody defines body for ForkRun for application/json ContentType.
 type ForkRunJSONRequestBody = Fork
+
+// RespondToMcpInputJSONRequestBody defines body for RespondToMcpInput for application/json ContentType.
+type RespondToMcpInputJSONRequestBody = McpInputResponse
 
 // ResumeRunJSONRequestBody defines body for ResumeRun for application/json ContentType.
 type ResumeRunJSONRequestBody = Resume
@@ -23808,6 +23909,31 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/runs/{run_id}/lineage (the `GetRunLineage` operationId).
 	GetRunLineage(ctx context.Context, runId string, params *GetRunLineageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListMcpInputs List Mcp Inputs
+	//
+	// List pending human input for this run's retained MCP tool executions.
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/mcp-inputs (the `ListMcpInputs` operationId).
+	ListMcpInputs(ctx context.Context, runId string, params *ListMcpInputsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RespondToMcpInputWithBody Respond To Mcp Input
+	//
+	// Send one answer to the originating MCP task, without resuming the run.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+	RespondToMcpInputWithBody(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RespondToMcpInput Respond To Mcp Input
+	//
+	// Send one answer to the originating MCP task, without resuming the run.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+	RespondToMcpInput(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, body RespondToMcpInputJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ResumeRunWithBody Resume Run
 	//
 	// Answer the exact waiting run's approvals, client tools and user questions; the successor continues from them.
@@ -31009,6 +31135,61 @@ func (c *Client) ReadRunItemContent(ctx context.Context, runId string, itemId st
 // Corresponds with GET /api/v1/runs/{run_id}/lineage (the `GetRunLineage` operationId).
 func (c *Client) GetRunLineage(ctx context.Context, runId string, params *GetRunLineageParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRunLineageRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListMcpInputs List Mcp Inputs
+//
+// List pending human input for this run's retained MCP tool executions.
+//
+// Corresponds with GET /api/v1/runs/{run_id}/mcp-inputs (the `ListMcpInputs` operationId).
+func (c *Client) ListMcpInputs(ctx context.Context, runId string, params *ListMcpInputsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListMcpInputsRequest(c.Server, runId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RespondToMcpInputWithBody Respond To Mcp Input
+//
+// Send one answer to the originating MCP task, without resuming the run.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+func (c *Client) RespondToMcpInputWithBody(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRespondToMcpInputRequestWithBody(c.Server, runId, requestId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RespondToMcpInput Respond To Mcp Input
+//
+// Send one answer to the originating MCP task, without resuming the run.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+func (c *Client) RespondToMcpInput(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, body RespondToMcpInputJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRespondToMcpInputRequest(c.Server, runId, requestId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -51746,6 +51927,124 @@ func NewGetRunLineageRequest(server string, runId string, params *GetRunLineageP
 	return req, nil
 }
 
+// NewListMcpInputsRequest constructs an http.Request for the ListMcpInputs method
+func NewListMcpInputsRequest(server string, runId string, params *ListMcpInputsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/mcp-inputs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRespondToMcpInputRequest calls the generic RespondToMcpInput builder with application/json body
+func NewRespondToMcpInputRequest(server string, runId string, requestId string, params *RespondToMcpInputParams, body RespondToMcpInputJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRespondToMcpInputRequestWithBody(server, runId, requestId, params, "application/json", bodyReader)
+}
+
+// NewRespondToMcpInputRequestWithBody constructs an http.Request for the RespondToMcpInput method, with any body, and a specified content type
+func NewRespondToMcpInputRequestWithBody(server string, runId string, requestId string, params *RespondToMcpInputParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "request_id", requestId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/runs/%s/mcp-inputs/%s/response", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewResumeRunRequest calls the generic ResumeRun builder with application/json body
 func NewResumeRunRequest(server string, runId string, params *ResumeRunParams, body ResumeRunJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -64743,6 +65042,33 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/runs/{run_id}/lineage (the `GetRunLineage` operationId).
 	GetRunLineageWithResponse(ctx context.Context, runId string, params *GetRunLineageParams, reqEditors ...RequestEditorFn) (*GetRunLineageResponse, error)
+
+	// ListMcpInputsWithResponse List Mcp Inputs
+	//
+	// List pending human input for this run's retained MCP tool executions.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/runs/{run_id}/mcp-inputs (the `ListMcpInputs` operationId).
+	ListMcpInputsWithResponse(ctx context.Context, runId string, params *ListMcpInputsParams, reqEditors ...RequestEditorFn) (*ListMcpInputsResponse, error)
+
+	// RespondToMcpInputWithBodyWithResponse Respond To Mcp Input
+	//
+	// Send one answer to the originating MCP task, without resuming the run.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+	RespondToMcpInputWithBodyWithResponse(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RespondToMcpInputResponse, error)
+
+	// RespondToMcpInputWithResponse Respond To Mcp Input
+	//
+	// Send one answer to the originating MCP task, without resuming the run.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+	RespondToMcpInputWithResponse(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, body RespondToMcpInputJSONRequestBody, reqEditors ...RequestEditorFn) (*RespondToMcpInputResponse, error)
 
 	// ResumeRunWithBodyWithResponse Resume Run
 	//
@@ -84633,6 +84959,137 @@ func (r GetRunLineageResponse) ContentType() string {
 	return ""
 }
 
+// ListMcpInputsResponse400Headers the declared response headers of an HTTP 400 response for ListMcpInputs
+type ListMcpInputsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListMcpInputsResponseDefaultHeaders the declared response headers of an HTTP default response for ListMcpInputs
+type ListMcpInputsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListMcpInputsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *[]McpElicitation
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListMcpInputsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListMcpInputsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListMcpInputsResponse) GetJSON200() *[]McpElicitation {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListMcpInputsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListMcpInputsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListMcpInputsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListMcpInputsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListMcpInputsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListMcpInputsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RespondToMcpInputResponse400Headers the declared response headers of an HTTP 400 response for RespondToMcpInput
+type RespondToMcpInputResponse400Headers struct {
+	XRequestId *string
+}
+
+// RespondToMcpInputResponseDefaultHeaders the declared response headers of an HTTP default response for RespondToMcpInput
+type RespondToMcpInputResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RespondToMcpInputResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RespondToMcpInputResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RespondToMcpInputResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RespondToMcpInputResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RespondToMcpInputResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RespondToMcpInputResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RespondToMcpInputResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RespondToMcpInputResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RespondToMcpInputResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ResumeRunResponse400Headers the declared response headers of an HTTP 400 response for ResumeRun
 type ResumeRunResponse400Headers struct {
 	XRequestId *string
@@ -98979,6 +99436,51 @@ func (c *ClientWithResponses) GetRunLineageWithResponse(ctx context.Context, run
 		return nil, err
 	}
 	return ParseGetRunLineageResponse(rsp)
+}
+
+// ListMcpInputsWithResponse List Mcp Inputs
+//
+// List pending human input for this run's retained MCP tool executions.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/runs/{run_id}/mcp-inputs (the `ListMcpInputs` operationId).
+func (c *ClientWithResponses) ListMcpInputsWithResponse(ctx context.Context, runId string, params *ListMcpInputsParams, reqEditors ...RequestEditorFn) (*ListMcpInputsResponse, error) {
+	rsp, err := c.ListMcpInputs(ctx, runId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListMcpInputsResponse(rsp)
+}
+
+// RespondToMcpInputWithBodyWithResponse Respond To Mcp Input
+//
+// Send one answer to the originating MCP task, without resuming the run.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+func (c *ClientWithResponses) RespondToMcpInputWithBodyWithResponse(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RespondToMcpInputResponse, error) {
+	rsp, err := c.RespondToMcpInputWithBody(ctx, runId, requestId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRespondToMcpInputResponse(rsp)
+}
+
+// RespondToMcpInputWithResponse Respond To Mcp Input
+//
+// Send one answer to the originating MCP task, without resuming the run.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/runs/{run_id}/mcp-inputs/{request_id}/response (the `RespondToMcpInput` operationId).
+func (c *ClientWithResponses) RespondToMcpInputWithResponse(ctx context.Context, runId string, requestId string, params *RespondToMcpInputParams, body RespondToMcpInputJSONRequestBody, reqEditors ...RequestEditorFn) (*RespondToMcpInputResponse, error) {
+	rsp, err := c.RespondToMcpInput(ctx, runId, requestId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRespondToMcpInputResponse(rsp)
 }
 
 // ResumeRunWithBodyWithResponse Resume Run
@@ -118361,6 +118863,128 @@ func ParseGetRunLineageResponse(rsp *http.Response) (*GetRunLineageResponse, err
 		response.Headers400 = &headers
 	case true:
 		var headers GetRunLineageResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListMcpInputsResponse parses an HTTP response from a ListMcpInputsWithResponse call
+func ParseListMcpInputsResponse(rsp *http.Response) (*ListMcpInputsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListMcpInputsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []McpElicitation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListMcpInputsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListMcpInputsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRespondToMcpInputResponse parses an HTTP response from a RespondToMcpInputWithResponse call
+func ParseRespondToMcpInputResponse(rsp *http.Response) (*RespondToMcpInputResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RespondToMcpInputResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RespondToMcpInputResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RespondToMcpInputResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

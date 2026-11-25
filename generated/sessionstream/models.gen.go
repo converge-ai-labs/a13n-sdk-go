@@ -1002,6 +1002,39 @@ func (e Lineage) Valid() bool {
 	}
 }
 
+// Defines values for McpElicitationKind.
+const (
+	McpElicitationKindMcpElicitation McpElicitationKind = "mcp_elicitation"
+)
+
+// Valid indicates whether the value is a known member of the McpElicitationKind enum.
+func (e McpElicitationKind) Valid() bool {
+	switch e {
+	case McpElicitationKindMcpElicitation:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for McpElicitationMode.
+const (
+	McpElicitationModeForm McpElicitationMode = "form"
+	McpElicitationModeUrl  McpElicitationMode = "url"
+)
+
+// Valid indicates whether the value is a known member of the McpElicitationMode enum.
+func (e McpElicitationMode) Valid() bool {
+	switch e {
+	case McpElicitationModeForm:
+		return true
+	case McpElicitationModeUrl:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for MemoryAccess.
 const (
 	Read  MemoryAccess = "read"
@@ -1661,13 +1694,13 @@ func (e UnavailableConfigurationReason) Valid() bool {
 
 // Defines values for UrlPartType.
 const (
-	Url UrlPartType = "url"
+	UrlPartTypeUrl UrlPartType = "url"
 )
 
 // Valid indicates whether the value is a known member of the UrlPartType enum.
 func (e UrlPartType) Valid() bool {
 	switch e {
-	case Url:
+	case UrlPartTypeUrl:
 		return true
 	default:
 		return false
@@ -2258,6 +2291,29 @@ type JsonValue = json.RawMessage
 // Lineage defines model for Lineage.
 type Lineage string
 
+// McpElicitation defines model for McpElicitation.
+type McpElicitation struct {
+	ExpiresAt  time.Time                               `json:"expires_at"`
+	Kind       *McpElicitationKind                     `json:"kind,omitempty"`
+	Message    string                                  `json:"message"`
+	Mode       McpElicitationMode                      `json:"mode"`
+	RequestId  string                                  `json:"request_id"`
+	RunId      nullable.Nullable[string]               `json:"run_id,omitempty"`
+	Schema     nullable.Nullable[map[string]JsonValue] `json:"schema,omitempty"`
+	ServerId   string                                  `json:"server_id"`
+	ServerName nullable.Nullable[string]               `json:"server_name,omitempty"`
+	ThreadId   string                                  `json:"thread_id"`
+	ToolCallId nullable.Nullable[string]               `json:"tool_call_id,omitempty"`
+	Url        nullable.Nullable[string]               `json:"url,omitempty"`
+	UrlHost    nullable.Nullable[string]               `json:"url_host,omitempty"`
+}
+
+// McpElicitationKind defines model for McpElicitation.Kind.
+type McpElicitationKind string
+
+// McpElicitationMode defines model for McpElicitation.Mode.
+type McpElicitationMode string
+
 // MediaUnderstandingSelection The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 type MediaUnderstandingSelection struct {
 	Audio nullable.Nullable[string] `json:"audio,omitempty"`
@@ -2442,6 +2498,12 @@ type PendingCall struct {
 	Terminal     *bool                                   `json:"terminal,omitempty"`
 	ToolCallId   ToolCallId                              `json:"tool_call_id"`
 	ToolName     string                                  `json:"tool_name"`
+}
+
+// PendingInteractions Replace the pending interactions for this thread, including with an empty list.
+type PendingInteractions struct {
+	Requests []McpElicitation `json:"requests"`
+	ThreadId string           `json:"thread_id"`
 }
 
 // PlatformGroup defines model for PlatformGroup.
