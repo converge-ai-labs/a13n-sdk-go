@@ -9222,6 +9222,14 @@ type MetricsSample struct {
 	System               SystemMetrics                          `json:"system"`
 }
 
+// ModalVolumeMount defines model for ModalVolumeMount.
+type ModalVolumeMount struct {
+	MountPath  string                    `json:"mount_path"`
+	ReadOnly   *bool                     `json:"read_only,omitempty"`
+	SubPath    nullable.Nullable[string] `json:"sub_path,omitempty"`
+	VolumeName string                    `json:"volume_name"`
+}
+
 // Model defines model for Model.
 type Model struct {
 	CatalogRef     nullable.Nullable[CatalogRef]              `json:"catalog_ref"`
@@ -10274,8 +10282,19 @@ type ReadView string
 
 // RecipeOverrides defines model for RecipeOverrides.
 type RecipeOverrides struct {
-	VolumeMounts *map[string]string    `json:"volume_mounts,omitempty"`
-	Volumes      *[]DaytonaVolumeMount `json:"volumes,omitempty"`
+	VolumeMounts *map[string]string       `json:"volume_mounts,omitempty"`
+	Volumes      *RecipeOverrides_Volumes `json:"volumes,omitempty"`
+}
+
+// RecipeOverridesVolumes0 defines model for RecipeOverrides.Volumes.0.
+type RecipeOverridesVolumes0 = []DaytonaVolumeMount
+
+// RecipeOverridesVolumes1 defines model for RecipeOverrides.Volumes.1.
+type RecipeOverridesVolumes1 = []ModalVolumeMount
+
+// RecipeOverrides_Volumes defines model for RecipeOverrides.Volumes.
+type RecipeOverrides_Volumes struct {
+	union json.RawMessage
 }
 
 // Reclamation Instance-scoped reclamation settings copied at reservation; no stop/resume semantics.
@@ -18173,6 +18192,68 @@ func (t PriceTierInput_Price) MarshalJSON() ([]byte, error) {
 }
 
 func (t *PriceTierInput_Price) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsRecipeOverridesVolumes0 returns the union data inside the RecipeOverrides_Volumes as a RecipeOverridesVolumes0
+func (t RecipeOverrides_Volumes) AsRecipeOverridesVolumes0() (RecipeOverridesVolumes0, error) {
+	var body RecipeOverridesVolumes0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRecipeOverridesVolumes0 overwrites any union data inside the RecipeOverrides_Volumes as the provided RecipeOverridesVolumes0
+func (t *RecipeOverrides_Volumes) FromRecipeOverridesVolumes0(v RecipeOverridesVolumes0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRecipeOverridesVolumes0 performs a merge with any union data inside the RecipeOverrides_Volumes, using the provided RecipeOverridesVolumes0
+func (t *RecipeOverrides_Volumes) MergeRecipeOverridesVolumes0(v RecipeOverridesVolumes0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRecipeOverridesVolumes1 returns the union data inside the RecipeOverrides_Volumes as a RecipeOverridesVolumes1
+func (t RecipeOverrides_Volumes) AsRecipeOverridesVolumes1() (RecipeOverridesVolumes1, error) {
+	var body RecipeOverridesVolumes1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRecipeOverridesVolumes1 overwrites any union data inside the RecipeOverrides_Volumes as the provided RecipeOverridesVolumes1
+func (t *RecipeOverrides_Volumes) FromRecipeOverridesVolumes1(v RecipeOverridesVolumes1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRecipeOverridesVolumes1 performs a merge with any union data inside the RecipeOverrides_Volumes, using the provided RecipeOverridesVolumes1
+func (t *RecipeOverrides_Volumes) MergeRecipeOverridesVolumes1(v RecipeOverridesVolumes1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t RecipeOverrides_Volumes) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *RecipeOverrides_Volumes) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
