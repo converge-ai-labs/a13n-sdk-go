@@ -6666,6 +6666,13 @@ type BootstrapInput struct {
 	Password *string             `json:"password,omitempty"`
 }
 
+// BoxdVolumeMount defines model for BoxdVolumeMount.
+type BoxdVolumeMount struct {
+	DiskId    string `json:"disk_id"`
+	MountPath string `json:"mount_path"`
+	ReadOnly  *bool  `json:"read_only,omitempty"`
+}
+
 // Browser defines model for Browser.
 type Browser struct {
 	Control            ControlStatus                `json:"control"`
@@ -10291,6 +10298,9 @@ type RecipeOverridesVolumes0 = []DaytonaVolumeMount
 
 // RecipeOverridesVolumes1 defines model for RecipeOverrides.Volumes.1.
 type RecipeOverridesVolumes1 = []ModalVolumeMount
+
+// RecipeOverridesVolumes2 defines model for RecipeOverrides.Volumes.2.
+type RecipeOverridesVolumes2 = []BoxdVolumeMount
 
 // RecipeOverrides_Volumes defines model for RecipeOverrides.Volumes.
 type RecipeOverrides_Volumes struct {
@@ -18238,6 +18248,32 @@ func (t *RecipeOverrides_Volumes) FromRecipeOverridesVolumes1(v RecipeOverridesV
 
 // MergeRecipeOverridesVolumes1 performs a merge with any union data inside the RecipeOverrides_Volumes, using the provided RecipeOverridesVolumes1
 func (t *RecipeOverrides_Volumes) MergeRecipeOverridesVolumes1(v RecipeOverridesVolumes1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRecipeOverridesVolumes2 returns the union data inside the RecipeOverrides_Volumes as a RecipeOverridesVolumes2
+func (t RecipeOverrides_Volumes) AsRecipeOverridesVolumes2() (RecipeOverridesVolumes2, error) {
+	var body RecipeOverridesVolumes2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRecipeOverridesVolumes2 overwrites any union data inside the RecipeOverrides_Volumes as the provided RecipeOverridesVolumes2
+func (t *RecipeOverrides_Volumes) FromRecipeOverridesVolumes2(v RecipeOverridesVolumes2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRecipeOverridesVolumes2 performs a merge with any union data inside the RecipeOverrides_Volumes, using the provided RecipeOverridesVolumes2
+func (t *RecipeOverrides_Volumes) MergeRecipeOverridesVolumes2(v RecipeOverridesVolumes2) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
