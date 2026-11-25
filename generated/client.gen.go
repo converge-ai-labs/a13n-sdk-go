@@ -8705,6 +8705,11 @@ type LoginSessionPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// LogoutRedirect defines model for LogoutRedirect.
+type LogoutRedirect struct {
+	LogoutUrl string `json:"logout_url"`
+}
+
 // Logs defines model for Logs.
 type Logs struct {
 	Container  string `json:"container"`
@@ -12541,6 +12546,11 @@ type ReadAssetContentParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// OidcBackchannelLogoutFormdataBody defines parameters for OidcBackchannelLogout.
+type OidcBackchannelLogoutFormdataBody struct {
+	LogoutToken string `form:"logout_token" json:"logout_token"`
+}
+
 // ListBrowserProvidersParams defines parameters for ListBrowserProviders.
 type ListBrowserProvidersParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -15619,6 +15629,9 @@ type ConfirmEmailChangeJSONRequestBody = EmailChangeConfirm
 
 // PasswordLoginJSONRequestBody defines body for PasswordLogin for application/json ContentType.
 type PasswordLoginJSONRequestBody = LoginInput
+
+// OidcBackchannelLogoutFormdataRequestBody defines body for OidcBackchannelLogout for application/x-www-form-urlencoded ContentType.
+type OidcBackchannelLogoutFormdataRequestBody OidcBackchannelLogoutFormdataBody
 
 // RequestPasswordResetJSONRequestBody defines body for RequestPasswordReset for application/json ContentType.
 type RequestPasswordResetJSONRequestBody = PasswordReset
@@ -21461,8 +21474,28 @@ type ClientInterface interface {
 
 	// Logout Logout
 	//
+	// End the local session and, when available, return the provider's browser logout URL.
+	//
 	// Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 	Logout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OidcBackchannelLogoutWithBody Oidc Backchannel Logout
+	//
+	// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+	OidcBackchannelLogoutWithBody(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// OidcBackchannelLogoutWithFormdataBody Oidc Backchannel Logout
+	//
+	// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type.
+	//
+	// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+	OidcBackchannelLogoutWithFormdataBody(ctx context.Context, providerId string, body OidcBackchannelLogoutFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RequestPasswordResetWithBody Request Password Reset
 	//
@@ -25306,9 +25339,49 @@ func (c *Client) PasswordLogin(ctx context.Context, body PasswordLoginJSONReques
 
 // Logout Logout
 //
+// End the local session and, when available, return the provider's browser logout URL.
+//
 // Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 func (c *Client) Logout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewLogoutRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OidcBackchannelLogoutWithBody Oidc Backchannel Logout
+//
+// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+func (c *Client) OidcBackchannelLogoutWithBody(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOidcBackchannelLogoutRequestWithBody(c.Server, providerId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// OidcBackchannelLogoutWithFormdataBody Oidc Backchannel Logout
+//
+// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type.
+//
+// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+func (c *Client) OidcBackchannelLogoutWithFormdataBody(ctx context.Context, providerId string, body OidcBackchannelLogoutFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOidcBackchannelLogoutRequestWithFormdataBody(c.Server, providerId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -35389,6 +35462,53 @@ func NewLogoutRequest(server string) (*http.Request, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewOidcBackchannelLogoutRequestWithFormdataBody calls the generic OidcBackchannelLogout builder with application/x-www-form-urlencoded body
+func NewOidcBackchannelLogoutRequestWithFormdataBody(server string, providerId string, body OidcBackchannelLogoutFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewOidcBackchannelLogoutRequestWithBody(server, providerId, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewOidcBackchannelLogoutRequestWithBody constructs an http.Request for the OidcBackchannelLogout method, with any body, and a specified content type
+func NewOidcBackchannelLogoutRequestWithBody(server string, providerId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/auth/oidc/%s/backchannel-logout", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -61530,10 +61650,30 @@ type ClientWithResponsesInterface interface {
 
 	// LogoutWithResponse Logout
 	//
+	// End the local session and, when available, return the provider's browser logout URL.
+	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
 	LogoutWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LogoutResponse, error)
+
+	// OidcBackchannelLogoutWithBodyWithResponse Oidc Backchannel Logout
+	//
+	// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+	OidcBackchannelLogoutWithBodyWithResponse(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OidcBackchannelLogoutResponse, error)
+
+	// OidcBackchannelLogoutWithFormdataBodyWithResponse Oidc Backchannel Logout
+	//
+	// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+	//
+	// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+	OidcBackchannelLogoutWithFormdataBodyWithResponse(ctx context.Context, providerId string, body OidcBackchannelLogoutFormdataRequestBody, reqEditors ...RequestEditorFn) (*OidcBackchannelLogoutResponse, error)
 
 	// RequestPasswordResetWithBodyWithResponse Request Password Reset
 	//
@@ -67063,10 +67203,17 @@ type LogoutResponseDefaultHeaders struct {
 type LogoutResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LogoutRedirect
 	// JSONDefault the response for an HTTP default `application/json` response
 	JSONDefault *Error
 	// HeadersDefault the parsed response headers for an HTTP default response
 	HeadersDefault *LogoutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LogoutResponse) GetJSON200() *LogoutRedirect {
+	return r.JSON200
 }
 
 // GetJSONDefault returns the response for an HTTP default `application/json` response
@@ -67097,6 +67244,68 @@ func (r LogoutResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r LogoutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// OidcBackchannelLogoutResponse400Headers the declared response headers of an HTTP 400 response for OidcBackchannelLogout
+type OidcBackchannelLogoutResponse400Headers struct {
+	XRequestId *string
+}
+
+// OidcBackchannelLogoutResponseDefaultHeaders the declared response headers of an HTTP default response for OidcBackchannelLogout
+type OidcBackchannelLogoutResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type OidcBackchannelLogoutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *OidcBackchannelLogoutResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *OidcBackchannelLogoutResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r OidcBackchannelLogoutResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r OidcBackchannelLogoutResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r OidcBackchannelLogoutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r OidcBackchannelLogoutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OidcBackchannelLogoutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r OidcBackchannelLogoutResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -93372,6 +93581,8 @@ func (c *ClientWithResponses) PasswordLoginWithResponse(ctx context.Context, bod
 
 // LogoutWithResponse Logout
 //
+// End the local session and, when available, return the provider's browser logout URL.
+//
 // Returns a wrapper object for the known response body format(s).
 //
 // Corresponds with POST /api/v1/auth/logout (the `Logout` operationId).
@@ -93381,6 +93592,36 @@ func (c *ClientWithResponses) LogoutWithResponse(ctx context.Context, reqEditors
 		return nil, err
 	}
 	return ParseLogoutResponse(rsp)
+}
+
+// OidcBackchannelLogoutWithBodyWithResponse Oidc Backchannel Logout
+//
+// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+func (c *ClientWithResponses) OidcBackchannelLogoutWithBodyWithResponse(ctx context.Context, providerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OidcBackchannelLogoutResponse, error) {
+	rsp, err := c.OidcBackchannelLogoutWithBody(ctx, providerId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOidcBackchannelLogoutResponse(rsp)
+}
+
+// OidcBackchannelLogoutWithFormdataBodyWithResponse Oidc Backchannel Logout
+//
+// Revoke OIDC login sessions on receipt of a signed Logout Token from their provider.
+//
+// Takes a body of the `application/x-www-form-urlencoded` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/auth/oidc/{provider_id}/backchannel-logout (the `OidcBackchannelLogout` operationId).
+func (c *ClientWithResponses) OidcBackchannelLogoutWithFormdataBodyWithResponse(ctx context.Context, providerId string, body OidcBackchannelLogoutFormdataRequestBody, reqEditors ...RequestEditorFn) (*OidcBackchannelLogoutResponse, error) {
+	rsp, err := c.OidcBackchannelLogoutWithFormdataBody(ctx, providerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOidcBackchannelLogoutResponse(rsp)
 }
 
 // RequestPasswordResetWithBodyWithResponse Request Password Reset
@@ -101751,6 +101992,13 @@ func ParseLogoutResponse(rsp *http.Response) (*LogoutResponse, error) {
 	}
 
 	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LogoutRedirect
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	case rsp.StatusCode == 204:
 		break // No content-type
 
@@ -101766,6 +102014,68 @@ func ParseLogoutResponse(rsp *http.Response) (*LogoutResponse, error) {
 	switch {
 	case true:
 		var headers LogoutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseOidcBackchannelLogoutResponse parses an HTTP response from a OidcBackchannelLogoutWithResponse call
+func ParseOidcBackchannelLogoutResponse(rsp *http.Response) (*OidcBackchannelLogoutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OidcBackchannelLogoutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case rsp.StatusCode == 429:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers OidcBackchannelLogoutResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers OidcBackchannelLogoutResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
