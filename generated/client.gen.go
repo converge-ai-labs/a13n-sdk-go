@@ -7495,6 +7495,13 @@ type DataSourceUpdate struct {
 	QueryCredentials  nullable.Nullable[Credentials]   `json:"query_credentials,omitempty"`
 }
 
+// DaytonaVolumeMount defines model for DaytonaVolumeMount.
+type DaytonaVolumeMount struct {
+	MountPath string                    `json:"mount_path"`
+	Subpath   nullable.Nullable[string] `json:"subpath,omitempty"`
+	VolumeId  string                    `json:"volume_id"`
+}
+
 // DebugHold Delay automatic retirement for at most one day; null clears the hold.
 type DebugHold struct {
 	Seconds nullable.Nullable[int] `json:"seconds"`
@@ -10266,7 +10273,8 @@ type ReadView string
 
 // RecipeOverrides defines model for RecipeOverrides.
 type RecipeOverrides struct {
-	VolumeMounts *map[string]string `json:"volume_mounts,omitempty"`
+	VolumeMounts *map[string]string    `json:"volume_mounts,omitempty"`
+	Volumes      *[]DaytonaVolumeMount `json:"volumes,omitempty"`
 }
 
 // Reclamation Instance-scoped reclamation settings copied at reservation; no stop/resume semantics.
