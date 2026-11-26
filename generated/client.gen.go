@@ -7385,6 +7385,7 @@ type CreatorStorage struct {
 // Credential defines model for Credential.
 type Credential struct {
 	AllowedHosts      []string                     `json:"allowed_hosts"`
+	AppId             nullable.Nullable[string]    `json:"app_id,omitempty"`
 	CreatedAt         time.Time                    `json:"created_at"`
 	CreatedById       string                       `json:"created_by_id"`
 	CredentialVersion int                          `json:"credential_version"`
@@ -7392,7 +7393,6 @@ type Credential struct {
 	Id                string                       `json:"id"`
 	Name              string                       `json:"name"`
 	OrganizationId    string                       `json:"organization_id"`
-	OwnerAppId        nullable.Nullable[string]    `json:"owner_app_id,omitempty"`
 	RevokedAt         nullable.Nullable[time.Time] `json:"revoked_at"`
 	State             CredentialState              `json:"state"`
 	UpdatedAt         time.Time                    `json:"updated_at"`
@@ -7864,6 +7864,7 @@ type EntryStatus string
 type EntrySummary struct {
 	AgentId         nullable.Nullable[string]         `json:"agent_id"`
 	AgentRevisionId nullable.Nullable[string]         `json:"agent_revision_id"`
+	AppId           nullable.Nullable[string]         `json:"app_id,omitempty"`
 	AssignedRunId   nullable.Nullable[string]         `json:"assigned_run_id"`
 	ChildRunId      nullable.Nullable[string]         `json:"child_run_id"`
 	CreatedAt       time.Time                         `json:"created_at"`
@@ -7910,6 +7911,7 @@ type EntryUpdate struct {
 type EntryView struct {
 	AgentId                   nullable.Nullable[string]    `json:"agent_id"`
 	AgentRevisionId           nullable.Nullable[string]    `json:"agent_revision_id"`
+	AppId                     nullable.Nullable[string]    `json:"app_id,omitempty"`
 	AssignedRunId             nullable.Nullable[string]    `json:"assigned_run_id"`
 	ChildRunId                nullable.Nullable[string]    `json:"child_run_id"`
 	CreatedAt                 time.Time                    `json:"created_at"`
@@ -8031,6 +8033,7 @@ type EnvironmentVariables map[string]string
 
 // EnvironmentView defines model for EnvironmentView.
 type EnvironmentView struct {
+	AppId               nullable.Nullable[string]                      `json:"app_id,omitempty"`
 	ClientConnection    nullable.Nullable[ClientConnectionObservation] `json:"client_connection,omitempty"`
 	CreatedAt           time.Time                                      `json:"created_at"`
 	CreatedById         string                                         `json:"created_by_id"`
@@ -9193,6 +9196,7 @@ type MemoryRevisionPage struct {
 // MemorySpace defines model for MemorySpace.
 type MemorySpace struct {
 	AlwaysLoad     []string                  `json:"always_load"`
+	AppId          nullable.Nullable[string] `json:"app_id,omitempty"`
 	ContentBytes   int                       `json:"content_bytes"`
 	CreatedAt      time.Time                 `json:"created_at"`
 	CreatedById    string                    `json:"created_by_id"`
@@ -9682,6 +9686,7 @@ type Observation struct {
 
 // Occurrence defines model for Occurrence.
 type Occurrence struct {
+	AppId            nullable.Nullable[string]                     `json:"app_id,omitempty"`
 	CompletedAt      nullable.Nullable[time.Time]                  `json:"completed_at,omitempty"`
 	CompletionRunId  nullable.Nullable[string]                     `json:"completion_run_id,omitempty"`
 	CoveredFromAt    nullable.Nullable[time.Time]                  `json:"covered_from_at"`
@@ -9742,6 +9747,7 @@ type OccurrenceStatus string
 
 // OccurrenceSummary defines model for OccurrenceSummary.
 type OccurrenceSummary struct {
+	AppId            nullable.Nullable[string]                            `json:"app_id,omitempty"`
 	CompletedAt      nullable.Nullable[time.Time]                         `json:"completed_at,omitempty"`
 	CompletionRunId  nullable.Nullable[string]                            `json:"completion_run_id,omitempty"`
 	CoveredFromAt    nullable.Nullable[time.Time]                         `json:"covered_from_at"`
@@ -10650,10 +10656,11 @@ type RunLabels struct {
 	Labels map[string]string `json:"labels"`
 }
 
-// RunListItem Run discovery metadata. Full input, results and execution settings belong to the Run detail read.
+// RunListItem defines model for RunListItem.
 type RunListItem struct {
 	AgentId          string                        `json:"agent_id"`
 	AgentRevisionId  nullable.Nullable[string]     `json:"agent_revision_id"`
+	AppId            nullable.Nullable[string]     `json:"app_id,omitempty"`
 	Attempts         int                           `json:"attempts"`
 	CreatedAt        time.Time                     `json:"created_at"`
 	CurrentAttemptId nullable.Nullable[string]     `json:"current_attempt_id"`
@@ -10670,6 +10677,7 @@ type RunListItem struct {
 	Status           RunStatus                     `json:"status"`
 	ThreadId         string                        `json:"thread_id"`
 	Trigger          Trigger                       `json:"trigger"`
+	TriggerAppId     nullable.Nullable[string]     `json:"trigger_app_id,omitempty"`
 	UpdatedAt        time.Time                     `json:"updated_at"`
 	Version          int                           `json:"version"`
 	WaitReason       nullable.Nullable[WaitReason] `json:"wait_reason"`
@@ -10728,6 +10736,7 @@ type RunSummary struct {
 	AgentId           string                            `json:"agent_id"`
 	AgentName         nullable.Nullable[string]         `json:"agent_name"`
 	AgentRevisionId   nullable.Nullable[string]         `json:"agent_revision_id"`
+	AppId             nullable.Nullable[string]         `json:"app_id,omitempty"`
 	Attempts          int                               `json:"attempts"`
 	CreatedAt         time.Time                         `json:"created_at"`
 	CurrentAttemptId  nullable.Nullable[string]         `json:"current_attempt_id"`
@@ -10749,6 +10758,7 @@ type RunSummary struct {
 	Status            RunStatus                         `json:"status"`
 	ThreadId          string                            `json:"thread_id"`
 	Trigger           Trigger                           `json:"trigger"`
+	TriggerAppId      nullable.Nullable[string]         `json:"trigger_app_id,omitempty"`
 	UpdatedAt         time.Time                         `json:"updated_at"`
 	Usage             Preview                           `json:"usage"`
 	Version           int                               `json:"version"`
@@ -10786,6 +10796,7 @@ type RunUsagePage struct {
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
 	AgentRevisionId   nullable.Nullable[string]               `json:"agent_revision_id"`
+	AppId             nullable.Nullable[string]               `json:"app_id,omitempty"`
 	Attempts          int                                     `json:"attempts"`
 	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
@@ -10818,6 +10829,7 @@ type RunView struct {
 	Status            RunStatus                               `json:"status"`
 	ThreadId          string                                  `json:"thread_id"`
 	Trigger           Trigger                                 `json:"trigger"`
+	TriggerAppId      nullable.Nullable[string]               `json:"trigger_app_id,omitempty"`
 	UpdatedAt         time.Time                               `json:"updated_at"`
 	UsageAtSeal       nullable.Nullable[map[string]JsonValue] `json:"usage_at_seal"`
 	Version           int                                     `json:"version"`
@@ -10851,6 +10863,7 @@ type SandboxPolicy struct {
 
 // Schedule defines model for Schedule.
 type Schedule struct {
+	AppId              nullable.Nullable[string]              `json:"app_id,omitempty"`
 	ArchivedAt         nullable.Nullable[time.Time]           `json:"archived_at"`
 	CreatedAt          time.Time                              `json:"created_at"`
 	CreatedById        string                                 `json:"created_by_id"`
@@ -11241,6 +11254,7 @@ type SessionUsagePage struct {
 
 // SessionView defines model for SessionView.
 type SessionView struct {
+	AppId                       nullable.Nullable[string] `json:"app_id,omitempty"`
 	AutoRecreateLostEnvironment bool                      `json:"auto_recreate_lost_environment"`
 	Cost                        nullable.Nullable[string] `json:"cost"`
 	CreatedAt                   time.Time                 `json:"created_at"`
@@ -11886,6 +11900,7 @@ type ThreadReferenceOrigin string
 type ThreadRunItem struct {
 	AgentId          string                        `json:"agent_id"`
 	AgentRevisionId  nullable.Nullable[string]     `json:"agent_revision_id"`
+	AppId            nullable.Nullable[string]     `json:"app_id,omitempty"`
 	Attempts         int                           `json:"attempts"`
 	Cost             nullable.Nullable[string]     `json:"cost"`
 	CreatedAt        time.Time                     `json:"created_at"`
@@ -11905,6 +11920,7 @@ type ThreadRunItem struct {
 	Status           RunStatus                     `json:"status"`
 	ThreadId         string                        `json:"thread_id"`
 	Trigger          Trigger                       `json:"trigger"`
+	TriggerAppId     nullable.Nullable[string]     `json:"trigger_app_id,omitempty"`
 	UnpricedRequests int                           `json:"unpriced_requests"`
 	UpdatedAt        time.Time                     `json:"updated_at"`
 	Version          int                           `json:"version"`
@@ -11929,6 +11945,7 @@ type ThreadUpdate struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
+	AppId                nullable.Nullable[string]            `json:"app_id,omitempty"`
 	ArchivedAt           nullable.Nullable[time.Time]         `json:"archived_at"`
 	CreatedAt            time.Time                            `json:"created_at"`
 	CurrentRunId         nullable.Nullable[string]            `json:"current_run_id"`

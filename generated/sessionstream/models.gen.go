@@ -2100,6 +2100,7 @@ type EntryStatus string
 type EntryView struct {
 	AgentId                   nullable.Nullable[string]    `json:"agent_id"`
 	AgentRevisionId           nullable.Nullable[string]    `json:"agent_revision_id"`
+	AppId                     nullable.Nullable[string]    `json:"app_id,omitempty"`
 	AssignedRunId             nullable.Nullable[string]    `json:"assigned_run_id"`
 	ChildRunId                nullable.Nullable[string]    `json:"child_run_id"`
 	CreatedAt                 time.Time                    `json:"created_at"`
@@ -2410,6 +2411,7 @@ type OccurrenceStatus string
 
 // OccurrenceSummary defines model for OccurrenceSummary.
 type OccurrenceSummary struct {
+	AppId            nullable.Nullable[string]                            `json:"app_id,omitempty"`
 	CompletedAt      nullable.Nullable[time.Time]                         `json:"completed_at,omitempty"`
 	CompletionRunId  nullable.Nullable[string]                            `json:"completion_run_id,omitempty"`
 	CoveredFromAt    nullable.Nullable[time.Time]                         `json:"covered_from_at"`
@@ -2628,6 +2630,7 @@ type RunStatus string
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
 	AgentRevisionId   nullable.Nullable[string]               `json:"agent_revision_id"`
+	AppId             nullable.Nullable[string]               `json:"app_id,omitempty"`
 	Attempts          int                                     `json:"attempts"`
 	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
@@ -2660,6 +2663,7 @@ type RunView struct {
 	Status            RunStatus                               `json:"status"`
 	ThreadId          string                                  `json:"thread_id"`
 	Trigger           Trigger                                 `json:"trigger"`
+	TriggerAppId      nullable.Nullable[string]               `json:"trigger_app_id,omitempty"`
 	UpdatedAt         time.Time                               `json:"updated_at"`
 	UsageAtSeal       nullable.Nullable[map[string]JsonValue] `json:"usage_at_seal"`
 	Version           int                                     `json:"version"`
@@ -2830,6 +2834,7 @@ type ThreadState struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
+	AppId                nullable.Nullable[string]            `json:"app_id,omitempty"`
 	ArchivedAt           nullable.Nullable[time.Time]         `json:"archived_at"`
 	CreatedAt            time.Time                            `json:"created_at"`
 	CurrentRunId         nullable.Nullable[string]            `json:"current_run_id"`
