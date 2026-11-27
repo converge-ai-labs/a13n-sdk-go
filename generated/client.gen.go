@@ -6585,6 +6585,9 @@ type ApiKeyPage struct {
 	NextCursor nullable.Nullable[string] `json:"next_cursor"`
 }
 
+// AppIdFilter defines model for AppIdFilter.
+type AppIdFilter = string
+
 // AppPlugins defines model for AppPlugins.
 type AppPlugins struct {
 	Id          string    `json:"id"`
@@ -6878,6 +6881,7 @@ type BoxdVolumeMount struct {
 
 // Browser defines model for Browser.
 type Browser struct {
+	AppId              nullable.Nullable[string]    `json:"app_id,omitempty"`
 	Control            ControlStatus                `json:"control"`
 	ControlExpiresAt   nullable.Nullable[time.Time] `json:"control_expires_at"`
 	CreatedAt          time.Time                    `json:"created_at"`
@@ -12928,8 +12932,9 @@ type TestBrowserProviderParams struct {
 
 // ListBrowsersParams defines parameters for ListBrowsers.
 type ListBrowsersParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
+	AppId  *AppIdFilter `form:"app_id,omitempty" json:"app_id,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -13400,8 +13405,9 @@ type RotateDeviceCredentialParams struct {
 
 // ListEgressCredentialsParams defines parameters for ListEgressCredentials.
 type ListEgressCredentialsParams struct {
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
+	AppId  *AppIdFilter `form:"app_id,omitempty" json:"app_id,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -13557,9 +13563,10 @@ type DuplicateEnvironmentTemplateParams struct {
 
 // ListEnvironmentsParams defines parameters for ListEnvironments.
 type ListEnvironmentsParams struct {
-	Status *string `form:"status,omitempty" json:"status,omitempty"`
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Status *string      `form:"status,omitempty" json:"status,omitempty"`
+	AppId  *AppIdFilter `form:"app_id,omitempty" json:"app_id,omitempty"`
+	Limit  *int         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -14106,10 +14113,11 @@ type TestMemoryProviderParams struct {
 
 // ListSpacesParams defines parameters for ListSpaces.
 type ListSpacesParams struct {
-	Label   *[]string `form:"label,omitempty" json:"label,omitempty"`
-	Enabled *bool     `form:"enabled,omitempty" json:"enabled,omitempty"`
-	Limit   *int      `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor  *string   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Label   *[]string    `form:"label,omitempty" json:"label,omitempty"`
+	Enabled *bool        `form:"enabled,omitempty" json:"enabled,omitempty"`
+	AppId   *AppIdFilter `form:"app_id,omitempty" json:"app_id,omitempty"`
+	Limit   *int         `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor  *string      `form:"cursor,omitempty" json:"cursor,omitempty"`
 
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
@@ -14785,6 +14793,7 @@ type ResumeRunParams struct {
 // ListSchedulesParams defines parameters for ListSchedules.
 type ListSchedulesParams struct {
 	Limit       *int           `form:"limit,omitempty" json:"limit,omitempty"`
+	AppId       *AppIdFilter   `form:"app_id,omitempty" json:"app_id,omitempty"`
 	Cursor      *string        `form:"cursor,omitempty" json:"cursor,omitempty"`
 	State       *ScheduleState `form:"state,omitempty" json:"state,omitempty"`
 	AgentId     *string        `form:"agent_id,omitempty" json:"agent_id,omitempty"`
@@ -14912,6 +14921,7 @@ type ListSessionsParams struct {
 	// Q Session/thread ID, title, origin, label value or retained conversation text
 	Q             *string                      `form:"q,omitempty" json:"q,omitempty"`
 	Application   *string                      `form:"application,omitempty" json:"application,omitempty"`
+	AppId         *AppIdFilter                 `form:"app_id,omitempty" json:"app_id,omitempty"`
 	AgentId       *string                      `form:"agent_id,omitempty" json:"agent_id,omitempty"`
 	Status        *[]RunStatus                 `form:"status,omitempty" json:"status,omitempty"`
 	Trigger       *[]Trigger                   `form:"trigger,omitempty" json:"trigger,omitempty"`
@@ -37028,6 +37038,18 @@ func NewListBrowsersRequest(server string, params *ListBrowsersParams) (*http.Re
 
 		}
 
+		if params.AppId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "app_id", *params.AppId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -40882,6 +40904,18 @@ func NewListEgressCredentialsRequest(server string, params *ListEgressCredential
 
 		}
 
+		if params.AppId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "app_id", *params.AppId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -42192,6 +42226,18 @@ func NewListEnvironmentsRequest(server string, params *ListEnvironmentsParams) (
 		if params.Status != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AppId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "app_id", *params.AppId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -46883,6 +46929,18 @@ func NewListSpacesRequest(server string, params *ListSpacesParams) (*http.Reques
 		if params.Enabled != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "enabled", *params.Enabled, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AppId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "app_id", *params.AppId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -52574,6 +52632,18 @@ func NewListSchedulesRequest(server string, params *ListSchedulesParams) (*http.
 
 		}
 
+		if params.AppId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "app_id", *params.AppId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Cursor != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
@@ -53613,6 +53683,18 @@ func NewListSessionsRequest(server string, params *ListSessionsParams) (*http.Re
 		if params.Application != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "application", *params.Application, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AppId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "app_id", *params.AppId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
