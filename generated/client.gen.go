@@ -2789,6 +2789,27 @@ func (e McpAuth) Valid() bool {
 	}
 }
 
+// Defines values for McpConfigAuthority.
+const (
+	McpConfigAuthorityNone     McpConfigAuthority = "none"
+	McpConfigAuthorityOperator McpConfigAuthority = "operator"
+	McpConfigAuthorityUser     McpConfigAuthority = "user"
+)
+
+// Valid indicates whether the value is a known member of the McpConfigAuthority enum.
+func (e McpConfigAuthority) Valid() bool {
+	switch e {
+	case McpConfigAuthorityNone:
+		return true
+	case McpConfigAuthorityOperator:
+		return true
+	case McpConfigAuthorityUser:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for McpElicitationKind.
 const (
 	McpElicitationKindMcpElicitation McpElicitationKind = "mcp_elicitation"
@@ -8932,6 +8953,7 @@ type McpAuth string
 
 // McpConfig defines model for McpConfig.
 type McpConfig struct {
+	Authority             *McpConfigAuthority              `json:"authority,omitempty"`
 	DurableTasks          *bool                            `json:"durable_tasks,omitempty"`
 	ForwardContextHeaders *bool                            `json:"forward_context_headers,omitempty"`
 	Headers               *[]string                        `json:"headers,omitempty"`
@@ -8943,6 +8965,9 @@ type McpConfig struct {
 	Tools          nullable.Nullable[[]string] `json:"tools,omitempty"`
 	Url            string                      `json:"url"`
 }
+
+// McpConfigAuthority defines model for McpConfig.Authority.
+type McpConfigAuthority string
 
 // McpElicitation defines model for McpElicitation.
 type McpElicitation struct {
