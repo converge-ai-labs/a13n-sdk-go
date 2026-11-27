@@ -41,7 +41,11 @@ func TestSkillSyncNativeUnionAndWorkflowOverrides(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, policy := range []SkillSync{shared, isolated} {
-		overrides := Overrides{LazyEnvironment: Value(false), SkillSync: Value(policy)}
+		var lazyEnvironment generated.AgentOverrideInput_LazyEnvironment
+		if err := lazyEnvironment.FromAgentOverrideInputLazyEnvironment1(false); err != nil {
+			t.Fatal(err)
+		}
+		overrides := Overrides{LazyEnvironment: Value(lazyEnvironment), SkillSync: Value(policy)}
 		client := coverageClient(t, func(req *http.Request) *http.Response {
 			var body generated.NewThread
 			if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
@@ -52,7 +56,11 @@ func TestSkillSyncNativeUnionAndWorkflowOverrides(t *testing.T) {
 				t.Fatal(err)
 			}
 			lazy, err := got.LazyEnvironment.Get()
-			if err != nil || lazy {
+			if err != nil {
+				t.Fatal(err)
+			}
+			legacy, err := lazy.AsAgentOverrideInputLazyEnvironment1()
+			if err != nil || legacy {
 				t.Fatal("explicit eager environment lost", err)
 			}
 			selected, err := got.SkillSync.Get()
@@ -356,6 +364,120 @@ func TestRunContentRequiresOneCompleteJSONDocument(t *testing.T) {
 			}
 		} else if !errors.Is(err, ErrProtocol) {
 			t.Fatal("trailing content accepted", suffix, err)
+		}
+	}
+}
+
+func TestLazyEnvironmentUnionPreservesWireValues(t *testing.T) {
+	for _, input := range []string{`{}`, `{"lazy_environment":null}`, `{"lazy_environment":false}`, `{"lazy_environment":"on_demand"}`, `{"lazy_environment":"warmup"}`, `{"lazy_environment":"eager"}`} {
+		var value Overrides
+		if err := json.Unmarshal([]byte(input), &value); err != nil {
+			t.Fatal(err)
+		}
+		wire, err := json.Marshal(value)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var got, want any
+		if err := json.Unmarshal(wire, &got); err != nil {
+			t.Fatal(err)
+		}
+		if err := json.Unmarshal([]byte(input), &want); err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("%s became %s", input, wire)
+		}
+	}
+}
+
+func TestBrowserAppFilterAndMcpInputTransport(t *testing.T) {
+	count := 0
+	client := coverageClient(t, func(req *http.Request) *http.Response {
+		count++
+		switch count {
+		case 1, 2:
+			if req.URL.Path != "/proxy/api/v1/browsers" || req.URL.Query().Get("app_id") != "demo.app" || (count == 2 && req.URL.Query().Get("cursor") != "next") {
+				t.Fatalf("unexpected filter: %s", req.URL.String())
+			}
+			if count == 1 {
+				return coverageResponse(200, `{"items":[],"next_cursor":"next"}`)
+			}
+			return coverageResponse(200, `{"items":[],"next_cursor":null}`)
+		case 3:
+			if req.Method != "GET" || req.URL.Path != "/proxy/api/v1/runs/run_1/mcp-inputs" {
+				t.Fatal(req.URL)
+			}
+			return coverageResponse(200, `[]`)
+		case 4:
+			if req.Method != "POST" || req.URL.Path != "/proxy/api/v1/runs/run_1/mcp-inputs/req_1/response" {
+				t.Fatal(req.URL)
+			}
+			var value map[string]any
+			if err := json.NewDecoder(req.Body).Decode(&value); err != nil || !reflect.DeepEqual(value, map[string]any{"action": "decline"}) {
+				t.Fatal(value, err)
+			}
+			return coverageResponse(204, "")
+		default:
+			t.Fatal("unexpected automatic request")
+			return nil
+		}
+	})
+	api, err := client.API()
+	if err != nil {
+		t.Fatal(err)
+	}
+	app := generated.AppIdFilter("demo.app")
+	for _, cursor := range []*string{nil, Ptr("next")} {
+		raw, err := api.ListBrowsers(context.Background(), &generated.ListBrowsersParams{AppId: &app, Cursor: cursor})
+		if _, err := ParseJSON[generated.BrowserPage](client, raw, err, 200); err != nil {
+			t.Fatal(err)
+		}
+	}
+	raw, err := api.ListMcpInputs(context.Background(), "run_1", &generated.ListMcpInputsParams{})
+	if _, err := ParseJSON[[]generated.McpElicitation](client, raw, err, 200); err != nil {
+		t.Fatal(err)
+	}
+	raw, err = api.RespondToMcpInput(context.Background(), "run_1", "req_1", &generated.RespondToMcpInputParams{}, generated.McpInputResponse{Action: generated.McpInputResponseAction("decline")})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer raw.Body.Close()
+	if raw.StatusCode != 204 || count != 4 {
+		t.Fatal(raw.StatusCode, count)
+	}
+}
+
+func TestLogoutPreservesSuccessVariantsAndMetadata(t *testing.T) {
+	for _, status := range []int{200, 204} {
+		count := 0
+		client := coverageClient(t, func(req *http.Request) *http.Response {
+			count++
+			if req.Method != http.MethodPost || req.URL.Path != "/proxy/api/v1/auth/logout" {
+				t.Fatal(req.URL)
+			}
+			return coverageResponse(status, `{"logout_url":"https://identity.example/logout"}`)
+		})
+		api, err := client.API()
+		if err != nil {
+			t.Fatal(err)
+		}
+		raw, err := api.Logout(context.Background())
+		if err != nil {
+			t.Fatal(err)
+		}
+		response, err := generated.ParseLogoutResponse(raw)
+		if err != nil || response.HTTPResponse.StatusCode != status || response.HTTPResponse.Header.Get("X-Request-ID") != "req-test" {
+			t.Fatal(response, err)
+		}
+		if status == 200 && (response.JSON200 == nil || response.JSON200.LogoutUrl != "https://identity.example/logout") {
+			t.Fatal(response)
+		}
+		if status == 204 && response.JSON200 != nil {
+			t.Fatal(response)
+		}
+		if count != 1 {
+			t.Fatal("unexpected request", count)
 		}
 	}
 }

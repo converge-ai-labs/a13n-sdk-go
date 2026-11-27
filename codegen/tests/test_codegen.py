@@ -82,7 +82,7 @@ def test_generated_operations_are_exactly_supported_contract() -> None:
     expected = {
         (verb, path, "".join(part[:1].upper() + part[1:] for part in operation_id.split("_")))
         for verb, path, operation_id in operations(document)
-        if operation_id not in {"start_oidc_sign_in", "finish_oidc_sign_in"}
+        if operation_id not in {"start_oidc_sign_in", "finish_oidc_sign_in", "oidc_backchannel_logout"}
     }
     import re
 
@@ -117,7 +117,16 @@ def test_both_generated_graphs_match_pinned_inputs(tmp_path: Path) -> None:
     expected = {path.relative_to(ROOT / "generated"): path.read_bytes() for path in (ROOT / "generated").rglob("*.go")}
     assert actual == expected
     text = (output / "sessionstream/models.gen.go").read_text()
-    assert set(schema["frames"]) == {"thread", "items", "delta", "gap", "schedule", "occurrence", "app_ready"}
+    assert set(schema["frames"]) == {
+        "thread",
+        "items",
+        "delta",
+        "gap",
+        "schedule",
+        "occurrence",
+        "app_ready",
+        "interactions",
+    }
     bundled = (output / "sessionstream/schema.gen.go").read_text().split("const JSONSchema = ", 1)[1].strip()
     assert json.loads(json.loads(bundled)) == schema
     assert "nullable.Nullable[SkillSync]" in text
@@ -133,7 +142,11 @@ def test_browser_navigation_projection_preserves_contract_and_all_other_operatio
     original = json.loads(json.dumps(document))
     projected = codegen.project_operations(document)
     before, after = operations(document), operations(projected)
-    assert {operation[2] for operation in before - after} == {"start_oidc_sign_in", "finish_oidc_sign_in"}
-    assert len(before - after) == 2 and not after - before
+    assert {operation[2] for operation in before - after} == {
+        "start_oidc_sign_in",
+        "finish_oidc_sign_in",
+        "oidc_backchannel_logout",
+    }
+    assert len(before - after) == 3 and not after - before
     assert projected["components"] == document["components"]
     assert document == original

@@ -12,6 +12,27 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for AgentOverrideLazyEnvironment0.
+const (
+	Eager    AgentOverrideLazyEnvironment0 = "eager"
+	OnDemand AgentOverrideLazyEnvironment0 = "on_demand"
+	Warmup   AgentOverrideLazyEnvironment0 = "warmup"
+)
+
+// Valid indicates whether the value is a known member of the AgentOverrideLazyEnvironment0 enum.
+func (e AgentOverrideLazyEnvironment0) Valid() bool {
+	switch e {
+	case Eager:
+		return true
+	case OnDemand:
+		return true
+	case Warmup:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AgentReviewerOnError.
 const (
 	AgentReviewerOnErrorAllow            AgentReviewerOnError = "allow"
@@ -1002,6 +1023,39 @@ func (e Lineage) Valid() bool {
 	}
 }
 
+// Defines values for McpElicitationKind.
+const (
+	McpElicitationKindMcpElicitation McpElicitationKind = "mcp_elicitation"
+)
+
+// Valid indicates whether the value is a known member of the McpElicitationKind enum.
+func (e McpElicitationKind) Valid() bool {
+	switch e {
+	case McpElicitationKindMcpElicitation:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for McpElicitationMode.
+const (
+	McpElicitationModeForm McpElicitationMode = "form"
+	McpElicitationModeUrl  McpElicitationMode = "url"
+)
+
+// Valid indicates whether the value is a known member of the McpElicitationMode enum.
+func (e McpElicitationMode) Valid() bool {
+	switch e {
+	case McpElicitationModeForm:
+		return true
+	case McpElicitationModeUrl:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for MemoryAccess.
 const (
 	Read  MemoryAccess = "read"
@@ -1661,13 +1715,13 @@ func (e UnavailableConfigurationReason) Valid() bool {
 
 // Defines values for UrlPartType.
 const (
-	Url UrlPartType = "url"
+	UrlPartTypeUrl UrlPartType = "url"
 )
 
 // Valid indicates whether the value is a known member of the UrlPartType enum.
 func (e UrlPartType) Valid() bool {
 	switch e {
-	case Url:
+	case UrlPartTypeUrl:
 		return true
 	default:
 		return false
@@ -1764,24 +1818,35 @@ type AgentModelCharacteristics struct {
 // `toolsets` replaces whole toolsets; `retries` replaces supplied members.
 // Every other field, including `subagents`, replaces the whole value.
 type AgentOverride struct {
-	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]          `json:"builtin_skills,omitempty"`
-	ClientTools          nullable.Nullable[[]ClientToolDefinition]      `json:"client_tools,omitempty"`
-	ConnectionTools      nullable.Nullable[[]ConnectionSelection]       `json:"connection_tools,omitempty"`
-	Instructions         nullable.Nullable[string]                      `json:"instructions,omitempty"`
-	LazyEnvironment      nullable.Nullable[bool]                        `json:"lazy_environment,omitempty"`
-	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection] `json:"media_understanding,omitempty"`
-	Model                nullable.Nullable[string]                      `json:"model,omitempty"`
-	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]   `json:"model_characteristics,omitempty"`
-	ModelSettings        nullable.Nullable[map[string]JsonValue]        `json:"model_settings,omitempty"`
-	OutputSpec           nullable.Nullable[OutputSpec]                  `json:"output_spec,omitempty"`
-	Plugins              nullable.Nullable[[]PluginSelection]           `json:"plugins,omitempty"`
-	Retries              nullable.Nullable[RetryOverride]               `json:"retries,omitempty"`
-	Reviewer             nullable.Nullable[AgentReviewer]               `json:"reviewer,omitempty"`
-	SkillSync            nullable.Nullable[SkillSync]                   `json:"skill_sync,omitempty"`
-	Skills               nullable.Nullable[[]SkillSelection]            `json:"skills,omitempty"`
-	Subagents            nullable.Nullable[Subagents]                   `json:"subagents,omitempty"`
-	ToolSearch           nullable.Nullable[AgentOverride_ToolSearch]    `json:"tool_search,omitempty"`
-	Toolsets             nullable.Nullable[map[string]ToolsetSelection] `json:"toolsets,omitempty"`
+	BuiltinSkills        nullable.Nullable[[]BuiltinSkillName]            `json:"builtin_skills,omitempty"`
+	ClientTools          nullable.Nullable[[]ClientToolDefinition]        `json:"client_tools,omitempty"`
+	ConnectionTools      nullable.Nullable[[]ConnectionSelection]         `json:"connection_tools,omitempty"`
+	Instructions         nullable.Nullable[string]                        `json:"instructions,omitempty"`
+	LazyEnvironment      nullable.Nullable[AgentOverride_LazyEnvironment] `json:"lazy_environment,omitempty"`
+	MediaUnderstanding   nullable.Nullable[MediaUnderstandingSelection]   `json:"media_understanding,omitempty"`
+	Model                nullable.Nullable[string]                        `json:"model,omitempty"`
+	ModelCharacteristics nullable.Nullable[AgentModelCharacteristics]     `json:"model_characteristics,omitempty"`
+	ModelSettings        nullable.Nullable[map[string]JsonValue]          `json:"model_settings,omitempty"`
+	OutputSpec           nullable.Nullable[OutputSpec]                    `json:"output_spec,omitempty"`
+	Plugins              nullable.Nullable[[]PluginSelection]             `json:"plugins,omitempty"`
+	Retries              nullable.Nullable[RetryOverride]                 `json:"retries,omitempty"`
+	Reviewer             nullable.Nullable[AgentReviewer]                 `json:"reviewer,omitempty"`
+	SkillSync            nullable.Nullable[SkillSync]                     `json:"skill_sync,omitempty"`
+	Skills               nullable.Nullable[[]SkillSelection]              `json:"skills,omitempty"`
+	Subagents            nullable.Nullable[Subagents]                     `json:"subagents,omitempty"`
+	ToolSearch           nullable.Nullable[AgentOverride_ToolSearch]      `json:"tool_search,omitempty"`
+	Toolsets             nullable.Nullable[map[string]ToolsetSelection]   `json:"toolsets,omitempty"`
+}
+
+// AgentOverrideLazyEnvironment0 defines model for AgentOverride.LazyEnvironment.0.
+type AgentOverrideLazyEnvironment0 string
+
+// AgentOverrideLazyEnvironment1 defines model for AgentOverride.LazyEnvironment.1.
+type AgentOverrideLazyEnvironment1 = bool
+
+// AgentOverride_LazyEnvironment defines model for AgentOverride.LazyEnvironment.
+type AgentOverride_LazyEnvironment struct {
+	union json.RawMessage
 }
 
 // AgentOverride_ToolSearch defines model for AgentOverride.ToolSearch.
@@ -2067,6 +2132,7 @@ type EntryStatus string
 type EntryView struct {
 	AgentId                   nullable.Nullable[string]    `json:"agent_id"`
 	AgentRevisionId           nullable.Nullable[string]    `json:"agent_revision_id"`
+	AppId                     nullable.Nullable[string]    `json:"app_id,omitempty"`
 	AssignedRunId             nullable.Nullable[string]    `json:"assigned_run_id"`
 	ChildRunId                nullable.Nullable[string]    `json:"child_run_id"`
 	CreatedAt                 time.Time                    `json:"created_at"`
@@ -2258,6 +2324,29 @@ type JsonValue = json.RawMessage
 // Lineage defines model for Lineage.
 type Lineage string
 
+// McpElicitation defines model for McpElicitation.
+type McpElicitation struct {
+	ExpiresAt  time.Time                               `json:"expires_at"`
+	Kind       *McpElicitationKind                     `json:"kind,omitempty"`
+	Message    string                                  `json:"message"`
+	Mode       McpElicitationMode                      `json:"mode"`
+	RequestId  string                                  `json:"request_id"`
+	RunId      nullable.Nullable[string]               `json:"run_id,omitempty"`
+	Schema     nullable.Nullable[map[string]JsonValue] `json:"schema,omitempty"`
+	ServerId   string                                  `json:"server_id"`
+	ServerName nullable.Nullable[string]               `json:"server_name,omitempty"`
+	ThreadId   string                                  `json:"thread_id"`
+	ToolCallId nullable.Nullable[string]               `json:"tool_call_id,omitempty"`
+	Url        nullable.Nullable[string]               `json:"url,omitempty"`
+	UrlHost    nullable.Nullable[string]               `json:"url_host,omitempty"`
+}
+
+// McpElicitationKind defines model for McpElicitation.Kind.
+type McpElicitationKind string
+
+// McpElicitationMode defines model for McpElicitation.Mode.
+type McpElicitationMode string
+
 // MediaUnderstandingSelection The model, by key, describing each media kind a model cannot read; a kind without one is unavailable.
 type MediaUnderstandingSelection struct {
 	Audio nullable.Nullable[string] `json:"audio,omitempty"`
@@ -2354,6 +2443,7 @@ type OccurrenceStatus string
 
 // OccurrenceSummary defines model for OccurrenceSummary.
 type OccurrenceSummary struct {
+	AppId            nullable.Nullable[string]                            `json:"app_id,omitempty"`
 	CompletedAt      nullable.Nullable[time.Time]                         `json:"completed_at,omitempty"`
 	CompletionRunId  nullable.Nullable[string]                            `json:"completion_run_id,omitempty"`
 	CoveredFromAt    nullable.Nullable[time.Time]                         `json:"covered_from_at"`
@@ -2442,6 +2532,12 @@ type PendingCall struct {
 	Terminal     *bool                                   `json:"terminal,omitempty"`
 	ToolCallId   ToolCallId                              `json:"tool_call_id"`
 	ToolName     string                                  `json:"tool_name"`
+}
+
+// PendingInteractions Replace the pending interactions for this thread, including with an empty list.
+type PendingInteractions struct {
+	Requests []McpElicitation `json:"requests"`
+	ThreadId string           `json:"thread_id"`
 }
 
 // PlatformGroup defines model for PlatformGroup.
@@ -2566,6 +2662,7 @@ type RunStatus string
 type RunView struct {
 	AgentId           string                                  `json:"agent_id"`
 	AgentRevisionId   nullable.Nullable[string]               `json:"agent_revision_id"`
+	AppId             nullable.Nullable[string]               `json:"app_id,omitempty"`
 	Attempts          int                                     `json:"attempts"`
 	BrowserBinding    nullable.Nullable[BrowserBinding]       `json:"browser_binding,omitempty"`
 	CancelRequestedAt nullable.Nullable[time.Time]            `json:"cancel_requested_at"`
@@ -2598,6 +2695,7 @@ type RunView struct {
 	Status            RunStatus                               `json:"status"`
 	ThreadId          string                                  `json:"thread_id"`
 	Trigger           Trigger                                 `json:"trigger"`
+	TriggerAppId      nullable.Nullable[string]               `json:"trigger_app_id,omitempty"`
 	UpdatedAt         time.Time                               `json:"updated_at"`
 	UsageAtSeal       nullable.Nullable[map[string]JsonValue] `json:"usage_at_seal"`
 	Version           int                                     `json:"version"`
@@ -2768,6 +2866,7 @@ type ThreadState struct {
 
 // ThreadView defines model for ThreadView.
 type ThreadView struct {
+	AppId                nullable.Nullable[string]            `json:"app_id,omitempty"`
 	ArchivedAt           nullable.Nullable[time.Time]         `json:"archived_at"`
 	CreatedAt            time.Time                            `json:"created_at"`
 	CurrentRunId         nullable.Nullable[string]            `json:"current_run_id"`
@@ -2988,6 +3087,68 @@ type UnderscorePartCursor struct {
 
 // PartCursorKind defines model for PartCursor.Kind.
 type PartCursorKind string
+
+// AsAgentOverrideLazyEnvironment0 returns the union data inside the AgentOverride_LazyEnvironment as a AgentOverrideLazyEnvironment0
+func (t AgentOverride_LazyEnvironment) AsAgentOverrideLazyEnvironment0() (AgentOverrideLazyEnvironment0, error) {
+	var body AgentOverrideLazyEnvironment0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAgentOverrideLazyEnvironment0 overwrites any union data inside the AgentOverride_LazyEnvironment as the provided AgentOverrideLazyEnvironment0
+func (t *AgentOverride_LazyEnvironment) FromAgentOverrideLazyEnvironment0(v AgentOverrideLazyEnvironment0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAgentOverrideLazyEnvironment0 performs a merge with any union data inside the AgentOverride_LazyEnvironment, using the provided AgentOverrideLazyEnvironment0
+func (t *AgentOverride_LazyEnvironment) MergeAgentOverrideLazyEnvironment0(v AgentOverrideLazyEnvironment0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAgentOverrideLazyEnvironment1 returns the union data inside the AgentOverride_LazyEnvironment as a AgentOverrideLazyEnvironment1
+func (t AgentOverride_LazyEnvironment) AsAgentOverrideLazyEnvironment1() (AgentOverrideLazyEnvironment1, error) {
+	var body AgentOverrideLazyEnvironment1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAgentOverrideLazyEnvironment1 overwrites any union data inside the AgentOverride_LazyEnvironment as the provided AgentOverrideLazyEnvironment1
+func (t *AgentOverride_LazyEnvironment) FromAgentOverrideLazyEnvironment1(v AgentOverrideLazyEnvironment1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAgentOverrideLazyEnvironment1 performs a merge with any union data inside the AgentOverride_LazyEnvironment, using the provided AgentOverrideLazyEnvironment1
+func (t *AgentOverride_LazyEnvironment) MergeAgentOverrideLazyEnvironment1(v AgentOverrideLazyEnvironment1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AgentOverride_LazyEnvironment) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AgentOverride_LazyEnvironment) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // AsToolSearch returns the union data inside the AgentOverride_ToolSearch as a ToolSearch
 func (t AgentOverride_ToolSearch) AsToolSearch() (ToolSearch, error) {

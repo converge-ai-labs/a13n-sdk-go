@@ -80,7 +80,9 @@ func catchupOffline() {
 	check(must(a13n.ParseJSON[generated.Agent](client, raw, err, 200)).Value.Id == "agent", "installed finding agent preparation")
 	var policy a13n.SkillSync
 	check(policy.FromIsolatedSkillSync(a13n.IsolatedSkillSync{CacheCount: a13n.Ptr(0)}) == nil, "installed isolated policy constructor")
-	overrides := a13n.Overrides{SkillSync: a13n.Value(policy), LazyEnvironment: a13n.Value(false)}
+	var lazy generated.AgentOverrideInput_LazyEnvironment
+	check(lazy.FromAgentOverrideInputLazyEnvironment1(false) == nil, "installed legacy lazy environment constructor")
+	overrides := a13n.Overrides{SkillSync: a13n.Value(policy), LazyEnvironment: a13n.Value(lazy)}
 	wire := must(json.Marshal(overrides))
 	check(strings.Contains(string(wire), `"cache_count":0`) && strings.Contains(string(wire), `"lazy_environment":false`), "installed native policy union")
 	fmt.Println("Installed module: nine added operations, saved JSON precision, authors, finding/analysis paging, native SkillSync passed (local mock)")

@@ -526,3 +526,30 @@ func TestSessionThreadSnapshotPreservesNoEnvironmentAndPlatformGroups(t *testing
 		t.Fatal("unknown environment accepted")
 	}
 }
+
+func TestSessionInteractionsReplaceAndClear(t *testing.T) {
+	payload := `{"thread_id":"thr","requests":[{"request_id":"req1","thread_id":"thr","server_id":"mcp","mode":"form","message":"Choose","expires_at":"2026-11-27T12:00:00Z","schema":{"type":"object"}},{"request_id":"req2","thread_id":"thr","server_id":"mcp","mode":"url","message":"Confirm","expires_at":"2026-11-27T12:00:00Z","url":"https://example.com/confirm"}]}`
+	frame, err := parseSessionFrame(sseEvent{event: "interactions", data: []byte(payload)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, ok := frame.(*SessionInteractionsFrame)
+	if !ok || got.EventType() != "interactions" || got.ThreadId != "thr" || len(got.Requests) != 2 {
+		t.Fatalf("unexpected frame: %#v", frame)
+	}
+	cleared, err := parseSessionFrame(sseEvent{event: "interactions", data: []byte(`{"thread_id":"thr","requests":[]}`)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if value, ok := cleared.(*SessionInteractionsFrame); !ok || value.Requests == nil || len(value.Requests) != 0 {
+		t.Fatalf("missing clear: %#v", cleared)
+	}
+	for _, invalid := range []sseEvent{
+		{event: "interactions", data: []byte(`{"thread_id":"thr"}`)},
+		{event: "interactions", data: []byte(payload), hasID: true},
+	} {
+		if _, err := parseSessionFrame(invalid); !errors.Is(err, ErrProtocol) {
+			t.Fatalf("accepted invalid interactions: %v", err)
+		}
+	}
+}
