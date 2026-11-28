@@ -170,34 +170,34 @@ func (e BuiltinSkillName) Valid() bool {
 
 // Defines values for BuiltinToolsetKey.
 const (
-	Assets      BuiltinToolsetKey = "assets"
-	Browser     BuiltinToolsetKey = "browser"
-	Computer    BuiltinToolsetKey = "computer"
-	Files       BuiltinToolsetKey = "files"
-	Memory      BuiltinToolsetKey = "memory"
-	ObjectStore BuiltinToolsetKey = "object_store"
-	Shell       BuiltinToolsetKey = "shell"
-	Web         BuiltinToolsetKey = "web"
+	BuiltinToolsetKeyAssets      BuiltinToolsetKey = "assets"
+	BuiltinToolsetKeyBrowser     BuiltinToolsetKey = "browser"
+	BuiltinToolsetKeyComputer    BuiltinToolsetKey = "computer"
+	BuiltinToolsetKeyFiles       BuiltinToolsetKey = "files"
+	BuiltinToolsetKeyMemory      BuiltinToolsetKey = "memory"
+	BuiltinToolsetKeyObjectStore BuiltinToolsetKey = "object_store"
+	BuiltinToolsetKeyShell       BuiltinToolsetKey = "shell"
+	BuiltinToolsetKeyWeb         BuiltinToolsetKey = "web"
 )
 
 // Valid indicates whether the value is a known member of the BuiltinToolsetKey enum.
 func (e BuiltinToolsetKey) Valid() bool {
 	switch e {
-	case Assets:
+	case BuiltinToolsetKeyAssets:
 		return true
-	case Browser:
+	case BuiltinToolsetKeyBrowser:
 		return true
-	case Computer:
+	case BuiltinToolsetKeyComputer:
 		return true
-	case Files:
+	case BuiltinToolsetKeyFiles:
 		return true
-	case Memory:
+	case BuiltinToolsetKeyMemory:
 		return true
-	case ObjectStore:
+	case BuiltinToolsetKeyObjectStore:
 		return true
-	case Shell:
+	case BuiltinToolsetKeyShell:
 		return true
-	case Web:
+	case BuiltinToolsetKeyWeb:
 		return true
 	default:
 		return false
@@ -219,6 +219,24 @@ func (e ChildEnvironmentPolicyMode) Valid() bool {
 	case ChildEnvironmentPolicyModeNone:
 		return true
 	case ChildEnvironmentPolicyModeShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CitationAnchorKind.
+const (
+	Content CitationAnchorKind = "content"
+	Marker  CitationAnchorKind = "marker"
+)
+
+// Valid indicates whether the value is a known member of the CitationAnchorKind enum.
+func (e CitationAnchorKind) Valid() bool {
+	switch e {
+	case Content:
+		return true
+	case Marker:
 		return true
 	default:
 		return false
@@ -375,6 +393,21 @@ const (
 func (e DisabledSandboxMode) Valid() bool {
 	switch e {
 	case Disabled:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DocumentCitationSourceKind.
+const (
+	Document DocumentCitationSourceKind = "document"
+)
+
+// Valid indicates whether the value is a known member of the DocumentCitationSourceKind enum.
+func (e DocumentCitationSourceKind) Valid() bool {
+	switch e {
+	case Document:
 		return true
 	default:
 		return false
@@ -1788,6 +1821,21 @@ func (e WaitReason) Valid() bool {
 	}
 }
 
+// Defines values for WebCitationSourceKind.
+const (
+	WebCitationSourceKindWeb WebCitationSourceKind = "web"
+)
+
+// Valid indicates whether the value is a known member of the WebCitationSourceKind enum.
+func (e WebCitationSourceKind) Valid() bool {
+	switch e {
+	case WebCitationSourceKindWeb:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PartCursorKind.
 const (
 	PartCursorKindReasoning PartCursorKind = "reasoning"
@@ -1967,6 +2015,27 @@ type ChildEnvironmentPolicy struct {
 // ChildEnvironmentPolicyMode defines model for ChildEnvironmentPolicy.Mode.
 type ChildEnvironmentPolicyMode string
 
+// Citation defines model for Citation.
+type Citation struct {
+	Anchor  nullable.Nullable[CitationAnchor] `json:"anchor,omitempty"`
+	Sources []CitationSource                  `json:"sources"`
+}
+
+// CitationAnchor Half-open Unicode code-point range in the item's text.
+type CitationAnchor struct {
+	End   int                `json:"end"`
+	Kind  CitationAnchorKind `json:"kind"`
+	Start int                `json:"start"`
+}
+
+// CitationAnchorKind defines model for CitationAnchor.Kind.
+type CitationAnchorKind string
+
+// CitationSource defines model for CitationSource.
+type CitationSource struct {
+	union json.RawMessage
+}
+
 // ClientOutputAlternative defines model for ClientOutputAlternative.
 type ClientOutputAlternative struct {
 	Description nullable.Nullable[string]   `json:"description,omitempty"`
@@ -2089,11 +2158,23 @@ type DisplayContinuation struct {
 	NextOrdinal   int                        `json:"next_ordinal"`
 
 	// Observer Native conversion cursors required to resume mid-part, without raw history.
-	Observer       *ObserverContinuation `json:"observer,omitempty"`
-	Position       StreamPosition        `json:"position"`
-	ResponseGroups *map[string]string    `json:"response_groups,omitempty"`
-	RunId          string                `json:"run_id"`
+	Observer         *ObserverContinuation `json:"observer,omitempty"`
+	OpenRequestItems *map[string][]string  `json:"open_request_items,omitempty"`
+	Position         StreamPosition        `json:"position"`
+	ResponseGroups   *map[string]string    `json:"response_groups,omitempty"`
+	RunId            string                `json:"run_id"`
 }
+
+// DocumentCitationSource defines model for DocumentCitationSource.
+type DocumentCitationSource struct {
+	DocumentId nullable.Nullable[string]   `json:"document_id,omitempty"`
+	Excerpts   *[]string                   `json:"excerpts,omitempty"`
+	Kind       *DocumentCitationSourceKind `json:"kind,omitempty"`
+	Title      nullable.Nullable[string]   `json:"title,omitempty"`
+}
+
+// DocumentCitationSourceKind defines model for DocumentCitationSource.Kind.
+type DocumentCitationSourceKind string
 
 // DynamicSubagents Root-only task-specific delegation within the parent's capability boundary.
 type DynamicSubagents struct {
@@ -2300,6 +2381,7 @@ type ItemKind string
 
 // ItemRef The item a live event changed, and its state after the event.
 type ItemRef struct {
+	Citations     nullable.Nullable[[]Citation]           `json:"citations,omitempty"`
 	Failure       nullable.Nullable[map[string]JsonValue] `json:"failure,omitempty"`
 	Id            string                                  `json:"id"`
 	Kind          ItemKind                                `json:"kind"`
@@ -3054,6 +3136,17 @@ type VmMount struct {
 // WaitReason defines model for WaitReason.
 type WaitReason string
 
+// WebCitationSource defines model for WebCitationSource.
+type WebCitationSource struct {
+	Excerpts *[]string                 `json:"excerpts,omitempty"`
+	Kind     *WebCitationSourceKind    `json:"kind,omitempty"`
+	Title    nullable.Nullable[string] `json:"title,omitempty"`
+	Url      string                    `json:"url"`
+}
+
+// WebCitationSourceKind defines model for WebCitationSource.Kind.
+type WebCitationSourceKind string
+
 // UnderscoreArguments A tool-call part's streamed arguments so far and the one observation item that holds them.
 type UnderscoreArguments struct {
 	At       time.Time                                 `json:"at"`
@@ -3073,14 +3166,17 @@ type UnderscoreAssembly struct {
 
 // UnderscoreObserverState defines model for _ObserverState.
 type UnderscoreObserverState struct {
-	Children     *map[string]UnderscoreObserverState `json:"children,omitempty"`
-	Parts        *map[string]UnderscorePartCursor    `json:"parts,omitempty"`
-	RequestIndex *int                                `json:"request_index,omitempty"`
-	Threads      *map[string]string                  `json:"threads,omitempty"`
+	Children          *map[string]UnderscoreObserverState `json:"children,omitempty"`
+	Parts             *map[string]UnderscorePartCursor    `json:"parts,omitempty"`
+	PartsRequestIndex nullable.Nullable[int]              `json:"parts_request_index,omitempty"`
+	RequestIndex      *int                                `json:"request_index,omitempty"`
+	TextMessageIds    *map[string]string                  `json:"text_message_ids,omitempty"`
+	Threads           *map[string]string                  `json:"threads,omitempty"`
 }
 
 // UnderscorePartCursor defines model for _PartCursor.
 type UnderscorePartCursor struct {
+	Citations        *[]Citation               `json:"citations,omitempty"`
 	EmittedContent   *bool                     `json:"emitted_content,omitempty"`
 	EmittedSignature *bool                     `json:"emitted_signature,omitempty"`
 	Kind             PartCursorKind            `json:"kind"`
@@ -3413,6 +3509,107 @@ func (t CallResult) MarshalJSON() ([]byte, error) {
 }
 
 func (t *CallResult) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsWebCitationSource returns the union data inside the CitationSource as a WebCitationSource
+func (t CitationSource) AsWebCitationSource() (WebCitationSource, error) {
+	var body WebCitationSource
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromWebCitationSource overwrites any union data inside the CitationSource as the provided WebCitationSource
+func (t *CitationSource) FromWebCitationSource(v WebCitationSource) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"web"}`))
+	t.union = b
+	return err
+}
+
+// MergeWebCitationSource performs a merge with any union data inside the CitationSource, using the provided WebCitationSource
+func (t *CitationSource) MergeWebCitationSource(v WebCitationSource) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"web"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDocumentCitationSource returns the union data inside the CitationSource as a DocumentCitationSource
+func (t CitationSource) AsDocumentCitationSource() (DocumentCitationSource, error) {
+	var body DocumentCitationSource
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDocumentCitationSource overwrites any union data inside the CitationSource as the provided DocumentCitationSource
+func (t *CitationSource) FromDocumentCitationSource(v DocumentCitationSource) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"document"}`))
+	t.union = b
+	return err
+}
+
+// MergeDocumentCitationSource performs a merge with any union data inside the CitationSource, using the provided DocumentCitationSource
+func (t *CitationSource) MergeDocumentCitationSource(v DocumentCitationSource) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"kind":"document"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CitationSource) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"kind"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t CitationSource) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "document":
+		return t.AsDocumentCitationSource()
+	case "web":
+		return t.AsWebCitationSource()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t CitationSource) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CitationSource) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
