@@ -1043,6 +1043,57 @@ func (e ConnectionTestOutcomeStatus) Valid() bool {
 	}
 }
 
+// Defines values for ConnectorEventState.
+const (
+	ConnectorEventStateFailed    ConnectorEventState = "failed"
+	ConnectorEventStateIgnored   ConnectorEventState = "ignored"
+	ConnectorEventStatePending   ConnectorEventState = "pending"
+	ConnectorEventStateStored    ConnectorEventState = "stored"
+	ConnectorEventStateSubmitted ConnectorEventState = "submitted"
+	ConnectorEventStateUnmatched ConnectorEventState = "unmatched"
+)
+
+// Valid indicates whether the value is a known member of the ConnectorEventState enum.
+func (e ConnectorEventState) Valid() bool {
+	switch e {
+	case ConnectorEventStateFailed:
+		return true
+	case ConnectorEventStateIgnored:
+		return true
+	case ConnectorEventStatePending:
+		return true
+	case ConnectorEventStateStored:
+		return true
+	case ConnectorEventStateSubmitted:
+		return true
+	case ConnectorEventStateUnmatched:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConnectorTriggerState.
+const (
+	ConnectorTriggerStateEnabled ConnectorTriggerState = "enabled"
+	ConnectorTriggerStatePaused  ConnectorTriggerState = "paused"
+	ConnectorTriggerStateRetired ConnectorTriggerState = "retired"
+)
+
+// Valid indicates whether the value is a known member of the ConnectorTriggerState enum.
+func (e ConnectorTriggerState) Valid() bool {
+	switch e {
+	case ConnectorTriggerStateEnabled:
+		return true
+	case ConnectorTriggerStatePaused:
+		return true
+	case ConnectorTriggerStateRetired:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ContentRefMediaType.
 const (
 	ContentRefMediaTypeApplicationjson ContentRefMediaType = "application/json"
@@ -1363,16 +1414,16 @@ func (e DeploymentCleanup) Valid() bool {
 
 // Defines values for DeploymentOperation.
 const (
-	Deploy DeploymentOperation = "deploy"
-	Retire DeploymentOperation = "retire"
+	DeploymentOperationDeploy DeploymentOperation = "deploy"
+	DeploymentOperationRetire DeploymentOperation = "retire"
 )
 
 // Valid indicates whether the value is a known member of the DeploymentOperation enum.
 func (e DeploymentOperation) Valid() bool {
 	switch e {
-	case Deploy:
+	case DeploymentOperationDeploy:
 		return true
-	case Retire:
+	case DeploymentOperationRetire:
 		return true
 	default:
 		return false
@@ -2228,6 +2279,21 @@ func (e ErrorCode) Valid() bool {
 	case ErrorCodeUnauthenticated:
 		return true
 	case ErrorCodeUnavailable:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EventThreadTargetMode.
+const (
+	EventThreadTargetModeNewThread EventThreadTargetMode = "new_thread"
+)
+
+// Valid indicates whether the value is a known member of the EventThreadTargetMode enum.
+func (e EventThreadTargetMode) Valid() bool {
+	switch e {
+	case EventThreadTargetModeNewThread:
 		return true
 	default:
 		return false
@@ -4529,6 +4595,21 @@ func (e Steering) Valid() bool {
 	}
 }
 
+// Defines values for StoreOnlyMode.
+const (
+	StoreOnlyModeStoreOnly StoreOnlyMode = "store_only"
+)
+
+// Valid indicates whether the value is a known member of the StoreOnlyMode enum.
+func (e StoreOnlyMode) Valid() bool {
+	switch e {
+	case StoreOnlyModeStoreOnly:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for StructuredOutputAlternativeKind.
 const (
 	Structured StructuredOutputAlternativeKind = "structured"
@@ -5501,6 +5582,30 @@ func (e ListAssetsParamsOrder) Valid() bool {
 	case Id:
 		return true
 	case Newest:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TransitionConnectorTriggerParamsCommand.
+const (
+	TransitionConnectorTriggerParamsCommandEnable    TransitionConnectorTriggerParamsCommand = "enable"
+	TransitionConnectorTriggerParamsCommandPause     TransitionConnectorTriggerParamsCommand = "pause"
+	TransitionConnectorTriggerParamsCommandReconcile TransitionConnectorTriggerParamsCommand = "reconcile"
+	TransitionConnectorTriggerParamsCommandRetire    TransitionConnectorTriggerParamsCommand = "retire"
+)
+
+// Valid indicates whether the value is a known member of the TransitionConnectorTriggerParamsCommand enum.
+func (e TransitionConnectorTriggerParamsCommand) Valid() bool {
+	switch e {
+	case TransitionConnectorTriggerParamsCommandEnable:
+		return true
+	case TransitionConnectorTriggerParamsCommandPause:
+		return true
+	case TransitionConnectorTriggerParamsCommandReconcile:
+		return true
+	case TransitionConnectorTriggerParamsCommandRetire:
 		return true
 	default:
 		return false
@@ -7456,6 +7561,52 @@ type ConnectorConfig struct {
 	Setup   *map[string]JsonValue `json:"setup,omitempty"`
 }
 
+// ConnectorEvent defines model for ConnectorEvent.
+type ConnectorEvent struct {
+	Attempts   int                                     `json:"attempts"`
+	CreatedAt  time.Time                               `json:"created_at"`
+	EventType  string                                  `json:"event_type"`
+	Failure    nullable.Nullable[string]               `json:"failure"`
+	Id         string                                  `json:"id"`
+	InboxId    nullable.Nullable[string]               `json:"inbox_id"`
+	OccurredAt time.Time                               `json:"occurred_at"`
+	Payload    nullable.Nullable[map[string]JsonValue] `json:"payload"`
+	ProviderId string                                  `json:"provider_id"`
+	Retryable  *bool                                   `json:"retryable,omitempty"`
+	SourceId   string                                  `json:"source_id"`
+	State      ConnectorEventState                     `json:"state"`
+	ThreadId   nullable.Nullable[string]               `json:"thread_id"`
+	TriggerId  nullable.Nullable[string]               `json:"trigger_id"`
+	Version    int                                     `json:"version"`
+}
+
+// ConnectorEventState defines model for ConnectorEvent.State.
+type ConnectorEventState string
+
+// ConnectorTrigger defines model for ConnectorTrigger.
+type ConnectorTrigger struct {
+	ConnectionId  string                    `json:"connection_id"`
+	CreatedAt     time.Time                 `json:"created_at"`
+	Definition    EventType                 `json:"definition"`
+	EventType     string                    `json:"event_type"`
+	Failure       nullable.Nullable[string] `json:"failure"`
+	Id            string                    `json:"id"`
+	Name          string                    `json:"name"`
+	OperationKind nullable.Nullable[string] `json:"operation_kind"`
+	Parameters    map[string]JsonValue      `json:"parameters"`
+	ProviderId    string                    `json:"provider_id"`
+	RemoteId      nullable.Nullable[string] `json:"remote_id"`
+	Retryable     *bool                     `json:"retryable,omitempty"`
+	State         ConnectorTriggerState     `json:"state"`
+	Target        Target                    `json:"target"`
+	UpdatedAt     time.Time                 `json:"updated_at"`
+	Version       int                       `json:"version"`
+	WorkspaceId   string                    `json:"workspace_id"`
+}
+
+// ConnectorTriggerState defines model for ConnectorTrigger.State.
+type ConnectorTriggerState string
+
 // ContentRef An immutable Host-owned value, loaded through that Host's authorized content API.
 type ContentRef struct {
 	Id        string              `json:"id"`
@@ -8286,6 +8437,43 @@ type Event struct {
 	Reason         nullable.Nullable[string] `json:"reason,omitempty"`
 	ResourceUid    string                    `json:"resource_uid"`
 	Type           nullable.Nullable[string] `json:"type,omitempty"`
+}
+
+// EventPage defines model for EventPage.
+type EventPage struct {
+	Items      []ConnectorEvent          `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// EventThreadTarget defines model for EventThreadTarget.
+type EventThreadTarget struct {
+	AgentId         string                    `json:"agent_id"`
+	AgentRevisionId nullable.Nullable[string] `json:"agent_revision_id,omitempty"`
+	Instruction     *string                   `json:"instruction,omitempty"`
+	Mode            *EventThreadTargetMode    `json:"mode,omitempty"`
+	PrincipalId     string                    `json:"principal_id"`
+}
+
+// EventThreadTargetMode defines model for EventThreadTarget.Mode.
+type EventThreadTargetMode string
+
+// EventType defines model for EventType.
+type EventType struct {
+	App                   string                                  `json:"app"`
+	ConfigSchema          map[string]JsonValue                    `json:"config_schema"`
+	Description           *string                                 `json:"description,omitempty"`
+	Instructions          *string                                 `json:"instructions,omitempty"`
+	Key                   string                                  `json:"key"`
+	Name                  string                                  `json:"name"`
+	PayloadSchema         nullable.Nullable[map[string]JsonValue] `json:"payload_schema,omitempty"`
+	RequiresProviderSetup *bool                                   `json:"requires_provider_setup,omitempty"`
+	Version               nullable.Nullable[string]               `json:"version,omitempty"`
+}
+
+// EventTypePage defines model for EventTypePage.
+type EventTypePage struct {
+	Items      []EventType            `json:"items"`
+	NextCursor nullable.Nullable[any] `json:"next_cursor,omitempty"`
 }
 
 // Evidence defines model for Evidence.
@@ -11857,6 +12045,14 @@ type StatusChangeStatus string
 // Steering defines model for Steering.
 type Steering string
 
+// StoreOnly defines model for StoreOnly.
+type StoreOnly struct {
+	Mode *StoreOnlyMode `json:"mode,omitempty"`
+}
+
+// StoreOnlyMode defines model for StoreOnly.Mode.
+type StoreOnlyMode string
+
 // StructuredOutputAlternative defines model for StructuredOutputAlternative.
 type StructuredOutputAlternative struct {
 	Description nullable.Nullable[string]       `json:"description,omitempty"`
@@ -12007,6 +12203,11 @@ type SystemMetrics struct {
 
 // SystemPreset defines model for SystemPreset.
 type SystemPreset string
+
+// Target defines model for Target.
+type Target struct {
+	union json.RawMessage
+}
 
 // Template defines model for Template.
 type Template struct {
@@ -12401,6 +12602,27 @@ type Transport string
 // Trigger defines model for Trigger.
 type Trigger string
 
+// TriggerCreate defines model for TriggerCreate.
+type TriggerCreate struct {
+	ConnectionId string                `json:"connection_id"`
+	EventType    string                `json:"event_type"`
+	Name         string                `json:"name"`
+	Parameters   *map[string]JsonValue `json:"parameters,omitempty"`
+	Target       *Target               `json:"target,omitempty"`
+}
+
+// TriggerPage defines model for TriggerPage.
+type TriggerPage struct {
+	Items      []ConnectorTrigger        `json:"items"`
+	NextCursor nullable.Nullable[string] `json:"next_cursor"`
+}
+
+// TriggerUpdate defines model for TriggerUpdate.
+type TriggerUpdate struct {
+	Name   nullable.Nullable[string] `json:"name,omitempty"`
+	Target nullable.Nullable[Target] `json:"target,omitempty"`
+}
+
 // TypedQuery defines model for TypedQuery.
 type TypedQuery struct {
 	History *TypedQueryHistory `json:"history,omitempty"`
@@ -12636,6 +12858,19 @@ type WaitReason string
 
 // WebOperation defines model for WebOperation.
 type WebOperation string
+
+// Webhook defines model for Webhook.
+type Webhook struct {
+	Configured    bool                      `json:"configured"`
+	Failure       nullable.Nullable[string] `json:"failure"`
+	Operation     nullable.Nullable[string] `json:"operation"`
+	ProviderId    string                    `json:"provider_id"`
+	RemoteId      nullable.Nullable[string] `json:"remote_id"`
+	Retryable     bool                      `json:"retryable"`
+	SecretVersion int                       `json:"secret_version"`
+	Url           nullable.Nullable[string] `json:"url"`
+	Version       int                       `json:"version"`
+}
 
 // WebhookDelivery One webhook outbox row; its ID is the delivery ID receivers deduplicate by.
 type WebhookDelivery struct {
@@ -13326,6 +13561,31 @@ type IndexConnectionToolsParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListConnectorEventsParams defines parameters for ListConnectorEvents.
+type ListConnectorEventsParams struct {
+	TriggerId *string `form:"trigger_id,omitempty" json:"trigger_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor    *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetConnectorEventParams defines parameters for GetConnectorEvent.
+type GetConnectorEventParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// RetryConnectorEventParams defines parameters for RetryConnectorEvent.
+type RetryConnectorEventParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListConnectorProvidersParams defines parameters for ListConnectorProviders.
 type ListConnectorProvidersParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -13423,11 +13683,87 @@ type IndexConnectorActionsParams struct {
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
 
+// ListConnectorEventTypesParams defines parameters for ListConnectorEventTypes.
+type ListConnectorEventTypesParams struct {
+	Refresh *bool `form:"refresh,omitempty" json:"refresh,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetConnectorEventTypeParams defines parameters for GetConnectorEventType.
+type GetConnectorEventTypeParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetConnectorEventWebhookParams defines parameters for GetConnectorEventWebhook.
+type GetConnectorEventWebhookParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// ConfigureConnectorEventWebhookParams defines parameters for ConfigureConnectorEventWebhook.
+type ConfigureConnectorEventWebhookParams struct {
+	Rotate *bool `form:"rotate,omitempty" json:"rotate,omitempty"`
+
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // TestConnectorProviderParams defines parameters for TestConnectorProvider.
 type TestConnectorProviderParams struct {
 	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
 	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
 }
+
+// ListConnectorTriggersParams defines parameters for ListConnectorTriggers.
+type ListConnectorTriggersParams struct {
+	ConnectionId *string `form:"connection_id,omitempty" json:"connection_id,omitempty"`
+	Limit        *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor       *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateConnectorTriggerParams defines parameters for CreateConnectorTrigger.
+type CreateConnectorTriggerParams struct {
+	IdempotencyKey string `json:"Idempotency-Key"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// GetConnectorTriggerParams defines parameters for GetConnectorTrigger.
+type GetConnectorTriggerParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// UpdateConnectorTriggerParams defines parameters for UpdateConnectorTrigger.
+type UpdateConnectorTriggerParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// TransitionConnectorTriggerParams defines parameters for TransitionConnectorTrigger.
+type TransitionConnectorTriggerParams struct {
+	// IfMatch The resource's ETag: `"{id}:{version}"` of its current view, `"{key}:{version}"` for a model
+	IfMatch *string `json:"If-Match,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// TransitionConnectorTriggerParamsCommand defines parameters for TransitionConnectorTrigger.
+type TransitionConnectorTriggerParamsCommand string
 
 // ListDevicesParams defines parameters for ListDevices.
 type ListDevicesParams struct {
@@ -16171,6 +16507,12 @@ type CreateConnectorProviderJSONRequestBody = ProviderCreate
 
 // UpdateConnectorProviderJSONRequestBody defines body for UpdateConnectorProvider for application/json ContentType.
 type UpdateConnectorProviderJSONRequestBody = ProviderUpdate
+
+// CreateConnectorTriggerJSONRequestBody defines body for CreateConnectorTrigger for application/json ContentType.
+type CreateConnectorTriggerJSONRequestBody = TriggerCreate
+
+// UpdateConnectorTriggerJSONRequestBody defines body for UpdateConnectorTrigger for application/json ContentType.
+type UpdateConnectorTriggerJSONRequestBody = TriggerUpdate
 
 // CreateDeviceJSONRequestBody defines body for CreateDevice for application/json ContentType.
 type CreateDeviceJSONRequestBody = DeviceCreate
@@ -20282,6 +20624,107 @@ func (t *SpanReadPage_Items_Item) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsStoreOnly returns the union data inside the Target as a StoreOnly
+func (t Target) AsStoreOnly() (StoreOnly, error) {
+	var body StoreOnly
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromStoreOnly overwrites any union data inside the Target as the provided StoreOnly
+func (t *Target) FromStoreOnly(v StoreOnly) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"store_only"}`))
+	t.union = b
+	return err
+}
+
+// MergeStoreOnly performs a merge with any union data inside the Target, using the provided StoreOnly
+func (t *Target) MergeStoreOnly(v StoreOnly) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"store_only"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsEventThreadTarget returns the union data inside the Target as a EventThreadTarget
+func (t Target) AsEventThreadTarget() (EventThreadTarget, error) {
+	var body EventThreadTarget
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromEventThreadTarget overwrites any union data inside the Target as the provided EventThreadTarget
+func (t *Target) FromEventThreadTarget(v EventThreadTarget) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"new_thread"}`))
+	t.union = b
+	return err
+}
+
+// MergeEventThreadTarget performs a merge with any union data inside the Target, using the provided EventThreadTarget
+func (t *Target) MergeEventThreadTarget(v EventThreadTarget) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	b, err = runtime.JSONMerge(b, []byte(`{"mode":"new_thread"}`))
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t Target) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"mode"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t Target) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "new_thread":
+		return t.AsEventThreadTarget()
+	case "store_only":
+		return t.AsStoreOnly()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t Target) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *Target) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsToolPermissionMode returns the union data inside the ToolPermissionSetting as a ToolPermissionMode
 func (t ToolPermissionSetting) AsToolPermissionMode() (ToolPermissionMode, error) {
 	var body ToolPermissionMode
@@ -22769,6 +23212,21 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/connections/{connection_id}/tools/index (the `IndexConnectionTools` operationId).
 	IndexConnectionTools(ctx context.Context, connectionId string, params *IndexConnectionToolsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListConnectorEvents List Connector Events
+	//
+	// Corresponds with GET /api/v1/connector-events (the `ListConnectorEvents` operationId).
+	ListConnectorEvents(ctx context.Context, params *ListConnectorEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnectorEvent Get Connector Event
+	//
+	// Corresponds with GET /api/v1/connector-events/{event_id} (the `GetConnectorEvent` operationId).
+	GetConnectorEvent(ctx context.Context, eventId string, params *GetConnectorEventParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetryConnectorEvent Retry Connector Event
+	//
+	// Corresponds with POST /api/v1/connector-events/{event_id}/retry (the `RetryConnectorEvent` operationId).
+	RetryConnectorEvent(ctx context.Context, eventId string, params *RetryConnectorEventParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListConnectorProviders List connector providers
 	//
 	// Corresponds with GET /api/v1/connector-providers (the `ListConnectorProviders` operationId).
@@ -22845,10 +23303,80 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/index (the `IndexConnectorActions` operationId).
 	IndexConnectorActions(ctx context.Context, providerId string, app string, params *IndexConnectorActionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListConnectorEventTypes List Connector Event Types
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types (the `ListConnectorEventTypes` operationId).
+	ListConnectorEventTypes(ctx context.Context, providerId string, app string, params *ListConnectorEventTypesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnectorEventType Get Connector Event Type
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types/{event_type} (the `GetConnectorEventType` operationId).
+	GetConnectorEventType(ctx context.Context, providerId string, app string, eventType string, params *GetConnectorEventTypeParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnectorEventWebhook Get Connector Event Webhook
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/event-webhook (the `GetConnectorEventWebhook` operationId).
+	GetConnectorEventWebhook(ctx context.Context, providerId string, params *GetConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ConfigureConnectorEventWebhook Configure Connector Event Webhook
+	//
+	// Corresponds with POST /api/v1/connector-providers/{provider_id}/event-webhook (the `ConfigureConnectorEventWebhook` operationId).
+	ConfigureConnectorEventWebhook(ctx context.Context, providerId string, params *ConfigureConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// TestConnectorProvider Test connector provider
 	//
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestConnectorProvider` operationId).
 	TestConnectorProvider(ctx context.Context, providerId string, params *TestConnectorProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListConnectorTriggers List Connector Triggers
+	//
+	// Corresponds with GET /api/v1/connector-triggers (the `ListConnectorTriggers` operationId).
+	ListConnectorTriggers(ctx context.Context, params *ListConnectorTriggersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateConnectorTriggerWithBody Create Connector Trigger
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+	CreateConnectorTriggerWithBody(ctx context.Context, params *CreateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateConnectorTrigger Create Connector Trigger
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+	CreateConnectorTrigger(ctx context.Context, params *CreateConnectorTriggerParams, body CreateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnectorTrigger Get Connector Trigger
+	//
+	// Corresponds with GET /api/v1/connector-triggers/{trigger_id} (the `GetConnectorTrigger` operationId).
+	GetConnectorTrigger(ctx context.Context, triggerId string, params *GetConnectorTriggerParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateConnectorTriggerWithBody Update Connector Trigger
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+	UpdateConnectorTriggerWithBody(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateConnectorTrigger Update Connector Trigger
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+	UpdateConnectorTrigger(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, body UpdateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TransitionConnectorTrigger Transition Connector Trigger
+	//
+	// Corresponds with POST /api/v1/connector-triggers/{trigger_id}/{command} (the `TransitionConnectorTrigger` operationId).
+	TransitionConnectorTrigger(ctx context.Context, triggerId string, command TransitionConnectorTriggerParamsCommand, params *TransitionConnectorTriggerParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReceiveConnectorWebhook Receive Connector Webhook
+	//
+	// Authenticate the sender's signature; receipt confirms durable storage, not Agent completion.
+	//
+	// Corresponds with POST /api/v1/connector-webhooks/{provider_id} (the `ReceiveConnectorWebhook` operationId).
+	ReceiveConnectorWebhook(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListDevices List Devices
 	//
@@ -27442,6 +27970,51 @@ func (c *Client) IndexConnectionTools(ctx context.Context, connectionId string, 
 	return c.Client.Do(req)
 }
 
+// ListConnectorEvents List Connector Events
+//
+// Corresponds with GET /api/v1/connector-events (the `ListConnectorEvents` operationId).
+func (c *Client) ListConnectorEvents(ctx context.Context, params *ListConnectorEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListConnectorEventsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetConnectorEvent Get Connector Event
+//
+// Corresponds with GET /api/v1/connector-events/{event_id} (the `GetConnectorEvent` operationId).
+func (c *Client) GetConnectorEvent(ctx context.Context, eventId string, params *GetConnectorEventParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorEventRequest(c.Server, eventId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RetryConnectorEvent Retry Connector Event
+//
+// Corresponds with POST /api/v1/connector-events/{event_id}/retry (the `RetryConnectorEvent` operationId).
+func (c *Client) RetryConnectorEvent(ctx context.Context, eventId string, params *RetryConnectorEventParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryConnectorEventRequest(c.Server, eventId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListConnectorProviders List connector providers
 //
 // Corresponds with GET /api/v1/connector-providers (the `ListConnectorProviders` operationId).
@@ -27638,11 +28211,201 @@ func (c *Client) IndexConnectorActions(ctx context.Context, providerId string, a
 	return c.Client.Do(req)
 }
 
+// ListConnectorEventTypes List Connector Event Types
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types (the `ListConnectorEventTypes` operationId).
+func (c *Client) ListConnectorEventTypes(ctx context.Context, providerId string, app string, params *ListConnectorEventTypesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListConnectorEventTypesRequest(c.Server, providerId, app, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetConnectorEventType Get Connector Event Type
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types/{event_type} (the `GetConnectorEventType` operationId).
+func (c *Client) GetConnectorEventType(ctx context.Context, providerId string, app string, eventType string, params *GetConnectorEventTypeParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorEventTypeRequest(c.Server, providerId, app, eventType, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetConnectorEventWebhook Get Connector Event Webhook
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/event-webhook (the `GetConnectorEventWebhook` operationId).
+func (c *Client) GetConnectorEventWebhook(ctx context.Context, providerId string, params *GetConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorEventWebhookRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ConfigureConnectorEventWebhook Configure Connector Event Webhook
+//
+// Corresponds with POST /api/v1/connector-providers/{provider_id}/event-webhook (the `ConfigureConnectorEventWebhook` operationId).
+func (c *Client) ConfigureConnectorEventWebhook(ctx context.Context, providerId string, params *ConfigureConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewConfigureConnectorEventWebhookRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // TestConnectorProvider Test connector provider
 //
 // Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestConnectorProvider` operationId).
 func (c *Client) TestConnectorProvider(ctx context.Context, providerId string, params *TestConnectorProviderParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewTestConnectorProviderRequest(c.Server, providerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListConnectorTriggers List Connector Triggers
+//
+// Corresponds with GET /api/v1/connector-triggers (the `ListConnectorTriggers` operationId).
+func (c *Client) ListConnectorTriggers(ctx context.Context, params *ListConnectorTriggersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListConnectorTriggersRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateConnectorTriggerWithBody Create Connector Trigger
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+func (c *Client) CreateConnectorTriggerWithBody(ctx context.Context, params *CreateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConnectorTriggerRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateConnectorTrigger Create Connector Trigger
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+func (c *Client) CreateConnectorTrigger(ctx context.Context, params *CreateConnectorTriggerParams, body CreateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConnectorTriggerRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetConnectorTrigger Get Connector Trigger
+//
+// Corresponds with GET /api/v1/connector-triggers/{trigger_id} (the `GetConnectorTrigger` operationId).
+func (c *Client) GetConnectorTrigger(ctx context.Context, triggerId string, params *GetConnectorTriggerParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorTriggerRequest(c.Server, triggerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateConnectorTriggerWithBody Update Connector Trigger
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+func (c *Client) UpdateConnectorTriggerWithBody(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConnectorTriggerRequestWithBody(c.Server, triggerId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UpdateConnectorTrigger Update Connector Trigger
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+func (c *Client) UpdateConnectorTrigger(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, body UpdateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConnectorTriggerRequest(c.Server, triggerId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TransitionConnectorTrigger Transition Connector Trigger
+//
+// Corresponds with POST /api/v1/connector-triggers/{trigger_id}/{command} (the `TransitionConnectorTrigger` operationId).
+func (c *Client) TransitionConnectorTrigger(ctx context.Context, triggerId string, command TransitionConnectorTriggerParamsCommand, params *TransitionConnectorTriggerParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTransitionConnectorTriggerRequest(c.Server, triggerId, command, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReceiveConnectorWebhook Receive Connector Webhook
+//
+// Authenticate the sender's signature; receipt confirms durable storage, not Agent completion.
+//
+// Corresponds with POST /api/v1/connector-webhooks/{provider_id} (the `ReceiveConnectorWebhook` operationId).
+func (c *Client) ReceiveConnectorWebhook(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReceiveConnectorWebhookRequest(c.Server, providerId)
 	if err != nil {
 		return nil, err
 	}
@@ -39663,6 +40426,208 @@ func NewIndexConnectionToolsRequest(server string, connectionId string, params *
 	return req, nil
 }
 
+// NewListConnectorEventsRequest constructs an http.Request for the ListConnectorEvents method
+func NewListConnectorEventsRequest(server string, params *ListConnectorEventsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-events")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.TriggerId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "trigger_id", *params.TriggerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorEventRequest constructs an http.Request for the GetConnectorEvent method
+func NewGetConnectorEventRequest(server string, eventId string, params *GetConnectorEventParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "event_id", eventId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-events/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetryConnectorEventRequest constructs an http.Request for the RetryConnectorEvent method
+func NewRetryConnectorEventRequest(server string, eventId string, params *RetryConnectorEventParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "event_id", eventId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-events/%s/retry", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListConnectorProvidersRequest constructs an http.Request for the ListConnectorProviders method
 func NewListConnectorProvidersRequest(server string, params *ListConnectorProvidersParams) (*http.Request, error) {
 	var err error
@@ -40443,6 +41408,288 @@ func NewIndexConnectorActionsRequest(server string, providerId string, app strin
 	return req, nil
 }
 
+// NewListConnectorEventTypesRequest constructs an http.Request for the ListConnectorEventTypes method
+func NewListConnectorEventTypesRequest(server string, providerId string, app string, params *ListConnectorEventTypesParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app", app, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s/apps/%s/event-types", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Refresh != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "refresh", *params.Refresh, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorEventTypeRequest constructs an http.Request for the GetConnectorEventType method
+func NewGetConnectorEventTypeRequest(server string, providerId string, app string, eventType string, params *GetConnectorEventTypeParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app", app, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "event_type", eventType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s/apps/%s/event-types/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorEventWebhookRequest constructs an http.Request for the GetConnectorEventWebhook method
+func NewGetConnectorEventWebhookRequest(server string, providerId string, params *GetConnectorEventWebhookParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s/event-webhook", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewConfigureConnectorEventWebhookRequest constructs an http.Request for the ConfigureConnectorEventWebhook method
+func NewConfigureConnectorEventWebhookRequest(server string, providerId string, params *ConfigureConnectorEventWebhookParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-providers/%s/event-webhook", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Rotate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "rotate", *params.Rotate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewTestConnectorProviderRequest constructs an http.Request for the TestConnectorProvider method
 func NewTestConnectorProviderRequest(server string, providerId string, params *TestConnectorProviderParams) (*http.Request, error) {
 	var err error
@@ -40487,6 +41734,386 @@ func NewTestConnectorProviderRequest(server string, providerId string, params *T
 			req.Header.Set("X-Workspace-ID", headerParam0)
 		}
 
+	}
+
+	return req, nil
+}
+
+// NewListConnectorTriggersRequest constructs an http.Request for the ListConnectorTriggers method
+func NewListConnectorTriggersRequest(server string, params *ListConnectorTriggersParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-triggers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ConnectionId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "connection_id", *params.ConnectionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateConnectorTriggerRequest calls the generic CreateConnectorTrigger builder with application/json body
+func NewCreateConnectorTriggerRequest(server string, params *CreateConnectorTriggerParams, body CreateConnectorTriggerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateConnectorTriggerRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateConnectorTriggerRequestWithBody constructs an http.Request for the CreateConnectorTrigger method, with any body, and a specified content type
+func NewCreateConnectorTriggerRequestWithBody(server string, params *CreateConnectorTriggerParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-triggers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		var headerParam0 string
+
+		headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Set("Idempotency-Key", headerParam0)
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorTriggerRequest constructs an http.Request for the GetConnectorTrigger method
+func NewGetConnectorTriggerRequest(server string, triggerId string, params *GetConnectorTriggerParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "trigger_id", triggerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-triggers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateConnectorTriggerRequest calls the generic UpdateConnectorTrigger builder with application/json body
+func NewUpdateConnectorTriggerRequest(server string, triggerId string, params *UpdateConnectorTriggerParams, body UpdateConnectorTriggerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateConnectorTriggerRequestWithBody(server, triggerId, params, "application/json", bodyReader)
+}
+
+// NewUpdateConnectorTriggerRequestWithBody constructs an http.Request for the UpdateConnectorTrigger method, with any body, and a specified content type
+func NewUpdateConnectorTriggerRequestWithBody(server string, triggerId string, params *UpdateConnectorTriggerParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "trigger_id", triggerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-triggers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewTransitionConnectorTriggerRequest constructs an http.Request for the TransitionConnectorTrigger method
+func NewTransitionConnectorTriggerRequest(server string, triggerId string, command TransitionConnectorTriggerParamsCommand, params *TransitionConnectorTriggerParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "trigger_id", triggerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "command", command, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-triggers/%s/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+		if params.XWorkspaceID != nil {
+			var headerParam1 string
+
+			headerParam1, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam1)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewReceiveConnectorWebhookRequest constructs an http.Request for the ReceiveConnectorWebhook method
+func NewReceiveConnectorWebhookRequest(server string, providerId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "provider_id", providerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/connector-webhooks/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
 	}
 
 	return req, nil
@@ -63868,6 +65495,27 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/connections/{connection_id}/tools/index (the `IndexConnectionTools` operationId).
 	IndexConnectionToolsWithResponse(ctx context.Context, connectionId string, params *IndexConnectionToolsParams, reqEditors ...RequestEditorFn) (*IndexConnectionToolsResponse, error)
 
+	// ListConnectorEventsWithResponse List Connector Events
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-events (the `ListConnectorEvents` operationId).
+	ListConnectorEventsWithResponse(ctx context.Context, params *ListConnectorEventsParams, reqEditors ...RequestEditorFn) (*ListConnectorEventsResponse, error)
+
+	// GetConnectorEventWithResponse Get Connector Event
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-events/{event_id} (the `GetConnectorEvent` operationId).
+	GetConnectorEventWithResponse(ctx context.Context, eventId string, params *GetConnectorEventParams, reqEditors ...RequestEditorFn) (*GetConnectorEventResponse, error)
+
+	// RetryConnectorEventWithResponse Retry Connector Event
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/connector-events/{event_id}/retry (the `RetryConnectorEvent` operationId).
+	RetryConnectorEventWithResponse(ctx context.Context, eventId string, params *RetryConnectorEventParams, reqEditors ...RequestEditorFn) (*RetryConnectorEventResponse, error)
+
 	// ListConnectorProvidersWithResponse List connector providers
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -63960,12 +65608,98 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/actions/index (the `IndexConnectorActions` operationId).
 	IndexConnectorActionsWithResponse(ctx context.Context, providerId string, app string, params *IndexConnectorActionsParams, reqEditors ...RequestEditorFn) (*IndexConnectorActionsResponse, error)
 
+	// ListConnectorEventTypesWithResponse List Connector Event Types
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types (the `ListConnectorEventTypes` operationId).
+	ListConnectorEventTypesWithResponse(ctx context.Context, providerId string, app string, params *ListConnectorEventTypesParams, reqEditors ...RequestEditorFn) (*ListConnectorEventTypesResponse, error)
+
+	// GetConnectorEventTypeWithResponse Get Connector Event Type
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types/{event_type} (the `GetConnectorEventType` operationId).
+	GetConnectorEventTypeWithResponse(ctx context.Context, providerId string, app string, eventType string, params *GetConnectorEventTypeParams, reqEditors ...RequestEditorFn) (*GetConnectorEventTypeResponse, error)
+
+	// GetConnectorEventWebhookWithResponse Get Connector Event Webhook
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-providers/{provider_id}/event-webhook (the `GetConnectorEventWebhook` operationId).
+	GetConnectorEventWebhookWithResponse(ctx context.Context, providerId string, params *GetConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*GetConnectorEventWebhookResponse, error)
+
+	// ConfigureConnectorEventWebhookWithResponse Configure Connector Event Webhook
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/connector-providers/{provider_id}/event-webhook (the `ConfigureConnectorEventWebhook` operationId).
+	ConfigureConnectorEventWebhookWithResponse(ctx context.Context, providerId string, params *ConfigureConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*ConfigureConnectorEventWebhookResponse, error)
+
 	// TestConnectorProviderWithResponse Test connector provider
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with POST /api/v1/connector-providers/{provider_id}/test (the `TestConnectorProvider` operationId).
 	TestConnectorProviderWithResponse(ctx context.Context, providerId string, params *TestConnectorProviderParams, reqEditors ...RequestEditorFn) (*TestConnectorProviderResponse, error)
+
+	// ListConnectorTriggersWithResponse List Connector Triggers
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-triggers (the `ListConnectorTriggers` operationId).
+	ListConnectorTriggersWithResponse(ctx context.Context, params *ListConnectorTriggersParams, reqEditors ...RequestEditorFn) (*ListConnectorTriggersResponse, error)
+
+	// CreateConnectorTriggerWithBodyWithResponse Create Connector Trigger
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+	CreateConnectorTriggerWithBodyWithResponse(ctx context.Context, params *CreateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConnectorTriggerResponse, error)
+
+	// CreateConnectorTriggerWithResponse Create Connector Trigger
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+	CreateConnectorTriggerWithResponse(ctx context.Context, params *CreateConnectorTriggerParams, body CreateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConnectorTriggerResponse, error)
+
+	// GetConnectorTriggerWithResponse Get Connector Trigger
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/connector-triggers/{trigger_id} (the `GetConnectorTrigger` operationId).
+	GetConnectorTriggerWithResponse(ctx context.Context, triggerId string, params *GetConnectorTriggerParams, reqEditors ...RequestEditorFn) (*GetConnectorTriggerResponse, error)
+
+	// UpdateConnectorTriggerWithBodyWithResponse Update Connector Trigger
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+	UpdateConnectorTriggerWithBodyWithResponse(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConnectorTriggerResponse, error)
+
+	// UpdateConnectorTriggerWithResponse Update Connector Trigger
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+	UpdateConnectorTriggerWithResponse(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, body UpdateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConnectorTriggerResponse, error)
+
+	// TransitionConnectorTriggerWithResponse Transition Connector Trigger
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/connector-triggers/{trigger_id}/{command} (the `TransitionConnectorTrigger` operationId).
+	TransitionConnectorTriggerWithResponse(ctx context.Context, triggerId string, command TransitionConnectorTriggerParamsCommand, params *TransitionConnectorTriggerParams, reqEditors ...RequestEditorFn) (*TransitionConnectorTriggerResponse, error)
+
+	// ReceiveConnectorWebhookWithResponse Receive Connector Webhook
+	//
+	// Authenticate the sender's signature; receipt confirms durable storage, not Agent completion.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/connector-webhooks/{provider_id} (the `ReceiveConnectorWebhook` operationId).
+	ReceiveConnectorWebhookWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*ReceiveConnectorWebhookResponse, error)
 
 	// ListDevicesWithResponse List Devices
 	//
@@ -72573,6 +74307,213 @@ func (r IndexConnectionToolsResponse) ContentType() string {
 	return ""
 }
 
+// ListConnectorEventsResponse400Headers the declared response headers of an HTTP 400 response for ListConnectorEvents
+type ListConnectorEventsResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListConnectorEventsResponseDefaultHeaders the declared response headers of an HTTP default response for ListConnectorEvents
+type ListConnectorEventsResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListConnectorEventsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EventPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListConnectorEventsResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListConnectorEventsResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListConnectorEventsResponse) GetJSON200() *EventPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListConnectorEventsResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListConnectorEventsResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListConnectorEventsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListConnectorEventsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListConnectorEventsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListConnectorEventsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetConnectorEventResponse400Headers the declared response headers of an HTTP 400 response for GetConnectorEvent
+type GetConnectorEventResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetConnectorEventResponseDefaultHeaders the declared response headers of an HTTP default response for GetConnectorEvent
+type GetConnectorEventResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetConnectorEventResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ConnectorEvent
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetConnectorEventResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetConnectorEventResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetConnectorEventResponse) GetJSON200() *ConnectorEvent {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetConnectorEventResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetConnectorEventResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetConnectorEventResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorEventResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorEventResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetConnectorEventResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RetryConnectorEventResponse400Headers the declared response headers of an HTTP 400 response for RetryConnectorEvent
+type RetryConnectorEventResponse400Headers struct {
+	XRequestId *string
+}
+
+// RetryConnectorEventResponseDefaultHeaders the declared response headers of an HTTP default response for RetryConnectorEvent
+type RetryConnectorEventResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RetryConnectorEventResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ConnectorEvent
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RetryConnectorEventResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RetryConnectorEventResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RetryConnectorEventResponse) GetJSON200() *ConnectorEvent {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RetryConnectorEventResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RetryConnectorEventResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RetryConnectorEventResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RetryConnectorEventResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetryConnectorEventResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RetryConnectorEventResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListConnectorProvidersResponse400Headers the declared response headers of an HTTP 400 response for ListConnectorProviders
 type ListConnectorProvidersResponse400Headers struct {
 	XRequestId *string
@@ -73256,6 +75197,282 @@ func (r IndexConnectorActionsResponse) ContentType() string {
 	return ""
 }
 
+// ListConnectorEventTypesResponse400Headers the declared response headers of an HTTP 400 response for ListConnectorEventTypes
+type ListConnectorEventTypesResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListConnectorEventTypesResponseDefaultHeaders the declared response headers of an HTTP default response for ListConnectorEventTypes
+type ListConnectorEventTypesResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListConnectorEventTypesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EventTypePage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListConnectorEventTypesResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListConnectorEventTypesResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListConnectorEventTypesResponse) GetJSON200() *EventTypePage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListConnectorEventTypesResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListConnectorEventTypesResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListConnectorEventTypesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListConnectorEventTypesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListConnectorEventTypesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListConnectorEventTypesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetConnectorEventTypeResponse400Headers the declared response headers of an HTTP 400 response for GetConnectorEventType
+type GetConnectorEventTypeResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetConnectorEventTypeResponseDefaultHeaders the declared response headers of an HTTP default response for GetConnectorEventType
+type GetConnectorEventTypeResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetConnectorEventTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *EventType
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetConnectorEventTypeResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetConnectorEventTypeResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetConnectorEventTypeResponse) GetJSON200() *EventType {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetConnectorEventTypeResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetConnectorEventTypeResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetConnectorEventTypeResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorEventTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorEventTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetConnectorEventTypeResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetConnectorEventWebhookResponse400Headers the declared response headers of an HTTP 400 response for GetConnectorEventWebhook
+type GetConnectorEventWebhookResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetConnectorEventWebhookResponseDefaultHeaders the declared response headers of an HTTP default response for GetConnectorEventWebhook
+type GetConnectorEventWebhookResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetConnectorEventWebhookResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Webhook
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetConnectorEventWebhookResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetConnectorEventWebhookResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetConnectorEventWebhookResponse) GetJSON200() *Webhook {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetConnectorEventWebhookResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetConnectorEventWebhookResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetConnectorEventWebhookResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorEventWebhookResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorEventWebhookResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetConnectorEventWebhookResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ConfigureConnectorEventWebhookResponse400Headers the declared response headers of an HTTP 400 response for ConfigureConnectorEventWebhook
+type ConfigureConnectorEventWebhookResponse400Headers struct {
+	XRequestId *string
+}
+
+// ConfigureConnectorEventWebhookResponseDefaultHeaders the declared response headers of an HTTP default response for ConfigureConnectorEventWebhook
+type ConfigureConnectorEventWebhookResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ConfigureConnectorEventWebhookResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Webhook
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ConfigureConnectorEventWebhookResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ConfigureConnectorEventWebhookResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ConfigureConnectorEventWebhookResponse) GetJSON200() *Webhook {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ConfigureConnectorEventWebhookResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ConfigureConnectorEventWebhookResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ConfigureConnectorEventWebhookResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ConfigureConnectorEventWebhookResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ConfigureConnectorEventWebhookResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ConfigureConnectorEventWebhookResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // TestConnectorProviderResponse400Headers the declared response headers of an HTTP 400 response for TestConnectorProvider
 type TestConnectorProviderResponse400Headers struct {
 	XRequestId *string
@@ -73319,6 +75536,413 @@ func (r TestConnectorProviderResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r TestConnectorProviderResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ListConnectorTriggersResponse400Headers the declared response headers of an HTTP 400 response for ListConnectorTriggers
+type ListConnectorTriggersResponse400Headers struct {
+	XRequestId *string
+}
+
+// ListConnectorTriggersResponseDefaultHeaders the declared response headers of an HTTP default response for ListConnectorTriggers
+type ListConnectorTriggersResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ListConnectorTriggersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TriggerPage
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ListConnectorTriggersResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ListConnectorTriggersResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListConnectorTriggersResponse) GetJSON200() *TriggerPage {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ListConnectorTriggersResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ListConnectorTriggersResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ListConnectorTriggersResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListConnectorTriggersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListConnectorTriggersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListConnectorTriggersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateConnectorTriggerResponse400Headers the declared response headers of an HTTP 400 response for CreateConnectorTrigger
+type CreateConnectorTriggerResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateConnectorTriggerResponseDefaultHeaders the declared response headers of an HTTP default response for CreateConnectorTrigger
+type CreateConnectorTriggerResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateConnectorTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ConnectorTrigger
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateConnectorTriggerResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateConnectorTriggerResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CreateConnectorTriggerResponse) GetJSON200() *ConnectorTrigger {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateConnectorTriggerResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateConnectorTriggerResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateConnectorTriggerResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateConnectorTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateConnectorTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateConnectorTriggerResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetConnectorTriggerResponse400Headers the declared response headers of an HTTP 400 response for GetConnectorTrigger
+type GetConnectorTriggerResponse400Headers struct {
+	XRequestId *string
+}
+
+// GetConnectorTriggerResponseDefaultHeaders the declared response headers of an HTTP default response for GetConnectorTrigger
+type GetConnectorTriggerResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type GetConnectorTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ConnectorTrigger
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *GetConnectorTriggerResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *GetConnectorTriggerResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetConnectorTriggerResponse) GetJSON200() *ConnectorTrigger {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r GetConnectorTriggerResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetConnectorTriggerResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetConnectorTriggerResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetConnectorTriggerResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UpdateConnectorTriggerResponse400Headers the declared response headers of an HTTP 400 response for UpdateConnectorTrigger
+type UpdateConnectorTriggerResponse400Headers struct {
+	XRequestId *string
+}
+
+// UpdateConnectorTriggerResponseDefaultHeaders the declared response headers of an HTTP default response for UpdateConnectorTrigger
+type UpdateConnectorTriggerResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type UpdateConnectorTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ConnectorTrigger
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *UpdateConnectorTriggerResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UpdateConnectorTriggerResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UpdateConnectorTriggerResponse) GetJSON200() *ConnectorTrigger {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UpdateConnectorTriggerResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UpdateConnectorTriggerResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UpdateConnectorTriggerResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateConnectorTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateConnectorTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateConnectorTriggerResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// TransitionConnectorTriggerResponse400Headers the declared response headers of an HTTP 400 response for TransitionConnectorTrigger
+type TransitionConnectorTriggerResponse400Headers struct {
+	XRequestId *string
+}
+
+// TransitionConnectorTriggerResponseDefaultHeaders the declared response headers of an HTTP default response for TransitionConnectorTrigger
+type TransitionConnectorTriggerResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type TransitionConnectorTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ConnectorTrigger
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *TransitionConnectorTriggerResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TransitionConnectorTriggerResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TransitionConnectorTriggerResponse) GetJSON200() *ConnectorTrigger {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r TransitionConnectorTriggerResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TransitionConnectorTriggerResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TransitionConnectorTriggerResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TransitionConnectorTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TransitionConnectorTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TransitionConnectorTriggerResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ReceiveConnectorWebhookResponse400Headers the declared response headers of an HTTP 400 response for ReceiveConnectorWebhook
+type ReceiveConnectorWebhookResponse400Headers struct {
+	XRequestId *string
+}
+
+// ReceiveConnectorWebhookResponseDefaultHeaders the declared response headers of an HTTP default response for ReceiveConnectorWebhook
+type ReceiveConnectorWebhookResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type ReceiveConnectorWebhookResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ReceiveConnectorWebhookResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ReceiveConnectorWebhookResponseDefaultHeaders
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ReceiveConnectorWebhookResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReceiveConnectorWebhookResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReceiveConnectorWebhookResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReceiveConnectorWebhookResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReceiveConnectorWebhookResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReceiveConnectorWebhookResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -96806,6 +99430,45 @@ func (c *ClientWithResponses) IndexConnectionToolsWithResponse(ctx context.Conte
 	return ParseIndexConnectionToolsResponse(rsp)
 }
 
+// ListConnectorEventsWithResponse List Connector Events
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-events (the `ListConnectorEvents` operationId).
+func (c *ClientWithResponses) ListConnectorEventsWithResponse(ctx context.Context, params *ListConnectorEventsParams, reqEditors ...RequestEditorFn) (*ListConnectorEventsResponse, error) {
+	rsp, err := c.ListConnectorEvents(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListConnectorEventsResponse(rsp)
+}
+
+// GetConnectorEventWithResponse Get Connector Event
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-events/{event_id} (the `GetConnectorEvent` operationId).
+func (c *ClientWithResponses) GetConnectorEventWithResponse(ctx context.Context, eventId string, params *GetConnectorEventParams, reqEditors ...RequestEditorFn) (*GetConnectorEventResponse, error) {
+	rsp, err := c.GetConnectorEvent(ctx, eventId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorEventResponse(rsp)
+}
+
+// RetryConnectorEventWithResponse Retry Connector Event
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/connector-events/{event_id}/retry (the `RetryConnectorEvent` operationId).
+func (c *ClientWithResponses) RetryConnectorEventWithResponse(ctx context.Context, eventId string, params *RetryConnectorEventParams, reqEditors ...RequestEditorFn) (*RetryConnectorEventResponse, error) {
+	rsp, err := c.RetryConnectorEvent(ctx, eventId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetryConnectorEventResponse(rsp)
+}
+
 // ListConnectorProvidersWithResponse List connector providers
 //
 // Returns a wrapper object for the known response body format(s).
@@ -96970,6 +99633,58 @@ func (c *ClientWithResponses) IndexConnectorActionsWithResponse(ctx context.Cont
 	return ParseIndexConnectorActionsResponse(rsp)
 }
 
+// ListConnectorEventTypesWithResponse List Connector Event Types
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types (the `ListConnectorEventTypes` operationId).
+func (c *ClientWithResponses) ListConnectorEventTypesWithResponse(ctx context.Context, providerId string, app string, params *ListConnectorEventTypesParams, reqEditors ...RequestEditorFn) (*ListConnectorEventTypesResponse, error) {
+	rsp, err := c.ListConnectorEventTypes(ctx, providerId, app, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListConnectorEventTypesResponse(rsp)
+}
+
+// GetConnectorEventTypeWithResponse Get Connector Event Type
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/apps/{app}/event-types/{event_type} (the `GetConnectorEventType` operationId).
+func (c *ClientWithResponses) GetConnectorEventTypeWithResponse(ctx context.Context, providerId string, app string, eventType string, params *GetConnectorEventTypeParams, reqEditors ...RequestEditorFn) (*GetConnectorEventTypeResponse, error) {
+	rsp, err := c.GetConnectorEventType(ctx, providerId, app, eventType, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorEventTypeResponse(rsp)
+}
+
+// GetConnectorEventWebhookWithResponse Get Connector Event Webhook
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-providers/{provider_id}/event-webhook (the `GetConnectorEventWebhook` operationId).
+func (c *ClientWithResponses) GetConnectorEventWebhookWithResponse(ctx context.Context, providerId string, params *GetConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*GetConnectorEventWebhookResponse, error) {
+	rsp, err := c.GetConnectorEventWebhook(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorEventWebhookResponse(rsp)
+}
+
+// ConfigureConnectorEventWebhookWithResponse Configure Connector Event Webhook
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/connector-providers/{provider_id}/event-webhook (the `ConfigureConnectorEventWebhook` operationId).
+func (c *ClientWithResponses) ConfigureConnectorEventWebhookWithResponse(ctx context.Context, providerId string, params *ConfigureConnectorEventWebhookParams, reqEditors ...RequestEditorFn) (*ConfigureConnectorEventWebhookResponse, error) {
+	rsp, err := c.ConfigureConnectorEventWebhook(ctx, providerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseConfigureConnectorEventWebhookResponse(rsp)
+}
+
 // TestConnectorProviderWithResponse Test connector provider
 //
 // Returns a wrapper object for the known response body format(s).
@@ -96981,6 +99696,112 @@ func (c *ClientWithResponses) TestConnectorProviderWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseTestConnectorProviderResponse(rsp)
+}
+
+// ListConnectorTriggersWithResponse List Connector Triggers
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-triggers (the `ListConnectorTriggers` operationId).
+func (c *ClientWithResponses) ListConnectorTriggersWithResponse(ctx context.Context, params *ListConnectorTriggersParams, reqEditors ...RequestEditorFn) (*ListConnectorTriggersResponse, error) {
+	rsp, err := c.ListConnectorTriggers(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListConnectorTriggersResponse(rsp)
+}
+
+// CreateConnectorTriggerWithBodyWithResponse Create Connector Trigger
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+func (c *ClientWithResponses) CreateConnectorTriggerWithBodyWithResponse(ctx context.Context, params *CreateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConnectorTriggerResponse, error) {
+	rsp, err := c.CreateConnectorTriggerWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConnectorTriggerResponse(rsp)
+}
+
+// CreateConnectorTriggerWithResponse Create Connector Trigger
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/connector-triggers (the `CreateConnectorTrigger` operationId).
+func (c *ClientWithResponses) CreateConnectorTriggerWithResponse(ctx context.Context, params *CreateConnectorTriggerParams, body CreateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConnectorTriggerResponse, error) {
+	rsp, err := c.CreateConnectorTrigger(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConnectorTriggerResponse(rsp)
+}
+
+// GetConnectorTriggerWithResponse Get Connector Trigger
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/connector-triggers/{trigger_id} (the `GetConnectorTrigger` operationId).
+func (c *ClientWithResponses) GetConnectorTriggerWithResponse(ctx context.Context, triggerId string, params *GetConnectorTriggerParams, reqEditors ...RequestEditorFn) (*GetConnectorTriggerResponse, error) {
+	rsp, err := c.GetConnectorTrigger(ctx, triggerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorTriggerResponse(rsp)
+}
+
+// UpdateConnectorTriggerWithBodyWithResponse Update Connector Trigger
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+func (c *ClientWithResponses) UpdateConnectorTriggerWithBodyWithResponse(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConnectorTriggerResponse, error) {
+	rsp, err := c.UpdateConnectorTriggerWithBody(ctx, triggerId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConnectorTriggerResponse(rsp)
+}
+
+// UpdateConnectorTriggerWithResponse Update Connector Trigger
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /api/v1/connector-triggers/{trigger_id} (the `UpdateConnectorTrigger` operationId).
+func (c *ClientWithResponses) UpdateConnectorTriggerWithResponse(ctx context.Context, triggerId string, params *UpdateConnectorTriggerParams, body UpdateConnectorTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConnectorTriggerResponse, error) {
+	rsp, err := c.UpdateConnectorTrigger(ctx, triggerId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConnectorTriggerResponse(rsp)
+}
+
+// TransitionConnectorTriggerWithResponse Transition Connector Trigger
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/connector-triggers/{trigger_id}/{command} (the `TransitionConnectorTrigger` operationId).
+func (c *ClientWithResponses) TransitionConnectorTriggerWithResponse(ctx context.Context, triggerId string, command TransitionConnectorTriggerParamsCommand, params *TransitionConnectorTriggerParams, reqEditors ...RequestEditorFn) (*TransitionConnectorTriggerResponse, error) {
+	rsp, err := c.TransitionConnectorTrigger(ctx, triggerId, command, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTransitionConnectorTriggerResponse(rsp)
+}
+
+// ReceiveConnectorWebhookWithResponse Receive Connector Webhook
+//
+// Authenticate the sender's signature; receipt confirms durable storage, not Agent completion.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/connector-webhooks/{provider_id} (the `ReceiveConnectorWebhook` operationId).
+func (c *ClientWithResponses) ReceiveConnectorWebhookWithResponse(ctx context.Context, providerId string, reqEditors ...RequestEditorFn) (*ReceiveConnectorWebhookResponse, error) {
+	rsp, err := c.ReceiveConnectorWebhook(ctx, providerId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReceiveConnectorWebhookResponse(rsp)
 }
 
 // ListDevicesWithResponse List Devices
@@ -107691,6 +110512,195 @@ func ParseIndexConnectionToolsResponse(rsp *http.Response) (*IndexConnectionTool
 	return response, nil
 }
 
+// ParseListConnectorEventsResponse parses an HTTP response from a ListConnectorEventsWithResponse call
+func ParseListConnectorEventsResponse(rsp *http.Response) (*ListConnectorEventsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListConnectorEventsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EventPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListConnectorEventsResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListConnectorEventsResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorEventResponse parses an HTTP response from a GetConnectorEventWithResponse call
+func ParseGetConnectorEventResponse(rsp *http.Response) (*GetConnectorEventResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorEventResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConnectorEvent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetConnectorEventResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetConnectorEventResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRetryConnectorEventResponse parses an HTTP response from a RetryConnectorEventWithResponse call
+func ParseRetryConnectorEventResponse(rsp *http.Response) (*RetryConnectorEventResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetryConnectorEventResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConnectorEvent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RetryConnectorEventResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RetryConnectorEventResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseListConnectorProvidersResponse parses an HTTP response from a ListConnectorProvidersWithResponse call
 func ParseListConnectorProvidersResponse(rsp *http.Response) (*ListConnectorProvidersResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -108317,6 +111327,258 @@ func ParseIndexConnectorActionsResponse(rsp *http.Response) (*IndexConnectorActi
 	return response, nil
 }
 
+// ParseListConnectorEventTypesResponse parses an HTTP response from a ListConnectorEventTypesWithResponse call
+func ParseListConnectorEventTypesResponse(rsp *http.Response) (*ListConnectorEventTypesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListConnectorEventTypesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EventTypePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListConnectorEventTypesResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListConnectorEventTypesResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorEventTypeResponse parses an HTTP response from a GetConnectorEventTypeWithResponse call
+func ParseGetConnectorEventTypeResponse(rsp *http.Response) (*GetConnectorEventTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorEventTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest EventType
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetConnectorEventTypeResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetConnectorEventTypeResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorEventWebhookResponse parses an HTTP response from a GetConnectorEventWebhookWithResponse call
+func ParseGetConnectorEventWebhookResponse(rsp *http.Response) (*GetConnectorEventWebhookResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorEventWebhookResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Webhook
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetConnectorEventWebhookResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetConnectorEventWebhookResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseConfigureConnectorEventWebhookResponse parses an HTTP response from a ConfigureConnectorEventWebhookWithResponse call
+func ParseConfigureConnectorEventWebhookResponse(rsp *http.Response) (*ConfigureConnectorEventWebhookResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ConfigureConnectorEventWebhookResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Webhook
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ConfigureConnectorEventWebhookResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ConfigureConnectorEventWebhookResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseTestConnectorProviderResponse parses an HTTP response from a TestConnectorProviderWithResponse call
 func ParseTestConnectorProviderResponse(rsp *http.Response) (*TestConnectorProviderResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -108367,6 +111629,380 @@ func ParseTestConnectorProviderResponse(rsp *http.Response) (*TestConnectorProvi
 		response.Headers400 = &headers
 	case true:
 		var headers TestConnectorProviderResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListConnectorTriggersResponse parses an HTTP response from a ListConnectorTriggersWithResponse call
+func ParseListConnectorTriggersResponse(rsp *http.Response) (*ListConnectorTriggersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListConnectorTriggersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TriggerPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ListConnectorTriggersResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ListConnectorTriggersResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateConnectorTriggerResponse parses an HTTP response from a CreateConnectorTriggerWithResponse call
+func ParseCreateConnectorTriggerResponse(rsp *http.Response) (*CreateConnectorTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateConnectorTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConnectorTrigger
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateConnectorTriggerResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateConnectorTriggerResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorTriggerResponse parses an HTTP response from a GetConnectorTriggerWithResponse call
+func ParseGetConnectorTriggerResponse(rsp *http.Response) (*GetConnectorTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConnectorTrigger
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers GetConnectorTriggerResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers GetConnectorTriggerResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUpdateConnectorTriggerResponse parses an HTTP response from a UpdateConnectorTriggerWithResponse call
+func ParseUpdateConnectorTriggerResponse(rsp *http.Response) (*UpdateConnectorTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateConnectorTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConnectorTrigger
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers UpdateConnectorTriggerResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers UpdateConnectorTriggerResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTransitionConnectorTriggerResponse parses an HTTP response from a TransitionConnectorTriggerWithResponse call
+func ParseTransitionConnectorTriggerResponse(rsp *http.Response) (*TransitionConnectorTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TransitionConnectorTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConnectorTrigger
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers TransitionConnectorTriggerResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers TransitionConnectorTriggerResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseReceiveConnectorWebhookResponse parses an HTTP response from a ReceiveConnectorWebhookWithResponse call
+func ParseReceiveConnectorWebhookResponse(rsp *http.Response) (*ReceiveConnectorWebhookResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReceiveConnectorWebhookResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers ReceiveConnectorWebhookResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers ReceiveConnectorWebhookResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
