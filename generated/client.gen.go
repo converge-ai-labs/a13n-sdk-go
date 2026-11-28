@@ -3767,6 +3767,21 @@ func (e ReadView) Valid() bool {
 	}
 }
 
+// Defines values for RealtimeSessionTicketSubprotocol.
+const (
+	A13nRealtimeV1 RealtimeSessionTicketSubprotocol = "a13n.realtime.v1"
+)
+
+// Valid indicates whether the value is a known member of the RealtimeSessionTicketSubprotocol enum.
+func (e RealtimeSessionTicketSubprotocol) Valid() bool {
+	switch e {
+	case A13nRealtimeV1:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ResourceDisposition.
 const (
 	ResourceDispositionBorrowed ResourceDisposition = "borrowed"
@@ -4886,6 +4901,24 @@ func (e TraceBackendType) Valid() bool {
 	}
 }
 
+// Defines values for Transport.
+const (
+	Webrtc    Transport = "webrtc"
+	Websocket Transport = "websocket"
+)
+
+// Valid indicates whether the value is a known member of the Transport enum.
+func (e Transport) Valid() bool {
+	switch e {
+	case Webrtc:
+		return true
+	case Websocket:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for Trigger.
 const (
 	TriggerBrowserHandback Trigger = "browser_handback"
@@ -4894,6 +4927,7 @@ const (
 	TriggerDesktopHandback Trigger = "desktop_handback"
 	TriggerInput           Trigger = "input"
 	TriggerQueued          Trigger = "queued"
+	TriggerRealtime        Trigger = "realtime"
 	TriggerResume          Trigger = "resume"
 	TriggerSpawned         Trigger = "spawned"
 	TriggerToolResult      Trigger = "tool_result"
@@ -4913,6 +4947,8 @@ func (e Trigger) Valid() bool {
 	case TriggerInput:
 		return true
 	case TriggerQueued:
+		return true
+	case TriggerRealtime:
 		return true
 	case TriggerResume:
 		return true
@@ -7079,6 +7115,7 @@ type CatalogModel struct {
 	// Characteristics Resolved Harness characteristics of the active Agent model.
 	Characteristics HarnessModelCharacteristicsOutput          `json:"characteristics"`
 	Identity        string                                     `json:"identity"`
+	ModelApi        nullable.Nullable[string]                  `json:"model_api,omitempty"`
 	Name            string                                     `json:"name"`
 	Pricing         nullable.Nullable[ModelPricingEntryOutput] `json:"pricing"`
 	PricingWarning  nullable.Nullable[string]                  `json:"pricing_warning"`
@@ -10461,6 +10498,7 @@ type ProviderType struct {
 	ModelApis              nullable.Nullable[[]string]                        `json:"model_apis,omitempty"`
 	OauthScheme            nullable.Nullable[string]                          `json:"oauth_scheme,omitempty"`
 	Operations             nullable.Nullable[[]WebOperation]                  `json:"operations,omitempty"`
+	RealtimeModelApis      nullable.Nullable[[]string]                        `json:"realtime_model_apis,omitempty"`
 	SettingsSchemas        nullable.Nullable[map[string]map[string]JsonValue] `json:"settings_schemas,omitempty"`
 	SetupLabel             nullable.Nullable[string]                          `json:"setup_label"`
 	SetupUrl               nullable.Nullable[string]                          `json:"setup_url"`
@@ -10535,6 +10573,55 @@ type RangeQueryKind string
 
 // ReadView defines model for ReadView.
 type ReadView string
+
+// RealtimeAvailability defines model for RealtimeAvailability.
+type RealtimeAvailability struct {
+	AcceptsText *bool                     `json:"accepts_text,omitempty"`
+	CanStart    *bool                     `json:"can_start,omitempty"`
+	Realtime    *bool                     `json:"realtime,omitempty"`
+	Reason      nullable.Nullable[string] `json:"reason,omitempty"`
+	Transports  *[]Transport              `json:"transports,omitempty"`
+}
+
+// RealtimeSessionCreate defines model for RealtimeSessionCreate.
+type RealtimeSessionCreate struct {
+	AgentId           string                                   `json:"agent_id"`
+	AgentRevisionId   nullable.Nullable[string]                `json:"agent_revision_id,omitempty"`
+	Audio             *bool                                    `json:"audio,omitempty"`
+	Draft             *string                                  `json:"draft,omitempty"`
+	Environments      *InitialMounts                           `json:"environments,omitempty"`
+	ForkRunId         nullable.Nullable[string]                `json:"fork_run_id,omitempty"`
+	FreshEnvironments *bool                                    `json:"fresh_environments,omitempty"`
+	MaxUsage          nullable.Nullable[UsageLimit]            `json:"max_usage,omitempty"`
+	Memories          *[]MemoryMount                           `json:"memories,omitempty"`
+	Memory            nullable.Nullable[SessionMemorySettings] `json:"memory,omitempty"`
+
+	// Options What a message may choose for the run it starts. A steer joins a run with the defaults or equal options.
+	Options   *RunOptionsInput          `json:"options,omitempty"`
+	ThreadId  nullable.Nullable[string] `json:"thread_id,omitempty"`
+	Transport *Transport                `json:"transport,omitempty"`
+}
+
+// RealtimeSessionTicket defines model for RealtimeSessionTicket.
+type RealtimeSessionTicket struct {
+	// ExpiresIn Ticket lifetime in seconds.
+	ExpiresIn int    `json:"expires_in"`
+	RunId     string `json:"run_id"`
+	SessionId string `json:"session_id"`
+
+	// Subprotocol Offer this protocol first and the ticket second.
+	Subprotocol RealtimeSessionTicketSubprotocol `json:"subprotocol"`
+	ThreadId    string                           `json:"thread_id"`
+
+	// Ticket Single-use connection credential. Pass it as the second WebSocket subprotocol.
+	Ticket string `json:"ticket"`
+
+	// WebsocketPath WebSocket path relative to the Service origin.
+	WebsocketPath string `json:"websocket_path"`
+}
+
+// RealtimeSessionTicketSubprotocol Offer this protocol first and the ticket second.
+type RealtimeSessionTicketSubprotocol string
 
 // RecipeOverrides defines model for RecipeOverrides.
 type RecipeOverrides struct {
@@ -12307,6 +12394,9 @@ type TraceSearchPage struct {
 	NextCursor  nullable.Nullable[string] `json:"next_cursor"`
 	Total       int                       `json:"total"`
 }
+
+// Transport defines model for Transport.
+type Transport string
 
 // Trigger defines model for Trigger.
 type Trigger string
@@ -14517,6 +14607,24 @@ type ListPluginsParams struct {
 // ListProviderTypesParamsKind defines parameters for ListProviderTypes.
 type ListProviderTypesParamsKind string
 
+// RealtimeAvailabilityParams defines parameters for RealtimeAvailability.
+type RealtimeAvailabilityParams struct {
+	AgentId         string  `form:"agent_id" json:"agent_id"`
+	AgentRevisionId *string `form:"agent_revision_id,omitempty" json:"agent_revision_id,omitempty"`
+	ThreadId        *string `form:"thread_id,omitempty" json:"thread_id,omitempty"`
+	ForkRunId       *string `form:"fork_run_id,omitempty" json:"fork_run_id,omitempty"`
+	Model           *string `form:"model,omitempty" json:"model,omitempty"`
+
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
+// CreateRealtimeSessionParams defines parameters for CreateRealtimeSession.
+type CreateRealtimeSessionParams struct {
+	// XWorkspaceID The workspace ID a login session acts in; required with a login session. An API key acts in its own workspace and needs none; naming another is forbidden.
+	XWorkspaceID *string `json:"X-Workspace-ID,omitempty"`
+}
+
 // ListRunsParams defines parameters for ListRuns.
 type ListRunsParams struct {
 	// TextQuery All search terms must match one run's retained user/assistant text
@@ -16237,6 +16345,9 @@ type CreateOrganizationInvitationJSONRequestBody = InvitationCreate
 
 // CreateWorkspaceJSONRequestBody defines body for CreateWorkspace for application/json ContentType.
 type CreateWorkspaceJSONRequestBody = WorkspaceCreate
+
+// CreateRealtimeSessionJSONRequestBody defines body for CreateRealtimeSession for application/json ContentType.
+type CreateRealtimeSessionJSONRequestBody = RealtimeSessionCreate
 
 // UpdateRunJSONRequestBody defines body for UpdateRun for application/json ContentType.
 type UpdateRunJSONRequestBody = RunLabels
@@ -24156,6 +24267,31 @@ type ClientInterface interface {
 	// Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypes` operationId).
 	ListProviderTypes(ctx context.Context, kind ListProviderTypesParamsKind, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RealtimeAvailability Realtime Availability
+	//
+	// Report realtime input for the selected Agent and Thread.
+	//
+	// Corresponds with GET /api/v1/realtime (the `RealtimeAvailability` operationId).
+	RealtimeAvailability(ctx context.Context, params *RealtimeAvailabilityParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateRealtimeSessionWithBody Create Realtime Session
+	//
+	// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+	CreateRealtimeSessionWithBody(ctx context.Context, params *CreateRealtimeSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateRealtimeSession Create Realtime Session
+	//
+	// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+	CreateRealtimeSession(ctx context.Context, params *CreateRealtimeSessionParams, body CreateRealtimeSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListRuns List Runs
 	//
 	// Corresponds with GET /api/v1/runs (the `ListRuns` operationId).
@@ -31134,6 +31270,61 @@ func (c *Client) ListPlugins(ctx context.Context, params *ListPluginsParams, req
 // Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypes` operationId).
 func (c *Client) ListProviderTypes(ctx context.Context, kind ListProviderTypesParamsKind, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListProviderTypesRequest(c.Server, kind)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RealtimeAvailability Realtime Availability
+//
+// Report realtime input for the selected Agent and Thread.
+//
+// Corresponds with GET /api/v1/realtime (the `RealtimeAvailability` operationId).
+func (c *Client) RealtimeAvailability(ctx context.Context, params *RealtimeAvailabilityParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRealtimeAvailabilityRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateRealtimeSessionWithBody Create Realtime Session
+//
+// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+func (c *Client) CreateRealtimeSessionWithBody(ctx context.Context, params *CreateRealtimeSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRealtimeSessionRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateRealtimeSession Create Realtime Session
+//
+// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+func (c *Client) CreateRealtimeSession(ctx context.Context, params *CreateRealtimeSessionParams, body CreateRealtimeSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRealtimeSessionRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -50634,6 +50825,174 @@ func NewListProviderTypesRequest(server string, kind ListProviderTypesParamsKind
 	return req, nil
 }
 
+// NewRealtimeAvailabilityRequest constructs an http.Request for the RealtimeAvailability method
+func NewRealtimeAvailabilityRequest(server string, params *RealtimeAvailabilityParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/realtime")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_id", params.AgentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.AgentRevisionId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "agent_revision_id", *params.AgentRevisionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ThreadId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "thread_id", *params.ThreadId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ForkRunId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "fork_run_id", *params.ForkRunId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Model != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "model", *params.Model, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateRealtimeSessionRequest calls the generic CreateRealtimeSession builder with application/json body
+func NewCreateRealtimeSessionRequest(server string, params *CreateRealtimeSessionParams, body CreateRealtimeSessionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateRealtimeSessionRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateRealtimeSessionRequestWithBody constructs an http.Request for the CreateRealtimeSession method, with any body, and a specified content type
+func NewCreateRealtimeSessionRequestWithBody(server string, params *CreateRealtimeSessionParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/v1/realtime/sessions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.XWorkspaceID != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "X-Workspace-ID", *params.XWorkspaceID, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("X-Workspace-ID", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListRunsRequest constructs an http.Request for the ListRuns method
 func NewListRunsRequest(server string, params *ListRunsParams) (*http.Request, error) {
 	var err error
@@ -65232,6 +65591,33 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /api/v1/provider-types/{kind} (the `ListProviderTypes` operationId).
 	ListProviderTypesWithResponse(ctx context.Context, kind ListProviderTypesParamsKind, reqEditors ...RequestEditorFn) (*ListProviderTypesResponse, error)
+
+	// RealtimeAvailabilityWithResponse Realtime Availability
+	//
+	// Report realtime input for the selected Agent and Thread.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /api/v1/realtime (the `RealtimeAvailability` operationId).
+	RealtimeAvailabilityWithResponse(ctx context.Context, params *RealtimeAvailabilityParams, reqEditors ...RequestEditorFn) (*RealtimeAvailabilityResponse, error)
+
+	// CreateRealtimeSessionWithBodyWithResponse Create Realtime Session
+	//
+	// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+	CreateRealtimeSessionWithBodyWithResponse(ctx context.Context, params *CreateRealtimeSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRealtimeSessionResponse, error)
+
+	// CreateRealtimeSessionWithResponse Create Realtime Session
+	//
+	// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+	CreateRealtimeSessionWithResponse(ctx context.Context, params *CreateRealtimeSessionParams, body CreateRealtimeSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRealtimeSessionResponse, error)
 
 	// ListRunsWithResponse List Runs
 	//
@@ -84095,6 +84481,144 @@ func (r ListProviderTypesResponse) ContentType() string {
 	return ""
 }
 
+// RealtimeAvailabilityResponse400Headers the declared response headers of an HTTP 400 response for RealtimeAvailability
+type RealtimeAvailabilityResponse400Headers struct {
+	XRequestId *string
+}
+
+// RealtimeAvailabilityResponseDefaultHeaders the declared response headers of an HTTP default response for RealtimeAvailability
+type RealtimeAvailabilityResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type RealtimeAvailabilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RealtimeAvailability
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *RealtimeAvailabilityResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *RealtimeAvailabilityResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RealtimeAvailabilityResponse) GetJSON200() *RealtimeAvailability {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r RealtimeAvailabilityResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r RealtimeAvailabilityResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r RealtimeAvailabilityResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RealtimeAvailabilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RealtimeAvailabilityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RealtimeAvailabilityResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateRealtimeSessionResponse400Headers the declared response headers of an HTTP 400 response for CreateRealtimeSession
+type CreateRealtimeSessionResponse400Headers struct {
+	XRequestId *string
+}
+
+// CreateRealtimeSessionResponseDefaultHeaders the declared response headers of an HTTP default response for CreateRealtimeSession
+type CreateRealtimeSessionResponseDefaultHeaders struct {
+	XRequestId *string
+}
+
+type CreateRealtimeSessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *RealtimeSessionTicket
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Error
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Error
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *CreateRealtimeSessionResponse400Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CreateRealtimeSessionResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateRealtimeSessionResponse) GetJSON201() *RealtimeSessionTicket {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r CreateRealtimeSessionResponse) GetJSON400() *Error {
+	return r.JSON400
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CreateRealtimeSessionResponse) GetJSONDefault() *Error {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateRealtimeSessionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateRealtimeSessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateRealtimeSessionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateRealtimeSessionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ListRunsResponse400Headers the declared response headers of an HTTP 400 response for ListRuns
 type ListRunsResponse400Headers struct {
 	XRequestId *string
@@ -99408,6 +99932,51 @@ func (c *ClientWithResponses) ListProviderTypesWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseListProviderTypesResponse(rsp)
+}
+
+// RealtimeAvailabilityWithResponse Realtime Availability
+//
+// Report realtime input for the selected Agent and Thread.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /api/v1/realtime (the `RealtimeAvailability` operationId).
+func (c *ClientWithResponses) RealtimeAvailabilityWithResponse(ctx context.Context, params *RealtimeAvailabilityParams, reqEditors ...RequestEditorFn) (*RealtimeAvailabilityResponse, error) {
+	rsp, err := c.RealtimeAvailability(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRealtimeAvailabilityResponse(rsp)
+}
+
+// CreateRealtimeSessionWithBodyWithResponse Create Realtime Session
+//
+// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+func (c *ClientWithResponses) CreateRealtimeSessionWithBodyWithResponse(ctx context.Context, params *CreateRealtimeSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRealtimeSessionResponse, error) {
+	rsp, err := c.CreateRealtimeSessionWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateRealtimeSessionResponse(rsp)
+}
+
+// CreateRealtimeSessionWithResponse Create Realtime Session
+//
+// Issue a one-use WebSocket ticket for the selected Agent and optional Thread.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /api/v1/realtime/sessions (the `CreateRealtimeSession` operationId).
+func (c *ClientWithResponses) CreateRealtimeSessionWithResponse(ctx context.Context, params *CreateRealtimeSessionParams, body CreateRealtimeSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRealtimeSessionResponse, error) {
+	rsp, err := c.CreateRealtimeSession(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateRealtimeSessionResponse(rsp)
 }
 
 // ListRunsWithResponse List Runs
@@ -118009,6 +118578,132 @@ func ParseListProviderTypesResponse(rsp *http.Response) (*ListProviderTypesRespo
 		response.Headers400 = &headers
 	case true:
 		var headers ListProviderTypesResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRealtimeAvailabilityResponse parses an HTTP response from a RealtimeAvailabilityWithResponse call
+func ParseRealtimeAvailabilityResponse(rsp *http.Response) (*RealtimeAvailabilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RealtimeAvailabilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RealtimeAvailability
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers RealtimeAvailabilityResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers RealtimeAvailabilityResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateRealtimeSessionResponse parses an HTTP response from a CreateRealtimeSessionWithResponse call
+func ParseCreateRealtimeSessionResponse(rsp *http.Response) (*CreateRealtimeSessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateRealtimeSessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest RealtimeSessionTicket
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 400:
+		var headers CreateRealtimeSessionResponse400Headers
+		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestId = &value
+		}
+		response.Headers400 = &headers
+	case true:
+		var headers CreateRealtimeSessionResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-Id"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-Id", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

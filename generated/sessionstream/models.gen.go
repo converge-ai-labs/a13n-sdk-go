@@ -1667,6 +1667,7 @@ const (
 	TriggerDesktopHandback Trigger = "desktop_handback"
 	TriggerInput           Trigger = "input"
 	TriggerQueued          Trigger = "queued"
+	TriggerRealtime        Trigger = "realtime"
 	TriggerResume          Trigger = "resume"
 	TriggerSpawned         Trigger = "spawned"
 	TriggerToolResult      Trigger = "tool_result"
@@ -1686,6 +1687,8 @@ func (e Trigger) Valid() bool {
 	case TriggerInput:
 		return true
 	case TriggerQueued:
+		return true
+	case TriggerRealtime:
 		return true
 	case TriggerResume:
 		return true
